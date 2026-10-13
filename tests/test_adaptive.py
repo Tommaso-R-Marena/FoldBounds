@@ -1,4 +1,5 @@
 """Adaptive search and proof-carrying zero-completion frontier terminals."""
+from dataclasses import replace
 from fractions import Fraction
 import pytest
 
@@ -6,7 +7,7 @@ from foldbounds.lattice import (Certificate, CertificateError, Node,
                                 build_frontier, exact_spectrum,
                                 refine_frontier, verify_certificate, _neighbors)
 from foldbounds.lookahead import verify_lookahead
-from foldbounds.adaptive import adaptive_refine
+from foldbounds.adaptive import adaptive_refine, verify_refinement_run
 
 
 @pytest.mark.parametrize('policy', ['breadth','mass','probability'])
@@ -100,4 +101,25 @@ def test_adaptive_and_baseline_compatible():
     cert=build_frontier('HHPHHHHH',Fraction(2),1,2)
     run=adaptive_refine(cert,steps=16,policy='mass',lookahead=1)
     final=verify_lookahead(run.certificate,lookahead=1,use_matching=True)
-    assert final==run.bounds
+    assert run.bounds.partition_lower>=final.partition_lower
+    assert run.bounds.partition_upper<=final.partition_upper
+    assert run.bounds.probability_lower>=final.probability_lower
+    assert run.bounds.probability_upper<=final.probability_upper
+    assert verify_refinement_run(run)==run.bounds
+
+
+
+def test_replay_rejects_tampered_stored_bounds():
+    cert=build_frontier('HHPHHHHH',Fraction(2),1,2)
+    run=adaptive_refine(cert,steps=10,policy='probability')
+    assert verify_refinement_run(run)==run.bounds
+    forged=replace(run,bounds=replace(run.bounds,partition_upper=run.bounds.partition_upper+1))
+    with pytest.raises(ValueError):
+        verify_refinement_run(forged)
+
+
+def test_initial_generator_covers_dead_ends_before_requested_depth():
+    cert=build_frontier('H'*12,Fraction(2),1,11)
+    assert any(n.kind=='dead' for n in cert.frontier)
+    verify_certificate(cert)
+    verify_lookahead(cert,use_matching=True)

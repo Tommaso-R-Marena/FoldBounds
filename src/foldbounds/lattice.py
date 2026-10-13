@@ -145,6 +145,8 @@ def build_frontier(sequence: str, q: Fraction, event_at_least: int,
             nodes.append(Node(path, "bound"))
         else:
             children = _neighbors(path)
+            if not children:
+                nodes.append(Node(path, 'dead'))
             for child in children:
                 visit(child)
 

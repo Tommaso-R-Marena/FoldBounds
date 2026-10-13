@@ -20,9 +20,15 @@ refinement than breadth-first expansion. None of these methods is
 proven optimal or asymptotically superior to published search methods.
 
 For each refinement, the program independently checks the complete
-frontier again, checks interval nesting, and records partition/probability
-bounds. A valid refinement cannot invalidate either enclosure. There is
-no assumption that the choices made by the untrusted policy are correct.
+frontier again. **A newly refined frontier can give a looser upper bound
+than its parent frontier** because it may discard useful parent-level
+constraints. We therefore retain every earlier checked frontier and
+intersect their *individually sound* event, complement, partition and
+probability mass bounds. This intersection produces a nested, sound
+history even when a single frontier-only estimate temporarily widens.
+The audit trail is replayable using verify_refinement_run; stored bounds
+are not trusted. A valid refinement never invalidates any enclosure.
+No assumption about the quality of the search policy is required.
 
 ## Zero-completion certificates
 
@@ -31,7 +37,9 @@ adjacent lattice sites before all residues have been placed. It then has
 *zero valid completions*. Refinement must not simply drop this prefix:
 doing so would fail the independently checked coverage condition.
 
-A terminal frontier node of kind dead asserts that no legal immediate
+The initial frontier generator also records trapped branches encountered
+*before* the requested frontier depth; omitting them would invalidate
+coverage. A terminal frontier node of kind dead asserts that no legal immediate
 successor exists. Both reference verifiers independently recompute this
 condition, rejecting fake claims. Such a prefix contributes precisely
 zero partition mass and can remain covered by the frontier.

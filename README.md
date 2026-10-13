@@ -37,8 +37,9 @@ See [proof sketch and limitations](docs/BOUND_HIERARCHY.md) and the
 internally tested research method, not a formal Lean proof or claimed novelty.
 
 The [adaptive search algorithm](docs/ADAPTIVE_CERTIFICATES.md) optionally
-refines the most informative branches while independently rechecking the
-resulting interval bounds. It also provides checked zero-completion terminal
+refines promising branches while independently rechecking the
+resulting interval bounds. Its auditable history retains previous checked
+frontiers to ensure reported intervals never widen. It also provides checked zero-completion terminal
 certificates for trapped conformations. These are software experiments, not
 claimed discoveries.
 

@@ -39,7 +39,45 @@ class RefinementRun:
     bounds: VerifiedBounds
     history: tuple[RefinementSnapshot, ...]
     policy: Policy
+    audit_frontiers: tuple[Certificate, ...]
+    lookahead: int
+    use_matching: bool
 
+
+
+def _intersect(a: VerifiedBounds, b: VerifiedBounds) -> VerifiedBounds:
+    """Intersect independently verified sound rational mass enclosures."""
+    elo,ehi=max(a.event_lower,b.event_lower),min(a.event_upper,b.event_upper)
+    nlo,nhi=max(a.complement_lower,b.complement_lower),min(a.complement_upper,b.complement_upper)
+    zlo=max(a.partition_lower,b.partition_lower,elo+nlo)
+    zhi=min(a.partition_upper,b.partition_upper,ehi+nhi)
+    p_lo=Fraction(1) if nhi==0 else (elo/(elo+nhi) if elo else Fraction(0))
+    p_hi=Fraction(0) if ehi==0 else (ehi/(ehi+nlo) if nlo else Fraction(1))
+    p_lo=max(a.probability_lower,b.probability_lower,p_lo)
+    p_hi=min(a.probability_upper,b.probability_upper,p_hi)
+    if not (0<=elo<=ehi and 0<=nlo<=nhi and 0<=zlo<=zhi
+            and 0<=p_lo<=p_hi<=1):
+        raise AssertionError('intersection of sound certificates is inconsistent')
+    return VerifiedBounds(zlo,zhi,elo,ehi,nlo,nhi,p_lo,p_hi,
+                          b.exact_paths,b.bounded_subtrees)
+
+
+def verify_refinement_run(run: RefinementRun) -> VerifiedBounds:
+    """Replay all frontier checks; recompute the cumulative enclosure.
+
+    The audit trail, not merely the latest frontier, supports the strongest
+    combined bounds. No values recorded in snapshots or run.bounds are trusted.
+    """
+    if not run.audit_frontiers or run.certificate!=run.audit_frontiers[-1]:
+        raise ValueError('invalid refinement audit trail')
+    result=None
+    for certificate in run.audit_frontiers:
+        raw=verify_lookahead(certificate,lookahead=run.lookahead,
+                            use_matching=run.use_matching)
+        result=raw if result is None else _intersect(result,raw)
+    if run.bounds!=result:
+        raise ValueError('refinement result does not match checked audit trail')
+    return result
 
 def adaptive_refine(cert: Certificate, *, steps: int, lookahead: int = 0,
                     use_matching: bool = True,
@@ -65,6 +103,7 @@ def adaptive_refine(cert: Certificate, *, steps: int, lookahead: int = 0,
                                   current.probability_upper)
 
     history=[snapshot(0,None)]
+    frontiers=[cert]
     pairs=_possible_hh_pairs(cert.sequence)
     for step in range(1,steps+1):
         available=[node.path for node in cert.frontier if node.kind=='bound']
@@ -87,15 +126,15 @@ def adaptive_refine(cert: Certificate, *, steps: int, lookahead: int = 0,
             for path in available:
                 proposed=refine_frontier(cert,path)
                 bound=verify_lookahead(proposed,lookahead=lookahead,use_matching=use_matching)
-                key=(bound.probability_upper-bound.probability_lower,
-                     bound.partition_upper-bound.partition_lower,len(path),path)
+                combined=_intersect(current,bound)
+                key=(combined.probability_upper-combined.probability_lower,
+                     combined.partition_upper-combined.partition_lower,len(path),path)
                 options.append((key,path,proposed,bound))
             _,chosen,next_cert,next_bounds=min(options,key=lambda item:item[0])
-        if not (current.partition_lower<=next_bounds.partition_lower and
-                next_bounds.partition_upper<=current.partition_upper and
-                current.probability_lower<=next_bounds.probability_lower and
-                next_bounds.probability_upper<=current.probability_upper):
-            raise AssertionError('refinement violated the verified nesting invariant')
-        cert,current=next_cert,next_bounds
+        # A deeper subtree bound may be wider than its old parent bound.
+        # Retain both independently verified certificates via intersection.
+        cert,current=next_cert,_intersect(current,next_bounds)
+        frontiers.append(cert)
         history.append(snapshot(step,chosen))
-    return RefinementRun(cert,current,tuple(history),policy)
+    return RefinementRun(cert,current,tuple(history),policy,tuple(frontiers),
+                         lookahead,use_matching)
