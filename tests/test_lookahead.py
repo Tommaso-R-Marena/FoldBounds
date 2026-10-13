@@ -5,7 +5,7 @@ from itertools import product
 import pytest
 from foldbounds.lattice import (CertificateError,Node,ROOT,build_frontier,
                                 exact_spectrum,verify_certificate,refine_frontier)
-from foldbounds.lookahead import verify_lookahead,score_cap
+from foldbounds.lookahead import verify_lookahead,score_cap,walk_count_upper
 from foldbounds.lattice import _possible_hh_pairs,_neighbors
 
 
@@ -94,3 +94,27 @@ def test_nonzero_witnesses_and_stronger_upper():
     assert new.partition_upper < old.partition_upper
     assert new.partition_lower <= z <= new.partition_upper
     assert new.probability_lower <= p <= new.probability_upper
+
+
+@pytest.mark.parametrize('remaining',range(1,13))
+def test_universal_walk_upper_is_below_simple_branch_count(remaining):
+    value=walk_count_upper(remaining)
+    assert value <= 3 ** remaining
+    if remaining >= 4:
+        assert value < 3 ** remaining
+
+
+def test_universal_walk_bounds_real_prefix_subtrees():
+    # An independent DFS counts true completions for many trapped prefixes.
+    for n in range(2,10):
+        layers={ROOT:1}
+        prefix_counts={}
+        def enumerate_paths(path):
+            if len(path)==n:
+                return 1
+            count=sum(enumerate_paths(child) for child in _neighbors(path))
+            prefix_counts[path]=count
+            return count
+        enumerate_paths(ROOT)
+        for path,count in prefix_counts.items():
+            assert count <= walk_count_upper(n-len(path))

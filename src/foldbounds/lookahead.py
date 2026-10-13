@@ -6,11 +6,12 @@ code and its implementation are NOT yet formally verified by Lean.
 from __future__ import annotations
 from dataclasses import dataclass
 from fractions import Fraction
+from functools import lru_cache
 
 from .lattice import (
     Certificate, CertificateError, DIRECTIONS, Node, Path, ROOT,
     VerifiedBounds, _check_q, _check_sequence, _contacts, _neighbors,
-    _possible_hh_pairs, _validate_path,
+    _possible_hh_pairs, _validate_path, exact_spectrum,
 )
 
 
@@ -62,6 +63,25 @@ def score_cap(sequence: str, path: Path, pairs: tuple[tuple[int, int], ...]) -> 
     return current, current + min(candidates, capacity // 2)
 
 
+
+@lru_cache(maxsize=64)
+def walk_count_upper(remaining: int) -> int:
+    """Bound count of valid completions by universal square-lattice SAWs.
+
+    Prefix obstacles only remove extensions. The first step has at most
+    three orientations (the previous chain site is occupied). For any one
+    orientation, the first k steps form one of exactly c_k anchored SAWs.
+    Any remaining steps have at most three choices. Compute c_k directly,
+    cap k at 8 to keep this cheap; cache the exact integer result.
+    """
+    if type(remaining) is not int or remaining < 0:
+        raise ValueError('remaining must be a nonnegative integer')
+    if remaining == 0:
+        return 1
+    k = min(remaining, 8)
+    anchored = sum(exact_spectrum('P'*(k+1)).values())
+    return 3 * anchored * 3 ** (remaining-k)
+
 def ray_witnesses(path: Path, length: int, pairs: tuple[tuple[int, int], ...],
                   q: Fraction, threshold: int) -> tuple[Fraction, Fraction]:
     """One explicitly constructed full-length conformation per event class."""
@@ -88,7 +108,7 @@ def subtree(sequence: str, path: Path, pairs: tuple[tuple[int,int], ...],
         w = q ** score
         return Mass(w,w,0,0,w) if score >= threshold else Mass(0,0,w,w,w)
     score_lo, score_hi = score_cap(sequence, path, pairs)
-    cap = 3 ** (n-len(path)) * q ** score_hi
+    cap = walk_count_upper(n-len(path)) * q ** score_hi
     e_up = cap if score_hi >= threshold else Fraction(0)
     n_up = cap if score_lo < threshold else Fraction(0)
     e_wit,n_wit = ray_witnesses(path,n,pairs,q,threshold)

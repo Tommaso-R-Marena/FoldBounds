@@ -33,11 +33,22 @@ at most the minimum of:
 
 Call this minimum K. Every completion has contact score <= k0+K.
 
-A square-lattice self-avoiding walk has at most three possible next
-steps, so a prefix has no more than 3^(n-m) possible completions.
+A square-lattice self-avoiding walk has at most three possible next steps,
+so 3^(n-m) is a simple universal continuation-count bound. A stronger
+model-relative upper bound exploits exact universal self-avoiding-walk counts.
+Let c_s denote the number of valid anchored walks of s edges with first
+edge fixed. A continuation's first edge has at most three directions; the
+next s steps must be among the c_s possibilities for each chosen first
+direction. For r=n-m future steps and s=min(r,8), we therefore have
+
+    number_of_completions <= 3*c_s*3^(r-s).
+
+The checker independently recomputes and caches c_s by enumerating these
+small universal walks, not by trusting a supplied count table. This bound is
+a known type of combinatorial relaxation, not a novel complexity result.
 With rational Boltzmann factor q>=1 and weight q^k:
 
-    0 <= Z(prefix) <= 3^(n-m) * q^(k0+K).
+    0 <= Z(prefix) <= 3*c_s*3^(r-s)*q^(k0+K).
 
 The same upper mass holds for each event class, except that a class whose
 score interval excludes the requested contact threshold has mass zero.
