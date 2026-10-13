@@ -97,7 +97,7 @@ def exact_spectrum(sequence: str) -> dict[int, int]:
 @dataclass(frozen=True)
 class Node:
     path: Path
-    kind: Literal["exact", "bound"]
+    kind: Literal["exact", "bound", "dead"]
 
 
 @dataclass(frozen=True)
@@ -145,6 +145,8 @@ def build_frontier(sequence: str, q: Fraction, event_at_least: int,
             nodes.append(Node(path, "bound"))
         else:
             children = _neighbors(path)
+            if not children:
+                nodes.append(Node(path, 'dead'))
             for child in children:
                 visit(child)
 
@@ -166,6 +168,8 @@ def refine_frontier(cert: Certificate, path: Path) -> Certificate:
         raise CertificateError("cannot refine completed path")
     successors = tuple(Node(child, "exact" if len(child) == len(cert.sequence) else "bound")
                        for child in _neighbors(path))
+    if not successors:
+        successors = (Node(path, "dead"),)
     return Certificate(cert.sequence, cert.q, cert.event_at_least,
                        cert.frontier[:i] + successors + cert.frontier[i+1:])
 
@@ -187,11 +191,13 @@ def verify_certificate(cert: Certificate) -> VerifiedBounds:
     pairs = _possible_hh_pairs(cert.sequence)
     nodes: dict[Path, str] = {}
     for node in cert.frontier:
-        if node.kind not in ("exact", "bound"):
+        if node.kind not in ("exact", "bound", "dead"):
             raise CertificateError("unknown node kind")
         _validate_path(node.path, length)
         if node.kind == "exact" and len(node.path) != length:
             raise CertificateError("exact node must be terminal")
+        if node.kind == "dead" and (len(node.path) == length or _neighbors(node.path)):
+            raise CertificateError("dead node must have no valid continuation")
         if node.path in nodes:
             raise CertificateError("duplicate frontier path")
         nodes[node.path] = node.kind
@@ -212,6 +218,8 @@ def verify_certificate(cert: Certificate) -> VerifiedBounds:
         if path in nodes:
             encountered.add(path)
             kind = nodes[path]
+            if kind == "dead":
+                return  # Independently checked leaf with zero completions.
             if kind == "exact" or len(path) == length:
                 contacts = _contacts(path, pairs)
                 weight = q ** contacts

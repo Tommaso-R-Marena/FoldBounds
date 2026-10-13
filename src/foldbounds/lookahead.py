@@ -147,11 +147,13 @@ def verify_lookahead(cert: Certificate, *, lookahead: int = 0,
     nodes: dict[Path,str] = {}
     prefixes: set[Path] = set()
     for node in cert.frontier:
-        if not isinstance(node,Node) or node.kind not in ('bound','exact'):
+        if not isinstance(node,Node) or node.kind not in ('bound','exact','dead'):
             raise CertificateError('invalid node')
         _validate_path(node.path,n)
         if node.kind == 'exact' and len(node.path) != n:
             raise CertificateError('exact node must be terminal')
+        if node.kind == 'dead' and (len(node.path) == n or _neighbors(node.path)):
+            raise CertificateError('dead node has a valid continuation')
         if node.path in nodes:
             raise CertificateError('duplicate node')
         nodes[node.path] = node.kind
@@ -167,6 +169,8 @@ def verify_lookahead(cert: Certificate, *, lookahead: int = 0,
         nonlocal exact_count,bound_count
         if path in nodes:
             seen.add(path)
+            if nodes[path] == 'dead':
+                return  # Zero completions: checked by the validator above.
             masses.append(subtree(cert.sequence,path,pairs,q,cert.event_at_least,lookahead,use_matching))
             if len(path) == n:
                 exact_count += 1
