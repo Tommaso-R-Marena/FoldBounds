@@ -26,11 +26,13 @@ Requires Python 3.11+:
     python -m foldbounds HHHH --q 2 --depth 4 --event-at-least 1 --exact-spectrum
     python -m foldbounds HHHHHHHH --q 2 --depth 2 --event-at-least 1 --enhanced-lookahead 4
     python experiments/compare_bounds.py
+    python -m foldbounds HHHHHHHH --q 2 --depth 2 --enhanced-lookahead 2 --matching
     python -m foldbounds HHHHHHHH --q 3/2 --depth 4 --event-at-least 1
 
 The optional enhanced lookahead checker uses geometric upper bounds, explicit
 full-length conformation witnesses, and nested one-step subtree refinements.
-See [proof sketch and limitations](docs/BOUND_HIERARCHY.md). This is an
+See [proof sketch and limitations](docs/BOUND_HIERARCHY.md) and the
+[maximum-flow matching relaxation](docs/MATCHING_BOUND.md). This is an
 internally tested research method, not a formal Lean proof or claimed novelty.
 
 The parameter q is an exact rational Boltzmann factor exp(beta * epsilon) >= 1

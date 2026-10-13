@@ -16,6 +16,8 @@ def main():
         print(f'\nSequence: {seq}; q={q}; k>={threshold}; exact Z={z}; exact P={p}')
         for name, verifier in [('baseline', lambda:verify_certificate(cert))] + [
             (f'lookahead-{k}', lambda k=k:verify_lookahead(cert,lookahead=k)) for k in (0,2,4)
+        ] + [
+            (f'matching-{k}', lambda k=k:verify_lookahead(cert,lookahead=k,use_matching=True)) for k in (0,2,4)
         ]:
             start = perf_counter()
             b = verifier()

@@ -15,15 +15,21 @@ def main() -> None:
     parser.add_argument("--depth", type=int, default=2, help="certificate frontier depth")
     parser.add_argument("--enhanced-lookahead", type=int, default=None,
                         help="use witness/geometry bounds with N-step lookahead (N>=0)")
+    parser.add_argument("--matching", action="store_true",
+                        help="enable max-flow H-H contact cap (requires --enhanced-lookahead)")
     parser.add_argument("--exact-spectrum", action="store_true", help="exponentially expensive enumeration")
     args = parser.parse_args()
+    if args.matching and args.enhanced_lookahead is None:
+        parser.error('--matching requires --enhanced-lookahead')
     cert = build_frontier(args.sequence, args.q, args.event_at_least, args.depth)
     bounds = (verify_certificate(cert) if args.enhanced_lookahead is None
-              else verify_lookahead(cert, lookahead=args.enhanced_lookahead))
+              else verify_lookahead(cert, lookahead=args.enhanced_lookahead,
+                                    use_matching=args.matching))
     out = {
         "model": "2D square-lattice HP self-avoiding walk, anchored first edge",
         "method": "baseline" if args.enhanced_lookahead is None else "geometric-witness-lookahead",
         "enhanced_lookahead": args.enhanced_lookahead,
+        "matching": args.matching,
         "sequence": args.sequence,
         "q": str(args.q),
         "event_at_least": args.event_at_least,
