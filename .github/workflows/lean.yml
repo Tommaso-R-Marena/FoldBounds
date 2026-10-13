@@ -1,0 +1,40 @@
+name: Lean formal verification
+on:
+  push:
+    branches: [main]
+    paths:
+      - "FoldBounds/**"
+      - "FoldBounds.lean"
+      - "lean-toolchain"
+      - "lakefile.toml"
+      - "lake-manifest.json"
+  pull_request:
+    paths:
+      - "FoldBounds/**"
+      - "FoldBounds.lean"
+      - "lean-toolchain"
+      - "lakefile.toml"
+      - "lake-manifest.json"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  lean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject unproved placeholders
+        run: python scripts/scan_lean_trust.py
+      - name: Build and check Lean 4 + Mathlib package
+        uses: leanprover/lean-action@v1
+        with:
+          auto-config: false
+          build: true
+          use-mathlib-cache: true
+          test: false
+          lint: false
+      - name: Print formal axiom dependencies
+        run: lake env lean FoldBounds/AxiomAudit.lean | tee axiom-audit.log
+      - name: Check axiom report
+        run: python scripts/check_axiom_report.py axiom-audit.log
