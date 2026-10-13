@@ -28,6 +28,8 @@ Requires Python 3.11+:
     python experiments/compare_bounds.py
     python experiments/compare_isoperimetric.py
     python experiments/compare_adaptive.py > adaptive_comparison.csv
+    python experiments/compare_transfer.py > transfer_comparison.csv
+    python -m foldbounds HHHHHHHH --q 2 --enhanced-lookahead 0 --matching --transfer
     python -m foldbounds HHHHHHHH --q 2 --adaptive-steps 12 --adaptive-policy probability --matching
     python -m foldbounds HHHHHHHH --q 2 --depth 2 --enhanced-lookahead 2 --matching
     python -m foldbounds HHHHHHHH --q 3/2 --depth 4 --event-at-least 1
@@ -49,6 +51,11 @@ resulting interval bounds. Its auditable history retains previous checked
 frontiers to ensure reported intervals never widen. It also provides checked zero-completion terminal
 certificates for trapped conformations. These are software experiments, not
 claimed discoveries.
+
+An optional [weighted prefix-obstacle transfer relaxation](docs/TRANSFER_RELAXATION.md)
+upper-bounds the Boltzmann mass with an exact-integer dynamic program
+that includes every legal completion within a relaxed larger set.
+It remains a tested 2D lattice model, not a Lean-certified predictor.
 
 The parameter q is an exact rational Boltzmann factor exp(beta * epsilon) >= 1
 for the model energy E = -epsilon * (number of nonconsecutive H-H lattice contacts).

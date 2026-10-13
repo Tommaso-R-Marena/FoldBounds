@@ -32,6 +32,11 @@ jobs:
       - name: Compare adaptive search strategies
         if: matrix.python-version == '3.11'
         run: python experiments/compare_adaptive.py
+      - name: Exercise weighted transfer upper bound
+        run: python -m foldbounds HHHHHHHH --q 2 --enhanced-lookahead 0 --matching --transfer
+      - name: Compare transfer and perimeter relaxations
+        if: matrix.python-version == '3.11'
+        run: python experiments/compare_transfer.py
       - name: Exercise adaptive certificates
         run: python -m foldbounds HHHHHHHH --q 2 --adaptive-steps 8 --adaptive-policy mass --matching
       - name: Exercise enhanced certificate checker
