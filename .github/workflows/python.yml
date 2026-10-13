@@ -32,6 +32,11 @@ jobs:
       - name: Compare adaptive search strategies
         if: matrix.python-version == '3.11'
         run: python experiments/compare_adaptive.py
+      - name: Compare checked witness lower bounds
+        if: matrix.python-version == '3.11'
+        run: python experiments/compare_witnesses.py > witness_comparison.csv
+      - name: Exercise witness-bound certificate checker
+        run: python -m foldbounds HHHHHHHH --q 2 --enhanced-lookahead 0 --matching --transfer --witness-nodes 200
       - name: Exercise weighted transfer upper bound
         run: python -m foldbounds HHHHHHHH --q 2 --enhanced-lookahead 0 --matching --transfer
       - name: Compare transfer and perimeter relaxations
