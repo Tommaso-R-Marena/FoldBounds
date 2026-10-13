@@ -26,6 +26,7 @@ Requires Python 3.11+:
     python -m foldbounds HHHH --q 2 --depth 4 --event-at-least 1 --exact-spectrum
     python -m foldbounds HHHHHHHH --q 2 --depth 2 --event-at-least 1 --enhanced-lookahead 4
     python experiments/compare_bounds.py
+    python experiments/compare_adaptive.py > adaptive_comparison.csv
     python -m foldbounds HHHHHHHH --q 2 --adaptive-steps 12 --adaptive-policy probability --matching
     python -m foldbounds HHHHHHHH --q 2 --depth 2 --enhanced-lookahead 2 --matching
     python -m foldbounds HHHHHHHH --q 3/2 --depth 4 --event-at-least 1

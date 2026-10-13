@@ -48,6 +48,7 @@ zero partition mass and can remain covered by the frontier.
 
     python -m pip install -e '.[test]'
     python -m pytest
+    python experiments/compare_adaptive.py > adaptive_comparison.csv
     python -m foldbounds HHHHHHHH --q 2 --adaptive-steps 12 --adaptive-policy probability --matching
 
 The output contains interval history and the exact number of expensive
@@ -64,3 +65,13 @@ Future work: prove a generic theorem that an independently validated
 refinement of a disjoint covering prefix frontier preserves soundness,
 including dead-end prefixes, then relate the Python implementation to
 a Lean-refined checker.
+
+## Benchmark interpretation
+
+The CSV experiment reports exact rational enclosure widths and elapsed
+wall time for equal numbers of frontier expansions, across three fixed HP
+sequences and three search policies. Exact enumeration supplies only the
+post-hoc correctness oracle. Wall time explicitly includes policy scoring
+and full audit replay. Equal expansion budgets are **not** equal CPU budgets;
+report both before drawing performance conclusions. This does not claim
+comparison to published lattice-polymer methods.
