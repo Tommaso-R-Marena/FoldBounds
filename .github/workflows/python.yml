@@ -26,6 +26,9 @@ jobs:
         run: python -m foldbounds HHHH --q 2 --depth 4 --event-at-least 1 --exact-spectrum
       - name: Exercise matching certificate checker
         run: python -m foldbounds HHHHHHHH --q 2 --depth 2 --enhanced-lookahead 2 --matching
+      - name: Compare perimeter contact bounds
+        if: matrix.python-version == '3.11'
+        run: python experiments/compare_isoperimetric.py
       - name: Compare adaptive search strategies
         if: matrix.python-version == '3.11'
         run: python experiments/compare_adaptive.py
