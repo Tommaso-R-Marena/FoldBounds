@@ -60,3 +60,35 @@ executable. Aristotle must eventually prove the abstract subset-sum
 lower-bound theorem and an actual checker refinement theorem, with
 walk validation, duplicate rejection and arithmetic in the theorem's
 scope, before reporting an end-to-end Lean guarantee.
+
+
+## Scaling diagnostic without a full oracle
+
+The GitHub Actions run also evaluated experiments/scaling_witnesses.py,
+using the same q=2 and event >=1-contact definition, a depth-2 frontier,
+lookahead 0, matching/perimeter/transfer upper bounds, and per-prefix
+witness budgets of 0, 64 and 256. Larger sizes were deliberately
+evaluated **without** full enumeration or claimed independent exact
+verification; the small-model oracle tests remain the only empirical
+soundness checks.
+
+| All-H sequence length | Witness nodes | Verified Z interval | Partition upper/lower ratio |
+| ---: | ---: | --- | ---: |
+| 10 | 256 | [367,70992] | ~193 |
+| 12 | 256 | [359,2555712] | ~7119 |
+| 14 | 256 | [351,46002816] | ~131,062 |
+| 16 | 256 | [351,1656101376] | ~4,718,238 |
+| 18 | 256 | [343,29809824768] | ~86,909,110 |
+
+The probability interval widths remain near 1 for the longer
+all-H sequences: these are almost vacuous enclosures. The CPU times
+in the CSV and job logs are single-run, cache-sensitive measurements
+and should not be interpreted as scaling laws.
+
+**Falsification-oriented conclusion:** brute-force budgeted witnesses
+are a useful small-system correctness mechanism but are NOT a
+competitive large-system thermodynamic solver. A research-significant
+next step must improve mass bounds without enumerating comparable
+numbers of conformations, establish end-to-end Lean assurance, and
+compare rigorously with published state-of-the-art methods under
+matched model and work budgets.
