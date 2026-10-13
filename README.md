@@ -30,6 +30,7 @@ Requires Python 3.11+:
     python experiments/compare_adaptive.py > adaptive_comparison.csv
     python experiments/compare_transfer.py > transfer_comparison.csv
     python experiments/compare_witnesses.py > witness_comparison.csv
+    python experiments/scaling_witnesses.py > scaling_witnesses.csv
     python -m foldbounds HHHHHHHH --q 2 --enhanced-lookahead 0 --matching --transfer
     python -m foldbounds HHHHHHHH --q 2 --adaptive-steps 12 --adaptive-policy probability --matching
     python -m foldbounds HHHHHHHH --q 2 --depth 2 --enhanced-lookahead 2 --matching
@@ -64,6 +65,8 @@ independent verifier rejects malformed/duplicate paths and derives
 rigorous event/complement *lower* masses by exact rational summation.
 Use `--witness-nodes 256` with `--enhanced-lookahead 0` to enable it.
 This is computational model-relative assurance, not a Lean theorem.
+See [the controlled witness experiment log](docs/WITNESS_EXPERIMENT_LOG.md)
+for small-system successes, failures, and explicit limits.
 
 The parameter q is an exact rational Boltzmann factor exp(beta * epsilon) >= 1
 for the model energy E = -epsilon * (number of nonconsecutive H-H lattice contacts).

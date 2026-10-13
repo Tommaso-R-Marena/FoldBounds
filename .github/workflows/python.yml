@@ -35,6 +35,9 @@ jobs:
       - name: Compare checked witness lower bounds
         if: matrix.python-version == '3.11'
         run: python experiments/compare_witnesses.py | tee witness_comparison.csv
+      - name: Probe larger conformational spaces without an exact oracle
+        if: matrix.python-version == '3.11'
+        run: python experiments/scaling_witnesses.py
       - name: Exercise witness-bound certificate checker
         run: python -m foldbounds HHHHHHHH --q 2 --enhanced-lookahead 0 --matching --transfer --witness-nodes 200
       - name: Exercise weighted transfer upper bound
