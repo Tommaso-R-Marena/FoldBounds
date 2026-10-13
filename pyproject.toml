@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=70"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "foldbounds"
+version = "0.1.0"
+description = "Reference algorithms and checked rational certificates for lattice-protein thermodynamics"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+
+[project.optional-dependencies]
+test = ["pytest>=8,<10"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
