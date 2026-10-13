@@ -5,6 +5,7 @@ from fractions import Fraction
 
 from .lattice import build_frontier, exact_spectrum, verify_certificate
 from .lookahead import verify_lookahead
+from .adaptive import adaptive_refine
 
 
 def main() -> None:
@@ -17,14 +18,23 @@ def main() -> None:
                         help="use witness/geometry bounds with N-step lookahead (N>=0)")
     parser.add_argument("--matching", action="store_true",
                         help="enable max-flow H-H contact cap (requires --enhanced-lookahead)")
+    parser.add_argument("--adaptive-steps", type=int, default=None,
+                        help="number of independently checked frontier expansions")
+    parser.add_argument("--adaptive-policy", choices=("breadth","mass","probability"),
+                        default="probability", help="frontier selection strategy")
     parser.add_argument("--exact-spectrum", action="store_true", help="exponentially expensive enumeration")
     args = parser.parse_args()
-    if args.matching and args.enhanced_lookahead is None:
+    if args.matching and args.enhanced_lookahead is None and args.adaptive_steps is None:
         parser.error('--matching requires --enhanced-lookahead')
     cert = build_frontier(args.sequence, args.q, args.event_at_least, args.depth)
-    bounds = (verify_certificate(cert) if args.enhanced_lookahead is None
-              else verify_lookahead(cert, lookahead=args.enhanced_lookahead,
-                                    use_matching=args.matching))
+    run = (adaptive_refine(cert, steps=args.adaptive_steps,
+                           lookahead=args.enhanced_lookahead or 0,
+                           use_matching=args.matching, policy=args.adaptive_policy)
+           if args.adaptive_steps is not None else None)
+    bounds = (run.bounds if run is not None else
+              verify_certificate(cert) if args.enhanced_lookahead is None else
+              verify_lookahead(cert,lookahead=args.enhanced_lookahead,
+                               use_matching=args.matching))
     out = {
         "model": "2D square-lattice HP self-avoiding walk, anchored first edge",
         "method": "baseline" if args.enhanced_lookahead is None else "geometric-witness-lookahead",
@@ -40,6 +50,18 @@ def main() -> None:
         "bounded_subtrees": bounds.bounded_subtrees,
         "exact": bounds.exact,
     }
+    if run is not None:
+        out["adaptive"] = {
+            "steps_executed": len(run.history)-1,
+            "policy": run.policy,
+            "history": [{
+                "step": h.step,
+                "chosen": h.chosen,
+                "bounded_nodes": h.bounded_nodes,
+                "partition_interval": [str(h.partition_lower),str(h.partition_upper)],
+                "probability_interval": [str(h.probability_lower),str(h.probability_upper)]
+            } for h in run.history]
+        }
     if args.exact_spectrum:
         out["contact_spectrum"] = exact_spectrum(args.sequence)
     print(json.dumps(out, indent=2))

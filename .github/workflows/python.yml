@@ -26,5 +26,7 @@ jobs:
         run: python -m foldbounds HHHH --q 2 --depth 4 --event-at-least 1 --exact-spectrum
       - name: Exercise matching certificate checker
         run: python -m foldbounds HHHHHHHH --q 2 --depth 2 --enhanced-lookahead 2 --matching
+      - name: Exercise adaptive certificates
+        run: python -m foldbounds HHHHHHHH --q 2 --adaptive-steps 8 --adaptive-policy mass --matching
       - name: Exercise enhanced certificate checker
         run: python -m foldbounds HHHHHHHH --q 2 --depth 2 --enhanced-lookahead 4
