@@ -102,13 +102,14 @@ def ray_witnesses(path: Path, length: int, pairs: tuple[tuple[int, int], ...],
 
 
 def subtree(sequence: str, path: Path, pairs: tuple[tuple[int,int], ...],
-            q: Fraction, threshold: int, horizon: int, use_matching: bool = False) -> Mass:
+            q: Fraction, threshold: int, horizon: int, use_matching: bool = False,
+            use_perimeter: bool = True) -> Mass:
     n = len(sequence)
     if len(path) == n:
         score = _contacts(path, pairs)
         w = q ** score
         return Mass(w,w,0,0,w) if score >= threshold else Mass(0,0,w,w,w)
-    score_lo, score_hi = (matching_score_cap(sequence, path, pairs) if use_matching
+    score_lo, score_hi = (matching_score_cap(sequence, path, pairs, use_perimeter=use_perimeter) if use_matching
                           else score_cap(sequence, path, pairs))
     cap = walk_count_upper(n-len(path)) * q ** score_hi
     e_up = cap if score_hi >= threshold else Fraction(0)
@@ -117,7 +118,7 @@ def subtree(sequence: str, path: Path, pairs: tuple[tuple[int,int], ...],
     base = Mass(e_wit,e_up,n_wit,n_up,cap)
     if horizon == 0:
         return base
-    children = add([subtree(sequence,child,pairs,q,threshold,horizon-1,use_matching)
+    children = add([subtree(sequence,child,pairs,q,threshold,horizon-1,use_matching,use_perimeter)
                     for child in _neighbors(path)])
     # Intersect two sound enclosures, guaranteeing a nested bound hierarchy.
     return Mass(max(base.e_lo,children.e_lo),min(base.e_hi,children.e_hi),
@@ -126,7 +127,8 @@ def subtree(sequence: str, path: Path, pairs: tuple[tuple[int,int], ...],
 
 
 def verify_lookahead(cert: Certificate, *, lookahead: int = 0,
-                     use_matching: bool = False) -> VerifiedBounds:
+                     use_matching: bool = False,
+                     use_perimeter: bool = True) -> VerifiedBounds:
     """Independently check a complete frontier; return rational bounds.
 
     The frontier supplies paths, never trusted mass/energy numbers. Each
@@ -140,6 +142,8 @@ def verify_lookahead(cert: Certificate, *, lookahead: int = 0,
         raise CertificateError('event threshold must be integer')
     if type(use_matching) is not bool:
         raise ValueError('use_matching must be a boolean')
+    if type(use_perimeter) is not bool:
+        raise ValueError('use_perimeter must be a boolean')
     if type(lookahead) is not int or lookahead < 0:
         raise ValueError('lookahead must be nonnegative integer')
     n = len(cert.sequence)
@@ -171,7 +175,7 @@ def verify_lookahead(cert: Certificate, *, lookahead: int = 0,
             seen.add(path)
             if nodes[path] == 'dead':
                 return  # Zero completions: checked by the validator above.
-            masses.append(subtree(cert.sequence,path,pairs,q,cert.event_at_least,lookahead,use_matching))
+            masses.append(subtree(cert.sequence,path,pairs,q,cert.event_at_least,lookahead,use_matching,use_perimeter))
             if len(path) == n:
                 exact_count += 1
             else:

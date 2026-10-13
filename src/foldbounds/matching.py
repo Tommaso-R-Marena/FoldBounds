@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from collections import deque
 from .lattice import DIRECTIONS, Path, _contacts
+from .isoperimetric import prefix_contact_cap
 
 
 def _vacant_neighbor_distance(path: Path, index: int, limit: int) -> int:
@@ -93,7 +94,8 @@ def _maximum_bipartite_bmatching(capacity: dict[int,int],
 
 
 def matching_score_cap(sequence: str, path: Path,
-                       pairs: tuple[tuple[int,int], ...]) -> tuple[int,int]:
+                       pairs: tuple[tuple[int,int], ...], *,
+                       use_perimeter: bool = True) -> tuple[int,int]:
     """Bounds [realized contacts, max contacts] for all prefix completions.
 
     Every future H-H contact is an edge joining opposite index parities,
@@ -101,6 +103,8 @@ def matching_score_cap(sequence: str, path: Path,
     obstacle reachability if one residue is placed. Hence actual future
     contacts form a feasible b-matching in the relaxed graph.
     """
+    if type(use_perimeter) is not bool:
+        raise ValueError('use_perimeter must be a bool')
     n,m=len(sequence),len(path)
     known=_contacts(path,pairs)
     occupied=set(path)
@@ -119,4 +123,7 @@ def matching_score_cap(sequence: str, path: Path,
     reach={i:_vacant_neighbor_distance(path,i,n-m) for i in caps if i<m}
     candidates=tuple((i,j) for i,j in pairs if j>=m and
                      (i>=m or reach[i]<=j-m+1))
-    return known, known+_maximum_bipartite_bmatching(caps,candidates)
+    cap = known+_maximum_bipartite_bmatching(caps,candidates)
+    if use_perimeter:
+        cap = min(cap,prefix_contact_cap(path,n))
+    return known, cap

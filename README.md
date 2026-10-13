@@ -26,6 +26,7 @@ Requires Python 3.11+:
     python -m foldbounds HHHH --q 2 --depth 4 --event-at-least 1 --exact-spectrum
     python -m foldbounds HHHHHHHH --q 2 --depth 2 --event-at-least 1 --enhanced-lookahead 4
     python experiments/compare_bounds.py
+    python experiments/compare_isoperimetric.py
     python experiments/compare_adaptive.py > adaptive_comparison.csv
     python -m foldbounds HHHHHHHH --q 2 --adaptive-steps 12 --adaptive-policy probability --matching
     python -m foldbounds HHHHHHHH --q 2 --depth 2 --enhanced-lookahead 2 --matching
@@ -36,6 +37,11 @@ full-length conformation witnesses, and nested one-step subtree refinements.
 See [proof sketch and limitations](docs/BOUND_HIERARCHY.md) and the
 [maximum-flow matching relaxation](docs/MATCHING_BOUND.md). This is an
 internally tested research method, not a formal Lean proof or claimed novelty.
+
+An optional [isoperimetric upper bound](docs/ISOPERIMETRIC_BOUND.md)
+limits all possible H-H contacts using the perimeter and bounding box
+of the current partial conformation. Its mathematical assumptions are
+explicitly restricted to the finite 2D square-lattice model.
 
 The [adaptive search algorithm](docs/ADAPTIVE_CERTIFICATES.md) optionally
 refines promising branches while independently rechecking the
