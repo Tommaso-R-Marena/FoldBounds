@@ -42,6 +42,7 @@ class RefinementRun:
     audit_frontiers: tuple[Certificate, ...]
     lookahead: int
     use_matching: bool
+    use_transfer: bool
 
 
 
@@ -84,7 +85,8 @@ def verify_refinement_run(run: RefinementRun) -> VerifiedBounds:
                 refine_frontier(run.audit_frontiers[i-1],chosen)!=certificate):
                 raise ValueError('audit trail includes a non-refinement transition')
         raw=verify_lookahead(certificate,lookahead=run.lookahead,
-                            use_matching=run.use_matching)
+                            use_matching=run.use_matching,
+                            use_transfer=run.use_transfer)
         result=raw if result is None else _intersect(result,raw)
         h=run.history[i]
         if (h.partition_lower!=result.partition_lower or
@@ -99,7 +101,7 @@ def verify_refinement_run(run: RefinementRun) -> VerifiedBounds:
     return result
 
 def adaptive_refine(cert: Certificate, *, steps: int, lookahead: int = 0,
-                    use_matching: bool = True,
+                    use_matching: bool = True, use_transfer: bool = False,
                     policy: Policy = 'probability') -> RefinementRun:
     """Refine at most steps nodes of a sound complete prefix frontier.
 
@@ -113,7 +115,7 @@ def adaptive_refine(cert: Certificate, *, steps: int, lookahead: int = 0,
         raise ValueError('steps must be a nonnegative integer')
     if policy not in ('breadth','mass','probability'):
         raise ValueError('invalid policy')
-    current=verify_lookahead(cert,lookahead=lookahead,use_matching=use_matching)
+    current=verify_lookahead(cert,lookahead=lookahead,use_matching=use_matching,use_transfer=use_transfer)
 
     def snapshot(step: int, chosen: Path | None) -> RefinementSnapshot:
         return RefinementSnapshot(step,chosen,current.bounded_subtrees,
@@ -131,20 +133,20 @@ def adaptive_refine(cert: Certificate, *, steps: int, lookahead: int = 0,
         if policy=='breadth':
             chosen=min(available,key=lambda p:(len(p),p))
             next_cert=refine_frontier(cert,chosen)
-            next_bounds=verify_lookahead(next_cert,lookahead=lookahead,use_matching=use_matching)
+            next_bounds=verify_lookahead(next_cert,lookahead=lookahead,use_matching=use_matching,use_transfer=use_transfer)
         elif policy=='mass':
             def uncertainty(path: Path) -> Fraction:
                 m=subtree(cert.sequence,path,pairs,cert.q,cert.event_at_least,
-                          lookahead,use_matching)
+                          lookahead,use_matching,True,use_transfer)
                 return (m.e_hi-m.e_lo)+(m.n_hi-m.n_lo)
             chosen=min(available,key=lambda p:(-uncertainty(p),len(p),p))
             next_cert=refine_frontier(cert,chosen)
-            next_bounds=verify_lookahead(next_cert,lookahead=lookahead,use_matching=use_matching)
+            next_bounds=verify_lookahead(next_cert,lookahead=lookahead,use_matching=use_matching,use_transfer=use_transfer)
         else:
             options=[]
             for path in available:
                 proposed=refine_frontier(cert,path)
-                bound=verify_lookahead(proposed,lookahead=lookahead,use_matching=use_matching)
+                bound=verify_lookahead(proposed,lookahead=lookahead,use_matching=use_matching,use_transfer=use_transfer)
                 combined=_intersect(current,bound)
                 key=(combined.probability_upper-combined.probability_lower,
                      combined.partition_upper-combined.partition_lower,len(path),path)
@@ -156,4 +158,4 @@ def adaptive_refine(cert: Certificate, *, steps: int, lookahead: int = 0,
         frontiers.append(cert)
         history.append(snapshot(step,chosen))
     return RefinementRun(cert,current,tuple(history),policy,tuple(frontiers),
-                         lookahead,use_matching)
+                         lookahead,use_matching,use_transfer)

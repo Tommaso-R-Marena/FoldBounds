@@ -18,6 +18,8 @@ def main() -> None:
                         help="use witness/geometry bounds with N-step lookahead (N>=0)")
     parser.add_argument("--matching", action="store_true",
                         help="enable max-flow H-H contact cap (requires --enhanced-lookahead)")
+    parser.add_argument("--transfer", action="store_true",
+                        help="enable prefix-obstacle transfer upper bounds")
     parser.add_argument("--adaptive-steps", type=int, default=None,
                         help="number of independently checked frontier expansions")
     parser.add_argument("--adaptive-policy", choices=("breadth","mass","probability"),
@@ -26,20 +28,24 @@ def main() -> None:
     args = parser.parse_args()
     if args.matching and args.enhanced_lookahead is None and args.adaptive_steps is None:
         parser.error('--matching requires --enhanced-lookahead')
+    if args.transfer and args.enhanced_lookahead is None and args.adaptive_steps is None:
+        parser.error('--transfer requires --enhanced-lookahead or --adaptive-steps')
     cert = build_frontier(args.sequence, args.q, args.event_at_least, args.depth)
     run = (adaptive_refine(cert, steps=args.adaptive_steps,
                            lookahead=args.enhanced_lookahead or 0,
-                           use_matching=args.matching, policy=args.adaptive_policy)
+                           use_matching=args.matching,use_transfer=args.transfer,
+                           policy=args.adaptive_policy)
            if args.adaptive_steps is not None else None)
     bounds = (run.bounds if run is not None else
               verify_certificate(cert) if args.enhanced_lookahead is None else
               verify_lookahead(cert,lookahead=args.enhanced_lookahead,
-                               use_matching=args.matching))
+                               use_matching=args.matching,use_transfer=args.transfer))
     out = {
         "model": "2D square-lattice HP self-avoiding walk, anchored first edge",
         "method": "baseline" if args.enhanced_lookahead is None else "geometric-witness-lookahead",
         "enhanced_lookahead": args.enhanced_lookahead,
         "matching": args.matching,
+        "transfer": args.transfer,
         "sequence": args.sequence,
         "q": str(args.q),
         "event_at_least": args.event_at_least,

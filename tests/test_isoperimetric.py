@@ -101,7 +101,7 @@ def test_invalid_global_size(bad):
         universal_contact_cap(bad)
 
 
-@pytest.mark.parametrize('bad',[0,1.5,'yes',None])
+@pytest.mark.parametrize('bad',[0,1.5,True])
 def test_invalid_perimeter_selector(bad):
     cert=build_frontier('HHHHHH',Fraction(2),1,2)
     with pytest.raises(ValueError):
