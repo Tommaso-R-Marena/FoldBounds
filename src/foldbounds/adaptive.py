@@ -68,13 +68,32 @@ def verify_refinement_run(run: RefinementRun) -> VerifiedBounds:
     The audit trail, not merely the latest frontier, supports the strongest
     combined bounds. No values recorded in snapshots or run.bounds are trusted.
     """
-    if not run.audit_frontiers or run.certificate!=run.audit_frontiers[-1]:
+    if (not run.audit_frontiers or run.certificate!=run.audit_frontiers[-1]
+            or len(run.history)!=len(run.audit_frontiers)
+            or run.history[0].step!=0 or run.history[0].chosen is not None):
         raise ValueError('invalid refinement audit trail')
+    reference=run.audit_frontiers[0]
+    identity=(reference.sequence,reference.q,reference.event_at_least)
     result=None
-    for certificate in run.audit_frontiers:
+    for i,certificate in enumerate(run.audit_frontiers):
+        if (certificate.sequence,certificate.q,certificate.event_at_least)!=identity:
+            raise ValueError('audit trail mixes distinct thermodynamic problems')
+        if i:
+            chosen=run.history[i].chosen
+            if (chosen is None or run.history[i].step!=i or
+                refine_frontier(run.audit_frontiers[i-1],chosen)!=certificate):
+                raise ValueError('audit trail includes a non-refinement transition')
         raw=verify_lookahead(certificate,lookahead=run.lookahead,
                             use_matching=run.use_matching)
         result=raw if result is None else _intersect(result,raw)
+        h=run.history[i]
+        if (h.partition_lower!=result.partition_lower or
+            h.partition_upper!=result.partition_upper or
+            h.probability_lower!=result.probability_lower or
+            h.probability_upper!=result.probability_upper or
+            h.exact_paths!=result.exact_paths or
+            h.bounded_nodes!=result.bounded_subtrees):
+            raise ValueError('stored snapshot disagrees with replayed certificate')
     if run.bounds!=result:
         raise ValueError('refinement result does not match checked audit trail')
     return result

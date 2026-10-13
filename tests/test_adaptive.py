@@ -123,3 +123,24 @@ def test_initial_generator_covers_dead_ends_before_requested_depth():
     assert any(n.kind=='dead' for n in cert.frontier)
     verify_certificate(cert)
     verify_lookahead(cert,use_matching=True)
+
+
+
+def test_replay_refuses_mixed_thermodynamic_problems():
+    cert=build_frontier('HHPHHHHH',Fraction(2),1,2)
+    run=adaptive_refine(cert,steps=3)
+    altered=replace(run.audit_frontiers[1],q=Fraction(3))
+    forged=replace(run,audit_frontiers=run.audit_frontiers[:1]+(altered,)+run.audit_frontiers[2:])
+    with pytest.raises(ValueError):
+        verify_refinement_run(forged)
+
+
+def test_replay_refuses_false_transition_or_snapshot():
+    cert=build_frontier('HHHHHHHH',Fraction(2),1,2)
+    run=adaptive_refine(cert,steps=5)
+    corrupted=replace(run,history=(run.history[0],replace(run.history[1],chosen=None))+run.history[2:])
+    with pytest.raises(ValueError):
+        verify_refinement_run(corrupted)
+    corrupted=replace(run,history=(replace(run.history[0],partition_upper=0),)+run.history[1:])
+    with pytest.raises(ValueError):
+        verify_refinement_run(corrupted)
