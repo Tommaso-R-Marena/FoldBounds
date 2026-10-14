@@ -21,7 +21,7 @@ if len(sys.argv)>1:
     if len(statements)!=34:
         raise SystemExit(f"Expected 34 axiom audit statements, found {len(statements)}")
     for line in statements:
-        if not line.startswith("FoldBounds.") or "depends on axioms" not in line:
+        if not line.startswith("'FoldBounds.") or "depends on axioms" not in line:
             raise SystemExit("Unexpected theorem/axiom output: "+line)
         tail=line.split("depends on axioms",1)[1]
         names=re.findall(r"\b(?:Classical\.choice|Quot\.sound|propext|[A-Za-z_][A-Za-z0-9_.]*)\b",tail)
