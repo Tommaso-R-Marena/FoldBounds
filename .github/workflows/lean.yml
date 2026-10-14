@@ -1,0 +1,22 @@
+name: Lean 4 formal proof audit
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  lean-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Review forbidden proof holes or custom axioms
+        run: python3 scripts/check_lean_sources.py
+      - name: Build Lean and Mathlib with pinned toolchain
+        uses: leanprover/lean-action@v1
+      - name: Audit headline theorem axioms
+        run: |
+          lake env lean FoldBounds/AxiomAudit.lean | tee /tmp/foldbounds-axioms.log
+          python3 scripts/check_lean_sources.py /tmp/foldbounds-axioms.log
