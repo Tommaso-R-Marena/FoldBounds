@@ -93,3 +93,19 @@ and speculative research claims. Benchmarks should record exact parameters,
 published baselines, computational budgets, and failed experiments.
 
 Licensed under Apache 2.0.
+
+
+## Formal thermodynamics — Lean 4 / Mathlib
+
+The [Aristotle formal library](docs/ARISTOTLE_FORMAL_REPORT.md) studies finite
+Boltzmann partition functions, event probabilities, coupled optimal enclosures,
+convergence criteria, symmetry, and free-energy bounds.
+
+- Pinned Lean 4 / Mathlib 4.28.0, with separate formal CI and a 34-theorem
+  axiom audit. See the original [run summary](docs/ARISTOTLE_RUN_SUMMARY.md).
+- **Trust boundary:** Lean proves abstract real-number theorems with explicit
+  model/energy certificates as hypotheses. It does **not** currently verify
+  the Python lattice algorithms, certificate parser, numerical exponentials,
+  molecular physical model, or practical runtime performance.
+- The imported original Lean sources receive no algorithmic edits; only
+  the obsolete RequestProject Lake template entry is removed.
