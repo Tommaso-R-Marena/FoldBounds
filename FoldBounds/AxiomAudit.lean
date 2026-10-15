@@ -44,3 +44,6 @@ import FoldBounds
 #print axioms FoldBounds.Executable.accepts_coupled_probability_sound
 #print axioms FoldBounds.Executable.check_implies_accepts
 #print axioms FoldBounds.Executable.check_coupled_probability_sound
+#print axioms FoldBounds.LatticeModel.conformation_nodup
+#print axioms FoldBounds.LatticeModel.conformation_length
+#print axioms FoldBounds.LatticeModel.checkHP_coupled_sound
