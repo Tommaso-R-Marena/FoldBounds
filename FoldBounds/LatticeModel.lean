@@ -61,6 +61,34 @@ def adjacent (p r : Site) : Bool :=
           (p.1 = r.1 ∧ p.2 + 1 = r.2) ∨
           (p.1 = r.1 ∧ p.2 - 1 = r.2))
 
+/-- A simple executable test of cardinal-neighbor adjacency along a path. -/
+def adjacentChain : List Site → Bool
+  | [] => true
+  | [_] => true
+  | p :: q :: rest => adjacent p q && adjacentChain (q :: rest)
+
+/-- Every cardinal direction moves exactly one grid edge. -/
+theorem advance_adjacent (p : Site) (d : Fin 4) :
+    adjacent p (advance p d) = true := by
+  fin_cases d <;> simp [advance, adjacent]
+
+theorem trace_adjacentChain (p : Site) (ds : List (Fin 4)) :
+    adjacentChain (p :: trace p ds) = true := by
+  induction ds generalizing p with
+  | nil => rfl
+  | cons d ds ih =>
+      simp [trace, adjacentChain, advance_adjacent, ih]
+
+/-- Decoding directions always produces adjacent sites, independent of
+the separate no-repeated-vertex requirement of Conformation. -/
+theorem walkFrom_adjacentChain (ds : List (Fin 4)) :
+    adjacentChain (walkFrom ds) = true := by
+  simp [walkFrom, adjacentChain, adjacent, origin, first, trace_adjacentChain]
+
+theorem conformation_adjacentChain {steps : ℕ} (c : Conformation steps) :
+    adjacentChain (walkFrom (List.ofFn c.1)) = true :=
+  walkFrom_adjacentChain _
+
 def isHydrophobic (seq : List Bool) (i : ℕ) : Bool :=
   (seq[i]?).getD false
 

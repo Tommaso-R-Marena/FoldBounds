@@ -47,3 +47,6 @@ import FoldBounds
 #print axioms FoldBounds.LatticeModel.conformation_nodup
 #print axioms FoldBounds.LatticeModel.conformation_length
 #print axioms FoldBounds.LatticeModel.checkHP_coupled_sound
+#print axioms FoldBounds.LatticeModel.advance_adjacent
+#print axioms FoldBounds.LatticeModel.trace_adjacentChain
+#print axioms FoldBounds.LatticeModel.conformation_adjacentChain

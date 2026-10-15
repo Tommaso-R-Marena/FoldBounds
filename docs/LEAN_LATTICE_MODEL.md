@@ -29,3 +29,12 @@ returned by the checker.
 3. Verify external path serialization against the Lean decoder.
 4. Replace full-universe cap inspection with sound family certificates.
 5. Benchmark published lattice-polymer methods on aligned models.
+## Verified lattice adjacency
+
+The new direction-advance theorem and chain theorem prove that every
+conformation decoded from a direction word contains only cardinally
+adjacent consecutive vertices. Together with the subtype-enforced
+no-repeat property, this establishes both geometric safety conditions
+for every Lean-model conformation without assuming Python validity.
+This remains distinct from a proof of path-decoder completeness or
+cross-language correspondence.
