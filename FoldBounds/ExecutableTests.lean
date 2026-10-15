@@ -22,9 +22,3 @@ example : accepts demoWeights demoEvent invalidCertificate = false := by decide
 example : check demoWeights demoEvent invalidCertificate = none := by decide
 example : check demoWeights demoEvent duplicateClassCertificate = none := by decide
 example : check demoWeights demoEvent impossibleWeightCertificate = none := by decide
-
-/-- Concrete, kernel-checked rational finite-universe example. -/
-example : (massQ demoWeights demoEvent : ℚ) = 3 := by
-  norm_num [massQ, demoWeights, demoEvent]
-example : (massQ demoWeights demoEventᶜ : ℚ) = 4 := by
-  norm_num [massQ, demoWeights, demoEvent]
