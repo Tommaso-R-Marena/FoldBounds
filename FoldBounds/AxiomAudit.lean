@@ -40,3 +40,5 @@ import FoldBounds
 #print axioms FoldBounds.Executable.massQ_mem_Icc
 #print axioms FoldBounds.Executable.accepts_sound
 #print axioms FoldBounds.Executable.check_sound
+#print axioms FoldBounds.Executable.accepts_weights_pos
+#print axioms FoldBounds.Executable.accepts_coupled_probability_sound

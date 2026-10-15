@@ -46,3 +46,13 @@ There is no novel theorem or protein-physics accuracy claim here.
    subtree combinatorial caps, without widening the trusted assumptions.
 5. Connect the executable bounds to Aristotle's coupled probability bounds.
 6. Compare matched published algorithms at n >= 14 under equal budgets.
+
+## Coupled probability implication
+
+The additional theorem `accepts_coupled_probability_sound` uses the
+Aristotle-proved `ratio_mem_coupled` theorem to show that the accepted
+rational event/complement enclosures give a rigorous bound on the real
+ratio a/(a+b). The positivity proof comes from the checker itself and
+nonemptiness of the finite universe. Its result remains model-relative:
+there is no asserted equality between arbitrary rational weights and
+physical exponential Boltzmann weights, and no verified Python bridge.
