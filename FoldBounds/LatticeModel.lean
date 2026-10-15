@@ -42,7 +42,6 @@ theorem trace_length (p : Site) (ds : List (Fin 4)) :
 theorem walkFrom_length (ds : List (Fin 4)) :
     (walkFrom ds).length = ds.length + 2 := by
   simp [walkFrom, trace_length]
-  omega
 
 abbrev Conformation (steps : ℕ) :=
   { directions : Fin steps → Fin 4 //
