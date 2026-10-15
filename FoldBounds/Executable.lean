@@ -174,7 +174,7 @@ theorem accepts_coupled_probability_sound [Nonempty C] (w : C → ℚ)
 
 
 /-- The actual executable returned a certificate only if the full rational
-decidable gate accepted it. No caller-provided acceptance axiom is needed. -/
+decidable gate accepted it. No extra trusted premise about the untrusted input is required. -/
 theorem check_implies_accepts (w : C → ℚ) (A : Finset C)
     (cert : RawCertificate C) (bounds : RationalBounds)
     (h : check w A cert = some bounds) :
