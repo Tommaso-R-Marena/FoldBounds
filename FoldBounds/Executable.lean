@@ -182,7 +182,7 @@ theorem check_implies_accepts (w : C → ℚ) (A : Finset C)
   unfold check at h
   cases hval : accepts w A cert with
   | false => simp [hval] at h
-  | true => exact hval
+  | true => rfl
 
 /-- Strongest end-to-end finite-model result: an actual successful call to
 the runnable checker guarantees the coupled event-probability enclosure.
