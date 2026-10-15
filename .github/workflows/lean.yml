@@ -18,6 +18,8 @@ jobs:
         uses: leanprover/lean-action@v1
       - name: Check executable certificate accept/reject tests
         run: lake env lean FoldBounds/ExecutableTests.lean
+      - name: Check concrete Lean HP lattice examples
+        run: lake env lean FoldBounds/LatticeModelTests.lean
       - name: Audit headline theorem axioms
         run: |
           lake env lean FoldBounds/AxiomAudit.lean | tee /tmp/foldbounds-axioms.log

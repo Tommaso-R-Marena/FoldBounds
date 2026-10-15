@@ -28,6 +28,11 @@ Pinned to Lean 4.28.0 and Mathlib 4.28.0:
     lake env lean FoldBounds/AxiomAudit.lean
     lake env lean FoldBounds/ExecutableTests.lean
 
+The [Lean anchored HP model](docs/LEAN_LATTICE_MODEL.md) defines
+self-avoiding lattice conformations, contact scores and rational weights
+inside Lean itself. Its finite-universe certificate checker does NOT yet
+prove the separate Python search algorithms correct.
+
 The [Lean executable certificate checker](docs/EXECUTABLE_CERTIFICATE_KERNEL.md)
 proves that accepted finite rational witness/cap certificates enclose
 event masses and their coupled probability ratio. The rational finite
