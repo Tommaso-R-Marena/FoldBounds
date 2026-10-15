@@ -57,7 +57,7 @@ theorem trace_injective (p : Site) : Function.Injective (trace p) := by
           rcases h with ⟨hhead, htail⟩
           have he : d = e := advance_injective p hhead
           subst e
-          have ht : ds = es := ih (advance p d) es htail
+          have ht : ds = es := ih (advance p d) htail
           simp [ht]
 
 theorem walkFrom_injective : Function.Injective walkFrom := by
