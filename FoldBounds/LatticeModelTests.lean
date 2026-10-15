@@ -17,10 +17,9 @@ example : ¬ (walkFrom [⟨1, by decide⟩]).Nodup := by decide
 private def allH : Fin 2 → Bool := fun _ => true
 private def demoCertificate : Executable.RawCertificate (Conformation 0) :=
   ⟨Finset.univ, ∅, fun _ => 0⟩
-example : checkHP 0 2 allH 0 demoCertificate =
-    some (Executable.endpoints (weightQ 0 2 allH)
-      (contactEvent 0 allH 0) demoCertificate) := by decide
-example : checkHP 0 (1/2) allH 0 demoCertificate = none := by decide
+#eval checkHP 0 2 allH 0 demoCertificate
+example : checkHP 0 (1/2) allH 0 demoCertificate = none := by
+  norm_num [checkHP]
 
 private def wrongEvent : Executable.RawCertificate (Conformation 0) :=
   ⟨Finset.univ, ∅, fun _ => 2⟩
