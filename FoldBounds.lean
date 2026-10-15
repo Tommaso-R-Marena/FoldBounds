@@ -9,3 +9,4 @@ public import FoldBounds.Compositional
 public import FoldBounds.Certificate
 public import FoldBounds.Optimality
 public import FoldBounds.Variational
+public import FoldBounds.Executable

@@ -16,6 +16,8 @@ jobs:
         run: python3 scripts/check_lean_sources.py
       - name: Build Lean and Mathlib with pinned toolchain
         uses: leanprover/lean-action@v1
+      - name: Check executable certificate accept/reject tests
+        run: lake env lean FoldBounds/ExecutableTests.lean
       - name: Audit headline theorem axioms
         run: |
           lake env lean FoldBounds/AxiomAudit.lean | tee /tmp/foldbounds-axioms.log

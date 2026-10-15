@@ -37,3 +37,6 @@ import FoldBounds
 #print axioms FoldBounds.Z_ge_gibbs_bogoliubov
 #print axioms FoldBounds.freeEnergy_le_gibbs_bogoliubov
 #print axioms FoldBounds.Z_coupledEnergy_ge_gibbs
+#print axioms FoldBounds.Executable.massQ_mem_Icc
+#print axioms FoldBounds.Executable.accepts_sound
+#print axioms FoldBounds.Executable.check_sound
