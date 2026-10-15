@@ -172,5 +172,33 @@ theorem accepts_coupled_probability_sound [Nonempty C] (w : C → ℚ)
   exact FoldBounds.ratio_mem_coupled (by exact_mod_cast hLowerA)
     (by exact_mod_cast hLowerB) hA hB hDenom
 
+
+/-- The actual executable returned a certificate only if the full rational
+decidable gate accepted it. No extra trusted premise about the untrusted input is required. -/
+theorem check_implies_accepts (w : C → ℚ) (A : Finset C)
+    (cert : RawCertificate C) (bounds : RationalBounds)
+    (h : check w A cert = some bounds) :
+    accepts w A cert = true := by
+  unfold check at h
+  cases hval : accepts w A cert with
+  | false => simp [hval] at h
+  | true => rfl
+
+/-- Strongest end-to-end finite-model result: an actual successful call to
+the runnable checker guarantees the coupled event-probability enclosure.
+It does not assume the validity of the untrusted certificate fields. -/
+theorem check_coupled_probability_sound [Nonempty C] (w : C → ℚ)
+    (A : Finset C) (cert : RawCertificate C) (bounds : RationalBounds)
+    (h : check w A cert = some bounds) :
+    (massQ w A : ℝ) / ((massQ w A : ℝ) + (massQ w Aᶜ : ℝ)) ∈
+      Set.Icc
+        ((bounds.eventLower / (bounds.eventLower + bounds.otherUpper)) : ℝ)
+        ((bounds.eventUpper / (bounds.eventUpper + bounds.otherLower)) : ℝ) := by
+  have haccept := check_implies_accepts w A cert bounds h
+  have hEq := (check_sound w A cert bounds h).1
+  subst bounds
+  exact accepts_coupled_probability_sound w A cert haccept
+
+
 end Executable
 end FoldBounds

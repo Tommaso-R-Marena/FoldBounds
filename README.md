@@ -7,15 +7,33 @@ conformational-population bounds in explicitly specified statistical-mechanical
 models. The long-term research challenge is to compute informative guarantees
 without exhaustively enumerating every conformation.
 
-**Current status (v0.1):** a conservative, fully rational Python reference
-implementation for the 2D square-lattice hydrophobic/polar (HP) model.
-It enumerates exact contact spectra for small sequences and checks the
-completeness and geometric validity of partial-enumeration certificates.
+**Current status:** a Lean 4 / Mathlib formal thermodynamics library
+with an executable finite rational certificate kernel, alongside a
+tested, fully rational Python research prototype for the 2D square-lattice
+hydrophobic/polar (HP) model. Lean proves abstract thermodynamic bounds
+and the correctness of the new finite-universe checker. Python enumerates
+small contact spectra and checks model-relative frontier certificates.
+**The Python implementation is not yet formally refined to the Lean kernel.**
 
 **Trust boundary:** Guarantees are relative to this simplified finite model.
 The Python implementation is **not yet formally verified by Lean** and does not
 predict experimental structures of real proteins. No novelty or publication
 claim is made at this stage.
+
+## Formal verification
+
+Pinned to Lean 4.28.0 and Mathlib 4.28.0:
+
+    lake build
+    lake env lean FoldBounds/AxiomAudit.lean
+    lake env lean FoldBounds/ExecutableTests.lean
+
+The [Lean executable certificate checker](docs/EXECUTABLE_CERTIFICATE_KERNEL.md)
+proves that accepted finite rational witness/cap certificates enclose
+event masses and their coupled probability ratio. The rational finite
+universe is currently enumerated during upper-cap verification; this is
+**not** an efficient, proved lattice-folding algorithm or a Lean verification
+of the Python code.
 
 ## Reproduce
 
