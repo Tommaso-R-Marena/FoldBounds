@@ -16,12 +16,15 @@ private def impossibleWeightCertificate : RawCertificate (Fin 3) :=
 
 example : accepts demoWeights demoEvent demoCertificate = true := by decide
 example : check demoWeights demoEvent demoCertificate =
-    some (endpoints demoWeights demoEvent demoCertificate) := by decide
+    some (endpoints demoWeights demoEvent demoCertificate) := by
+  simp [check, show accepts demoWeights demoEvent demoCertificate = true by decide]
 example : accepts demoWeights demoEvent invalidCertificate = false := by decide
 example : check demoWeights demoEvent invalidCertificate = none := by decide
 example : check demoWeights demoEvent duplicateClassCertificate = none := by decide
 example : check demoWeights demoEvent impossibleWeightCertificate = none := by decide
 
 /-- Concrete, kernel-checked rational finite-universe example. -/
-example : (massQ demoWeights demoEvent : ℚ) = 3 := by decide
-example : (massQ demoWeights demoEventᶜ : ℚ) = 4 := by decide
+example : (massQ demoWeights demoEvent : ℚ) = 3 := by
+  norm_num [massQ, demoWeights, demoEvent]
+example : (massQ demoWeights demoEventᶜ : ℚ) = 4 := by
+  norm_num [massQ, demoWeights, demoEvent]
