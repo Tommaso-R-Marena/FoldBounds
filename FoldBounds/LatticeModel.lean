@@ -33,6 +33,39 @@ def trace (p : Site) : List (Fin 4) → List Site
 def walkFrom (ds : List (Fin 4)) : List Site :=
   [origin, first] ++ trace first ds
 
+/-- No two different directions can give the same next site from a
+fixed current site. This is the key local decoding uniqueness fact. -/
+theorem advance_injective (p : Site) :
+    Function.Injective (advance p) := by
+  intro d e h
+  fin_cases d <;> fin_cases e <;> simp_all [advance] <;> omega
+
+/-- The full list of visited successor sites uniquely determines the
+complete absolute-direction word when the starting site is fixed. -/
+theorem trace_injective (p : Site) : Function.Injective (trace p) := by
+  intro ds es h
+  induction ds generalizing p es with
+  | nil =>
+      cases es with
+      | nil => rfl
+      | cons e es => simp [trace] at h
+  | cons d ds ih =>
+      cases es with
+      | nil => simp [trace] at h
+      | cons e es =>
+          simp only [trace, List.cons.injEq] at h
+          rcases h with ⟨hhead, htail⟩
+          have he : d = e := advance_injective p hhead
+          subst e
+          have ht : ds = es := ih (advance p d) htail
+          simp [ht]
+
+theorem walkFrom_injective : Function.Injective walkFrom := by
+  intro ds es h
+  have ht : trace first ds = trace first es := by
+    simpa [walkFrom] using h
+  exact trace_injective first ht
+
 theorem trace_length (p : Site) (ds : List (Fin 4)) :
     (trace p ds).length = ds.length := by
   induction ds generalizing p with

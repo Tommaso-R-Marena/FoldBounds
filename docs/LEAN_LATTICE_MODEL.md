@@ -38,3 +38,13 @@ no-repeat property, this establishes both geometric safety conditions
 for every Lean-model conformation without assuming Python validity.
 This remains distinct from a proof of path-decoder completeness or
 cross-language correspondence.
+
+## Representation uniqueness
+
+The next theorem batch proves that a fixed site and a next site determine
+at most one cardinal direction, and that the entire decoded path uniquely
+determines its originating direction list. Consequently, the basic
+list-level decoder cannot double-count a geometric path through two
+different direction lists. Full equivalence to every Python canonical
+path (including the Fin-indexed subtype conversion) remains a distinct
+proof obligation.
