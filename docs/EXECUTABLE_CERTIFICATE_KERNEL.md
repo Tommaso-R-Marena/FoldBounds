@@ -44,7 +44,7 @@ There is no novel theorem or protein-physics accuracy claim here.
 3. Prove contact scores and rational q^k model correctness.
 4. Replace fully enumerated per-state upper checks with **verified**
    subtree combinatorial caps, without widening the trusted assumptions.
-5. Connect the executable bounds to Aristotle's coupled probability bounds.
+5. [Completed] Connect accepted rational mass bounds to Aristotle's coupled probability theorem.
 6. Compare matched published algorithms at n >= 14 under equal budgets.
 
 ## Coupled probability implication
@@ -56,3 +56,12 @@ ratio a/(a+b). The positivity proof comes from the checker itself and
 nonemptiness of the finite universe. Its result remains model-relative:
 there is no asserted equality between arbitrary rational weights and
 physical exponential Boltzmann weights, and no verified Python bridge.
+
+## Direct successful-check implication
+
+The theorem `check_coupled_probability_sound` strengthens the earlier
+acceptance predicate result: an actual result `check w A cert = some bounds`
+forces the coupled ratio enclosure using the exact endpoints returned
+by that executable call. Invalid input is not trusted as a hypothesis.
+The checker is still finite-universe-enumerating and distinct from the
+Python HP implementation.

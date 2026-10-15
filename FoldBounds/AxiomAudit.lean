@@ -42,3 +42,5 @@ import FoldBounds
 #print axioms FoldBounds.Executable.check_sound
 #print axioms FoldBounds.Executable.accepts_weights_pos
 #print axioms FoldBounds.Executable.accepts_coupled_probability_sound
+#print axioms FoldBounds.Executable.check_implies_accepts
+#print axioms FoldBounds.Executable.check_coupled_probability_sound
