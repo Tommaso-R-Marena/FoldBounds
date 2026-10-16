@@ -14,7 +14,7 @@ from dataclasses import dataclass
 from fractions import Fraction
 from functools import lru_cache
 
-from .isoperimetric import prefix_contact_cap
+from .isoperimetric import prefix_contact_cap, minimum_final_box_sum
 from .lattice import (DIRECTIONS, Path, _check_q, _check_sequence,
                       _contacts, _possible_hh_pairs, _validate_path)
 from .matching import _maximum_bipartite_bmatching
@@ -79,8 +79,9 @@ def relaxed_cross_spectrum(sequence: str, path: Path) -> tuple[tuple[int,int], .
 @lru_cache(maxsize=128)
 def recent_memory_contact_spectrum(
         sequence: str, path: Path, suffix_memory: int,
-        local_cap: int | None = None
-) -> tuple[tuple[tuple[int, int], int], ...]:
+        local_cap: int | None = None,
+        with_endpoint: bool = False
+) -> tuple[tuple[tuple, int], ...]:
     """Exact relaxed-walk histogram by (prefix contacts, local suffix contacts).
 
     A relaxed continuation avoids the fixed prefix and the most recent K
@@ -95,7 +96,8 @@ def recent_memory_contact_spectrum(
     *saturated* value min(observed_local, local_cap). This safely preserves
     threshold classification while limiting state growth; None gives the
     full exact local score. This is a relaxed-walk histogram, not a true
-    SAW ensemble histogram.
+    SAW ensemble histogram. With with_endpoint=True, the histogram key is
+    (cross, local, terminal_site), retaining geometry without path enumeration.
     """
     _check_sequence(sequence)
     _validate_path(path, len(sequence))
@@ -103,7 +105,9 @@ def recent_memory_contact_spectrum(
         raise ValueError("suffix_memory must be an integer in [2, 8]")
     if local_cap is not None and (type(local_cap) is not int or local_cap < 0):
         raise ValueError("local_cap must be a nonnegative integer or None")
-    if suffix_memory == 2:
+    if type(with_endpoint) is not bool:
+        raise ValueError("with_endpoint must be a boolean")
+    if suffix_memory == 2 and not with_endpoint:
         return tuple(((cross, 0), multiplicity)
                      for cross, multiplicity in relaxed_cross_spectrum(sequence, path))
 
@@ -144,8 +148,9 @@ def recent_memory_contact_spectrum(
             break
 
     histogram = defaultdict(int)
-    for (_, cross, local), multiplicity in states.items():
-        histogram[(cross, local)] += multiplicity
+    for (history, cross, local), multiplicity in states.items():
+        key = (cross, local, history[-1]) if with_endpoint else (cross, local)
+        histogram[key] += multiplicity
     return tuple(sorted(histogram.items()))
 
 
@@ -163,7 +168,8 @@ def recent_memory_cross_spectrum(
 
 def nonbacktracking_mass_upper(sequence: str, path: Path, q: Fraction,
                                event_at_least: int,
-                               suffix_memory: int = 2) -> TransferUpper:
+                               suffix_memory: int = 2, *,
+                               terminal_box: bool = False) -> TransferUpper:
     """Sound (possibly loose) upper bounds on partition and event masses.
 
     For an actual extension: k_final = fixed + cross + futurefuture.
@@ -172,6 +178,13 @@ def nonbacktracking_mass_upper(sequence: str, path: Path, q: Fraction,
     cross score* is safe for genuine paths and can reduce upper weights.
     Relaxed invalid paths are included with nonnegative weights, so
     overcounting them cannot invalidate the enclosure.
+
+    With terminal_box, the transfer DP preserves each relaxed path's final
+    endpoint. For a genuine completion, the enclosing bounding box must
+    contain both that endpoint and every fixed-prefix site. The square-grid
+    perimeter/isoperimetric contact cap therefore strengthens conditionally
+    on the known terminal point. This caps both event and total upper mass,
+    without assuming anything about invalid relaxed trajectories.
     """
     _check_sequence(sequence)
     _check_q(q)
@@ -180,6 +193,8 @@ def nonbacktracking_mass_upper(sequence: str, path: Path, q: Fraction,
         raise ValueError('event_at_least must be an integer')
     if type(suffix_memory) is not int or not 2 <= suffix_memory <= 8:
         raise ValueError('suffix_memory must be an integer in [2, 8]')
+    if type(terminal_box) is not bool:
+        raise ValueError('terminal_box must be a boolean')
     n,m=len(sequence),len(path)
     pairs=_possible_hh_pairs(sequence)
     fixed_score=_contacts(path,pairs)
@@ -196,13 +211,31 @@ def nonbacktracking_mass_upper(sequence: str, path: Path, q: Fraction,
     # needed for event/complement classification, avoiding excess DP states.
     local_cap=max(0,event_at_least-fixed_score)
     spectrum=recent_memory_contact_spectrum(
-        sequence,path,suffix_memory,local_cap=local_cap)
-    for (cross, local_contacts),multiplicity in spectrum:
+        sequence,path,suffix_memory,local_cap=local_cap,
+        with_endpoint=terminal_box)
+    xs = [site[0] for site in path]
+    ys = [site[1] for site in path]
+    xmin, xmax, ymin, ymax = min(xs), max(xs), min(ys), max(ys)
+
+    @lru_cache(maxsize=None)
+    def terminal_contact_cap(point: tuple[int, int]) -> int:
+        x,y = point
+        width = max(xmax, x)-min(xmin, x)+1
+        height = max(ymax, y)-min(ymin, y)+1
+        return max(0,n+1-minimum_final_box_sum(n,width,height))
+
+    for key,multiplicity in spectrum:
+        if terminal_box:
+            cross,local_contacts,terminal=key
+            geometry_cap=min(iso_cap,terminal_contact_cap(terminal))
+        else:
+            cross,local_contacts=key
+            geometry_cap=iso_cap
         # Every actual continuation has
         # futurefuture <= min(flow_cap, iso_cap-fixed_score-cross).
         # If a relaxed (invalid) walk violates the perimeter cap, its
         # nonnegative overcount remains harmless.
-        cap=min(flow_cap,max(0,iso_cap-fixed_score-cross))
+        cap=min(flow_cap,max(0,geometry_cap-fixed_score-cross))
         upper_score=fixed_score+cross+cap
         weight=multiplicity*q**upper_score
         count+=multiplicity
