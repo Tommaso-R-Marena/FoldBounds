@@ -24,6 +24,8 @@ def main() -> None:
                         help="enable prefix-obstacle transfer upper bounds")
     parser.add_argument("--monotone", action="store_true",
                         help="count disjoint monotone completion families for lower mass")
+    parser.add_argument("--turn-family", action="store_true",
+                        help="count checked self-avoiding suffixes with at most two turns")
     parser.add_argument("--witness-nodes", type=int, default=0,
                         help="DFS node budget per bounded subtree for checked lower mass")
     parser.add_argument("--adaptive-steps", type=int, default=None,
@@ -42,6 +44,8 @@ def main() -> None:
         parser.error('--transfer requires --enhanced-lookahead or --adaptive-steps')
     if args.monotone and args.enhanced_lookahead is None and args.adaptive_steps is None:
         parser.error('--monotone requires --enhanced-lookahead or --adaptive-steps')
+    if args.turn_family and args.enhanced_lookahead is None and args.adaptive_steps is None:
+        parser.error('--turn-family requires --enhanced-lookahead or --adaptive-steps')
     if args.witness_nodes and args.enhanced_lookahead is None and args.adaptive_steps is None:
         parser.error('--witness-nodes requires --enhanced-lookahead or --adaptive-steps')
     cert = build_frontier(args.sequence, args.q, args.event_at_least, args.depth)
@@ -50,6 +54,7 @@ def main() -> None:
                            use_matching=args.matching,use_transfer=args.transfer,
                            witness_nodes=args.witness_nodes,
                            use_monotone=args.monotone,
+                           use_turn_family=args.turn_family,
                            transfer_memory=args.transfer_memory,
                            policy=args.adaptive_policy)
            if args.adaptive_steps is not None else None)
@@ -59,6 +64,7 @@ def main() -> None:
                                use_matching=args.matching,use_transfer=args.transfer,
                                witness_nodes=args.witness_nodes,
                                use_monotone=args.monotone,
+                               use_turn_family=args.turn_family,
                                transfer_memory=args.transfer_memory))
     out = {
         "model": "2D square-lattice HP self-avoiding walk, anchored first edge",
@@ -69,6 +75,7 @@ def main() -> None:
         "transfer_memory": args.transfer_memory,
         "witness_nodes": args.witness_nodes,
         "monotone": args.monotone,
+        "turn_family": args.turn_family,
         "sequence": args.sequence,
         "q": str(args.q),
         "event_at_least": args.event_at_least,
