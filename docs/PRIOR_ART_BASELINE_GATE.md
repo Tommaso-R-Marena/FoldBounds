@@ -45,9 +45,12 @@ comparisons without the explicit model alignment described here.
    HP Lattice Proteins.* Acta Physica Polonica B 34.
    https://arxiv.org/abs/0710.4074.
    Provides exact density-of-states results for short HP sequences and
-   an approximate multicanonical approach for longer HP chains. Useful
-   direct HP histogram comparisons, subject to precise reflection/
-   orientation and chain-length conventions.
+   multicanonical methods for longer chains. **Their displayed 14-residue
+   example is three-dimensional**, as evidenced by the 13-step total
+   943,974,510, which agrees with the cubic-lattice sequence OEIS
+   A001412 rather than the square-lattice A001411. Their numerical
+   histogram is therefore NOT directly comparable to our 2D HP counts;
+   keep this paper as methodological HP thermodynamics prior art.
 
 6. **Chen and Lin (2005).** *Partition function zeros of the
    two-dimensional HP model for protein folding.* Physica A 350, 45–51.
@@ -55,6 +58,14 @@ comparisons without the explicit model alignment described here.
    An existing exact-enumeration study of 2D HP partition functions.
    This establishes that exact finite-HP thermodynamic calculations
    are established scientific work.
+
+7. **OEIS A001411 / Iwan Jensen (2004).** Exact sequence of the
+   number of n-step square-lattice self-avoiding walks.
+   https://oeis.org/A001411. For FoldBounds' anchored first step,
+   the expected count of N-monomer conformations is exactly
+   A001411(N-1)/4. In particular, N=2 through N=10 should count
+   1, 3, 9, 25, 71, 195, 543, 1479, 4067 walks respectively.
+   This normalization still counts both mirror-image orientations.
 
 ## Critical apples-to-apples controls
 
@@ -99,10 +110,12 @@ differential tests for 2 <= N <= 10 with varied H/P patterns; compare
 the exact contact histogram and Z(q), q in {1, 3/2, 2}. Test incorrect
 symmetry normalization as a negative control.
 
-**Gate B: finite-temperature HP baselines.** Reproduce published small
-HP density-of-states values only after checking exact sequence and
-orientation conventions. Compare exact contact polynomials, not only a
-single floating-temperature probability.
+**Gate B: finite-temperature 2D HP baselines.** Prefer Chen and Lin
+(2005) and other published **square-lattice** HP densities, after
+checking exact sequence, symmetry and orientation conventions.
+Compare contact polynomials rather than only a floating-temperature
+probability. The Bachmann/Janke 14-mer 3D table is an explicit
+negative control and must not be presented as a 2D baseline.
 
 **Gate C: all-H ISAW baseline.** Compare contact-count generating
 functions against Lee/Hsieh where table/data/code can be obtained.
