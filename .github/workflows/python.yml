@@ -53,6 +53,11 @@ jobs:
       - name: Compare observed recent contact pruning
         if: matrix.python-version == '3.11'
         run: python experiments/compare_recent_contact_pruning.py
+      - name: Compare low-turn constructive witness families
+        if: matrix.python-version == '3.11'
+        run: python experiments/compare_turn_family.py
+      - name: Exercise low-turn witness CLI
+        run: python -m foldbounds HPHHPHHPHHHH --q 3/2 --event-at-least 2 --enhanced-lookahead 0 --matching --transfer --transfer-memory 4 --monotone --turn-family
       - name: Exercise finite-memory transfer CLI
         run: python -m foldbounds HHHHHHHHHHHH --q 2 --enhanced-lookahead 0 --matching --transfer --transfer-memory 4 --monotone
       - name: Compare transfer and perimeter relaxations
