@@ -110,7 +110,8 @@ def subtree(sequence: str, path: Path, pairs: tuple[tuple[int,int], ...],
             q: Fraction, threshold: int, horizon: int, use_matching: bool = False,
             use_perimeter: bool = True, use_transfer: bool = False,
             witness_nodes: int = 0, use_monotone: bool = False,
-            transfer_memory: int = 2, use_turn_family: bool = False) -> Mass:
+            transfer_memory: int = 2, use_turn_family: bool = False,
+            terminal_box: bool = False) -> Mass:
     n = len(sequence)
     if len(path) == n:
         score = _contacts(path, pairs)
@@ -123,7 +124,8 @@ def subtree(sequence: str, path: Path, pairs: tuple[tuple[int,int], ...],
     n_up = cap if score_lo < threshold else Fraction(0)
     if use_transfer:
         transfer=nonbacktracking_mass_upper(sequence,path,q,threshold,
-                                            suffix_memory=transfer_memory)
+                                            suffix_memory=transfer_memory,
+                                            terminal_box=terminal_box)
         cap=min(cap,transfer.partition)
         e_up=min(e_up,transfer.event)
         n_up=min(n_up,transfer.complement)
@@ -151,7 +153,7 @@ def subtree(sequence: str, path: Path, pairs: tuple[tuple[int,int], ...],
     base = Mass(e_wit,e_up,n_wit,n_up,cap)
     if horizon == 0:
         return base
-    children = add([subtree(sequence,child,pairs,q,threshold,horizon-1,use_matching,use_perimeter,use_transfer,witness_nodes,use_monotone,transfer_memory,use_turn_family)
+    children = add([subtree(sequence,child,pairs,q,threshold,horizon-1,use_matching,use_perimeter,use_transfer,witness_nodes,use_monotone,transfer_memory,use_turn_family,terminal_box)
                     for child in _neighbors(path)])
     # Intersect two sound enclosures, guaranteeing a nested bound hierarchy.
     return Mass(max(base.e_lo,children.e_lo),min(base.e_hi,children.e_hi),
@@ -164,7 +166,8 @@ def verify_lookahead(cert: Certificate, *, lookahead: int = 0,
                      use_perimeter: bool = True, use_transfer: bool = False,
                      witness_nodes: int = 0, use_monotone: bool = False,
                      transfer_memory: int = 2,
-                     use_turn_family: bool = False) -> VerifiedBounds:
+                     use_turn_family: bool = False,
+                     terminal_box: bool = False) -> VerifiedBounds:
     """Independently check a complete frontier; return rational bounds.
 
     The frontier supplies paths, never trusted mass/energy numbers. Each
@@ -188,6 +191,10 @@ def verify_lookahead(cert: Certificate, *, lookahead: int = 0,
         raise ValueError('use_monotone must be a boolean')
     if type(use_turn_family) is not bool:
         raise ValueError('use_turn_family must be a boolean')
+    if type(terminal_box) is not bool:
+        raise ValueError('terminal_box must be a boolean')
+    if terminal_box and not use_transfer:
+        raise ValueError('terminal_box requires use_transfer')
     if type(witness_nodes) is not int or witness_nodes < 0:
         raise ValueError('witness_nodes must be a nonnegative integer')
     if type(lookahead) is not int or lookahead < 0:
@@ -221,7 +228,7 @@ def verify_lookahead(cert: Certificate, *, lookahead: int = 0,
             seen.add(path)
             if nodes[path] == 'dead':
                 return  # Zero completions: checked by the validator above.
-            masses.append(subtree(cert.sequence,path,pairs,q,cert.event_at_least,lookahead,use_matching,use_perimeter,use_transfer,witness_nodes,use_monotone,transfer_memory,use_turn_family))
+            masses.append(subtree(cert.sequence,path,pairs,q,cert.event_at_least,lookahead,use_matching,use_perimeter,use_transfer,witness_nodes,use_monotone,transfer_memory,use_turn_family,terminal_box))
             if len(path) == n:
                 exact_count += 1
             else:
