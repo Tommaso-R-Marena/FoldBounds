@@ -18,6 +18,12 @@ import tempfile
 MOVES=((1,0),(-1,0),(0,1),(0,-1))  # Lean Fin 4 direction numbering
 ROOT=((0,0),(1,0))
 
+# Published unrestricted square-lattice self-avoiding-walk counts c_k,
+# OEIS A001411. Fixing the first bond divides c_(N-1) by exactly four
+# (rotations), but does NOT identify the two reflected conformations.
+PUBLISHED_SAW_COUNTS=(1,4,12,36,100,284,780,2172,5916,16268,44100,
+                      120292,324932,881500)
+
 
 def independent_walks(n):
     states=[(ROOT,())]
@@ -114,6 +120,14 @@ def main():
     spectrum_checks=0
     for n in range(2,args.max_length+1):
         all_walks=independent_walks(n)
+        expected=PUBLISHED_SAW_COUNTS[n-1]//4
+        if len(all_walks)!=expected:
+            raise AssertionError(f'Independent rooted SAW count n={n}: '
+                                 f'{len(all_walks)} vs published {expected}')
+        py_count=sum(exact_spectrum('P'*n).values())
+        if py_count!=expected:
+            raise AssertionError(f'Production rooted SAW count n={n}: '
+                                 f'{py_count} vs published {expected}')
         rng=random.Random(0xF01DB0+n)
         if len(all_walks)<=args.sample_count:
             selected=all_walks
