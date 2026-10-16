@@ -77,56 +77,79 @@ def relaxed_cross_spectrum(sequence: str, path: Path) -> tuple[tuple[int,int], .
 
 
 @lru_cache(maxsize=128)
-def recent_memory_cross_spectrum(
+def recent_memory_contact_spectrum(
         sequence: str, path: Path, suffix_memory: int
-) -> tuple[tuple[int, int], ...]:
-    """Count relaxed suffix walks with bounded recent-site self-avoidance.
+) -> tuple[tuple[tuple[int, int], int], ...]:
+    """Exact relaxed-walk histogram by (prefix contacts, local suffix contacts).
 
-    Every fixed-prefix site is forbidden. Revisit of any of the last
-    suffix_memory visited sites is also forbidden. Genuine self-avoiding
-    completions always belong to this relaxed finite set.
+    A relaxed continuation avoids the fixed prefix and the most recent K
+    sites. For each suffix residue j, any contact (i,j) with i >= prefix_len,
+    j-i >= 2 and j-i <= K is visible while j is appended. Such pairs are
+    counted once, even if a longer relaxed trajectory is not self-avoiding.
+    For a genuine conformation these observed pairs are a *subset* of its
+    future/future H-H contacts, so they give a safe contact-score floor.
 
-    The state stores only recent sites and exact prefix-to-suffix H-H
-    contact count, NOT the complete suffix. Exact integers count walks
-    with multiplicity. Memory 2 matches nonbacktracking behavior.
-
-    Nested relaxed sets R_(K+1) subset R_K imply that the partition
-    and event/complement mass upper bounds do not increase with K.
+    Distinct paths with equal history and both scores are aggregated with
+    integer multiplicities. The returned histogram is exact for the relaxed
+    finite-memory walk class, not for the true SAW ensemble.
     """
     _check_sequence(sequence)
     _validate_path(path, len(sequence))
     if type(suffix_memory) is not int or not 2 <= suffix_memory <= 8:
         raise ValueError("suffix_memory must be an integer in [2, 8]")
     if suffix_memory == 2:
-        return relaxed_cross_spectrum(sequence, path)
+        return tuple(((cross, 0), multiplicity)
+                     for cross, multiplicity in relaxed_cross_spectrum(sequence, path))
 
-    fixed=frozenset(path)
-    n,m=len(sequence),len(path)
-    fixed_h=tuple((i,path[i]) for i in range(m) if sequence[i]=='H')
-    # State = (last up to suffix_memory visited sites, exact cross score).
-    states={(path[-1:],0):1}
-    for j in range(m,n):
-        next_states=defaultdict(int)
-        for (history,score),multiplicity in states.items():
-            x,y=history[-1]
-            for dx,dy in DIRECTIONS:
-                nxt=(x+dx,y+dy)
-                if nxt in fixed or nxt in history:
+    n, m = len(sequence), len(path)
+    fixed = frozenset(path)
+    fixed_h = tuple((i, path[i]) for i in range(m) if sequence[i] == 'H')
+    # State: recent sites, exact prefix/suffix contacts, observed suffix contacts.
+    states = {(path[-1:], 0, 0): 1}
+    for j in range(m, n):
+        next_states = defaultdict(int)
+        for (history, cross, local), multiplicity in states.items():
+            x, y = history[-1]
+            first_history_index = j - len(history)
+            for dx, dy in DIRECTIONS:
+                point = (x + dx, y + dy)
+                if point in fixed or point in history:
                     continue
-                increment=0
-                if sequence[j]=='H':
-                    increment=sum(j-i>=2 and abs(nxt[0]-px)+abs(nxt[1]-py)==1
-                                  for i,(px,py) in fixed_h)
-                new_history=(history+(nxt,))[-suffix_memory:]
-                next_states[(new_history,score+increment)]+=multiplicity
-        states=next_states
+                cross_new = local_new = 0
+                if sequence[j] == 'H':
+                    cross_new = sum(
+                        j - i >= 2 and abs(point[0] - px) + abs(point[1] - py) == 1
+                        for i, (px, py) in fixed_h
+                    )
+                    local_new = sum(
+                        i >= m and j - i >= 2 and sequence[i] == 'H'
+                        and abs(point[0] - px) + abs(point[1] - py) == 1
+                        for i, (px, py) in enumerate(history, first_history_index)
+                    )
+                next_history = (history + (point,))[-suffix_memory:]
+                next_states[(next_history, cross + cross_new,
+                             local + local_new)] += multiplicity
+        states = next_states
         if not states:
             break
 
-    histogram=defaultdict(int)
-    for (_,score),multiplicity in states.items():
-        histogram[score]+=multiplicity
+    histogram = defaultdict(int)
+    for (_, cross, local), multiplicity in states.items():
+        histogram[(cross, local)] += multiplicity
     return tuple(sorted(histogram.items()))
+
+
+@lru_cache(maxsize=128)
+def recent_memory_cross_spectrum(
+        sequence: str, path: Path, suffix_memory: int
+) -> tuple[tuple[int, int], ...]:
+    """Backward-compatible marginal over local suffix contact scores."""
+    marginal = defaultdict(int)
+    for (cross, _), multiplicity in recent_memory_contact_spectrum(
+            sequence, path, suffix_memory):
+        marginal[cross] += multiplicity
+    return tuple(sorted(marginal.items()))
+
 
 def nonbacktracking_mass_upper(sequence: str, path: Path, q: Fraction,
                                event_at_least: int,
@@ -159,8 +182,8 @@ def nonbacktracking_mass_upper(sequence: str, path: Path, q: Fraction,
     iso_cap=prefix_contact_cap(path,n)
     zhi=ehi=nhi=Fraction(0)
     count=0
-    spectrum=recent_memory_cross_spectrum(sequence,path,suffix_memory)
-    for cross,multiplicity in spectrum:
+    spectrum=recent_memory_contact_spectrum(sequence,path,suffix_memory)
+    for (cross, local_contacts),multiplicity in spectrum:
         # Every actual continuation has
         # futurefuture <= min(flow_cap, iso_cap-fixed_score-cross).
         # If a relaxed (invalid) walk violates the perimeter cap, its
@@ -172,6 +195,9 @@ def nonbacktracking_mass_upper(sequence: str, path: Path, q: Fraction,
         zhi+=weight
         if upper_score>=event_at_least:
             ehi+=weight
-        if fixed_score+cross<event_at_least:
+        # Observed nonconsecutive suffix contacts are guaranteed for a
+        # genuine walk, even though the relaxed DP does not remember every
+        # older site. Prune impossible complement classifications only.
+        if fixed_score+cross+local_contacts<event_at_least:
             nhi+=weight
     return TransferUpper(zhi,ehi,nhi,flow_cap,count,len(spectrum),suffix_memory)
