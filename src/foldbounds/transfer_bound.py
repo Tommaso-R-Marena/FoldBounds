@@ -78,7 +78,8 @@ def relaxed_cross_spectrum(sequence: str, path: Path) -> tuple[tuple[int,int], .
 
 @lru_cache(maxsize=128)
 def recent_memory_contact_spectrum(
-        sequence: str, path: Path, suffix_memory: int
+        sequence: str, path: Path, suffix_memory: int,
+        local_cap: int | None = None
 ) -> tuple[tuple[tuple[int, int], int], ...]:
     """Exact relaxed-walk histogram by (prefix contacts, local suffix contacts).
 
@@ -90,13 +91,18 @@ def recent_memory_contact_spectrum(
     future/future H-H contacts, so they give a safe contact-score floor.
 
     Distinct paths with equal history and both scores are aggregated with
-    integer multiplicities. The returned histogram is exact for the relaxed
-    finite-memory walk class, not for the true SAW ensemble.
+    integer multiplicities. With local_cap, the second score is the exact
+    *saturated* value min(observed_local, local_cap). This safely preserves
+    threshold classification while limiting state growth; None gives the
+    full exact local score. This is a relaxed-walk histogram, not a true
+    SAW ensemble histogram.
     """
     _check_sequence(sequence)
     _validate_path(path, len(sequence))
     if type(suffix_memory) is not int or not 2 <= suffix_memory <= 8:
         raise ValueError("suffix_memory must be an integer in [2, 8]")
+    if local_cap is not None and (type(local_cap) is not int or local_cap < 0):
+        raise ValueError("local_cap must be a nonnegative integer or None")
     if suffix_memory == 2:
         return tuple(((cross, 0), multiplicity)
                      for cross, multiplicity in relaxed_cross_spectrum(sequence, path))
@@ -121,14 +127,18 @@ def recent_memory_contact_spectrum(
                         j - i >= 2 and abs(point[0] - px) + abs(point[1] - py) == 1
                         for i, (px, py) in fixed_h
                     )
-                    local_new = sum(
-                        i >= m and j - i >= 2 and sequence[i] == 'H'
-                        and abs(point[0] - px) + abs(point[1] - py) == 1
-                        for i, (px, py) in enumerate(history, first_history_index)
-                    )
+                    if local_cap is None or local < local_cap:
+                        local_new = sum(
+                            i >= m and j - i >= 2 and sequence[i] == 'H'
+                            and abs(point[0] - px) + abs(point[1] - py) == 1
+                            for i, (px, py) in enumerate(history, first_history_index)
+                        )
                 next_history = (history + (point,))[-suffix_memory:]
+                new_local = local + local_new
+                if local_cap is not None:
+                    new_local = min(new_local, local_cap)
                 next_states[(next_history, cross + cross_new,
-                             local + local_new)] += multiplicity
+                             new_local)] += multiplicity
         states = next_states
         if not states:
             break
@@ -146,7 +156,7 @@ def recent_memory_cross_spectrum(
     """Backward-compatible marginal over local suffix contact scores."""
     marginal = defaultdict(int)
     for (cross, _), multiplicity in recent_memory_contact_spectrum(
-            sequence, path, suffix_memory):
+            sequence, path, suffix_memory, local_cap=0):
         marginal[cross] += multiplicity
     return tuple(sorted(marginal.items()))
 
@@ -182,7 +192,11 @@ def nonbacktracking_mass_upper(sequence: str, path: Path, q: Fraction,
     iso_cap=prefix_contact_cap(path,n)
     zhi=ehi=nhi=Fraction(0)
     count=0
-    spectrum=recent_memory_contact_spectrum(sequence,path,suffix_memory)
+    # Threshold saturation retains exactly the local-contact information
+    # needed for event/complement classification, avoiding excess DP states.
+    local_cap=max(0,event_at_least-fixed_score)
+    spectrum=recent_memory_contact_spectrum(
+        sequence,path,suffix_memory,local_cap=local_cap)
     for (cross, local_contacts),multiplicity in spectrum:
         # Every actual continuation has
         # futurefuture <= min(flow_cap, iso_cap-fixed_score-cross).
