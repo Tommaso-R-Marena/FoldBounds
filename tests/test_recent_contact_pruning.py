@@ -145,3 +145,22 @@ def test_contact_score_floor_never_exceeds_true_score(memory):
             cross, local, score = independent_scores(
                 sequence, path, len(ROOT), memory)
             assert cross + local <= score
+
+
+@pytest.mark.parametrize("memory", (2, 3, 4, 6))
+@pytest.mark.parametrize("local_cap", (0, 1, 2, 3))
+def test_saturated_contact_spectrum_equals_exact_histogram_projection(memory, local_cap):
+    seq = "HHHHHHHH"
+    full = recent_memory_contact_spectrum(seq, ROOT, memory)
+    expected = Counter()
+    for (cross, local), count in full:
+        expected[(cross, min(local, local_cap))] += count
+    actual = dict(recent_memory_contact_spectrum(
+        seq, ROOT, memory, local_cap=local_cap))
+    assert actual == dict(expected)
+
+
+@pytest.mark.parametrize("invalid", (True, False, -1, 1.5, "1", (1,)))
+def test_invalid_local_cap_rejected(invalid):
+    with pytest.raises(ValueError):
+        recent_memory_contact_spectrum("HHHHHH", ROOT, 4, local_cap=invalid)
