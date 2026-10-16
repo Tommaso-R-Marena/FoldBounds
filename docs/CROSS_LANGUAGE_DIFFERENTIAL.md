@@ -50,3 +50,17 @@ The full test runs as a required step in the existing Lean CI workflow.
 
 The goal is to quickly identify discrepancies while Aristotle develops
 the full Lean representation and executable-refinement theorems.
+
+## External published-count control
+
+In addition to cross-language comparisons, the independent enumerator
+and production Python spectrum must match OEIS A001411's published
+square-lattice self-avoiding-walk counts. For an N-monomer rooted walk
+with the first direction fixed, the count is `c_(N-1)/4`, where c_k is
+the published number of unrestricted k-step walks. This division removes
+only four initial rotations, **not reflection symmetry**.
+
+Reference: https://oeis.org/A001411 (Iwan Jensen and preceding work).
+The test rejects any disagreement with the published counts, so shared
+implementation mistakes in both custom enumerators have an additional
+external numerical check. This remains finite-sample validation.
