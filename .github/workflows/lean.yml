@@ -20,6 +20,10 @@ jobs:
         run: lake env lean FoldBounds/ExecutableTests.lean
       - name: Check concrete Lean HP lattice examples
         run: lake env lean FoldBounds/LatticeModelTests.lean
+      - name: Compare independent Python and Lean lattice semantics
+        env:
+          PYTHONPATH: src
+        run: python3 scripts/cross_language_diff.py
       - name: Audit headline theorem axioms
         run: |
           lake env lean FoldBounds/AxiomAudit.lean | tee /tmp/foldbounds-axioms.log
