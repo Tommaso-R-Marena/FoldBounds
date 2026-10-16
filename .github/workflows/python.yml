@@ -50,6 +50,9 @@ jobs:
       - name: Compare nested finite-memory transfer relaxations
         if: matrix.python-version == '3.11'
         run: python experiments/compare_memory_transfer.py
+      - name: Compare observed recent contact pruning
+        if: matrix.python-version == '3.11'
+        run: python experiments/compare_recent_contact_pruning.py
       - name: Exercise finite-memory transfer CLI
         run: python -m foldbounds HHHHHHHHHHHH --q 2 --enhanced-lookahead 0 --matching --transfer --transfer-memory 4 --monotone
       - name: Compare transfer and perimeter relaxations
