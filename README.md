@@ -52,6 +52,7 @@ Requires Python 3.11+:
     python experiments/compare_isoperimetric.py
     python experiments/compare_adaptive.py > adaptive_comparison.csv
     python experiments/compare_transfer.py > transfer_comparison.csv
+    python experiments/compare_memory_transfer.py > finite_memory_comparison.csv
     python experiments/compare_witnesses.py > witness_comparison.csv
     python experiments/scaling_witnesses.py > scaling_witnesses.csv
     python experiments/compare_monotone.py > monotone_comparison.csv
@@ -85,6 +86,14 @@ resulting interval bounds. Its auditable history retains previous checked
 frontiers to ensure reported intervals never widen. It also provides checked zero-completion terminal
 certificates for trapped conformations. These are software experiments, not
 claimed discoveries.
+
+The optional [finite-memory transfer hierarchy](docs/FINITE_MEMORY_TRANSFER.md)
+retains recent visited suffix sites and excludes progressively longer
+self-intersections while preserving every genuine fold in the relaxed
+counting model. Use `--transfer --transfer-memory 4` or 6; the
+backward-compatible default is memory 2. Larger memory can tighten
+upper bounds at greater computational cost. This is independently tested
+Python code, **not** a Lean proof or an originality claim.
 
 An optional [weighted prefix-obstacle transfer relaxation](docs/TRANSFER_RELAXATION.md)
 upper-bounds the Boltzmann mass with an exact-integer dynamic program
