@@ -89,3 +89,46 @@ speedup. This is a known kind of elementary perimeter/isoperimetric
 reasoning, not claimed as a novel scientific method or real-protein
 structure predictor. Published model-matched solver comparisons
 are still necessary before any publication/performance assertion.
+
+
+## Controlled first ablation: October 15–16, 2026
+
+Reproduce with `python experiments/compare_terminal_box.py`.
+GitHub Actions Python CI: https://github.com/Tommaso-R-Marena/FoldBounds/actions/runs/38847352439
+
+All three Python jobs passed; the Python 3.11 job reported 1,260 passing
+tests. Same sequence, q, event, frontier, matching, transfer memory,
+monotone-family lower mass and two-turn witnesses in each on/off pair.
+Only terminal endpoint conditioning differs.
+
+| Sequence | K | Z lower | Z upper without | Z upper with endpoint | Reduction | Wall ms off/on |
+|---|---:|---:|---:|---:|---:|---|
+| H^8 | 2 | 277 | 4,680 | 2,739 | 41.47% | 2.67 / 3.67 |
+| H^12 | 4 | 3,581 | 2,091,712 | 867,595 | 58.52% | 62.37 / 63.51 |
+| H^16 | 4 | 57,341 | 1,028,982,272 | 379,519,427 | 63.12% | 398.92 / 411.40 |
+| H^18 | 6 | 229,373 | 13,587,510,272 | 5,818,132,063 | 57.18% | 2996.83 / 3022.49 |
+
+All-H rows use q=2, event k>=1. The improvement includes reduced
+event and complement upper masses. Certified event-probability lower
+interval endpoint for H^18 improves from 64/1432787 (~0.0000447)
+to 65536/339615511 (~0.000193). This is still extremely small.
+The independently known exact H^8 partition Z=1,251 and event
+probability 1016/1251 lie inside the new enclosure.
+
+For mixed HPHHPHHPHHHH (q=3/2, event k>=2, K=4), Z upper fell
+from 23825907/64 (~372280) to 198529, while the same constructive
+event lower mass 459/8 was retained. Probability lower changed from
+8/39887 (~0.000201) to 1836/4423877 (~0.000415).
+
+For HHPHHHPHHH (q=2, event k>=2, K=4), Z upper changed from
+67,184 to 37,359; probability lower changed from 5/3618 to
+16/5851. The improvements remain insufficient for high-precision
+large-model probability prediction.
+
+**Negative interpretation:** A large reduction in conservative upper
+mass does not mean we found the exact partition function. The ratios
+of upper to lower Z are still large for most of these sequences, and
+even the improved probability intervals are generally near-vacuous.
+Runtime measurements are single-run cache/runner-sensitive wall times,
+not independent complexity laws or comparisons to published solvers.
+The Python implementation remains outside the Lean proof boundary.
