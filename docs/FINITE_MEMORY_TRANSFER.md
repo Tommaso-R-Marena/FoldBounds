@@ -68,3 +68,52 @@ without a standardized hardware and computational budget.
    interval endpoints satisfy an end-to-end theorem.
 
 No new mathematical novelty or real-protein accuracy is claimed.
+
+## Observed suffix-contact refinement (experimental branch)
+
+The transfer DP can additionally retain a *joint* integer histogram of
+(prefix-to-suffix H-H contacts, guaranteed short-range suffix-to-suffix
+H-H contacts). For a suffix index j, it observes contacts with earlier
+suffix indices i when 2 <= j-i <= K. These are precisely the pairs that
+are still visible in the bounded history while j is appended; each
+unordered pair is counted once. The K=2 baseline has no observable
+nonconsecutive suffix contacts, so it is backward compatible.
+
+For every **genuine** self-avoiding completion c, let k_fixed be the
+contacts wholly within the fixed prefix, k_cross those connecting prefix
+to suffix, and k_local the suffix contacts visible within memory K.
+Every true H-H contact belongs to only one of the three categories or
+to an unobserved suffix/suffix pair. Thus
+
+    k(c) >= k_fixed + k_cross + k_local.
+
+The ordinary transfer upper Boltzmann weight remains unchanged:
+the same (cross-conditioned) globally safe upper cap is used, so neither
+the partition upper nor the event upper is inflated. But for event
+A_t = {k(c) >= t}, **no genuine complement conformation** can satisfy
+k_fixed + k_cross + k_local >= t. Dropping such joint-DP coefficients
+from the complement upper sum is safe. The exact finite-memory DP
+still counts every genuine path in the relaxed set with multiplicity.
+
+Important: The number k_local is a lower contact-score witness **only**
+for actual self-avoiding walks. Invalid relaxed walks may be handled
+arbitrarily conservatively because they do not correspond to genuine
+conformations. It would be UNSOUND to replace the energy upper score
+with k_fixed+k_cross+k_local, which is merely a lower score. The
+implementation does not do that.
+
+This feature only *may* sharpen probability lower bounds; it does not
+change partition upper caps and does not directly sharpen event upper
+caps. It adds histogram dimensions and can increase runtime/memory.
+The independent differential tests enumerate relaxed trajectories
+without state aggregation, score complete coordinate lists from scratch,
+and test enclosure of every genuine short-model conformation.
+No Lean proof, large-model exact oracle, or novelty is asserted.
+
+Reproduce with:
+
+    python -m pytest tests/test_recent_contact_pruning.py
+    python -m pytest tests/test_transfer_memory.py
+
+The full-size performance and probability-width consequences need
+controlled benchmarking before claiming a practical algorithmic gain.
