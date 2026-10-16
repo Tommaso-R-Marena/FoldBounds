@@ -11,6 +11,7 @@ from functools import lru_cache
 from .matching import matching_score_cap
 from .transfer_bound import nonbacktracking_mass_upper
 from .monotone import monotone_family_mass
+from .turn_family import turn_family_mass
 from .witnesses import (WitnessCertificate, propose_dfs_witnesses,
                         verify_witness_certificate)
 from .lattice import (
@@ -109,7 +110,7 @@ def subtree(sequence: str, path: Path, pairs: tuple[tuple[int,int], ...],
             q: Fraction, threshold: int, horizon: int, use_matching: bool = False,
             use_perimeter: bool = True, use_transfer: bool = False,
             witness_nodes: int = 0, use_monotone: bool = False,
-            transfer_memory: int = 2) -> Mass:
+            transfer_memory: int = 2, use_turn_family: bool = False) -> Mass:
     n = len(sequence)
     if len(path) == n:
         score = _contacts(path, pairs)
@@ -132,6 +133,13 @@ def subtree(sequence: str, path: Path, pairs: tuple[tuple[int,int], ...],
         # These families overlap rays and possibly DFS: never add their masses.
         e_wit=max(e_wit,families.event)
         n_wit=max(n_wit,families.complement)
+    if use_turn_family:
+        turns=turn_family_mass(sequence,path,q,threshold)
+        # The low-turn family may overlap the monotone, ray and DFS
+        # families: independently sound lower bounds are intersected
+        # with max(), NEVER added without a disjointness proof.
+        e_wit=max(e_wit,turns.event)
+        n_wit=max(n_wit,turns.complement)
     if witness_nodes:
         proposal=propose_dfs_witnesses(path,n,node_budget=witness_nodes)
         checked=verify_witness_certificate(
@@ -143,7 +151,7 @@ def subtree(sequence: str, path: Path, pairs: tuple[tuple[int,int], ...],
     base = Mass(e_wit,e_up,n_wit,n_up,cap)
     if horizon == 0:
         return base
-    children = add([subtree(sequence,child,pairs,q,threshold,horizon-1,use_matching,use_perimeter,use_transfer,witness_nodes,use_monotone,transfer_memory)
+    children = add([subtree(sequence,child,pairs,q,threshold,horizon-1,use_matching,use_perimeter,use_transfer,witness_nodes,use_monotone,transfer_memory,use_turn_family)
                     for child in _neighbors(path)])
     # Intersect two sound enclosures, guaranteeing a nested bound hierarchy.
     return Mass(max(base.e_lo,children.e_lo),min(base.e_hi,children.e_hi),
@@ -155,7 +163,8 @@ def verify_lookahead(cert: Certificate, *, lookahead: int = 0,
                      use_matching: bool = False,
                      use_perimeter: bool = True, use_transfer: bool = False,
                      witness_nodes: int = 0, use_monotone: bool = False,
-                     transfer_memory: int = 2) -> VerifiedBounds:
+                     transfer_memory: int = 2,
+                     use_turn_family: bool = False) -> VerifiedBounds:
     """Independently check a complete frontier; return rational bounds.
 
     The frontier supplies paths, never trusted mass/energy numbers. Each
@@ -177,6 +186,8 @@ def verify_lookahead(cert: Certificate, *, lookahead: int = 0,
         raise ValueError('transfer_memory must be an integer in [2, 8]')
     if type(use_monotone) is not bool:
         raise ValueError('use_monotone must be a boolean')
+    if type(use_turn_family) is not bool:
+        raise ValueError('use_turn_family must be a boolean')
     if type(witness_nodes) is not int or witness_nodes < 0:
         raise ValueError('witness_nodes must be a nonnegative integer')
     if type(lookahead) is not int or lookahead < 0:
@@ -210,7 +221,7 @@ def verify_lookahead(cert: Certificate, *, lookahead: int = 0,
             seen.add(path)
             if nodes[path] == 'dead':
                 return  # Zero completions: checked by the validator above.
-            masses.append(subtree(cert.sequence,path,pairs,q,cert.event_at_least,lookahead,use_matching,use_perimeter,use_transfer,witness_nodes,use_monotone,transfer_memory))
+            masses.append(subtree(cert.sequence,path,pairs,q,cert.event_at_least,lookahead,use_matching,use_perimeter,use_transfer,witness_nodes,use_monotone,transfer_memory,use_turn_family))
             if len(path) == n:
                 exact_count += 1
             else:
