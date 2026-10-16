@@ -28,6 +28,7 @@ class TransferUpper:
     future_future_cap: int
     relaxed_walk_count: int
     coefficient_count: int
+    suffix_memory: int = 2
 
 
 def future_future_cap(sequence: str, prefix_len: int) -> int:
@@ -74,8 +75,62 @@ def relaxed_cross_spectrum(sequence: str, path: Path) -> tuple[tuple[int,int], .
     return tuple(sorted(histogram.items()))
 
 
+
+@lru_cache(maxsize=128)
+def recent_memory_cross_spectrum(
+        sequence: str, path: Path, suffix_memory: int
+) -> tuple[tuple[int, int], ...]:
+    """Count relaxed suffix walks with bounded recent-site self-avoidance.
+
+    Every fixed-prefix site is forbidden. Revisit of any of the last
+    suffix_memory visited sites is also forbidden. Genuine self-avoiding
+    completions always belong to this relaxed finite set.
+
+    The state stores only recent sites and exact prefix-to-suffix H-H
+    contact count, NOT the complete suffix. Exact integers count walks
+    with multiplicity. Memory 2 matches nonbacktracking behavior.
+
+    Nested relaxed sets R_(K+1) subset R_K imply that the partition
+    and event/complement mass upper bounds do not increase with K.
+    """
+    _check_sequence(sequence)
+    _validate_path(path, len(sequence))
+    if type(suffix_memory) is not int or not 2 <= suffix_memory <= 8:
+        raise ValueError("suffix_memory must be an integer in [2, 8]")
+    if suffix_memory == 2:
+        return relaxed_cross_spectrum(sequence, path)
+
+    fixed=frozenset(path)
+    n,m=len(sequence),len(path)
+    fixed_h=tuple((i,path[i]) for i in range(m) if sequence[i]=='H')
+    # State = (last up to suffix_memory visited sites, exact cross score).
+    states={(path[-1:],0):1}
+    for j in range(m,n):
+        next_states=defaultdict(int)
+        for (history,score),multiplicity in states.items():
+            x,y=history[-1]
+            for dx,dy in DIRECTIONS:
+                nxt=(x+dx,y+dy)
+                if nxt in fixed or nxt in history:
+                    continue
+                increment=0
+                if sequence[j]=='H':
+                    increment=sum(j-i>=2 and abs(nxt[0]-px)+abs(nxt[1]-py)==1
+                                  for i,(px,py) in fixed_h)
+                new_history=(history+(nxt,))[-suffix_memory:]
+                next_states[(new_history,score+increment)]+=multiplicity
+        states=next_states
+        if not states:
+            break
+
+    histogram=defaultdict(int)
+    for (_,score),multiplicity in states.items():
+        histogram[score]+=multiplicity
+    return tuple(sorted(histogram.items()))
+
 def nonbacktracking_mass_upper(sequence: str, path: Path, q: Fraction,
-                               event_at_least: int) -> TransferUpper:
+                               event_at_least: int,
+                               suffix_memory: int = 2) -> TransferUpper:
     """Sound (possibly loose) upper bounds on partition and event masses.
 
     For an actual extension: k_final = fixed + cross + futurefuture.
@@ -90,18 +145,21 @@ def nonbacktracking_mass_upper(sequence: str, path: Path, q: Fraction,
     _validate_path(path,len(sequence))
     if type(event_at_least) is not int:
         raise ValueError('event_at_least must be an integer')
+    if type(suffix_memory) is not int or not 2 <= suffix_memory <= 8:
+        raise ValueError('suffix_memory must be an integer in [2, 8]')
     n,m=len(sequence),len(path)
     pairs=_possible_hh_pairs(sequence)
     fixed_score=_contacts(path,pairs)
     if m==n:
         weight=q**fixed_score
         return TransferUpper(weight,weight if fixed_score>=event_at_least else Fraction(0),
-                             weight if fixed_score<event_at_least else Fraction(0),0,1,1)
+                             weight if fixed_score<event_at_least else Fraction(0),0,1,1,
+                             suffix_memory)
     flow_cap=future_future_cap(sequence,m)
     iso_cap=prefix_contact_cap(path,n)
     zhi=ehi=nhi=Fraction(0)
     count=0
-    spectrum=relaxed_cross_spectrum(sequence,path)
+    spectrum=recent_memory_cross_spectrum(sequence,path,suffix_memory)
     for cross,multiplicity in spectrum:
         # Every actual continuation has
         # futurefuture <= min(flow_cap, iso_cap-fixed_score-cross).
@@ -116,4 +174,4 @@ def nonbacktracking_mass_upper(sequence: str, path: Path, q: Fraction,
             ehi+=weight
         if fixed_score+cross<event_at_least:
             nhi+=weight
-    return TransferUpper(zhi,ehi,nhi,flow_cap,count,len(spectrum))
+    return TransferUpper(zhi,ehi,nhi,flow_cap,count,len(spectrum),suffix_memory)
