@@ -53,6 +53,11 @@ jobs:
       - name: Compare observed recent contact pruning
         if: matrix.python-version == '3.11'
         run: python experiments/compare_recent_contact_pruning.py
+      - name: Compare optional terminal conditioned upper bounds
+        if: matrix.python-version == '3.11'
+        run: python experiments/compare_terminal_box.py
+      - name: Exercise terminal box transfer CLI
+        run: python -m foldbounds HPHHPHHPHHHH --q 3/2 --event-at-least 2 --enhanced-lookahead 0 --matching --transfer --transfer-memory 4 --terminal-box --monotone --turn-family
       - name: Compare low-turn constructive witness families
         if: matrix.python-version == '3.11'
         run: python experiments/compare_turn_family.py

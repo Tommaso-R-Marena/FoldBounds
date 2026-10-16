@@ -47,6 +47,7 @@ class RefinementRun:
     use_monotone: bool
     transfer_memory: int
     use_turn_family: bool = False
+    terminal_box: bool = False
 
 
 
@@ -94,7 +95,8 @@ def verify_refinement_run(run: RefinementRun) -> VerifiedBounds:
                             witness_nodes=run.witness_nodes,
                             use_monotone=run.use_monotone,
                             transfer_memory=run.transfer_memory,
-                            use_turn_family=run.use_turn_family)
+                            use_turn_family=run.use_turn_family,
+                            terminal_box=run.terminal_box)
         result=raw if result is None else _intersect(result,raw)
         h=run.history[i]
         if (h.partition_lower!=result.partition_lower or
@@ -113,6 +115,7 @@ def adaptive_refine(cert: Certificate, *, steps: int, lookahead: int = 0,
                     witness_nodes: int = 0, use_monotone: bool = False,
                     transfer_memory: int = 2,
                     use_turn_family: bool = False,
+                    terminal_box: bool = False,
                     policy: Policy = 'probability') -> RefinementRun:
     """Refine at most steps nodes of a sound complete prefix frontier.
 
@@ -129,7 +132,8 @@ def adaptive_refine(cert: Certificate, *, steps: int, lookahead: int = 0,
     current=verify_lookahead(cert,lookahead=lookahead,use_matching=use_matching,use_transfer=use_transfer,
                              witness_nodes=witness_nodes,use_monotone=use_monotone,
                              transfer_memory=transfer_memory,
-                             use_turn_family=use_turn_family)
+                             use_turn_family=use_turn_family,
+                             terminal_box=terminal_box)
 
     def snapshot(step: int, chosen: Path | None) -> RefinementSnapshot:
         return RefinementSnapshot(step,chosen,current.bounded_subtrees,
@@ -150,18 +154,20 @@ def adaptive_refine(cert: Certificate, *, steps: int, lookahead: int = 0,
             next_bounds=verify_lookahead(next_cert,lookahead=lookahead,use_matching=use_matching,use_transfer=use_transfer,
                              witness_nodes=witness_nodes,use_monotone=use_monotone,
                              transfer_memory=transfer_memory,
-                             use_turn_family=use_turn_family)
+                             use_turn_family=use_turn_family,
+                             terminal_box=terminal_box)
         elif policy=='mass':
             def uncertainty(path: Path) -> Fraction:
                 m=subtree(cert.sequence,path,pairs,cert.q,cert.event_at_least,
-                          lookahead,use_matching,True,use_transfer,witness_nodes,use_monotone,transfer_memory,use_turn_family)
+                          lookahead,use_matching,True,use_transfer,witness_nodes,use_monotone,transfer_memory,use_turn_family,terminal_box)
                 return (m.e_hi-m.e_lo)+(m.n_hi-m.n_lo)
             chosen=min(available,key=lambda p:(-uncertainty(p),len(p),p))
             next_cert=refine_frontier(cert,chosen)
             next_bounds=verify_lookahead(next_cert,lookahead=lookahead,use_matching=use_matching,use_transfer=use_transfer,
                              witness_nodes=witness_nodes,use_monotone=use_monotone,
                              transfer_memory=transfer_memory,
-                             use_turn_family=use_turn_family)
+                             use_turn_family=use_turn_family,
+                             terminal_box=terminal_box)
         else:
             options=[]
             for path in available:
@@ -169,7 +175,8 @@ def adaptive_refine(cert: Certificate, *, steps: int, lookahead: int = 0,
                 bound=verify_lookahead(proposed,lookahead=lookahead,use_matching=use_matching,use_transfer=use_transfer,
                              witness_nodes=witness_nodes,use_monotone=use_monotone,
                              transfer_memory=transfer_memory,
-                             use_turn_family=use_turn_family)
+                             use_turn_family=use_turn_family,
+                             terminal_box=terminal_box)
                 combined=_intersect(current,bound)
                 key=(combined.probability_upper-combined.probability_lower,
                      combined.partition_upper-combined.partition_lower,len(path),path)
@@ -181,4 +188,4 @@ def adaptive_refine(cert: Certificate, *, steps: int, lookahead: int = 0,
         frontiers.append(cert)
         history.append(snapshot(step,chosen))
     return RefinementRun(cert,current,tuple(history),policy,tuple(frontiers),
-                         lookahead,use_matching,use_transfer,witness_nodes,use_monotone,transfer_memory,use_turn_family)
+                         lookahead,use_matching,use_transfer,witness_nodes,use_monotone,transfer_memory,use_turn_family,terminal_box)
