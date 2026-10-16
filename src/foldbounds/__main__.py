@@ -22,6 +22,8 @@ def main() -> None:
                         help="recent visited sites kept by transfer DP (2-8)")
     parser.add_argument("--transfer", action="store_true",
                         help="enable prefix-obstacle transfer upper bounds")
+    parser.add_argument("--terminal-box", action="store_true",
+                        help="condition transfer energy caps on each endpoint's enclosing box")
     parser.add_argument("--monotone", action="store_true",
                         help="count disjoint monotone completion families for lower mass")
     parser.add_argument("--turn-family", action="store_true",
@@ -42,6 +44,8 @@ def main() -> None:
         parser.error('--transfer-memory above 2 requires --transfer')
     if args.transfer and args.enhanced_lookahead is None and args.adaptive_steps is None:
         parser.error('--transfer requires --enhanced-lookahead or --adaptive-steps')
+    if args.terminal_box and not args.transfer:
+        parser.error('--terminal-box requires --transfer')
     if args.monotone and args.enhanced_lookahead is None and args.adaptive_steps is None:
         parser.error('--monotone requires --enhanced-lookahead or --adaptive-steps')
     if args.turn_family and args.enhanced_lookahead is None and args.adaptive_steps is None:
@@ -55,6 +59,7 @@ def main() -> None:
                            witness_nodes=args.witness_nodes,
                            use_monotone=args.monotone,
                            use_turn_family=args.turn_family,
+                           terminal_box=args.terminal_box,
                            transfer_memory=args.transfer_memory,
                            policy=args.adaptive_policy)
            if args.adaptive_steps is not None else None)
@@ -65,6 +70,7 @@ def main() -> None:
                                witness_nodes=args.witness_nodes,
                                use_monotone=args.monotone,
                                use_turn_family=args.turn_family,
+                               terminal_box=args.terminal_box,
                                transfer_memory=args.transfer_memory))
     out = {
         "model": "2D square-lattice HP self-avoiding walk, anchored first edge",
@@ -76,6 +82,7 @@ def main() -> None:
         "witness_nodes": args.witness_nodes,
         "monotone": args.monotone,
         "turn_family": args.turn_family,
+        "terminal_box": args.terminal_box,
         "sequence": args.sequence,
         "q": str(args.q),
         "event_at_least": args.event_at_least,
