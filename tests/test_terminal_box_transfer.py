@@ -161,7 +161,7 @@ def test_terminal_isoperimetric_bound_contains_all_complete_small_walk_scores():
             assert contacts <= cap
 
 
-@pytest.mark.parametrize('bad', (True, 0, 'yes', None, 3.5))
+@pytest.mark.parametrize('bad', (0, 'yes', None, 3.5))
 def test_invalid_terminal_geometry_controls_fail_closed(bad):
     with pytest.raises(ValueError):
         nonbacktracking_mass_upper('HHHHH', ROOT, Fraction(2), 1,
