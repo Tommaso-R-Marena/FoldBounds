@@ -47,6 +47,11 @@ jobs:
         run: python -m foldbounds HHHHHHHH --q 2 --enhanced-lookahead 0 --matching --transfer --witness-nodes 200
       - name: Exercise weighted transfer upper bound
         run: python -m foldbounds HHHHHHHH --q 2 --enhanced-lookahead 0 --matching --transfer
+      - name: Compare nested finite-memory transfer relaxations
+        if: matrix.python-version == '3.11'
+        run: python experiments/compare_memory_transfer.py
+      - name: Exercise finite-memory transfer CLI
+        run: python -m foldbounds HHHHHHHHHHHH --q 2 --enhanced-lookahead 0 --matching --transfer --transfer-memory 4 --monotone
       - name: Compare transfer and perimeter relaxations
         if: matrix.python-version == '3.11'
         run: python experiments/compare_transfer.py
