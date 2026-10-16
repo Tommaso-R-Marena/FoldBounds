@@ -54,10 +54,19 @@ Requires Python 3.11+:
     python experiments/compare_transfer.py > transfer_comparison.csv
     python experiments/compare_witnesses.py > witness_comparison.csv
     python experiments/scaling_witnesses.py > scaling_witnesses.csv
+    python experiments/compare_monotone.py > monotone_comparison.csv
+    python -m foldbounds HHHHHHHHHHHH --q 2 --enhanced-lookahead 0 --matching --transfer --monotone
     python -m foldbounds HHHHHHHH --q 2 --enhanced-lookahead 0 --matching --transfer
     python -m foldbounds HHHHHHHH --q 2 --adaptive-steps 12 --adaptive-policy probability --matching
     python -m foldbounds HHHHHHHH --q 2 --depth 2 --enhanced-lookahead 2 --matching
     python -m foldbounds HHHHHHHH --q 3/2 --depth 4 --event-at-least 1
+
+The optional [monotone-family lower-mass DP](docs/MONOTONE_FAMILY_LOWER_BOUNDS.md)
+counts four classes of guaranteed self-avoiding completions and subtracts
+their overlapping cardinal rays exactly. It computes exact rational
+event/complement *lower* masses without listing every completion within
+those restricted families. This is tested Python work, not yet a
+Lean-verified implementation or a novel polymer-counting claim.
 
 The optional enhanced lookahead checker uses geometric upper bounds, explicit
 full-length conformation witnesses, and nested one-step subtree refinements.

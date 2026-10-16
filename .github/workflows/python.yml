@@ -35,6 +35,11 @@ jobs:
       - name: Compare checked witness lower bounds
         if: matrix.python-version == '3.11'
         run: python experiments/compare_witnesses.py | tee witness_comparison.csv
+      - name: Compare constructive monotone-family lower mass
+        if: matrix.python-version == '3.11'
+        run: python experiments/compare_monotone.py
+      - name: Exercise monotone-family CLI
+        run: python -m foldbounds HHHHHHHHHHHH --q 2 --enhanced-lookahead 0 --matching --transfer --monotone
       - name: Probe larger conformational spaces without an exact oracle
         if: matrix.python-version == '3.11'
         run: python experiments/scaling_witnesses.py
