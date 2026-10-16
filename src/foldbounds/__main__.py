@@ -18,6 +18,8 @@ def main() -> None:
                         help="use witness/geometry bounds with N-step lookahead (N>=0)")
     parser.add_argument("--matching", action="store_true",
                         help="enable max-flow H-H contact cap (requires --enhanced-lookahead)")
+    parser.add_argument("--transfer-memory", type=int, default=2,
+                        help="recent visited sites kept by transfer DP (2-8)")
     parser.add_argument("--transfer", action="store_true",
                         help="enable prefix-obstacle transfer upper bounds")
     parser.add_argument("--monotone", action="store_true",
@@ -32,6 +34,10 @@ def main() -> None:
     args = parser.parse_args()
     if args.matching and args.enhanced_lookahead is None and args.adaptive_steps is None:
         parser.error('--matching requires --enhanced-lookahead')
+    if not 2 <= args.transfer_memory <= 8:
+        parser.error('--transfer-memory must be between 2 and 8')
+    if args.transfer_memory != 2 and not args.transfer:
+        parser.error('--transfer-memory above 2 requires --transfer')
     if args.transfer and args.enhanced_lookahead is None and args.adaptive_steps is None:
         parser.error('--transfer requires --enhanced-lookahead or --adaptive-steps')
     if args.monotone and args.enhanced_lookahead is None and args.adaptive_steps is None:
@@ -44,6 +50,7 @@ def main() -> None:
                            use_matching=args.matching,use_transfer=args.transfer,
                            witness_nodes=args.witness_nodes,
                            use_monotone=args.monotone,
+                           transfer_memory=args.transfer_memory,
                            policy=args.adaptive_policy)
            if args.adaptive_steps is not None else None)
     bounds = (run.bounds if run is not None else
@@ -51,13 +58,15 @@ def main() -> None:
               verify_lookahead(cert,lookahead=args.enhanced_lookahead,
                                use_matching=args.matching,use_transfer=args.transfer,
                                witness_nodes=args.witness_nodes,
-                               use_monotone=args.monotone))
+                               use_monotone=args.monotone,
+                               transfer_memory=args.transfer_memory))
     out = {
         "model": "2D square-lattice HP self-avoiding walk, anchored first edge",
         "method": "baseline" if args.enhanced_lookahead is None else "geometric-witness-lookahead",
         "enhanced_lookahead": args.enhanced_lookahead,
         "matching": args.matching,
         "transfer": args.transfer,
+        "transfer_memory": args.transfer_memory,
         "witness_nodes": args.witness_nodes,
         "monotone": args.monotone,
         "sequence": args.sequence,
