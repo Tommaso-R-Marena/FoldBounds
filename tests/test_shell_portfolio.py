@@ -107,3 +107,20 @@ def test_invalid_and_adversarial_cover_rejected():
         optimize_shell_portfolio(seq,ROOT,Fraction(2),1,leaf_budget=5,max_core_length=True)
     with pytest.raises(ValueError):
         optimize_shell_portfolio(seq,ROOT,Fraction(2),True,leaf_budget=5,max_core_length=5)
+
+
+def test_independent_complete_twelve_residue_oracle_for_25_leaf_optimum():
+    """All 30,073 canonical n=12 SAWs, rescored without portfolio shortcuts."""
+    seq='HPHHPHHPHHHH'; q=Fraction(3,2); t=2
+    opt=optimize_shell_portfolio(seq,ROOT,q,t,
+                                  leaf_budget=25,max_core_length=9,
+                                  objective='event')
+    walks=complete_walks(len(seq))
+    assert len(walks)==30073
+    chosen=[p for p in walks if any(selected(p,leaf)
+                                    for leaf in opt.certificate.leaves)]
+    event=sum((q**contact(seq,p) for p in chosen if contact(seq,p)>=t),Fraction(0))
+    other=sum((q**contact(seq,p) for p in chosen if contact(seq,p)<t),Fraction(0))
+    assert (len(chosen),event,other)==(4510,Fraction(4455,4),Fraction(4464))
+    assert (opt.mass.distinct_paths,opt.mass.event,opt.mass.complement)==(
+        len(chosen),event,other)
