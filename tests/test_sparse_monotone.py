@@ -158,3 +158,15 @@ def test_turn_union_mode_requires_boolean(bad):
     good=SparseMonotoneCertificate('HHHHHH',ROOT,Fraction(2),1,(),bad)
     with pytest.raises(ValueError):
         verify_sparse_monotone(good)
+
+def test_compact_length_64_exact_restricted_family_mass():
+    # Regression for huge non-enumerated family; not an independent full 64-mer
+    # enumeration oracle. Mathematical soundness is tested independently at
+    # smaller lengths, and the formula counts exactly this restricted family.
+    p=optimize_sparse_monotone('H'*64,ROOT,Fraction(2),1,
+                               leaf_budget=25,max_core_length=6)
+    assert p.candidate_prefixes==109
+    assert p.mass.leaf_count==25
+    assert p.mass.distinct_paths==20032011142543966146
+    assert p.mass.event==66437101702969556806
+    assert p.mass.complement==2882303761517117437
