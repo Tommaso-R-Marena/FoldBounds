@@ -36,6 +36,8 @@ def main() -> None:
                         help="max number of leaves in each optimized verified shell-portfolio")
     parser.add_argument("--portfolio-max-depth", type=int, default=None,
                         help="maximum core depth explored by exact portfolio tree-knapsack")
+    parser.add_argument("--coupled-polytope", action="store_true",
+                        help="optimize joint event, complement, and total mass intervals exactly")
     parser.add_argument("--witness-nodes", type=int, default=0,
                         help="DFS node budget per bounded subtree for checked lower mass")
     parser.add_argument("--adaptive-steps", type=int, default=None,
@@ -89,6 +91,7 @@ def main() -> None:
                            terminal_box=args.terminal_box,
                            shell_core=args.shell_core,
                            shell_portfolios=portfolio_certificates,
+                           use_coupled_polytope=args.coupled_polytope,
                            transfer_memory=args.transfer_memory,
                            policy=args.adaptive_policy)
            if args.adaptive_steps is not None else None)
@@ -102,6 +105,7 @@ def main() -> None:
                                terminal_box=args.terminal_box,
                                shell_core=args.shell_core,
                                shell_portfolios=portfolio_certificates,
+                               use_coupled_polytope=args.coupled_polytope,
                                transfer_memory=args.transfer_memory))
     out = {
         "model": "2D square-lattice HP self-avoiding walk, anchored first edge",
@@ -115,6 +119,7 @@ def main() -> None:
         "turn_family": args.turn_family,
         "shell_core": args.shell_core,
         "portfolio_leaves": args.portfolio_leaves,
+        "coupled_polytope": args.coupled_polytope,
         "portfolio_max_depth": args.portfolio_max_depth,
         "portfolio_certificates": [dict(objective=p.objective,leaf_count=p.mass.leaf_count,
                                         candidate_prefixes=p.candidate_nodes,

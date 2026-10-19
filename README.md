@@ -63,6 +63,15 @@ Requires Python 3.11+:
     python -m foldbounds HHHHHHHH --q 2 --depth 2 --enhanced-lookahead 2 --matching
     python -m foldbounds HHHHHHHH --q 3/2 --depth 4 --event-at-least 1
 
+An optional [sharp coupled mass probability envelope](docs/COUPLED_MASS_POLYTOPE.md)
+uses the mathematical equality `Z=Z(event)+Z(complement)` to exactly
+optimize the event probability over the jointly certified event,
+complement, and partition mass intervals. Use `--coupled-polytope`
+with enhanced lookahead or adaptive refinement. This is an algebraic
+postprocessor which cannot widen sound existing intervals; it neither
+changes the physical model nor verifies the separate Python search
+algorithms. It is currently tested Python mathematics, not a Lean theorem.
+
 An optional [exactly optimized, certificate-budgeted shell portfolio](docs/OPTIMAL_SHELL_PORTFOLIO.md)
 uses a tree-knapsack over bounded-length self-avoiding prefixes to select a
 **prefix-free antichain** of nonoverlapping extremal-quadrant continuation
