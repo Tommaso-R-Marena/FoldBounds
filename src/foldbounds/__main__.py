@@ -28,6 +28,8 @@ def main() -> None:
                         help="count disjoint monotone completion families for lower mass")
     parser.add_argument("--turn-family", action="store_true",
                         help="count checked self-avoiding suffixes with at most two turns")
+    parser.add_argument("--shell-core", type=int, default=None,
+                        help="exact lower mass from disjoint extremal monotone shells rooted at this core length")
     parser.add_argument("--witness-nodes", type=int, default=0,
                         help="DFS node budget per bounded subtree for checked lower mass")
     parser.add_argument("--adaptive-steps", type=int, default=None,
@@ -50,6 +52,10 @@ def main() -> None:
         parser.error('--monotone requires --enhanced-lookahead or --adaptive-steps')
     if args.turn_family and args.enhanced_lookahead is None and args.adaptive_steps is None:
         parser.error('--turn-family requires --enhanced-lookahead or --adaptive-steps')
+    if args.shell_core is not None and not 2 <= args.shell_core <= len(args.sequence):
+        parser.error('--shell-core must lie between 2 and the sequence length')
+    if args.shell_core is not None and args.enhanced_lookahead is None and args.adaptive_steps is None:
+        parser.error('--shell-core requires --enhanced-lookahead or --adaptive-steps')
     if args.witness_nodes and args.enhanced_lookahead is None and args.adaptive_steps is None:
         parser.error('--witness-nodes requires --enhanced-lookahead or --adaptive-steps')
     cert = build_frontier(args.sequence, args.q, args.event_at_least, args.depth)
@@ -60,6 +66,7 @@ def main() -> None:
                            use_monotone=args.monotone,
                            use_turn_family=args.turn_family,
                            terminal_box=args.terminal_box,
+                           shell_core=args.shell_core,
                            transfer_memory=args.transfer_memory,
                            policy=args.adaptive_policy)
            if args.adaptive_steps is not None else None)
@@ -71,6 +78,7 @@ def main() -> None:
                                use_monotone=args.monotone,
                                use_turn_family=args.turn_family,
                                terminal_box=args.terminal_box,
+                               shell_core=args.shell_core,
                                transfer_memory=args.transfer_memory))
     out = {
         "model": "2D square-lattice HP self-avoiding walk, anchored first edge",
@@ -82,6 +90,7 @@ def main() -> None:
         "witness_nodes": args.witness_nodes,
         "monotone": args.monotone,
         "turn_family": args.turn_family,
+        "shell_core": args.shell_core,
         "terminal_box": args.terminal_box,
         "sequence": args.sequence,
         "q": str(args.q),
