@@ -103,3 +103,50 @@ theorem; the file parser and compiled binary also retain their independent
 trust boundaries. Prior-art novelty, practical large-system interval
 sharpness, real-protein predictive validity, and mathematical scaling against
 state-of-the-art lattice-polymer transfer-matrix methods are unresolved.
+
+
+## Stronger optional exact union: nonmonotone paths with at most two turns
+
+The optional `--sparse-turn-union` mode expands each monotone restricted
+family by adding genuinely **nonmonotone** self-avoiding suffix direction
+words having at most two direction changes. Their complete coordinates and
+contact scores are recomputed exactly. These extra words are disjoint from
+the monotone family by construction: if all suffix moves lie in any one
+non-opposing cardinal quadrant, the path is already included in the
+monotone DP, so it is excluded from the extra enumeration.
+
+For fixed maximum turn count 2, every suffix direction word has at most
+three constant-direction blocks. Distinct positive block-length
+compositions and adjacent-unequal block directions uniquely represent
+all words in this restricted class. There are at most
+
+    4 * [1 + 3*(r-1) + 9*(r-1)*(r-2)/2]
+
+candidate words for suffix length r >= 2, hence the supplementary union
+can be computed by a polynomial-size restricted enumeration. This is a
+restricted-family algorithm, not global polynomial-time HP folding.
+
+For event threshold 2, matched leaf budget 25, the stronger optional union
+achieves these exact rational event lower masses:
+
+| Sequence | q | Previous complete portfolio | Sparse monotone | Sparse monotone + nonmonotone <=2-turn |
+|---|---|---:|---:|---:|
+| HPHHPHHPHHHH | 3/2 | 1113.75 | 3071.53125 | **71631/16 = 4476.9375** |
+| H^12 | 2 | 2848 | 13024 | **20840** |
+| H^16 | 2 | 46048 | 214624 | **275300** (max core depth 8) |
+
+For the mixed 12-mer, the 25-leaf union certificate at maximum core depth
+8 selects 2,876 distinct complete SAWs, with event mass 71631/16 and
+complement mass 1746. An independent oracle exhaustively enumerates every
+one of the 30,073 anchored complete conformations and checks exact
+restricted-membership, scores, multiplicities, and rational masses.
+
+At this budget and sequence, maximum core depth 7 already yields the same
+union event optimum. Deeper optimization does not increase it for depths 8
+and 9 in this tested case, while requiring more candidate exploration.
+
+Like the base sparse method, this adds lower masses only. The independent
+checker validates the versioned mode flag, recomputes exact restricted
+weights, and never accepts a claimed mass from the untrusted optimizer.
+Mixed overlapping lower-bound certificates are combined using max, not sum.
+This extension is still Python-tested, not Lean-formally checked.
