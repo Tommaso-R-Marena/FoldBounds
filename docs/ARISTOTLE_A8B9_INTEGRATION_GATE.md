@@ -1,16 +1,16 @@
 # Aristotle a8b9ef96 integration gate
 
-**Status:** PRE-IMPORT / SOURCE INCOMPLETE. This document records independent integration checks; it is not an endorsement or an alternative to running the Lean kernel.
+**Status:** Complete source overlay imported into a private-to-PR staging branch, pending independent integrated CI. Source availability alone is not formal verification.
 
 ## Branch and provenance
 
 Integration target: `integration/aristotle-frontier-a8b9ef96`, created from `main` commit `e373a422eb785f5cb69163b0e114343b150abf08`. Aristotle run ID: `a8b9ef96-c289-471a-b7fc-f8a7cea9be37`.
 
-The supplied `aristotle.tar.gz` includes the reports, old project snapshot, and recorded logs, but **omits** the new proof modules, `lean_export.py`, `scripts/foldcheck.lean`, differential scripts, and `FrontierTests.lean`. The archive contains 14 top-level Lean source files and the original 50-item `AxiomAudit.lean`, whereas the report claims 26 Lean modules and 117 audited theorems. Logs are not a substitute for sources. Do not merge until the actual sources have been imported and independently checked.
+The **first** Aristotle archive lacked the new proof modules. The **second** supplied integration bundle contains all 35 listed source/report files, with every SHA-256 matching the upstream manifest. All 12 new proof modules, source imports, the expanded 117-theorem audit, foldcheck runner, exporter and experiments have now been imported onto the dedicated staging branch. Existing Python research modules were preserved. Actual kernel and cross-language CI on the integrated GitHub tree is still required before PR #26 can be merged. Full upstream digests are in `docs/ARISTOTLE_A8B9_SOURCE_MANIFEST.md`.
 
-## Required proof source intake
+## Source intake: imported on staging, awaiting integrated verification
 
-Obtain the actual contents of these 12 new files:
+The following 12 new files were imported verbatim from the verified Aristotle overlay:
 
 - `FoldBounds/LatticeEquivalence.lean`
 - `FoldBounds/LatticeContacts.lean`
@@ -25,7 +25,7 @@ Obtain the actual contents of these 12 new files:
 - `FoldBounds/FrontierCLI.lean`
 - `FoldBounds/FrontierTests.lean`
 
-Also import the updated `FoldBounds.lean`, `FoldBounds/LatticeModel.lean`, `FoldBounds/AxiomAudit.lean`, `lakefile.toml` (foldcheck target), `scripts/foldcheck.lean`, `src/foldbounds/lean_export.py`, `tests/test_lean_export.py`, `experiments/lean_differential.py`, `experiments/lean_frontier_benchmark.py`, source audit updates, and applicable report files. Inspect exact directory names before assuming these are exhaustive. Preserve all current main files, including `src/foldbounds/monotone.py`, `turn_family.py`, `transfer_bound.py`, and `docs/TERMINAL_BOX_TRANSFER.md`.
+The updated `FoldBounds.lean`, `FoldBounds/AxiomAudit.lean`, `lakefile.toml` and existing README were merged with `main` rather than blindly replaced. `FoldBounds/LatticeModel.lean` and `scripts/check_lean_sources.py` matched the existing branch and were preserved unchanged. The compiled runner, exporter, experiments, reports, and tests were added. Current `main` Python methods, including `monotone.py`, `turn_family.py`, `transfer_bound.py` and `docs/TERMINAL_BOX_TRANSFER.md`, were left intact. Verify these facts again from the final PR diff before merging.
 
 ## Required build and assurance gates
 
@@ -47,4 +47,4 @@ Also import the updated `FoldBounds.lean`, `FoldBounds/LatticeModel.lean`, `Fold
 
 ## Merge protocol
 
-Prepare a cohesive PR from this branch to `main`. Avoid blanket overwriting Python sources with Aristotle's earlier snapshot, force pushing, recreating the branch from an old commit, or merging without all CI gates and a careful diff. Update outdated README/formal assurance statements only after verifying source and CI. 
+The source staging branch will first be merged via a dedicated PR into the existing `integration/aristotle-frontier-a8b9ef96` branch, then PR #26 will remain draft against `main` until final CI and review. Do not force push, overwrite Python research modules, or merge to `main` without every substantive gate. The README and assurance map now identify both the proved frontier checker and the unproved Python integration boundaries. 

@@ -11,3 +11,14 @@ public import FoldBounds.Optimality
 public import FoldBounds.Variational
 public import FoldBounds.Executable
 public import FoldBounds.LatticeModel
+public import FoldBounds.LatticeEquivalence
+public import FoldBounds.LatticeContacts
+public import FoldBounds.Frontier
+public import FoldBounds.FrontierDegree
+public import FoldBounds.FrontierFamily
+public import FoldBounds.Transfer
+public import FoldBounds.FrontierCheck
+public import FoldBounds.FrontierSoundness
+public import FoldBounds.FrontierPartition
+public import FoldBounds.FrontierFlat
+public import FoldBounds.FrontierCLI

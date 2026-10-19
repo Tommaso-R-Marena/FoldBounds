@@ -1,0 +1,25 @@
+semantics HH: 1 conformations, spectrum {0: 1} -> OK
+semantics HP: 1 conformations, spectrum {0: 1} -> OK
+semantics HHH: 3 conformations, spectrum {0: 3} -> OK
+semantics HHHH: 9 conformations, spectrum {0: 7, 1: 2} -> OK
+semantics HPPH: 9 conformations, spectrum {0: 7, 1: 2} -> OK
+semantics PPPPP: 25 conformations, spectrum {0: 25} -> OK
+semantics HHHHH: 25 conformations, spectrum {0: 17, 1: 8} -> OK
+semantics HPHPH: 25 conformations, spectrum {0: 25} -> OK
+semantics HHPHH: 25 conformations, spectrum {0: 17, 1: 8} -> OK
+semantics HPHPHH: 71 conformations, spectrum {0: 55, 1: 14, 2: 2} -> OK
+semantics HHHHHH: 71 conformations, spectrum {0: 41, 1: 22, 2: 8} -> OK
+semantics PHHPHP: 71 conformations, spectrum {0: 63, 1: 8} -> OK
+semantics HPHPHPH: 195 conformations, spectrum {0: 195} -> OK
+semantics HHPPHHP: 195 conformations, spectrum {0: 167, 1: 24, 2: 4} -> OK
+semantics HHHHHHH: 195 conformations, spectrum {0: 99, 1: 64, 2: 32} -> OK
+semantics HPPHHPPH: 543 conformations, spectrum {0: 357, 1: 162, 2: 22, 3: 2} -> OK
+semantics HHHHHHHH: 543 conformations, spectrum {0: 235, 1: 184, 2: 86, 3: 38} -> OK
+semantics PPPPPPPP: 543 conformations, spectrum {0: 543} -> OK
+certificates: 2160 Lean checks (88.6s wall incl. startup), 0 failures
+adversarial: 51 mutated certificates, 0 accepted
+TOTAL PROBLEMS: 0
+
+real	4m7.039s
+user	3m17.820s
+sys	0m58.200s
