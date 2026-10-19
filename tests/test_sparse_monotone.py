@@ -106,3 +106,55 @@ def test_more_budget_never_weakens_event_lower():
     b=optimize_sparse_monotone(**kw,leaf_budget=25)
     assert a.mass.event<=b.mass.event
     assert b.mass.event>Fraction(4455,4)
+
+def independent_turn_union_member(full,leaf):
+    if full[:len(leaf)]!=leaf:
+        return False
+    moves=tuple((full[j][0]-full[j-1][0],full[j][1]-full[j-1][1])
+                for j in range(len(leaf),len(full)))
+    is_monotone=any(set(moves)<=cone for cone in CONES)
+    two_turns=sum(a!=b for a,b in zip(moves,moves[1:]))<=2
+    return is_monotone or two_turns
+
+def independent_turn_union_mass(cert):
+    event=complement=Fraction(0)
+    count=0
+    for full in all_walks(len(cert.sequence)):
+        if not any(independent_turn_union_member(full,p) for p in cert.leaves):
+            continue
+        k=sum(cert.sequence[i]=='H' and cert.sequence[j]=='H'
+              and abs(full[i][0]-full[j][0])+abs(full[i][1]-full[j][1])==1
+              for i in range(len(full)) for j in range(i+2,len(full)))
+        weight=cert.q**k
+        if k>=cert.event_at_least:event+=weight
+        else:complement+=weight
+        count+=1
+    return event,complement,count
+
+def test_full_mixed_twelve_mer_two_turn_union_25_leaf_oracle():
+    seq='HPHHPHHPHHHH';q=Fraction(3,2)
+    plan=optimize_sparse_monotone(seq,ROOT,q,2,leaf_budget=25,
+                                  max_core_length=8,include_nonmonotone_turns=True)
+    assert plan.mass.event==Fraction(71631,16)
+    assert plan.mass.complement==Fraction(1746)
+    assert plan.mass.distinct_paths==2876
+    assert (plan.mass.event,plan.mass.complement,plan.mass.distinct_paths)==independent_turn_union_mass(plan.certificate)
+
+def test_turn_union_optimum_dominates_monotone_only_at_same_budget():
+    kw=dict(sequence='HPHHPHHPHHHH',prefix=ROOT,q=Fraction(3,2),
+            event_at_least=2,leaf_budget=25,max_core_length=8)
+    plain=optimize_sparse_monotone(**kw)
+    expanded=optimize_sparse_monotone(**kw,include_nonmonotone_turns=True)
+    assert expanded.mass.event>plain.mass.event
+    assert plain.mass.event==Fraction(98289,32)
+    assert expanded.mass.event==Fraction(71631,16)
+
+@pytest.mark.parametrize('bad',[0,1,None,'true'])
+def test_turn_union_mode_requires_boolean(bad):
+    kw=dict(sequence='HHHHHH',prefix=ROOT,q=Fraction(2),
+            event_at_least=1,leaf_budget=2,max_core_length=4)
+    with pytest.raises(ValueError):
+        optimize_sparse_monotone(**kw,include_nonmonotone_turns=bad)
+    good=SparseMonotoneCertificate('HHHHHH',ROOT,Fraction(2),1,(),bad)
+    with pytest.raises(ValueError):
+        verify_sparse_monotone(good)
