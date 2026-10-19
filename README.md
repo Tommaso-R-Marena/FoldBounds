@@ -71,6 +71,8 @@ checked selected families are real self-avoiding completions with pairwise
 disjoint prefix paths. The optional `--sparse-leaves 25 --sparse-max-depth 9`
 mode improves event lower mass at equal leaf entry budgets, but searches
 far more candidate prefixes than its final certificate contains.
+The optional `--sparse-turn-union` adds nonmonotone at-most-two-turn
+completions with explicit self-avoidance checks and exact overlap subtraction.
 The optimizer and checker are **Python-tested research**, not Lean-verified.
 
 An optional [sharp coupled mass probability envelope](docs/COUPLED_MASS_POLYTOPE.md)
