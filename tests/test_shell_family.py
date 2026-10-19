@@ -117,3 +117,18 @@ def test_cached_calls_do_not_bypass_type_validation():
         extremal_shell_mass('H'*8,ROOT,Fraction(2),True,core_length=5)
     with pytest.raises(ValueError):
         extremal_shell_mass('H'*8,ROOT,Fraction(2),1,core_length=True)
+
+
+@pytest.mark.parametrize('sequence,threshold', [
+    ('H'*10,1),('H'*10,2),('HPHHPHHPHH',1),('HPHHPHHPHH',2),('P'*10,1),
+])
+def test_fixed_core_refinement_monotone_for_both_disjoint_event_classes(sequence,threshold):
+    previous=None
+    for core_length in range(2,len(sequence)+1):
+        actual=extremal_shell_mass(sequence,ROOT,Fraction(3,2),threshold,
+                                   core_length=core_length)
+        if previous is not None:
+            assert actual.event>=previous.event
+            assert actual.complement>=previous.complement
+            assert actual.distinct_paths>=previous.distinct_paths
+        previous=actual
