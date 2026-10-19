@@ -171,3 +171,32 @@ or even a nonvacuous upper bound. They demonstrate that the restricted-family
 certificate can encode and check many true conformations without enumerating
 individual completed walks. Exhaustive 64-mer comparison is not feasible
 here; independent complete-state oracles apply only to much shorter chains.
+
+
+## High-coverage restricted certificates using 200 leaves
+
+The leaf budget is a tunable certificate-size constraint, not a global
+computational cost. In the mixed 12-mer with q=3/2, event threshold 2, maximum
+core depth 8, and an event-focused 200-leaf union certificate:
+
+- True event mass (from independent exhaustive full 12-mer enumeration): 23166.
+- Restricted-family event lower mass: **421407/32 = 13168.96875**,
+  approximately **56.85%** of the true event mass.
+- The certificate covers **10,824 distinct valid completed walks**.
+- The separate complement-optimizing 200-leaf union certificate has
+  independently checked complement lower mass **19426**.
+- Both certificates' complete restricted memberships and rational weights
+  are checked against an independently implemented enumeration of all
+  **30,073** anchored 12-mer conformations.
+
+Unlike the previous same-budget 25-leaf comparisons, this is **not** a
+matched-budget comparison with the fixed-core depth-10 shell containing
+thousands of enumerated prefix seeds. Its purpose is to measure how much
+of the exact event mass the compressed restricted family can capture.
+The complete upper-mass algorithm is unchanged. An additional controlled
+experiment combines these lower bounds with the best existing optional
+endpoint-conditioned transfer bounds and reports the resulting probability
+interval and its exact small-ensemble oracle.
+
+Even 56.85% of the true event weighted mass is not a probability estimate:
+to infer population, one must still bound the complementary mass above.
