@@ -150,3 +150,24 @@ checker validates the versioned mode flag, recomputes exact restricted
 weights, and never accepts a claimed mass from the untrusted optimizer.
 Mixed overlapping lower-bound certificates are combined using max, not sum.
 This extension is still Python-tested, not Lean-formally checked.
+
+
+## Large-n compression demonstration (not a full partition solution)
+
+For an all-hydrophobic 64-residue chain with `q=2`, event threshold
+one H-H contact, budget 25 leaves and max core length 6:
+
+- Prefix nodes examined by the untrusted proposer: **109**.
+- Selected restricted-family certificate leaves: **25**.
+- **20,032,011,142,543,966,146** distinct full-length SAWs represented.
+- Exact *restricted-family* event mass: **66,437,101,702,969,556,806**.
+- Exact *restricted-family* complement mass: **2,882,303,761,517,117,437**.
+- Example local reference run: approximately **2.6 seconds** to plan and
+  independently recheck the restricted family using exact big-integer
+  arithmetic.
+
+Those are not the exact 64-mer total partition function, event probability,
+or even a nonvacuous upper bound. They demonstrate that the restricted-family
+certificate can encode and check many true conformations without enumerating
+individual completed walks. Exhaustive 64-mer comparison is not feasible
+here; independent complete-state oracles apply only to much shorter chains.
