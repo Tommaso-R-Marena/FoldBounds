@@ -58,6 +58,11 @@ jobs:
         run: python experiments/compare_terminal_box.py
       - name: Exercise terminal box transfer CLI
         run: python -m foldbounds HPHHPHHPHHHH --q 3/2 --event-at-least 2 --enhanced-lookahead 0 --matching --transfer --transfer-memory 4 --terminal-box --monotone --turn-family
+      - name: Compare exact joint mass polytope against original probability intervals
+        if: matrix.python-version == '3.11'
+        run: python experiments/compare_coupled_polytope.py
+      - name: Exercise optional sharp coupled probability bounds
+        run: python -m foldbounds HPHHPHHPHHHH --q 3/2 --event-at-least 2 --enhanced-lookahead 0 --matching --transfer --turn-family --monotone --coupled-polytope
       - name: Compare exact optimal prefix-antichain certificates against fixed-depth shells
         if: matrix.python-version == '3.11'
         run: python experiments/compare_shell_portfolio.py
