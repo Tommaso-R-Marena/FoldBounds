@@ -89,3 +89,18 @@ upper bounds, particularly the complement upper mass. Exact small-model
 oracle verification is a software test, not a Lean proof of the Python
 implementation. Literature novelty and competitive performance remain
 unverified.
+
+## Monotonicity under core-depth refinement
+
+The selected *full-path* shell sets satisfy `F_m ⊆ F_{m+1}` for
+`2 <= m < n`, with identical sequence and starting prefix. To see this,
+consider a complete monotone suffix in `F_m`. Its first appended point
+lies in the same signed outward quadrant, and has potential strictly
+higher than all sites in the previous core. Therefore the newly extended
+`(m+1)`-vertex core has an extreme terminal point for that same signed
+potential, and its remaining suffix is still quadrant-monotone. This
+places the full conformation in `F_{m+1}`. Consequently, **both the event
+and complement exact restricted-family masses are nondecreasing in m**,
+for any fixed positive q. We test this property independently. It does
+not mean increasing m is computationally cheap: core enumeration still
+grows exponentially, and choosing `m=n` performs full enumeration.
