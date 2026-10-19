@@ -13,6 +13,7 @@ from .transfer_bound import nonbacktracking_mass_upper
 from .monotone import monotone_family_mass
 from .turn_family import turn_family_mass
 from .shell_family import extremal_shell_mass
+from .shell_portfolio import PortfolioCertificate, verify_shell_portfolio
 from .witnesses import (WitnessCertificate, propose_dfs_witnesses,
                         verify_witness_certificate)
 from .lattice import (
@@ -169,7 +170,8 @@ def verify_lookahead(cert: Certificate, *, lookahead: int = 0,
                      transfer_memory: int = 2,
                      use_turn_family: bool = False,
                      terminal_box: bool = False,
-                     shell_core: int | None = None) -> VerifiedBounds:
+                     shell_core: int | None = None,
+                     shell_portfolios: tuple[PortfolioCertificate, ...] = ()) -> VerifiedBounds:
     """Independently check a complete frontier; return rational bounds.
 
     The frontier supplies paths, never trusted mass/energy numbers. Each
@@ -204,6 +206,8 @@ def verify_lookahead(cert: Certificate, *, lookahead: int = 0,
     n = len(cert.sequence)
     if shell_core is not None and (type(shell_core) is not int or not 2 <= shell_core <= n):
         raise ValueError('shell_core must be an integer in [2, sequence length] or None')
+    if type(shell_portfolios) is not tuple:
+        raise ValueError('shell_portfolios must be a tuple of untrusted portfolio certificates')
     pairs = _possible_hh_pairs(cert.sequence)
     nodes: dict[Path,str] = {}
     prefixes: set[Path] = set()
@@ -249,6 +253,17 @@ def verify_lookahead(cert: Certificate, *, lookahead: int = 0,
         raise CertificateError('shadowed nodes')
     total = add(masses)
     elo,ehi,nlo,nhi = total.e_lo,total.e_hi,total.n_lo,total.n_hi
+    for portfolio in shell_portfolios:
+        if (not isinstance(portfolio,PortfolioCertificate) or
+            portfolio.sequence!=cert.sequence or portfolio.q!=q or
+            portfolio.event_at_least!=cert.event_at_least or
+            portfolio.prefix!=ROOT):
+            raise CertificateError('portfolio parameters or canonical root mismatch')
+        checked = verify_shell_portfolio(portfolio)
+        # Overlapping portfolios cannot be summed in the SAME event class.
+        # Lower event/complement masses are intersected via max.
+        elo=max(elo,checked.event)
+        nlo=max(nlo,checked.complement)
     if shell_core is not None:
         # Every complete conformation has a unique fixed-length core.
         # Shell families within each core are disjoint after subtracting
