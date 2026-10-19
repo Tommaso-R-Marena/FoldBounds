@@ -1,0 +1,55 @@
+          HHHHHHHHHH d=2 thr=2  B nodes=    1 bytes=     66 verify_ms=0 Z=[0, 4.3e+08] P=[0, 1] exactZ=1.332e+04 encl=True
+          HHHHHHHHHH d=2 thr=2  T nodes=    1 bytes=     66 verify_ms=48 Z=[0, 4.603e+06] P=[0, 1] exactZ=1.332e+04 encl=True
+          HHHHHHHHHH d=2 thr=2 TW nodes=    1 bytes=    381 verify_ms=55 Z=[50, 4.586e+06] P=[2.659e-06, 1] exactZ=1.332e+04 encl=True
+          HHHHHHHHHH d=4 thr=2  B nodes=    9 bytes=    107 verify_ms=1 Z=[0, 2.628e+08] P=[0, 1] exactZ=1.332e+04 encl=True
+          HHHHHHHHHH d=4 thr=2  T nodes=    9 bytes=    107 verify_ms=152 Z=[0, 1.656e+05] P=[0, 1] exactZ=1.332e+04 encl=True
+          HHHHHHHHHH d=4 thr=2 TW nodes=    9 bytes=   2375 verify_ms=202 Z=[876, 1.563e+05] P=[0.007531, 0.998] exactZ=1.332e+04 encl=True
+          HHHHHHHHHH d=6 thr=2  B nodes=   71 bytes=    559 verify_ms=6 Z=[0, 3.882e+07] P=[0, 1] exactZ=1.332e+04 encl=True
+          HHHHHHHHHH d=6 thr=2  T nodes=   71 bytes=    559 verify_ms=236 Z=[0, 2.309e+04] P=[0, 1] exactZ=1.332e+04 encl=True
+          HHHHHHHHHH d=6 thr=2 TW nodes=   71 bytes=  13724 verify_ms=652 Z=[8811, 1.66e+04] P=[0.5245, 0.8354] exactZ=1.332e+04 encl=True
+        HHHHHHHHHHHH d=2 thr=3  B nodes=    1 bytes=     68 verify_ms=0 Z=[0, 1.981e+12] P=[0, 1] exactZ=1.428e+05 encl=True
+        HHHHHHHHHHHH d=2 thr=3  T nodes=    1 bytes=     68 verify_ms=138 Z=[0, 6.86e+08] P=[0, 1] exactZ=1.428e+05 encl=True
+        HHHHHHHHHHHH d=2 thr=3 TW nodes=    1 bytes=    431 verify_ms=150 Z=[48, 6.857e+08] P=[0, 1] exactZ=1.428e+05 encl=True
+        HHHHHHHHHHHH d=4 thr=3  B nodes=    9 bytes=    109 verify_ms=1 Z=[0, 1.211e+12] P=[0, 1] exactZ=1.428e+05 encl=True
+        HHHHHHHHHHHH d=4 thr=3  T nodes=    9 bytes=    109 verify_ms=648 Z=[0, 5.039e+07] P=[0, 1] exactZ=1.428e+05 encl=True
+        HHHHHHHHHHHH d=4 thr=3 TW nodes=    9 bytes=   2944 verify_ms=736 Z=[1238, 4.994e+07] P=[2.465e-05, 1] exactZ=1.428e+05 encl=True
+        HHHHHHHHHHHH d=6 thr=3  B nodes=   71 bytes=    561 verify_ms=9 Z=[0, 1.789e+11] P=[0, 1] exactZ=1.428e+05 encl=True
+        HHHHHHHHHHHH d=6 thr=3  T nodes=   71 bytes=    561 verify_ms=1635 Z=[0, 1.787e+06] P=[0, 1] exactZ=1.428e+05 encl=True
+        HHHHHHHHHHHH d=6 thr=3 TW nodes=   71 bytes=  18411 verify_ms=2183 Z=[1.365e+04, 1.646e+06] P=[0.01127, 0.9977] exactZ=1.428e+05 encl=True
+      HHHHHHHHHHHHHH d=2 thr=3  B nodes=    1 bytes=     70 verify_ms=0 Z=[0, 3.652e+16] P=[0, 1] exactZ=1.533e+06 encl=True
+      HHHHHHHHHHHHHH d=2 thr=3  T nodes=    1 bytes=     70 verify_ms=323 Z=[0, 1.012e+11] P=[0, 1] exactZ=1.533e+06 encl=True
+      HHHHHHHHHHHHHH d=2 thr=3 TW nodes=    1 bytes=    499 verify_ms=327 Z=[48, 1.012e+11] P=[0, 1] exactZ=1.533e+06 encl=True
+      HHHHHHHHHHHHHH d=4 thr=3  B nodes=    9 bytes=    111 verify_ms=1 Z=[0, 2.232e+16] P=[0, 1] exactZ=1.533e+06 encl=True
+      HHHHHHHHHHHHHH d=4 thr=3  T nodes=    9 bytes=    111 verify_ms=1824 Z=[0, 7.628e+09] P=[0, 1] exactZ=1.533e+06 encl=True
+      HHHHHHHHHHHHHH d=4 thr=3 TW nodes=    9 bytes=   3378 verify_ms=1912 Z=[1360, 7.62e+09] P=[2.116e-07, 1] exactZ=1.533e+06 encl=True
+      HHHHHHHHHHHHHH d=6 thr=3  B nodes=   71 bytes=    563 verify_ms=11 Z=[0, 3.297e+15] P=[0, 1] exactZ=1.533e+06 encl=True
+      HHHHHHHHHHHHHH d=6 thr=3  T nodes=   71 bytes=    563 verify_ms=6503 Z=[0, 5.474e+08] P=[0, 1] exactZ=1.533e+06 encl=True
+      HHHHHHHHHHHHHH d=6 thr=3 TW nodes=   71 bytes=  22919 verify_ms=7120 Z=[2.141e+04, 5.396e+08] P=[7.293e-05, 1] exactZ=1.533e+06 encl=True
+      HHHHHHHHHHHHHH d=8 thr=3  B nodes=  543 bytes=   4953 verify_ms=82 Z=[0, 1.224e+14] P=[0, 1] exactZ=1.533e+06 encl=True
+      HHHHHHHHHHHHHH d=8 thr=3  T nodes=  543 bytes=   4953 verify_ms=15282 Z=[0, 1.927e+07] P=[0, 1] exactZ=1.533e+06 encl=True
+      HHHHHHHHHHHHHH d=8 thr=3 TW nodes=  543 bytes= 140249 verify_ms=21914 Z=[1.791e+05, 1.745e+07] P=[0.02305, 0.9983] exactZ=1.533e+06 encl=True
+    HHHHHHHHHHHHHHHH d=2 thr=4  B nodes=    1 bytes=     72 verify_ms=0 Z=[0, 2.693e+21] P=[0, 1] exactZ=1.646e+07 encl=True
+    HHHHHHHHHHHHHHHH d=2 thr=4  T nodes=    1 bytes=     72 verify_ms=678 Z=[0, 1.483e+13] P=[0, 1] exactZ=1.646e+07 encl=True
+    HHHHHHHHHHHHHHHH d=2 thr=4 TW nodes=    1 bytes=    537 verify_ms=692 Z=[44, 1.483e+13] P=[0, 1] exactZ=1.646e+07 encl=True
+    HHHHHHHHHHHHHHHH d=4 thr=4  B nodes=    9 bytes=    113 verify_ms=3 Z=[0, 1.645e+21] P=[0, 1] exactZ=1.646e+07 encl=True
+    HHHHHHHHHHHHHHHH d=4 thr=4  T nodes=    9 bytes=    113 verify_ms=4435 Z=[0, 1.148e+12] P=[0, 1] exactZ=1.646e+07 encl=True
+    HHHHHHHHHHHHHHHH d=4 thr=4 TW nodes=    9 bytes=   3974 verify_ms=4468 Z=[1296, 1.148e+12] P=[9.896e-10, 1] exactZ=1.646e+07 encl=True
+    HHHHHHHHHHHHHHHH d=6 thr=4  B nodes=   71 bytes=    565 verify_ms=14 Z=[0, 2.431e+20] P=[0, 1] exactZ=1.646e+07 encl=True
+    HHHHHHHHHHHHHHHH d=6 thr=4  T nodes=   71 bytes=    565 verify_ms=19077 Z=[0, 8.34e+10] P=[0, 1] exactZ=1.646e+07 encl=True
+    HHHHHHHHHHHHHHHH d=6 thr=4 TW nodes=   71 bytes=  26327 verify_ms=20064 Z=[3.367e+04, 8.32e+10] P=[6.084e-07, 1] exactZ=1.646e+07 encl=True
+    HHHHHHHHHHHHHHHH d=8 thr=4  B nodes=  543 bytes=   4955 verify_ms=110 Z=[0, 9.025e+18] P=[0, 1] exactZ=1.646e+07 encl=True
+    HHHHHHHHHHHHHHHH d=8 thr=4  T nodes=  543 bytes=   4955 verify_ms=61336 Z=[0, 5.921e+09] P=[0, 1] exactZ=1.646e+07 encl=True
+    HHHHHHHHHHHHHHHH d=8 thr=4 TW nodes=  543 bytes= 174758 verify_ms=68945 Z=[3.311e+05, 5.807e+09] P=[0.0001049, 1] exactZ=1.646e+07 encl=True
+  HHHHHHHHHHHHHHHHHH d=2 thr=4  B nodes=    1 bytes=     74 verify_ms=0 Z=[0, 7.941e+26] P=[0, 1]
+  HHHHHHHHHHHHHHHHHH d=2 thr=4  T nodes=    1 bytes=     74 verify_ms=1227 Z=[0, 2.165e+15] P=[0, 1]
+  HHHHHHHHHHHHHHHHHH d=2 thr=4 TW nodes=    1 bytes=    584 verify_ms=1271 Z=[42, 2.165e+15] P=[0, 1]
+  HHHHHHHHHHHHHHHHHH d=4 thr=4  B nodes=    9 bytes=    115 verify_ms=4 Z=[0, 4.853e+26] P=[0, 1]
+  HHHHHHHHHHHHHHHHHH d=4 thr=4  T nodes=    9 bytes=    115 verify_ms=8837 Z=[0, 1.715e+14] P=[0, 1]
+  HHHHHHHHHHHHHHHHHH d=4 thr=4 TW nodes=    9 bytes=   4300 verify_ms=8981 Z=[1188, 1.715e+14] P=[6.486e-12, 1]
+  HHHHHHHHHHHHHHHHHH d=6 thr=4  B nodes=   71 bytes=    567 verify_ms=18 Z=[0, 7.169e+25] P=[0, 1]
+  HHHHHHHHHHHHHHHHHH d=6 thr=4  T nodes=   71 bytes=    567 verify_ms=43388 Z=[0, 1.263e+13] P=[0, 1]
+Terminated
+
+real	6m38.348s
+user	5m48.470s
+sys	0m0.810s
