@@ -108,3 +108,12 @@ def test_bad_path_rejected():
 def test_boolean_threshold_rejected():
     with pytest.raises(ValueError):
         extremal_shell_mass('H'*8,ROOT,Fraction(2),True,core_length=5)
+
+
+def test_cached_calls_do_not_bypass_type_validation():
+    valid=extremal_shell_mass('H'*8,ROOT,Fraction(2),1,core_length=5)
+    assert valid.distinct_paths>0
+    with pytest.raises(ValueError):
+        extremal_shell_mass('H'*8,ROOT,Fraction(2),True,core_length=5)
+    with pytest.raises(ValueError):
+        extremal_shell_mass('H'*8,ROOT,Fraction(2),1,core_length=True)
