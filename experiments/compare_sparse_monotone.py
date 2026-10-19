@@ -79,3 +79,19 @@ if __name__=='__main__':
     benchmark('HPHHPHHPHHHH',Fraction(3,2),2)
     benchmark('H'*12,Fraction(2),2)
     benchmark('H'*16,Fraction(2),2)
+    # This is NOT a full model-mass calculation: the restricted family is
+    # represented by only 25 prefix leaves and integer DP, with no n=64 oracle.
+    t0=perf_counter()
+    large=optimize_sparse_monotone('H'*64,ROOT,Fraction(2),1,
+                                   leaf_budget=25,max_core_length=6)
+    checked=verify_sparse_monotone(large.certificate)
+    assert checked==large.mass
+    assert checked.distinct_paths==20032011142543966146
+    print(json.dumps(dict(sequence='H'*64,q='2',threshold=1,
+                          type='scalability_restricted_family_NOT_exact_partition',
+                          selected_walks=checked.distinct_paths,
+                          event_lower=str(checked.event),
+                          complement_lower=str(checked.complement),
+                          selected_leaves=checked.leaf_count,
+                          prefixes_examined=large.candidate_prefixes,
+                          total_seconds=round(perf_counter()-t0,5))),flush=True)
