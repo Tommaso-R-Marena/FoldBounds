@@ -27,7 +27,6 @@ class ShellLower:
         return self.event + self.complement
 
 
-@lru_cache(maxsize=128)
 def extremal_shell_mass(sequence: str, prefix: Path, q: Fraction, event_at_least: int, *,
                          core_length: int) -> ShellLower:
     """Exactly count a prefix-disjoint union of monotone completions.
@@ -49,6 +48,15 @@ def extremal_shell_mass(sequence: str, prefix: Path, q: Fraction, event_at_least
     _validate_path(prefix, n)
     if type(core_length) is not int or not len(prefix) <= core_length <= n:
         raise ValueError("core_length must be an integer between prefix and full length")
+    # Validate BEFORE looking up a cached computation: Python otherwise
+    # treats bool and int as equal cache keys, bypassing strict type checks.
+    return _exact_shell_mass(sequence, prefix, q, event_at_least, core_length)
+
+
+@lru_cache(maxsize=128)
+def _exact_shell_mass(sequence: str, prefix: Path, q: Fraction,
+                      event_at_least: int, core_length: int) -> ShellLower:
+    n = len(sequence)
     pairs = _possible_hh_pairs(sequence)
     event = complement = Fraction(0)
     count = seeds = quadrants = 0
