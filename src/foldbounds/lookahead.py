@@ -12,6 +12,7 @@ from .matching import matching_score_cap
 from .transfer_bound import nonbacktracking_mass_upper
 from .monotone import monotone_family_mass
 from .turn_family import turn_family_mass
+from .shell_family import extremal_shell_mass
 from .witnesses import (WitnessCertificate, propose_dfs_witnesses,
                         verify_witness_certificate)
 from .lattice import (
@@ -167,7 +168,8 @@ def verify_lookahead(cert: Certificate, *, lookahead: int = 0,
                      witness_nodes: int = 0, use_monotone: bool = False,
                      transfer_memory: int = 2,
                      use_turn_family: bool = False,
-                     terminal_box: bool = False) -> VerifiedBounds:
+                     terminal_box: bool = False,
+                     shell_core: int | None = None) -> VerifiedBounds:
     """Independently check a complete frontier; return rational bounds.
 
     The frontier supplies paths, never trusted mass/energy numbers. Each
@@ -200,6 +202,8 @@ def verify_lookahead(cert: Certificate, *, lookahead: int = 0,
     if type(lookahead) is not int or lookahead < 0:
         raise ValueError('lookahead must be nonnegative integer')
     n = len(cert.sequence)
+    if shell_core is not None and (type(shell_core) is not int or not 2 <= shell_core <= n):
+        raise ValueError('shell_core must be an integer in [2, sequence length] or None')
     pairs = _possible_hh_pairs(cert.sequence)
     nodes: dict[Path,str] = {}
     prefixes: set[Path] = set()
@@ -245,6 +249,16 @@ def verify_lookahead(cert: Certificate, *, lookahead: int = 0,
         raise CertificateError('shadowed nodes')
     total = add(masses)
     elo,ehi,nlo,nhi = total.e_lo,total.e_hi,total.n_lo,total.n_hi
+    if shell_core is not None:
+        # Every complete conformation has a unique fixed-length core.
+        # Shell families within each core are disjoint after subtracting
+        # shared cardinal rays; cores themselves are also disjoint.
+        # This independently checked global lower mass may overlap all
+        # subtree witnesses, so intersect with MAX rather than sum.
+        shell = extremal_shell_mass(cert.sequence,ROOT,q,cert.event_at_least,
+                                    core_length=shell_core)
+        elo = max(elo,shell.event)
+        nlo = max(nlo,shell.complement)
     if not (0 <= elo <= ehi and 0 <= nlo <= nhi):
         raise AssertionError('invalid mass bounds')
     # The globally straight anchored walk proves that Z > 0.
