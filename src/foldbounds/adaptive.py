@@ -48,6 +48,7 @@ class RefinementRun:
     transfer_memory: int
     use_turn_family: bool = False
     terminal_box: bool = False
+    shell_core: int | None = None
 
 
 
@@ -96,7 +97,8 @@ def verify_refinement_run(run: RefinementRun) -> VerifiedBounds:
                             use_monotone=run.use_monotone,
                             transfer_memory=run.transfer_memory,
                             use_turn_family=run.use_turn_family,
-                            terminal_box=run.terminal_box)
+                            terminal_box=run.terminal_box,
+                            shell_core=run.shell_core)
         result=raw if result is None else _intersect(result,raw)
         h=run.history[i]
         if (h.partition_lower!=result.partition_lower or
@@ -116,7 +118,8 @@ def adaptive_refine(cert: Certificate, *, steps: int, lookahead: int = 0,
                     transfer_memory: int = 2,
                     use_turn_family: bool = False,
                     terminal_box: bool = False,
-                    policy: Policy = 'probability') -> RefinementRun:
+                    policy: Policy = 'probability',
+                    shell_core: int | None = None) -> RefinementRun:
     """Refine at most steps nodes of a sound complete prefix frontier.
 
     Breadth selects the shortest canonical prefix. Mass selects greatest
@@ -133,7 +136,8 @@ def adaptive_refine(cert: Certificate, *, steps: int, lookahead: int = 0,
                              witness_nodes=witness_nodes,use_monotone=use_monotone,
                              transfer_memory=transfer_memory,
                              use_turn_family=use_turn_family,
-                             terminal_box=terminal_box)
+                             terminal_box=terminal_box,
+                             shell_core=shell_core)
 
     def snapshot(step: int, chosen: Path | None) -> RefinementSnapshot:
         return RefinementSnapshot(step,chosen,current.bounded_subtrees,
@@ -155,7 +159,8 @@ def adaptive_refine(cert: Certificate, *, steps: int, lookahead: int = 0,
                              witness_nodes=witness_nodes,use_monotone=use_monotone,
                              transfer_memory=transfer_memory,
                              use_turn_family=use_turn_family,
-                             terminal_box=terminal_box)
+                             terminal_box=terminal_box,
+                             shell_core=shell_core)
         elif policy=='mass':
             def uncertainty(path: Path) -> Fraction:
                 m=subtree(cert.sequence,path,pairs,cert.q,cert.event_at_least,
@@ -167,7 +172,8 @@ def adaptive_refine(cert: Certificate, *, steps: int, lookahead: int = 0,
                              witness_nodes=witness_nodes,use_monotone=use_monotone,
                              transfer_memory=transfer_memory,
                              use_turn_family=use_turn_family,
-                             terminal_box=terminal_box)
+                             terminal_box=terminal_box,
+                             shell_core=shell_core)
         else:
             options=[]
             for path in available:
@@ -176,7 +182,8 @@ def adaptive_refine(cert: Certificate, *, steps: int, lookahead: int = 0,
                              witness_nodes=witness_nodes,use_monotone=use_monotone,
                              transfer_memory=transfer_memory,
                              use_turn_family=use_turn_family,
-                             terminal_box=terminal_box)
+                             terminal_box=terminal_box,
+                             shell_core=shell_core)
                 combined=_intersect(current,bound)
                 key=(combined.probability_upper-combined.probability_lower,
                      combined.partition_upper-combined.partition_lower,len(path),path)
@@ -188,4 +195,4 @@ def adaptive_refine(cert: Certificate, *, steps: int, lookahead: int = 0,
         frontiers.append(cert)
         history.append(snapshot(step,chosen))
     return RefinementRun(cert,current,tuple(history),policy,tuple(frontiers),
-                         lookahead,use_matching,use_transfer,witness_nodes,use_monotone,transfer_memory,use_turn_family,terminal_box)
+                         lookahead,use_matching,use_transfer,witness_nodes,use_monotone,transfer_memory,use_turn_family,terminal_box,shell_core)
