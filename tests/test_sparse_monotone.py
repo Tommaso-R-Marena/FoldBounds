@@ -170,3 +170,17 @@ def test_compact_length_64_exact_restricted_family_mass():
     assert p.mass.distinct_paths==20032011142543966146
     assert p.mass.event==66437101702969556806
     assert p.mass.complement==2882303761517117437
+
+def test_200_leaf_union_recovers_over_half_exact_mixed_event_mass():
+    seq='HPHHPHHPHHHH';q=Fraction(3,2);t=2
+    p=optimize_sparse_monotone(seq,ROOT,q,t,leaf_budget=200,
+                               max_core_length=8,include_nonmonotone_turns=True)
+    assert p.mass.event==Fraction(421407,32)
+    assert p.mass.distinct_paths==10824
+    assert (p.mass.event,p.mass.complement,p.mass.distinct_paths)==independent_turn_union_mass(p.certificate)
+    assert p.mass.event>Fraction(23166,2)
+    comp=optimize_sparse_monotone(seq,ROOT,q,t,leaf_budget=200,
+                                 max_core_length=8,objective='complement',
+                                 include_nonmonotone_turns=True)
+    assert comp.mass.complement==19426
+    assert (comp.mass.event,comp.mass.complement,comp.mass.distinct_paths)==independent_turn_union_mass(comp.certificate)
