@@ -1,6 +1,36 @@
 # Formal assurance boundary and integration map
 
-## Status as of 2026-10-15
+## Updated assurance status after Aristotle frontier integration (October 2026)
+
+The historical 2026-10-15 baseline below predates Aristotle run
+`a8b9ef96-c289-471a-b7fc-f8a7cea9be37` and is superseded where it
+describes missing lattice representation or a missing compact checker.
+
+The **new Lean modules** prove an explicit equivalence between anchored
+conformations and canonical self-avoiding walks with exact weights and
+contacts, and prove `FrontierCheck.check_sound` for a non-enumerative
+prefix-tree mass checker. `FrontierCheck.check_coupled_probability_sound`
+and `FrontierCheck.checkFlat_sound` also hold with their exact formal
+hypotheses. The axiom audit covers 117 declarations.
+
+The new checker is a separate implementation from the old enumerative
+`LatticeModel.checkHP` and `Executable.check` kernels; those older code
+paths remain available. The Python frontier algorithms and optional
+stronger bounds on `main` are **not Lean proved**, and neither the text
+parser nor compiled binary behavior has a full formal correctness theorem.
+There is no machine-proved polynomial complexity bound, real-protein
+prediction claim, or prior-art novelty determination. Benchmark intervals
+remain loose.
+
+The 2026-10-16 Aristotle logs report successful independent builds,
+but integration acceptance requires GitHub CI on this exact merged tree.
+See `docs/ARISTOTLE_A8B9_INTEGRATION_GATE.md`,
+`docs/FORMALLY_VERIFIED_FRONTIER_CERTIFICATE.md`, and
+`docs/ARISTOTLE_VERIFICATION_RUN_REPORT.md`.
+
+---
+
+## Historical status before frontier checker (2026-10-15)
 
 FoldBounds combines (1) Aristotle's Lean 4 / Mathlib proofs of abstract
 finite-conformation thermodynamics, (2) a kernel-proved **executable
