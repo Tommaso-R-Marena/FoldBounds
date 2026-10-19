@@ -58,6 +58,34 @@ jobs:
         run: python experiments/compare_terminal_box.py
       - name: Exercise terminal box transfer CLI
         run: python -m foldbounds HPHHPHHPHHHH --q 3/2 --event-at-least 2 --enhanced-lookahead 0 --matching --transfer --transfer-memory 4 --terminal-box --monotone --turn-family
+      - name: Exact sparse-monotone antichain ablation and oracle
+        if: matrix.python-version == '3.11'
+        run: python experiments/compare_sparse_monotone.py
+      - name: Exercise sparse antichain event and complement certificate CLI
+        run: python -m foldbounds HPHHPHHPHHHH --q 3/2 --event-at-least 2 --enhanced-lookahead 0 --matching --transfer --transfer-memory 4 --monotone --turn-family --sparse-leaves 25 --sparse-max-depth 9 --coupled-polytope
+      - name: Exercise exact sparse monotone plus two-turn union CLI
+        run: python -m foldbounds HPHHPHHPHHHH --q 3/2 --event-at-least 2 --enhanced-lookahead 0 --matching --transfer --monotone --turn-family --sparse-leaves 25 --sparse-max-depth 8 --sparse-turn-union --coupled-polytope
+      - name: Exercise independently replayed adaptive sparse certificate CLI
+        if: matrix.python-version == '3.11'
+        run: python -m foldbounds HPHHPHHPHHHH --q 3/2 --event-at-least 2 --adaptive-steps 2 --adaptive-policy mass --matching --sparse-leaves 10 --sparse-max-depth 9
+      - name: Compare exact joint mass polytope against original probability intervals
+        if: matrix.python-version == '3.11'
+        run: python experiments/compare_coupled_polytope.py
+      - name: Exercise optional sharp coupled probability bounds
+        run: python -m foldbounds HPHHPHHPHHHH --q 3/2 --event-at-least 2 --enhanced-lookahead 0 --matching --transfer --turn-family --monotone --coupled-polytope
+      - name: Compare exact optimal prefix-antichain certificates against fixed-depth shells
+        if: matrix.python-version == '3.11'
+        run: python experiments/compare_shell_portfolio.py
+      - name: Test checked portfolio CLI
+        run: python -m foldbounds HPHHPHHPHHHH --q 3/2 --event-at-least 2 --enhanced-lookahead 0 --matching --transfer --transfer-memory 4 --monotone --turn-family --portfolio-leaves 25 --portfolio-max-depth 9
+      - name: Test checked portfolio in adaptive CLI
+        if: matrix.python-version == '3.11'
+        run: python -m foldbounds HPHHPHHPHHHH --q 3/2 --event-at-least 2 --adaptive-steps 2 --adaptive-policy mass --matching --portfolio-leaves 25 --portfolio-max-depth 9
+      - name: Compare disjoint extremal-shell lower masses with the existing bounds
+        if: matrix.python-version == '3.11'
+        run: python experiments/compare_shell_family.py
+      - name: Exercise disjoint-shell lower-mass CLI
+        run: python -m foldbounds HPHHPHHPHHHH --q 3/2 --event-at-least 2 --enhanced-lookahead 0 --matching --transfer --transfer-memory 4 --terminal-box --monotone --turn-family --shell-core 10
       - name: Compare low-turn constructive witness families
         if: matrix.python-version == '3.11'
         run: python experiments/compare_turn_family.py
