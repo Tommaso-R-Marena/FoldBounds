@@ -6,6 +6,8 @@ from fractions import Fraction
 from .lattice import build_frontier, exact_spectrum, verify_certificate
 from .lookahead import verify_lookahead
 from .adaptive import adaptive_refine
+from .shell_portfolio import optimize_shell_portfolio
+from .lattice import ROOT
 
 
 def main() -> None:
@@ -30,6 +32,12 @@ def main() -> None:
                         help="count checked self-avoiding suffixes with at most two turns")
     parser.add_argument("--shell-core", type=int, default=None,
                         help="exact lower mass from disjoint extremal monotone shells rooted at this core length")
+    parser.add_argument("--portfolio-leaves", type=int, default=None,
+                        help="max number of leaves in each optimized verified shell-portfolio")
+    parser.add_argument("--portfolio-max-depth", type=int, default=None,
+                        help="maximum core depth explored by exact portfolio tree-knapsack")
+    parser.add_argument("--coupled-polytope", action="store_true",
+                        help="optimize joint event, complement, and total mass intervals exactly")
     parser.add_argument("--witness-nodes", type=int, default=0,
                         help="DFS node budget per bounded subtree for checked lower mass")
     parser.add_argument("--adaptive-steps", type=int, default=None,
@@ -56,9 +64,24 @@ def main() -> None:
         parser.error('--shell-core must lie between 2 and the sequence length')
     if args.shell_core is not None and args.enhanced_lookahead is None and args.adaptive_steps is None:
         parser.error('--shell-core requires --enhanced-lookahead or --adaptive-steps')
+    if (args.portfolio_leaves is None) != (args.portfolio_max_depth is None):
+        parser.error('--portfolio-leaves and --portfolio-max-depth must be specified together')
+    if args.portfolio_leaves is not None:
+        if args.portfolio_leaves < 1 or not 2 <= args.portfolio_max_depth <= len(args.sequence):
+            parser.error('invalid portfolio leaf budget or maximum depth')
+        if args.enhanced_lookahead is None and args.adaptive_steps is None:
+            parser.error('portfolio mode requires --enhanced-lookahead or --adaptive-steps')
     if args.witness_nodes and args.enhanced_lookahead is None and args.adaptive_steps is None:
         parser.error('--witness-nodes requires --enhanced-lookahead or --adaptive-steps')
     cert = build_frontier(args.sequence, args.q, args.event_at_least, args.depth)
+    portfolio_plans = ()
+    if args.portfolio_leaves is not None:
+        portfolio_plans = tuple(optimize_shell_portfolio(
+            args.sequence, ROOT, args.q, args.event_at_least,
+            leaf_budget=args.portfolio_leaves,
+            max_core_length=args.portfolio_max_depth,
+            objective=objective) for objective in ('event', 'complement'))
+    portfolio_certificates = tuple(p.certificate for p in portfolio_plans)
     run = (adaptive_refine(cert, steps=args.adaptive_steps,
                            lookahead=args.enhanced_lookahead or 0,
                            use_matching=args.matching,use_transfer=args.transfer,
@@ -67,6 +90,8 @@ def main() -> None:
                            use_turn_family=args.turn_family,
                            terminal_box=args.terminal_box,
                            shell_core=args.shell_core,
+                           shell_portfolios=portfolio_certificates,
+                           use_coupled_polytope=args.coupled_polytope,
                            transfer_memory=args.transfer_memory,
                            policy=args.adaptive_policy)
            if args.adaptive_steps is not None else None)
@@ -79,6 +104,8 @@ def main() -> None:
                                use_turn_family=args.turn_family,
                                terminal_box=args.terminal_box,
                                shell_core=args.shell_core,
+                               shell_portfolios=portfolio_certificates,
+                               use_coupled_polytope=args.coupled_polytope,
                                transfer_memory=args.transfer_memory))
     out = {
         "model": "2D square-lattice HP self-avoiding walk, anchored first edge",
@@ -91,6 +118,14 @@ def main() -> None:
         "monotone": args.monotone,
         "turn_family": args.turn_family,
         "shell_core": args.shell_core,
+        "portfolio_leaves": args.portfolio_leaves,
+        "coupled_polytope": args.coupled_polytope,
+        "portfolio_max_depth": args.portfolio_max_depth,
+        "portfolio_certificates": [dict(objective=p.objective,leaf_count=p.mass.leaf_count,
+                                        candidate_prefixes=p.candidate_nodes,
+                                        selected_event_mass=str(p.mass.event),
+                                        selected_complement_mass=str(p.mass.complement))
+                                   for p in portfolio_plans],
         "terminal_box": args.terminal_box,
         "sequence": args.sequence,
         "q": str(args.q),
