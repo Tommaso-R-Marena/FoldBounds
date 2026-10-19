@@ -63,6 +63,17 @@ Requires Python 3.11+:
     python -m foldbounds HHHHHHHH --q 2 --depth 2 --enhanced-lookahead 2 --matching
     python -m foldbounds HHHHHHHH --q 3/2 --depth 4 --event-at-least 1
 
+An optional [exactly optimized, certificate-budgeted shell portfolio](docs/OPTIMAL_SHELL_PORTFOLIO.md)
+uses a tree-knapsack over bounded-length self-avoiding prefixes to select a
+**prefix-free antichain** of nonoverlapping extremal-quadrant continuation
+families. An independent checker revalidates complete prefix-tree coverage
+and recomputes exact rational event and complement masses. Use
+`--enhanced-lookahead 0 --portfolio-leaves 25 --portfolio-max-depth 9`.
+The planner maximizes lower mass subject to a leaf-count budget, **not**
+the full folding partition function; its search can cost much more than
+building a fixed-depth certificate. This is tested Python research and
+has not been proved equivalent to the separate Lean frontier checker.
+
 The optional [monotone-family lower-mass DP](docs/MONOTONE_FAMILY_LOWER_BOUNDS.md)
 counts four classes of guaranteed self-avoiding completions and subtracts
 their overlapping cardinal rays exactly. It computes exact rational
