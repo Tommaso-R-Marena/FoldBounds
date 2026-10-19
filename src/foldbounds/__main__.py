@@ -7,6 +7,7 @@ from .lattice import build_frontier, exact_spectrum, verify_certificate
 from .lookahead import verify_lookahead
 from .adaptive import adaptive_refine
 from .shell_portfolio import optimize_shell_portfolio
+from .sparse_monotone import optimize_sparse_monotone
 from .lattice import ROOT
 
 
@@ -36,6 +37,12 @@ def main() -> None:
                         help="max number of leaves in each optimized verified shell-portfolio")
     parser.add_argument("--portfolio-max-depth", type=int, default=None,
                         help="maximum core depth explored by exact portfolio tree-knapsack")
+    parser.add_argument("--sparse-leaves", type=int, default=None,
+                        help="maximum selected leaves in sparse lower-mass antichain")
+    parser.add_argument("--sparse-max-depth", type=int, default=None,
+                        help="maximum core depth for sparse monotone-family optimizer")
+    parser.add_argument("--sparse-turn-union", action="store_true",
+                        help="add exactly counted nonmonotone at-most-two-turn families to sparse certificates")
     parser.add_argument("--coupled-polytope", action="store_true",
                         help="optimize joint event, complement, and total mass intervals exactly")
     parser.add_argument("--witness-nodes", type=int, default=0,
@@ -71,6 +78,15 @@ def main() -> None:
             parser.error('invalid portfolio leaf budget or maximum depth')
         if args.enhanced_lookahead is None and args.adaptive_steps is None:
             parser.error('portfolio mode requires --enhanced-lookahead or --adaptive-steps')
+    if args.sparse_turn_union and args.sparse_leaves is None:
+        parser.error('--sparse-turn-union requires --sparse-leaves')
+    if (args.sparse_leaves is None) != (args.sparse_max_depth is None):
+        parser.error('--sparse-leaves and --sparse-max-depth must be specified together')
+    if args.sparse_leaves is not None:
+        if args.sparse_leaves < 1 or not 2 <= args.sparse_max_depth <= len(args.sequence):
+            parser.error('invalid sparse certificate budget or maximum depth')
+        if args.enhanced_lookahead is None and args.adaptive_steps is None:
+            parser.error('sparse certificates require --enhanced-lookahead or --adaptive-steps')
     if args.witness_nodes and args.enhanced_lookahead is None and args.adaptive_steps is None:
         parser.error('--witness-nodes requires --enhanced-lookahead or --adaptive-steps')
     cert = build_frontier(args.sequence, args.q, args.event_at_least, args.depth)
@@ -82,6 +98,14 @@ def main() -> None:
             max_core_length=args.portfolio_max_depth,
             objective=objective) for objective in ('event', 'complement'))
     portfolio_certificates = tuple(p.certificate for p in portfolio_plans)
+    sparse_plans=()
+    if args.sparse_leaves is not None:
+        sparse_plans=tuple(optimize_sparse_monotone(
+            args.sequence,ROOT,args.q,args.event_at_least,
+            leaf_budget=args.sparse_leaves,max_core_length=args.sparse_max_depth,
+            objective=obj,include_nonmonotone_turns=args.sparse_turn_union)
+            for obj in ('event','complement'))
+    sparse_certificates=tuple(p.certificate for p in sparse_plans)
     run = (adaptive_refine(cert, steps=args.adaptive_steps,
                            lookahead=args.enhanced_lookahead or 0,
                            use_matching=args.matching,use_transfer=args.transfer,
@@ -91,6 +115,7 @@ def main() -> None:
                            terminal_box=args.terminal_box,
                            shell_core=args.shell_core,
                            shell_portfolios=portfolio_certificates,
+                           sparse_certificates=sparse_certificates,
                            use_coupled_polytope=args.coupled_polytope,
                            transfer_memory=args.transfer_memory,
                            policy=args.adaptive_policy)
@@ -105,6 +130,7 @@ def main() -> None:
                                terminal_box=args.terminal_box,
                                shell_core=args.shell_core,
                                shell_portfolios=portfolio_certificates,
+                               sparse_certificates=sparse_certificates,
                                use_coupled_polytope=args.coupled_polytope,
                                transfer_memory=args.transfer_memory))
     out = {
@@ -120,6 +146,14 @@ def main() -> None:
         "shell_core": args.shell_core,
         "portfolio_leaves": args.portfolio_leaves,
         "coupled_polytope": args.coupled_polytope,
+        "sparse_leaves": args.sparse_leaves,
+        "sparse_turn_union": args.sparse_turn_union,
+        "sparse_max_depth": args.sparse_max_depth,
+        "sparse_certificates": [dict(objective=p.objective,leaf_count=p.mass.leaf_count,
+                                      candidate_prefixes=p.candidate_prefixes,
+                                      event_mass=str(p.mass.event),
+                                      complement_mass=str(p.mass.complement))
+                                for p in sparse_plans],
         "portfolio_max_depth": args.portfolio_max_depth,
         "portfolio_certificates": [dict(objective=p.objective,leaf_count=p.mass.leaf_count,
                                         candidate_prefixes=p.candidate_nodes,

@@ -15,6 +15,7 @@ from .turn_family import turn_family_mass
 from .shell_family import extremal_shell_mass
 from .shell_portfolio import PortfolioCertificate, verify_shell_portfolio
 from .coupled_polytope import tighten_coupled_masses
+from .sparse_monotone import SparseMonotoneCertificate, verify_sparse_monotone
 from .witnesses import (WitnessCertificate, propose_dfs_witnesses,
                         verify_witness_certificate)
 from .lattice import (
@@ -173,7 +174,8 @@ def verify_lookahead(cert: Certificate, *, lookahead: int = 0,
                      terminal_box: bool = False,
                      shell_core: int | None = None,
                      shell_portfolios: tuple[PortfolioCertificate, ...] = (),
-                     use_coupled_polytope: bool = False) -> VerifiedBounds:
+                     use_coupled_polytope: bool = False,
+                     sparse_certificates: tuple[SparseMonotoneCertificate, ...] = ()) -> VerifiedBounds:
     """Independently check a complete frontier; return rational bounds.
 
     The frontier supplies paths, never trusted mass/energy numbers. Each
@@ -210,6 +212,8 @@ def verify_lookahead(cert: Certificate, *, lookahead: int = 0,
         raise ValueError('shell_core must be an integer in [2, sequence length] or None')
     if type(shell_portfolios) is not tuple:
         raise ValueError('shell_portfolios must be a tuple of untrusted portfolio certificates')
+    if type(sparse_certificates) is not tuple:
+        raise ValueError('sparse_certificates must be a tuple')
     if type(use_coupled_polytope) is not bool:
         raise ValueError('use_coupled_polytope must be a boolean')
     pairs = _possible_hh_pairs(cert.sequence)
@@ -257,6 +261,15 @@ def verify_lookahead(cert: Certificate, *, lookahead: int = 0,
         raise CertificateError('shadowed nodes')
     total = add(masses)
     elo,ehi,nlo,nhi = total.e_lo,total.e_hi,total.n_lo,total.n_hi
+    for sparse in sparse_certificates:
+        if (not isinstance(sparse,SparseMonotoneCertificate) or
+            sparse.sequence!=cert.sequence or sparse.q!=q or
+            sparse.event_at_least!=cert.event_at_least or sparse.prefix!=ROOT):
+            raise CertificateError('sparse certificate parameters or root mismatch')
+        checked=verify_sparse_monotone(sparse)
+        # Independently valid lower bounds can overlap; combine via max only.
+        elo=max(elo,checked.event)
+        nlo=max(nlo,checked.complement)
     for portfolio in shell_portfolios:
         if (not isinstance(portfolio,PortfolioCertificate) or
             portfolio.sequence!=cert.sequence or portfolio.q!=q or

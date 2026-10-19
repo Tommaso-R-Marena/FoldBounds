@@ -13,6 +13,7 @@ from typing import Literal
 from .lattice import Certificate, Path, VerifiedBounds, refine_frontier
 from .lookahead import verify_lookahead, subtree
 from .shell_portfolio import PortfolioCertificate
+from .sparse_monotone import SparseMonotoneCertificate
 from .lattice import _possible_hh_pairs
 
 Policy = Literal['breadth', 'mass', 'probability']
@@ -52,6 +53,7 @@ class RefinementRun:
     shell_core: int | None = None
     shell_portfolios: tuple[PortfolioCertificate, ...] = ()
     use_coupled_polytope: bool = False
+    sparse_certificates: tuple[SparseMonotoneCertificate, ...] = ()
 
 
 
@@ -103,7 +105,8 @@ def verify_refinement_run(run: RefinementRun) -> VerifiedBounds:
                             terminal_box=run.terminal_box,
                             shell_core=run.shell_core,
                             shell_portfolios=run.shell_portfolios,
-                            use_coupled_polytope=run.use_coupled_polytope)
+                            use_coupled_polytope=run.use_coupled_polytope,
+                            sparse_certificates=run.sparse_certificates)
         result=raw if result is None else _intersect(result,raw)
         h=run.history[i]
         if (h.partition_lower!=result.partition_lower or
@@ -126,7 +129,8 @@ def adaptive_refine(cert: Certificate, *, steps: int, lookahead: int = 0,
                     policy: Policy = 'probability',
                     shell_core: int | None = None,
                     shell_portfolios: tuple[PortfolioCertificate, ...] = (),
-                    use_coupled_polytope: bool = False) -> RefinementRun:
+                    use_coupled_polytope: bool = False,
+                    sparse_certificates: tuple[SparseMonotoneCertificate, ...] = ()) -> RefinementRun:
     """Refine at most steps nodes of a sound complete prefix frontier.
 
     Breadth selects the shortest canonical prefix. Mass selects greatest
@@ -146,7 +150,8 @@ def adaptive_refine(cert: Certificate, *, steps: int, lookahead: int = 0,
                              terminal_box=terminal_box,
                              shell_core=shell_core,
                              shell_portfolios=shell_portfolios,
-                             use_coupled_polytope=use_coupled_polytope)
+                             use_coupled_polytope=use_coupled_polytope,
+                             sparse_certificates=sparse_certificates)
 
     def snapshot(step: int, chosen: Path | None) -> RefinementSnapshot:
         return RefinementSnapshot(step,chosen,current.bounded_subtrees,
@@ -171,7 +176,8 @@ def adaptive_refine(cert: Certificate, *, steps: int, lookahead: int = 0,
                              terminal_box=terminal_box,
                              shell_core=shell_core,
                              shell_portfolios=shell_portfolios,
-                             use_coupled_polytope=use_coupled_polytope)
+                             use_coupled_polytope=use_coupled_polytope,
+                             sparse_certificates=sparse_certificates)
         elif policy=='mass':
             def uncertainty(path: Path) -> Fraction:
                 m=subtree(cert.sequence,path,pairs,cert.q,cert.event_at_least,
@@ -186,7 +192,8 @@ def adaptive_refine(cert: Certificate, *, steps: int, lookahead: int = 0,
                              terminal_box=terminal_box,
                              shell_core=shell_core,
                              shell_portfolios=shell_portfolios,
-                             use_coupled_polytope=use_coupled_polytope)
+                             use_coupled_polytope=use_coupled_polytope,
+                             sparse_certificates=sparse_certificates)
         else:
             options=[]
             for path in available:
@@ -198,7 +205,8 @@ def adaptive_refine(cert: Certificate, *, steps: int, lookahead: int = 0,
                              terminal_box=terminal_box,
                              shell_core=shell_core,
                              shell_portfolios=shell_portfolios,
-                             use_coupled_polytope=use_coupled_polytope)
+                             use_coupled_polytope=use_coupled_polytope,
+                             sparse_certificates=sparse_certificates)
                 combined=_intersect(current,bound)
                 key=(combined.probability_upper-combined.probability_lower,
                      combined.partition_upper-combined.partition_lower,len(path),path)
@@ -210,4 +218,4 @@ def adaptive_refine(cert: Certificate, *, steps: int, lookahead: int = 0,
         frontiers.append(cert)
         history.append(snapshot(step,chosen))
     return RefinementRun(cert,current,tuple(history),policy,tuple(frontiers),
-                         lookahead,use_matching,use_transfer,witness_nodes,use_monotone,transfer_memory,use_turn_family,terminal_box,shell_core,shell_portfolios,use_coupled_polytope)
+                         lookahead,use_matching,use_transfer,witness_nodes,use_monotone,transfer_memory,use_turn_family,terminal_box,shell_core,shell_portfolios,use_coupled_polytope,sparse_certificates)

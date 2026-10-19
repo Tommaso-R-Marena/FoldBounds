@@ -63,6 +63,18 @@ Requires Python 3.11+:
     python -m foldbounds HHHHHHHH --q 2 --depth 2 --enhanced-lookahead 2 --matching
     python -m foldbounds HHHHHHHH --q 3/2 --depth 4 --event-at-least 1
 
+An experimental [sparse monotone antichain certificate](docs/SPARSE_MONOTONE_ANTICHAINS.md)
+uses an exact rational SKIP/STOP/EXPAND tree-knapsack to select only
+promising SAW prefixes. Unlike an upper-bound covering certificate, a
+lower-bound certificate need not cover every walk: the independently
+checked selected families are real self-avoiding completions with pairwise
+disjoint prefix paths. The optional `--sparse-leaves 25 --sparse-max-depth 9`
+mode improves event lower mass at equal leaf entry budgets, but searches
+far more candidate prefixes than its final certificate contains.
+The optional `--sparse-turn-union` adds nonmonotone at-most-two-turn
+completions with explicit self-avoidance checks and exact overlap subtraction.
+The optimizer and checker are **Python-tested research**, not Lean-verified.
+
 An optional [sharp coupled mass probability envelope](docs/COUPLED_MASS_POLYTOPE.md)
 uses the mathematical equality `Z=Z(event)+Z(complement)` to exactly
 optimize the event probability over the jointly certified event,
