@@ -10,3 +10,9 @@ rev = "v4.28.0"
 name = "FoldBounds"
 globs = ["FoldBounds", "FoldBounds.+"]
 
+
+# Compiled runner for the verified frontier checker (unverified I/O shell).
+[[lean_exe]]
+name = "foldcheck"
+srcDir = "scripts"
+root = "foldcheck"
