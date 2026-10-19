@@ -95,3 +95,41 @@ if __name__=='__main__':
                           selected_leaves=checked.leaf_count,
                           prefixes_examined=large.candidate_prefixes,
                           total_seconds=round(perf_counter()-t0,5))),flush=True)
+
+    # Controlled comparison against the strongest preexisting prefix endpoint
+    # upper bounds and fixed depth-10 shell lower masses. This uses the SAME
+    # upper-bound settings for the off/on probability enclosures.
+    seq='HPHHPHHPHHHH'
+    q=Fraction(3,2)
+    t=2
+    candidates=tuple(optimize_sparse_monotone(
+        seq,ROOT,q,t,leaf_budget=200,max_core_length=8,objective=objective,
+        include_nonmonotone_turns=True).certificate
+        for objective in ('event','complement'))
+    assert candidates[0].leaves and candidates[1].leaves
+    m_event=verify_sparse_monotone(candidates[0])
+    m_complement=verify_sparse_monotone(candidates[1])
+    assert m_event.event==Fraction(421407,32)
+    assert m_complement.complement==Fraction(19426)
+    cert=build_frontier(seq,q,t,2)
+    controls=dict(lookahead=0,use_matching=True,use_transfer=True,
+                  transfer_memory=4,terminal_box=True,use_monotone=True,
+                  use_turn_family=True,shell_core=10,use_coupled_polytope=True)
+    old=verify_lookahead(cert,**controls)
+    new=verify_lookahead(cert,**controls,sparse_certificates=candidates)
+    assert new.probability_lower>old.probability_lower
+    assert new.probability_upper<=old.probability_upper
+    assert new.partition_upper==old.partition_upper
+    exact=exact_spectrum(seq)
+    z=sum((count*q**k for k,count in exact.items()),Fraction(0))
+    e=sum((count*q**k for k,count in exact.items() if k>=t),Fraction(0))
+    assert new.probability_lower<=e/z<=new.probability_upper
+    print(json.dumps(dict(type='200_leaf_vs_strongest_terminal_box',
+                          sequence=seq,q=str(q),threshold=t,
+                          event_lower=str(m_event.event),
+                          complement_lower=str(m_complement.complement),
+                          old_probability_lower=str(old.probability_lower),
+                          new_probability_lower=str(new.probability_lower),
+                          old_probability_upper=str(old.probability_upper),
+                          new_probability_upper=str(new.probability_upper),
+                          exact_probability=str(e/z))),flush=True)
