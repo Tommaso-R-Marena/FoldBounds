@@ -40,6 +40,23 @@ universe is currently enumerated during upper-cap verification; this is
 **not** an efficient, proved lattice-folding algorithm or a Lean verification
 of the Python code.
 
+### Compact verified frontier certificates (2026-10)
+
+`FoldBounds.FrontierCheck.check` is a kernel-proved, non-enumerative
+prefix-tree checker for exact-rational HP partition-function, event-mass,
+complement-mass, and event-probability intervals. Its acceptance soundness
+applies to the Lean HP model, not to the independently developed Python
+relaxations. The earlier finite-universe certificate kernel is retained.
+
+See [the certificate specification](docs/FORMALLY_VERIFIED_FRONTIER_CERTIFICATE.md),
+[the verification report](docs/ARISTOTLE_LATTICE_VERIFICATION_REPORT.md),
+[the research report](docs/NONENUMERATIVE_BOUNDS_RESEARCH_REPORT.md) and
+[the Aristotle run report](docs/ARISTOTLE_VERIFICATION_RUN_REPORT.md).
+
+    lake build foldcheck
+    .lake/build/bin/foldcheck check CERT.txt   # parser/I/O remain unverified
+    python3 experiments/lean_differential.py --lake-root . --runner scripts/foldcheck.lean
+
 ## Reproduce
 
 Requires Python 3.11+:

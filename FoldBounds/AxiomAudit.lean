@@ -1,4 +1,5 @@
 import FoldBounds
+import FoldBounds.FrontierTests
 
 /-! Axiom audit: every headline theorem depends only on the standard axioms
 `propext`, `Classical.choice`, `Quot.sound`. -/
@@ -53,3 +54,72 @@ import FoldBounds
 #print axioms FoldBounds.LatticeModel.advance_injective
 #print axioms FoldBounds.LatticeModel.trace_injective
 #print axioms FoldBounds.LatticeModel.walkFrom_injective
+
+-- Lattice representation, contact semantics and compact frontier certificates
+#print axioms FoldBounds.LatticeModel.walkFrom_prefix
+#print axioms FoldBounds.LatticeModel.conformationEquivSAW_apply
+#print axioms FoldBounds.LatticeModel.toSAW_injective
+#print axioms FoldBounds.LatticeModel.toSAW_surjective
+#print axioms FoldBounds.LatticeModel.sum_conformation_eq_sum_saw
+#print axioms FoldBounds.LatticeModel.card_conformation_eq_card_saw
+#print axioms FoldBounds.LatticeModel.massQ_weightQ_eq_sum_saw
+#print axioms FoldBounds.LatticeModel.walkFrom_straight_nodup
+#print axioms FoldBounds.LatticeModel.checkHP_coupled_sound_unconditional
+#print axioms FoldBounds.LatticeModel.adjacent_eq_manhattan1
+#print axioms FoldBounds.LatticeModel.colour_walkFrom
+#print axioms FoldBounds.LatticeModel.index_parity_of_adjacent
+#print axioms FoldBounds.LatticeModel.not_adjacent_of_even_gap
+#print axioms FoldBounds.LatticeModel.not_adjacent_of_gap_two
+#print axioms FoldBounds.LatticeModel.contactCount_eq_parityContactCount
+#print axioms FoldBounds.LatticeModel.saw_contactCount_eq_parity
+#print axioms FoldBounds.LatticeModel.weightQ_eq_of_contacts_eq
+#print axioms FoldBounds.LatticeModel.weightQ_eq_parity
+#print axioms FoldBounds.LatticeModel.qpow_mono
+#print axioms FoldBounds.LatticeModel.weightQ_mono
+#print axioms FoldBounds.Frontier.mem_validWords
+#print axioms FoldBounds.Frontier.sum_conformation_eq_sum_validWords
+#print axioms FoldBounds.Frontier.ext_nil
+#print axioms FoldBounds.Frontier.ext_eq_empty_of_not_nodup
+#print axioms FoldBounds.Frontier.ext_eq_singleton
+#print axioms FoldBounds.Frontier.ext_eq_biUnion
+#print axioms FoldBounds.Frontier.ext_pairwiseDisjoint
+#print axioms FoldBounds.Frontier.sum_ext_split
+#print axioms FoldBounds.Frontier.not_nodup_reverse
+#print axioms FoldBounds.Frontier.card_ext_le_pow_three
+#print axioms FoldBounds.Frontier.contacts_decompose
+#print axioms FoldBounds.Frontier.contacts_le_kmax
+#print axioms FoldBounds.Frontier.contacts_le_cross_bound
+#print axioms FoldBounds.Frontier.wordContacts_eq_parity
+#print axioms FoldBounds.Frontier.contactsAt_le_slots
+#print axioms FoldBounds.Frontier.contacts_le_degree_caps
+#print axioms FoldBounds.Frontier.futureCap_le_futurePairs
+#print axioms FoldBounds.Transfer.wsum_dp
+#print axioms FoldBounds.Transfer.spec_nonneg
+#print axioms FoldBounds.Transfer.crossContacts_snoc
+#print axioms FoldBounds.Transfer.relaxed_sound
+#print axioms FoldBounds.Transfer.sum_ext_le_dp
+#print axioms FoldBounds.FrontierCheck.envelope_bound
+#print axioms FoldBounds.FrontierCheck.boundEnc_sound
+#print axioms FoldBounds.FrontierCheck.exactEnc_sound
+#print axioms FoldBounds.FrontierCheck.deadOK_ext_empty
+#print axioms FoldBounds.FrontierCheck.checkNode_sound
+#print axioms FoldBounds.FrontierCheck.massZ_root_pos
+#print axioms FoldBounds.FrontierCheck.check_sound
+#print axioms FoldBounds.FrontierCheck.check_coupled_probability_sound
+#print axioms FoldBounds.FrontierCheck.check_root_bound_accepted
+#print axioms FoldBounds.FrontierCheck.Z_le_basic_root
+#print axioms FoldBounds.FrontierCheck.sum_ext_eq_sum_leaves
+#print axioms FoldBounds.FrontierCheck.leaf_cover_unique
+#print axioms FoldBounds.FrontierCheck.relaxed_le_basic
+#print axioms FoldBounds.FrontierCheck.basicZ_degree_le_basic
+#print axioms FoldBounds.FrontierCheck.transfer_total_le_basic
+#print axioms FoldBounds.FrontierCheck.checkFlat_sound
+#print axioms FoldBounds.FrontierTests.hhhh_probability_exact
+#print axioms FoldBounds.Frontier.trace_diag
+#print axioms FoldBounds.Frontier.nodup_family
+#print axioms FoldBounds.Frontier.card_family
+#print axioms FoldBounds.Frontier.family_subset_ext
+#print axioms FoldBounds.Frontier.family_lower
+#print axioms FoldBounds.FrontierCheck.famLow_le
+#print axioms FoldBounds.FrontierCheck.famRaise_sound
+#print axioms FoldBounds.FrontierTests.accept_root_transfer_thr3
