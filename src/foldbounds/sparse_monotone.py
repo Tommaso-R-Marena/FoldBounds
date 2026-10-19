@@ -12,6 +12,7 @@ from typing import Literal
 from .lattice import (Path, CertificateError, _check_q, _check_sequence,
                       _neighbors, _validate_path)
 from .monotone import monotone_family_mass
+from .turn_union import monotone_turn_union
 
 Objective = Literal['event', 'complement']
 
@@ -22,6 +23,7 @@ class SparseMonotoneCertificate:
     q: Fraction
     event_at_least: int
     leaves: tuple[Path, ...]
+    include_nonmonotone_turns: bool = False
 
 @dataclass(frozen=True)
 class SparseMonotoneMass:
@@ -59,6 +61,8 @@ def verify_sparse_monotone(cert: SparseMonotoneCertificate) -> SparseMonotoneMas
     _validate_path(cert.prefix,n)
     if type(cert.leaves) is not tuple:
         raise CertificateError('leaves must be a tuple')
+    if type(cert.include_nonmonotone_turns) is not bool:
+        raise ValueError('include_nonmonotone_turns must be a boolean')
     seen=set()
     event=complement=Fraction(0)
     count=0
@@ -73,7 +77,8 @@ def verify_sparse_monotone(cert: SparseMonotoneCertificate) -> SparseMonotoneMas
         if any(old[:len(leaf)]==leaf for old in seen):
             raise CertificateError('selected descendant shadows ancestor')
         seen.add(leaf)
-        mass=monotone_family_mass(cert.sequence,leaf,cert.q,cert.event_at_least)
+        evaluator=monotone_turn_union if cert.include_nonmonotone_turns else monotone_family_mass
+        mass=evaluator(cert.sequence,leaf,cert.q,cert.event_at_least)
         event+=mass.event
         complement+=mass.complement
         count+=mass.distinct_paths
@@ -82,7 +87,8 @@ def verify_sparse_monotone(cert: SparseMonotoneCertificate) -> SparseMonotoneMas
 def optimize_sparse_monotone(sequence: str,prefix: Path,q: Fraction,
                             event_at_least: int,*,leaf_budget: int,
                             max_core_length: int,
-                            objective: Objective='event') -> SparseMonotonePlan:
+                            objective: Objective='event',
+                            include_nonmonotone_turns: bool=False) -> SparseMonotonePlan:
     """Exact budget optimum within sparse monotone antichain family.
 
     Each prefix: SKIP (cost zero), STOP (cost one), or recursively EXPAND
@@ -100,12 +106,15 @@ def optimize_sparse_monotone(sequence: str,prefix: Path,q: Fraction,
         raise ValueError('invalid maximum core length')
     if objective not in ('event','complement'):
         raise ValueError('objective must be event or complement')
+    if type(include_nonmonotone_turns) is not bool:
+        raise ValueError('include_nonmonotone_turns must be a boolean')
     visited=0
     @lru_cache(maxsize=None)
     def solve(path: Path):
         nonlocal visited
         visited+=1
-        family=monotone_family_mass(sequence,path,q,event_at_least)
+        evaluator=monotone_turn_union if include_nonmonotone_turns else monotone_family_mass
+        family=evaluator(sequence,path,q,event_at_least)
         mass=family.event if objective=='event' else family.complement
         best={0:(Fraction(0),()),1:(mass,(path,))}
         if len(path)==max_core_length:
@@ -134,7 +143,7 @@ def optimize_sparse_monotone(sequence: str,prefix: Path,q: Fraction,
         return best
     choices=solve(prefix)
     cost,(score,paths)=min(choices.items(),key=lambda item:(-item[1][0],item[0]))
-    cert=SparseMonotoneCertificate(sequence,prefix,q,event_at_least,paths)
+    cert=SparseMonotoneCertificate(sequence,prefix,q,event_at_least,paths,include_nonmonotone_turns)
     checked=verify_sparse_monotone(cert)
     if checked.leaf_count!=cost or (checked.event if objective=='event' else checked.complement)!=score:
         raise AssertionError('proposed optimum disagrees with independent checker')
