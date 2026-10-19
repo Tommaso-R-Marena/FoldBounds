@@ -14,6 +14,7 @@ from .monotone import monotone_family_mass
 from .turn_family import turn_family_mass
 from .shell_family import extremal_shell_mass
 from .shell_portfolio import PortfolioCertificate, verify_shell_portfolio
+from .coupled_polytope import tighten_coupled_masses
 from .witnesses import (WitnessCertificate, propose_dfs_witnesses,
                         verify_witness_certificate)
 from .lattice import (
@@ -171,7 +172,8 @@ def verify_lookahead(cert: Certificate, *, lookahead: int = 0,
                      use_turn_family: bool = False,
                      terminal_box: bool = False,
                      shell_core: int | None = None,
-                     shell_portfolios: tuple[PortfolioCertificate, ...] = ()) -> VerifiedBounds:
+                     shell_portfolios: tuple[PortfolioCertificate, ...] = (),
+                     use_coupled_polytope: bool = False) -> VerifiedBounds:
     """Independently check a complete frontier; return rational bounds.
 
     The frontier supplies paths, never trusted mass/energy numbers. Each
@@ -208,6 +210,8 @@ def verify_lookahead(cert: Certificate, *, lookahead: int = 0,
         raise ValueError('shell_core must be an integer in [2, sequence length] or None')
     if type(shell_portfolios) is not tuple:
         raise ValueError('shell_portfolios must be a tuple of untrusted portfolio certificates')
+    if type(use_coupled_polytope) is not bool:
+        raise ValueError('use_coupled_polytope must be a boolean')
     pairs = _possible_hh_pairs(cert.sequence)
     nodes: dict[Path,str] = {}
     prefixes: set[Path] = set()
@@ -281,5 +285,15 @@ def verify_lookahead(cert: Certificate, *, lookahead: int = 0,
     p_hi = Fraction(0) if ehi == 0 else (ehi/(ehi+nlo) if nlo else Fraction(1))
     if not 0 <= p_lo <= p_hi <= 1:
         raise AssertionError('invalid probability bounds')
-    return VerifiedBounds(elo+nlo,min(ehi+nhi,total.z_hi),elo,ehi,nlo,nhi,p_lo,p_hi,
+    zlo=elo+nlo
+    zhi=min(ehi+nhi,total.z_hi)
+    if use_coupled_polytope:
+        # Z=E+C restricts feasible simultaneous event/complement extremes.
+        # This independent exact-rational optimizer changes NO source bound.
+        joint=tighten_coupled_masses(elo,ehi,nlo,nhi,zlo,zhi)
+        elo,ehi=joint.event_lower,joint.event_upper
+        nlo,nhi=joint.complement_lower,joint.complement_upper
+        zlo,zhi=joint.partition_lower,joint.partition_upper
+        p_lo,p_hi=joint.probability_lower,joint.probability_upper
+    return VerifiedBounds(zlo,zhi,elo,ehi,nlo,nhi,p_lo,p_hi,
                           exact_count,bound_count)
