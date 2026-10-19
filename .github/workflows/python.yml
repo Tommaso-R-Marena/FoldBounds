@@ -58,6 +58,11 @@ jobs:
         run: python experiments/compare_terminal_box.py
       - name: Exercise terminal box transfer CLI
         run: python -m foldbounds HPHHPHHPHHHH --q 3/2 --event-at-least 2 --enhanced-lookahead 0 --matching --transfer --transfer-memory 4 --terminal-box --monotone --turn-family
+      - name: Compare disjoint extremal-shell lower masses with the existing bounds
+        if: matrix.python-version == '3.11'
+        run: python experiments/compare_shell_family.py
+      - name: Exercise disjoint-shell lower-mass CLI
+        run: python -m foldbounds HPHHPHHPHHHH --q 3/2 --event-at-least 2 --enhanced-lookahead 0 --matching --transfer --transfer-memory 4 --terminal-box --monotone --turn-family --shell-core 10
       - name: Compare low-turn constructive witness families
         if: matrix.python-version == '3.11'
         run: python experiments/compare_turn_family.py
