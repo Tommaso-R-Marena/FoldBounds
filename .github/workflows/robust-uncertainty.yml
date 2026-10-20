@@ -1,0 +1,41 @@
+name: Robust ensemble energy-uncertainty certificate audit
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  uncertainty-python:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        python-version: ['3.11', '3.12', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install package and test dependencies
+        run: python -m pip install -e '.[test]'
+      - name: Re-run both dimensions, exact adversarial extrema, and root proofs
+        run: python -m pytest -q tests/test_ensemble_crossover.py tests/test_ensemble_crossover_3d.py tests/test_ensemble_uncertainty.py
+      - name: Reproduce exact rational robustness data without trusting saved JSON
+        run: |
+          python experiments/robust_switch_benchmark.py > /tmp/robust-switch-recomputed.json
+          python -c "import json; a=json.load(open('/tmp/robust-switch-recomputed.json')); b=json.load(open('experiments/robust_switch_results.json')); assert a==b; assert [x['states'] for x in a['replications']]==[30073,13565]"
+  uncertainty-lean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject Lean holes and custom axioms
+        run: python3 scripts/check_lean_sources.py
+      - name: Build using pinned Lean and Mathlib
+        uses: leanprover/lean-action@v1
+      - name: Kernel-check rational interval uncertainty theorem
+        run: lake env lean FoldBounds/RobustReweighting.lean
+      - name: Audit the theorem's axiom dependencies
+        run: |
+          lake env lean FoldBounds/RobustReweightingAudit.lean | tee /tmp/robust-uncertainty-axioms.log
+          python3 scripts/check_lean_sources.py /tmp/robust-uncertainty-axioms.log
