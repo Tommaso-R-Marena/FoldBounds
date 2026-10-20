@@ -108,3 +108,23 @@ The project has independent 12-mer anchored-SAW enumeration in a separate pytest
 - *Experiment-guided AlphaFold3 resolves measurement-consistent protein ensembles*, Nature Biotechnology (2026), DOI 10.1038/s41587-026-03166-5.
 
 The basic mathematics of exponential families, partition functions, Descartes' rule, exact enumeration and interval coefficient bounds is well established. Novelty of the *combined workflow* has not been established; a dedicated prior-art search is required.
+
+
+## Three-dimensional independent replication
+
+The same exact-rational derivative witness also applies to the cubic-lattice
+anchored **three-dimensional** HP model. A second path enumerator generates
+all **13,565** conformations of eight-residue sequence `HPHHPHHH`, with a
+threshold of one nonconsecutive H-H contact. An independent iterative
+walker reproduces the full two-feature state histogram. After shifting
+`q-3/2` and `b-1/4`, its derivative numerator has **55 strictly positive
+coefficients and no negative coefficients**, certifying bending monotonicity
+for all `q>=3/2, b>=1/4`. Contact-threshold monotonicity in q follows
+from the same general covariance proof. The 50%-population crossover is
+uniquely bracketed for q=3/2 and q=2 using Descartes' rule and rational
+bisection. The 3D example is a qualitative replication of the method,
+**not** atomistic protein thermodynamics and not independently validated
+against biological measurements.
+
+Reproduce with `python -m pytest tests/test_ensemble_crossover_3d.py -q`
+and `python experiments/ensemble_crossover_benchmark.py`.
