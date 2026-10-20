@@ -1,4 +1,26 @@
 {
+  "3d_reference": {
+    "coefficients_positive": 55,
+    "coefficients_total": 55,
+    "conformations": 13565,
+    "crossover_brackets": {
+      "2": [
+        "524365017169/1099511627776",
+        "2097460068691/4398046511104"
+      ],
+      "3/2": [
+        "3769861991581/4398046511104",
+        "942465497899/1099511627776"
+      ]
+    },
+    "histogram_bins": 22,
+    "interval": [
+      "149019/566171",
+      "27968768/37452129"
+    ],
+    "model": "3D anchored cubic-lattice HP",
+    "sequence": "HPHHPHHH"
+  },
   "certified_box": {
     "b": [
       "1/4",
@@ -61,7 +83,7 @@
   },
   "joint_histogram_bins": 52,
   "model": "2D anchored HP lattice, HH contact reward q, bend propensity b",
-  "runtime_seconds": 1.1419,
+  "runtime_seconds": 4.0746,
   "sequence": "HPHHPHHPHHHH",
   "states": 30073
 }
