@@ -19,11 +19,21 @@ jobs:
       - name: Install package and test dependencies
         run: python -m pip install -e '.[test]'
       - name: Re-run both dimensions, exact adversarial extrema, and root proofs
-        run: python -m pytest -q tests/test_ensemble_crossover.py tests/test_ensemble_crossover_3d.py tests/test_ensemble_uncertainty.py
+        run: python -m pytest -q tests/test_ensemble_crossover.py tests/test_ensemble_crossover_3d.py tests/test_ensemble_uncertainty.py tests/test_bernstein_population.py
       - name: Reproduce exact rational robustness data without trusting saved JSON
         run: |
           python experiments/robust_switch_benchmark.py > /tmp/robust-switch-recomputed.json
           python -c "import json; a=json.load(open('/tmp/robust-switch-recomputed.json')); b=json.load(open('experiments/robust_switch_results.json')); assert a==b; assert [x['states'] for x in a['replications']]==[30073,13565]"
+      - name: Recheck nonmonotone Bernstein certificate results
+        if: matrix.python-version == '3.11'
+        run: |
+          python experiments/bernstein_robust_benchmark.py > /tmp/bernstein-recomputed.json
+          python -c "import json; a=json.load(open('/tmp/bernstein-recomputed.json')); b=json.load(open('experiments/bernstein_robust_results.json')); assert a==b; assert len(a['cases'])==2 and a['cases'][1]['interval_bounds'][-1]['robust_contact_event_minority']"
+      - name: Falsify universal bending monotonicity across all 256 eight-residue sequences
+        if: matrix.python-version == '3.11'
+        run: |
+          python experiments/monotonicity_falsification.py > /tmp/nonmono-recomputed.json
+          python -c "import json; a=json.load(open('/tmp/nonmono-recomputed.json')); b=json.load(open('experiments/monotonicity_falsification_results.json')); assert a==b; assert [x['demonstrably_nonmonotone_sequences_sampled_q_b'] for x in a]==[37,3]"
   uncertainty-lean:
     runs-on: ubuntu-latest
     timeout-minutes: 45
