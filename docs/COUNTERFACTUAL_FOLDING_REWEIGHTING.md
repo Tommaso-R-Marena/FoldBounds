@@ -66,3 +66,11 @@ lake env lean FoldBounds/CounterfactualEpistasisAudit.lean
 ```
 
 The cited experiment code and published structures are external dependencies; this overlay is intended to sit on the unmerged FoldBounds mutation research branch PR #35. It is **not a drop-in replacement** of `main`.
+
+## Real GA95/GB95 representation identifiability test
+
+Authentic PDB FASTA sequences (2KDL GA95, 2KDM GB95; RCSB `https://www.rcsb.org/fasta/entry/2KDL/display` and corresponding 2KDM entry) are 56 residues and differ at **L20A, I30F, L45Y**. Under a coarse two-class encoding treating leucine, alanine, isoleucine, phenylalanine and tyrosine as a hydrophobic class, **both sequences encode to the exact same H/P string**. Consequently *any* algorithm whose sequence input contains only that encoding and whose remaining terms are sequence-independent produces identical energies and folding probabilities for both sequences, regardless of accuracy or proof complexity.
+
+Tyrosine's polar hydroxyl makes its binary assignment ambiguous: marking Y as polar yields one visible H/P change at position 45, still losing L20A and I30F. Introducing a separate aromatic class reveals changes at 30 and 45 but still hides side-chain-size change L20A. Thus a chemically richer alphabet (and appropriate physical interactions) is required to even *represent* the GA/GB experimental mechanism. This is a simple representation no-go/negative control, not a prediction of the structures. See `src/foldbounds/ga_gb_indistinguishability.py`, fixtures and tests.
+
+Real structure coordinates for 2KDL/2KDM could not be downloaded in the current tool runtime, so the research does not contain any invented NMR coordinates, contact maps, or calculated atomistic free energies.
