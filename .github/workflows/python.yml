@@ -27,7 +27,7 @@ jobs:
         run: |
           python -m pytest tests/test_ensemble_crossover.py -q
           python experiments/ensemble_crossover_benchmark.py > /tmp/foldbounds-crossover.json
-          python -c "import json; x=json.load(open('/tmp/foldbounds-crossover.json')); assert x['certified_box']['positive_derivative_coefficients']==133 and x['states']==30073"
+          python -c "import json; x=json.load(open('/tmp/foldbounds-crossover.json')); assert x['certified_box']['positive_derivative_coefficients']==133 and x['states']==30073 and x['3d_reference']['conformations']==13565 and x['3d_reference']['coefficients_positive']==55"
       - name: Run reproducible reference case
         run: python -m foldbounds HHHH --q 2 --depth 4 --event-at-least 1 --exact-spectrum
       - name: Exercise matching certificate checker
