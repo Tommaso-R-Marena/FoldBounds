@@ -1,0 +1,5 @@
+import FoldBounds.CounterfactualEpistasis
+
+#print axioms FoldBounds.CounterfactualEpistasis.two_state_mutation_covariance
+#print axioms FoldBounds.CounterfactualEpistasis.two_state_positive_covariance
+#print axioms FoldBounds.CounterfactualEpistasis.two_state_negative_covariance
