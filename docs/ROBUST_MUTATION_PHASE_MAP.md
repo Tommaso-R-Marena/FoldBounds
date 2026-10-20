@@ -119,3 +119,18 @@ PYTHONPATH=src python -m pytest -q tests/test_mutation_switch_10.py
 PYTHONPATH=src python experiments/certified_mutation_10_benchmark.py > /tmp/10mer.json
 PYTHONPATH=src python experiments/independent_n10_oracle.py
 ```
+
+## A falsifiable energy-margin diagnostic: unique critical contact weight
+
+The preceding uniform parameter-box certificates show robust majority switching, but they do not indicate how quickly it fails when the contact preference weakens. At the **worst permitted bend weight b=3/4**, the mutant's robust lower probability exceeds 50% precisely when
+
+`factor_low * E_mutant(q,b) - factor_high * C_mutant(q,b) > 0`,
+
+where `factor_low=5/6`, `factor_high=6/5` and E/C are the exact compact-event/complement mass polynomials in q. Since the complete state histogram is finite, this inequality has **exact rational coefficients**. The coefficients have exactly one sign variation, so Descartes' rule proves at most one positive real root; verified opposite endpoint signs and rational bisection establish the existence and a unique positive crossing.
+
+- Eight-residue P1H mutant `HHPHPHPH`: critical q in `[1711769203061771/281474976710656, 427942300765443/70368744177664]`, approximately **6.081425862667**.
+- Ten-residue P1H mutant `HHPHPHPHPH`: critical q in `[1112769948121909/140737488355328, 2225539896243819/281474976710656]`, approximately **7.906706032102**.
+
+Both brackets are generated and verified using exact rational coefficients and 48 successive bisections in `src/foldbounds/mutation_root.py` and `experiments/certified_mutation_roots.py`. These are **strictly model-conditional** mathematical stability thresholds, *not measured folding transition energies*. The ten-mer starts its robust box at q=8, just ~0.0933 above the crossover: this should be interpreted as a narrow energy-model margin, not strong real-world robustness. For the specified examples the independent Bernstein parameter-box calculations attain their lower endpoint at q=q_lower, b=3/4, allowing the critical fixed-b root to diagnose failure as q is reduced.
+
+The existence, uniqueness, and bisection are proved mathematically by elementary polynomial sign arguments and independently tested in Python; the concrete root checker is **not a new Lean kernel proof**. The additional eight root-specific tests include malicious-coefficient and incorrect-bracket rejections.
