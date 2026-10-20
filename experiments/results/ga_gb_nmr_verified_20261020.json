@@ -1,0 +1,909 @@
+{
+  "GA95": {
+    "aromatic_ring_pairs": [
+      {
+        "fraction_within_7_A": null,
+        "mean_ring_centroid_distance_A": null,
+        "sites": [
+          29,
+          30
+        ],
+        "valid_models": 0
+      },
+      {
+        "fraction_within_7_A": null,
+        "mean_ring_centroid_distance_A": null,
+        "sites": [
+          29,
+          45
+        ],
+        "valid_models": 0
+      },
+      {
+        "fraction_within_7_A": 0.0,
+        "mean_ring_centroid_distance_A": 8.457512033683567,
+        "sites": [
+          29,
+          52
+        ],
+        "valid_models": 20
+      },
+      {
+        "fraction_within_7_A": null,
+        "mean_ring_centroid_distance_A": null,
+        "sites": [
+          30,
+          45
+        ],
+        "valid_models": 0
+      },
+      {
+        "fraction_within_7_A": null,
+        "mean_ring_centroid_distance_A": null,
+        "sites": [
+          30,
+          52
+        ],
+        "valid_models": 0
+      },
+      {
+        "fraction_within_7_A": null,
+        "mean_ring_centroid_distance_A": null,
+        "sites": [
+          45,
+          52
+        ],
+        "valid_models": 0
+      }
+    ],
+    "consensus_contact_pairs": [
+      [
+        8,
+        12
+      ],
+      [
+        8,
+        39
+      ],
+      [
+        9,
+        13
+      ],
+      [
+        9,
+        38
+      ],
+      [
+        9,
+        39
+      ],
+      [
+        9,
+        42
+      ],
+      [
+        10,
+        14
+      ],
+      [
+        11,
+        15
+      ],
+      [
+        12,
+        16
+      ],
+      [
+        12,
+        39
+      ],
+      [
+        12,
+        42
+      ],
+      [
+        12,
+        43
+      ],
+      [
+        13,
+        17
+      ],
+      [
+        13,
+        33
+      ],
+      [
+        13,
+        34
+      ],
+      [
+        13,
+        42
+      ],
+      [
+        14,
+        18
+      ],
+      [
+        15,
+        19
+      ],
+      [
+        16,
+        20
+      ],
+      [
+        16,
+        30
+      ],
+      [
+        16,
+        33
+      ],
+      [
+        16,
+        42
+      ],
+      [
+        16,
+        43
+      ],
+      [
+        16,
+        46
+      ],
+      [
+        17,
+        21
+      ],
+      [
+        17,
+        30
+      ],
+      [
+        18,
+        22
+      ],
+      [
+        19,
+        23
+      ],
+      [
+        19,
+        24
+      ],
+      [
+        19,
+        46
+      ],
+      [
+        20,
+        24
+      ],
+      [
+        20,
+        25
+      ],
+      [
+        20,
+        27
+      ],
+      [
+        20,
+        46
+      ],
+      [
+        25,
+        49
+      ],
+      [
+        25,
+        50
+      ],
+      [
+        26,
+        30
+      ],
+      [
+        26,
+        49
+      ],
+      [
+        27,
+        31
+      ],
+      [
+        28,
+        32
+      ],
+      [
+        29,
+        33
+      ],
+      [
+        29,
+        45
+      ],
+      [
+        29,
+        46
+      ],
+      [
+        29,
+        49
+      ],
+      [
+        30,
+        34
+      ],
+      [
+        30,
+        45
+      ],
+      [
+        30,
+        46
+      ],
+      [
+        31,
+        35
+      ],
+      [
+        32,
+        36
+      ],
+      [
+        32,
+        45
+      ],
+      [
+        33,
+        41
+      ],
+      [
+        33,
+        42
+      ],
+      [
+        33,
+        45
+      ],
+      [
+        33,
+        46
+      ],
+      [
+        34,
+        42
+      ],
+      [
+        36,
+        41
+      ],
+      [
+        36,
+        42
+      ],
+      [
+        37,
+        41
+      ],
+      [
+        37,
+        42
+      ],
+      [
+        38,
+        42
+      ],
+      [
+        39,
+        43
+      ],
+      [
+        40,
+        44
+      ],
+      [
+        41,
+        45
+      ],
+      [
+        42,
+        46
+      ],
+      [
+        43,
+        47
+      ],
+      [
+        44,
+        48
+      ],
+      [
+        45,
+        49
+      ],
+      [
+        46,
+        50
+      ],
+      [
+        47,
+        51
+      ],
+      [
+        48,
+        52
+      ],
+      [
+        49,
+        53
+      ]
+    ],
+    "consensus_contacts_75pct": 71,
+    "contact_definition": "C-alpha distance <8 A, sequence separation >=4",
+    "coordinate_sha256": "fb75cc55eb8b89e0cec5e2be69901b348e60916375b9c410a0573edfca1db591",
+    "mean_extended_i_i3_fraction": 0.11415094339622642,
+    "mean_helix_like_i_i3_fraction": 0.6556603773584906,
+    "mutation_site_consensus_contact_degrees": {
+      "20": 5,
+      "30": 6,
+      "45": 6
+    },
+    "nmr_models": 20,
+    "pdb_id": "2KDL",
+    "residues": 56,
+    "sequence": "TTYKLILNLKQAKEEAIKELVDAGTAEKYIKLIANAKTVEGVWTLKDEIKTFTVTE"
+  },
+  "GB95": {
+    "aromatic_ring_pairs": [
+      {
+        "fraction_within_7_A": 1.0,
+        "mean_ring_centroid_distance_A": 6.25803488508404,
+        "sites": [
+          29,
+          30
+        ],
+        "valid_models": 20
+      },
+      {
+        "fraction_within_7_A": 0.0,
+        "mean_ring_centroid_distance_A": 16.209834489142043,
+        "sites": [
+          29,
+          45
+        ],
+        "valid_models": 20
+      },
+      {
+        "fraction_within_7_A": 0.0,
+        "mean_ring_centroid_distance_A": 11.454322354995254,
+        "sites": [
+          29,
+          52
+        ],
+        "valid_models": 20
+      },
+      {
+        "fraction_within_7_A": 0.0,
+        "mean_ring_centroid_distance_A": 10.49549307000321,
+        "sites": [
+          30,
+          45
+        ],
+        "valid_models": 20
+      },
+      {
+        "fraction_within_7_A": 1.0,
+        "mean_ring_centroid_distance_A": 5.833536777472037,
+        "sites": [
+          30,
+          52
+        ],
+        "valid_models": 20
+      },
+      {
+        "fraction_within_7_A": 1.0,
+        "mean_ring_centroid_distance_A": 5.058789758651864,
+        "sites": [
+          45,
+          52
+        ],
+        "valid_models": 20
+      }
+    ],
+    "consensus_contact_pairs": [
+      [
+        1,
+        19
+      ],
+      [
+        1,
+        20
+      ],
+      [
+        1,
+        21
+      ],
+      [
+        1,
+        22
+      ],
+      [
+        2,
+        17
+      ],
+      [
+        2,
+        18
+      ],
+      [
+        2,
+        19
+      ],
+      [
+        2,
+        20
+      ],
+      [
+        2,
+        49
+      ],
+      [
+        2,
+        50
+      ],
+      [
+        3,
+        17
+      ],
+      [
+        3,
+        18
+      ],
+      [
+        3,
+        19
+      ],
+      [
+        3,
+        20
+      ],
+      [
+        3,
+        23
+      ],
+      [
+        3,
+        26
+      ],
+      [
+        3,
+        49
+      ],
+      [
+        3,
+        50
+      ],
+      [
+        3,
+        51
+      ],
+      [
+        3,
+        52
+      ],
+      [
+        4,
+        15
+      ],
+      [
+        4,
+        16
+      ],
+      [
+        4,
+        17
+      ],
+      [
+        4,
+        18
+      ],
+      [
+        4,
+        50
+      ],
+      [
+        4,
+        51
+      ],
+      [
+        4,
+        52
+      ],
+      [
+        5,
+        15
+      ],
+      [
+        5,
+        16
+      ],
+      [
+        5,
+        17
+      ],
+      [
+        5,
+        30
+      ],
+      [
+        5,
+        51
+      ],
+      [
+        5,
+        52
+      ],
+      [
+        5,
+        53
+      ],
+      [
+        5,
+        54
+      ],
+      [
+        6,
+        13
+      ],
+      [
+        6,
+        14
+      ],
+      [
+        6,
+        15
+      ],
+      [
+        6,
+        16
+      ],
+      [
+        6,
+        51
+      ],
+      [
+        6,
+        52
+      ],
+      [
+        6,
+        53
+      ],
+      [
+        6,
+        54
+      ],
+      [
+        7,
+        13
+      ],
+      [
+        7,
+        14
+      ],
+      [
+        7,
+        15
+      ],
+      [
+        7,
+        16
+      ],
+      [
+        7,
+        34
+      ],
+      [
+        7,
+        53
+      ],
+      [
+        7,
+        54
+      ],
+      [
+        7,
+        55
+      ],
+      [
+        8,
+        12
+      ],
+      [
+        8,
+        13
+      ],
+      [
+        8,
+        14
+      ],
+      [
+        8,
+        41
+      ],
+      [
+        8,
+        53
+      ],
+      [
+        8,
+        54
+      ],
+      [
+        8,
+        55
+      ],
+      [
+        8,
+        56
+      ],
+      [
+        9,
+        13
+      ],
+      [
+        9,
+        38
+      ],
+      [
+        9,
+        41
+      ],
+      [
+        9,
+        55
+      ],
+      [
+        9,
+        56
+      ],
+      [
+        10,
+        56
+      ],
+      [
+        16,
+        30
+      ],
+      [
+        18,
+        26
+      ],
+      [
+        19,
+        26
+      ],
+      [
+        20,
+        25
+      ],
+      [
+        20,
+        26
+      ],
+      [
+        22,
+        26
+      ],
+      [
+        23,
+        27
+      ],
+      [
+        24,
+        28
+      ],
+      [
+        25,
+        29
+      ],
+      [
+        26,
+        30
+      ],
+      [
+        27,
+        31
+      ],
+      [
+        28,
+        32
+      ],
+      [
+        29,
+        33
+      ],
+      [
+        30,
+        34
+      ],
+      [
+        31,
+        35
+      ],
+      [
+        32,
+        36
+      ],
+      [
+        33,
+        37
+      ],
+      [
+        34,
+        38
+      ],
+      [
+        34,
+        39
+      ],
+      [
+        35,
+        39
+      ],
+      [
+        40,
+        54
+      ],
+      [
+        40,
+        55
+      ],
+      [
+        40,
+        56
+      ],
+      [
+        41,
+        54
+      ],
+      [
+        41,
+        55
+      ],
+      [
+        41,
+        56
+      ],
+      [
+        42,
+        53
+      ],
+      [
+        42,
+        54
+      ],
+      [
+        42,
+        55
+      ],
+      [
+        42,
+        56
+      ],
+      [
+        43,
+        52
+      ],
+      [
+        43,
+        53
+      ],
+      [
+        43,
+        54
+      ],
+      [
+        43,
+        55
+      ],
+      [
+        44,
+        52
+      ],
+      [
+        44,
+        53
+      ],
+      [
+        44,
+        54
+      ],
+      [
+        45,
+        50
+      ],
+      [
+        45,
+        51
+      ],
+      [
+        45,
+        52
+      ],
+      [
+        45,
+        53
+      ],
+      [
+        46,
+        50
+      ],
+      [
+        46,
+        51
+      ],
+      [
+        46,
+        52
+      ],
+      [
+        47,
+        51
+      ]
+    ],
+    "consensus_contacts_75pct": 110,
+    "contact_definition": "C-alpha distance <8 A, sequence separation >=4",
+    "coordinate_sha256": "1c49e5faa25b443285432d935c621151294ed3b636b0106e6b1a7f7ccf2d00ec",
+    "mean_extended_i_i3_fraction": 0.5113207547169811,
+    "mean_helix_like_i_i3_fraction": 0.3018867924528302,
+    "mutation_site_consensus_contact_degrees": {
+      "20": 5,
+      "30": 4,
+      "45": 4
+    },
+    "nmr_models": 20,
+    "pdb_id": "2KDM",
+    "residues": 56,
+    "sequence": "TTYKLILNLKQAKEEAIKEAVDAGTAEKYFKLIANAKTVEGVWTYKDEIKTFTVTE"
+  },
+  "comparison": {
+    "consensus_contact_jaccard": 0.08383233532934131,
+    "consensus_contacts_only_GA95": 57,
+    "consensus_contacts_only_GB95": 96,
+    "consensus_contacts_shared": 14,
+    "important_note": "NMR deposited models are structural representations, not equilibrium fold-population draws; this is RETROSPECTIVE structure analysis, not predictive scoring.",
+    "mutations": [
+      {
+        "GA95": "L",
+        "GB95": "A",
+        "position": 20
+      },
+      {
+        "GA95": "I",
+        "GB95": "F",
+        "position": 30
+      },
+      {
+        "GA95": "L",
+        "GB95": "Y",
+        "position": 45
+      }
+    ],
+    "nmr_model_count_each": [
+      20,
+      20
+    ]
+  },
+  "experimental_thermodynamic_constraints": {
+    "T_kelvin": 293.15,
+    "min_cross_fold_odds_ratio_if_opposing_states_exceed_90pct": "81",
+    "nominal_95pct_to_certify_90pct_independent_per_state_energy_error_kcal_mol": 0.21764447454330194,
+    "required_relative_fold_free_energy_shift_kcal_mol_at_T": 2.5599816460530618,
+    "scope": "Conditional necessary lower bound from equilibrium odds. Not estimated GA95/GB95 energies."
+  }
+}

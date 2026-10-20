@@ -1,0 +1,236 @@
+{
+  "GA95_aromatic_geometry": [
+    {
+      "absolute_plane_normal_dot_range": null,
+      "distance_range": null,
+      "mean_centroid_distance_A": null,
+      "orientation_class_counts": {},
+      "sites": [
+        29,
+        30
+      ],
+      "valid_models": 0
+    },
+    {
+      "absolute_plane_normal_dot_range": null,
+      "distance_range": null,
+      "mean_centroid_distance_A": null,
+      "orientation_class_counts": {},
+      "sites": [
+        29,
+        45
+      ],
+      "valid_models": 0
+    },
+    {
+      "absolute_plane_normal_dot_range": {
+        "max": 0.7926236180086221,
+        "median": 0.5630617102950508,
+        "min": 0.17122145367053287
+      },
+      "distance_range": {
+        "max": 10.941428862610017,
+        "median": 8.091528795992419,
+        "min": 7.36314237529663
+      },
+      "mean_centroid_distance_A": 8.457512033683567,
+      "orientation_class_counts": {
+        "separated": 20
+      },
+      "sites": [
+        29,
+        52
+      ],
+      "valid_models": 20
+    },
+    {
+      "absolute_plane_normal_dot_range": null,
+      "distance_range": null,
+      "mean_centroid_distance_A": null,
+      "orientation_class_counts": {},
+      "sites": [
+        30,
+        45
+      ],
+      "valid_models": 0
+    },
+    {
+      "absolute_plane_normal_dot_range": null,
+      "distance_range": null,
+      "mean_centroid_distance_A": null,
+      "orientation_class_counts": {},
+      "sites": [
+        30,
+        52
+      ],
+      "valid_models": 0
+    },
+    {
+      "absolute_plane_normal_dot_range": null,
+      "distance_range": null,
+      "mean_centroid_distance_A": null,
+      "orientation_class_counts": {},
+      "sites": [
+        45,
+        52
+      ],
+      "valid_models": 0
+    }
+  ],
+  "GB95_aromatic_geometry": [
+    {
+      "absolute_plane_normal_dot_range": {
+        "max": 0.6297234633832443,
+        "median": 0.41400305272587246,
+        "min": 0.27790081108585074
+      },
+      "distance_range": {
+        "max": 6.608494663856681,
+        "median": 6.271042478008729,
+        "min": 5.772223356058064
+      },
+      "mean_centroid_distance_A": 6.258034885084042,
+      "orientation_class_counts": {
+        "close_other_orientation": 6,
+        "perpendicular_plane_like": 14
+      },
+      "sites": [
+        29,
+        30
+      ],
+      "valid_models": 20
+    },
+    {
+      "absolute_plane_normal_dot_range": {
+        "max": 0.49128451290208974,
+        "median": 0.3071810558024449,
+        "min": 0.14383060183835894
+      },
+      "distance_range": {
+        "max": 17.52492366602491,
+        "median": 16.34901808612095,
+        "min": 14.980437997045792
+      },
+      "mean_centroid_distance_A": 16.209834489142047,
+      "orientation_class_counts": {
+        "separated": 20
+      },
+      "sites": [
+        29,
+        45
+      ],
+      "valid_models": 20
+    },
+    {
+      "absolute_plane_normal_dot_range": {
+        "max": 0.8504865556900816,
+        "median": 0.7543801974186439,
+        "min": 0.5292153731766849
+      },
+      "distance_range": {
+        "max": 12.077520893976729,
+        "median": 11.473084452001846,
+        "min": 10.706834422980076
+      },
+      "mean_centroid_distance_A": 11.454322354995254,
+      "orientation_class_counts": {
+        "separated": 20
+      },
+      "sites": [
+        29,
+        52
+      ],
+      "valid_models": 20
+    },
+    {
+      "absolute_plane_normal_dot_range": {
+        "max": 0.7369153395000748,
+        "median": 0.6527822181534912,
+        "min": 0.5497844541065295
+      },
+      "distance_range": {
+        "max": 11.592684842654487,
+        "median": 10.58041723409261,
+        "min": 9.710120690976675
+      },
+      "mean_centroid_distance_A": 10.49549307000321,
+      "orientation_class_counts": {
+        "separated": 20
+      },
+      "sites": [
+        30,
+        45
+      ],
+      "valid_models": 20
+    },
+    {
+      "absolute_plane_normal_dot_range": {
+        "max": 0.45988150250826154,
+        "median": 0.14559405417364316,
+        "min": 0.0020945058328269706
+      },
+      "distance_range": {
+        "max": 6.250178695223219,
+        "median": 5.823451292693586,
+        "min": 5.524310882112105
+      },
+      "mean_centroid_distance_A": 5.833536777472035,
+      "orientation_class_counts": {
+        "perpendicular_plane_like": 20
+      },
+      "sites": [
+        30,
+        52
+      ],
+      "valid_models": 20
+    },
+    {
+      "absolute_plane_normal_dot_range": {
+        "max": 0.8345471130929196,
+        "median": 0.6832317362049354,
+        "min": 0.5573456180817381
+      },
+      "distance_range": {
+        "max": 5.724835778818852,
+        "median": 5.065584325730654,
+        "min": 4.631640281201082
+      },
+      "mean_centroid_distance_A": 5.058789758651864,
+      "orientation_class_counts": {
+        "close_other_orientation": 20
+      },
+      "sites": [
+        45,
+        52
+      ],
+      "valid_models": 20
+    }
+  ],
+  "contact_map_model_discrimination": {
+    "between_folds": {
+      "max": 0.10638297872340426,
+      "median": 0.08839779005524862,
+      "min": 0.06951871657754011
+    },
+    "cross_fold_pairs": 400,
+    "interpretation": "Retrospective deposited NMR contact-map separability, not mutation fold prediction.",
+    "strict_model_level_separation": true,
+    "within_GA95": {
+      "max": 0.95,
+      "median": 0.8241758241758241,
+      "min": 0.6730769230769231
+    },
+    "within_GA95_pairs": 190,
+    "within_GB95": {
+      "max": 0.9827586206896551,
+      "median": 0.9159663865546218,
+      "min": 0.8492063492063492
+    },
+    "within_GB95_pairs": 190
+  },
+  "coordinate_SHA256": {
+    "2KDL": "fb75cc55eb8b89e0cec5e2be69901b348e60916375b9c410a0573edfca1db591",
+    "2KDM": "1c49e5faa25b443285432d935c621151294ed3b636b0106e6b1a7f7ccf2d00ec"
+  },
+  "method": "Retrospective NMR structural geometry; do not infer fold populations or energy from these models."
+}
