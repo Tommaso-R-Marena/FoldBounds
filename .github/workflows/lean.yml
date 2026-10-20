@@ -36,6 +36,15 @@ jobs:
         env:
           PYTHONPATH: src
         run: python3 experiments/lean_frontier_benchmark.py --lake-root . --exe "$PWD/.lake/build/bin/foldcheck" --cases quick --exact-max 10 --out /tmp/foldbounds-lean-frontier-ci
+      - name: Build version-2 frontier checker executable
+        run: lake build foldcheck2
+      - name: Kernel-check version-2 accepted/rejected certificates
+        run: lake env lean FoldBounds/FrontierNextTests.lean
+      - name: Independent exact-oracle differential and adversarial v2 checks
+        timeout-minutes: 18
+        env:
+          PYTHONPATH: src
+        run: python3 experiments/lean_v2_adversarial.py --exe2 .lake/build/bin/foldcheck2 --mutants 100 --out /tmp/foldbounds-v2-ci
       - name: Audit headline theorem axioms
         run: |
           lake env lean FoldBounds/AxiomAudit.lean | tee /tmp/foldbounds-axioms.log
