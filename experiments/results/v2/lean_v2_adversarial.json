@@ -1,0 +1,327 @@
+{
+ "differential": {
+  "certificates": 3000,
+  "failures": [],
+  "enum_exact": 500,
+  "enum_certificates": 500
+ },
+ "adversarial": [
+  {
+   "name": "bad header",
+   "rejected": true,
+   "result": {
+    "file": "/tmp/tmphbl5z6gg/c0.txt",
+    "parse_error": "bad header"
+   }
+  },
+  {
+   "name": "v1 header with X leaf",
+   "rejected": true,
+   "result": {
+    "file": "/tmp/tmphbl5z6gg/c1.txt",
+    "parse_error": "bad node line"
+   }
+  },
+  {
+   "name": "v1 header with M leaf",
+   "rejected": true,
+   "result": {
+    "file": "/tmp/tmphbl5z6gg/c2.txt",
+    "parse_error": "bad node line"
+   }
+  },
+  {
+   "name": "q = 0",
+   "rejected": true,
+   "result": {
+    "file": "/tmp/tmphbl5z6gg/c3.txt",
+    "version": 2,
+    "sequence": "HHHHHH",
+    "q": "0/1",
+    "threshold": 2,
+    "nodes": 1,
+    "accepted": false,
+    "verify_ms": 0
+   }
+  },
+  {
+   "name": "q = 1/2",
+   "rejected": true,
+   "result": {
+    "file": "/tmp/tmphbl5z6gg/c4.txt",
+    "version": 2,
+    "sequence": "HHHHHH",
+    "q": "1/2",
+    "threshold": 2,
+    "nodes": 1,
+    "accepted": false,
+    "verify_ms": 0
+   }
+  },
+  {
+   "name": "negative q",
+   "rejected": true,
+   "result": {
+    "file": "/tmp/tmphbl5z6gg/c5.txt",
+    "parse_error": "bad q line"
+   }
+  },
+  {
+   "name": "q denominator 0",
+   "rejected": true,
+   "result": {
+    "file": "/tmp/tmphbl5z6gg/c6.txt",
+    "parse_error": "bad q line"
+   }
+  },
+  {
+   "name": "bad sequence char",
+   "rejected": true,
+   "result": {
+    "file": "/tmp/tmphbl5z6gg/c7.txt",
+    "parse_error": "bad sequence line"
+   }
+  },
+  {
+   "name": "sequence too short",
+   "rejected": true,
+   "result": {
+    "file": "/tmp/tmphbl5z6gg/c8.txt",
+    "parse_error": "bad sequence line"
+   }
+  },
+  {
+   "name": "negative threshold",
+   "rejected": true,
+   "result": {
+    "file": "/tmp/tmphbl5z6gg/c9.txt",
+    "parse_error": "bad threshold line"
+   }
+  },
+  {
+   "name": "missing end",
+   "rejected": true,
+   "result": {
+    "file": "/tmp/tmphbl5z6gg/c10.txt",
+    "parse_error": "missing end line"
+   }
+  },
+  {
+   "name": "unsupported kind",
+   "rejected": true,
+   "result": {
+    "file": "/tmp/tmphbl5z6gg/c11.txt",
+    "parse_error": "bad node line"
+   }
+  },
+  {
+   "name": "memory without number",
+   "rejected": true,
+   "result": {
+    "file": "/tmp/tmphbl5z6gg/c12.txt",
+    "parse_error": "bad node line"
+   }
+  },
+  {
+   "name": "memory not a number",
+   "rejected": true,
+   "result": {
+    "file": "/tmp/tmphbl5z6gg/c13.txt",
+    "parse_error": "bad node line"
+   }
+  },
+  {
+   "name": "negative memory",
+   "rejected": true,
+   "result": {
+    "file": "/tmp/tmphbl5z6gg/c14.txt",
+    "parse_error": "bad node line"
+   }
+  },
+  {
+   "name": "bad direction char",
+   "rejected": true,
+   "result": {
+    "file": "/tmp/tmphbl5z6gg/c15.txt",
+    "parse_error": "bad node line"
+   }
+  },
+  {
+   "name": "exact at nonterminal root",
+   "rejected": true,
+   "result": {
+    "file": "/tmp/tmphbl5z6gg/c16.txt",
+    "version": 2,
+    "sequence": "HHHHHH",
+    "q": "2/1",
+    "threshold": 2,
+    "nodes": 1,
+    "accepted": false,
+    "verify_ms": 0
+   }
+  },
+  {
+   "name": "dead root",
+   "rejected": true,
+   "result": {
+    "file": "/tmp/tmphbl5z6gg/c17.txt",
+    "version": 2,
+    "sequence": "HHHHHH",
+    "q": "2/1",
+    "threshold": 2,
+    "nodes": 1,
+    "accepted": false,
+    "verify_ms": 0
+   }
+  },
+  {
+   "name": "duplicate witness",
+   "rejected": true,
+   "result": {
+    "file": "/tmp/tmphbl5z6gg/c18.txt",
+    "version": 2,
+    "sequence": "HHHHHH",
+    "q": "2/1",
+    "threshold": 2,
+    "nodes": 1,
+    "accepted": false,
+    "verify_ms": 0
+   }
+  },
+  {
+   "name": "colliding witness",
+   "rejected": true,
+   "result": {
+    "file": "/tmp/tmphbl5z6gg/c19.txt",
+    "version": 2,
+    "sequence": "HHHHHH",
+    "q": "2/1",
+    "threshold": 2,
+    "nodes": 1,
+    "accepted": false,
+    "verify_ms": 0
+   }
+  },
+  {
+   "name": "short witness",
+   "rejected": true,
+   "result": {
+    "file": "/tmp/tmphbl5z6gg/c20.txt",
+    "version": 2,
+    "sequence": "HHHHHH",
+    "q": "2/1",
+    "threshold": 2,
+    "nodes": 1,
+    "accepted": false,
+    "verify_ms": 0
+   }
+  },
+  {
+   "name": "long witness",
+   "rejected": true,
+   "result": {
+    "file": "/tmp/tmphbl5z6gg/c21.txt",
+    "version": 2,
+    "sequence": "HHHHHH",
+    "q": "2/1",
+    "threshold": 2,
+    "nodes": 1,
+    "accepted": false,
+    "verify_ms": 0
+   }
+  },
+  {
+   "name": "witness on exact leaf",
+   "rejected": true,
+   "result": {
+    "file": "/tmp/tmphbl5z6gg/c22.txt",
+    "parse_error": "bad node line"
+   }
+  },
+  {
+   "name": "enum below chain length",
+   "rejected": true,
+   "result": {
+    "file": "/tmp/tmphbl5z6gg/c23.txt",
+    "version": 2,
+    "sequence": "HHHHHH",
+    "q": "2/1",
+    "threshold": 2,
+    "nodes": 1,
+    "accepted": false,
+    "verify_ms": 0
+   }
+  },
+  {
+   "name": "missing branch",
+   "rejected": true,
+   "result": {
+    "file": "/tmp/tmphbl5z6gg/c24.txt",
+    "version": 2,
+    "sequence": "HHHHHH",
+    "q": "2/1",
+    "threshold": 2,
+    "nodes": 2,
+    "accepted": false,
+    "verify_ms": 0
+   }
+  },
+  {
+   "name": "duplicated entry",
+   "rejected": true,
+   "result": {
+    "file": "/tmp/tmphbl5z6gg/c25.txt",
+    "version": 2,
+    "sequence": "HHHHHH",
+    "q": "2/1",
+    "threshold": 2,
+    "nodes": 4,
+    "accepted": false,
+    "verify_ms": 0
+   }
+  },
+  {
+   "name": "ancestor and descendant",
+   "rejected": true,
+   "result": {
+    "file": "/tmp/tmphbl5z6gg/c26.txt",
+    "version": 2,
+    "sequence": "HHHHHH",
+    "q": "2/1",
+    "threshold": 2,
+    "nodes": 4,
+    "accepted": false,
+    "verify_ms": 0
+   }
+  },
+  {
+   "name": "mem leaf on colliding prefix",
+   "rejected": true,
+   "result": {
+    "file": "/tmp/tmphbl5z6gg/c27.txt",
+    "version": 2,
+    "sequence": "HHHHHH",
+    "q": "2/1",
+    "threshold": 2,
+    "nodes": 4,
+    "accepted": false,
+    "verify_ms": 1
+   }
+  },
+  {
+   "name": "trailing junk on line",
+   "rejected": true,
+   "result": {
+    "file": "/tmp/tmphbl5z6gg/c28.txt",
+    "parse_error": "bad node line"
+   }
+  }
+ ],
+ "mutation": {
+  "mutants": 600,
+  "accepted_sound": 211,
+  "rejected": 389,
+  "accepted_unsound": 0,
+  "unsound_cases": []
+ }
+}
