@@ -1,5 +1,6 @@
 import FoldBounds
 import FoldBounds.FrontierTests
+import FoldBounds.FrontierNextTests
 
 /-! Axiom audit: every headline theorem depends only on the standard axioms
 `propext`, `Classical.choice`, `Quot.sound`. -/
@@ -123,3 +124,52 @@ import FoldBounds.FrontierTests
 #print axioms FoldBounds.FrontierCheck.famLow_le
 #print axioms FoldBounds.FrontierCheck.famRaise_sound
 #print axioms FoldBounds.FrontierTests.accept_root_transfer_thr3
+
+-- Version-2 additions (geometry, finite-memory transfer, partially directed
+-- families, version-2 checker, refinement, tests).
+#print axioms FoldBounds.Geometry.card_shift_add_image_le
+#print axioms FoldBounds.Geometry.contacts_le_rows_cols
+#print axioms FoldBounds.Geometry.discrete_ivt
+#print axioms FoldBounds.Geometry.rows_ge_span
+#print axioms FoldBounds.Geometry.cols_ge_span
+#print axioms FoldBounds.Geometry.length_le_rows_mul_cols
+#print axioms FoldBounds.Geometry.minPerim_le
+#print axioms FoldBounds.Geometry.contactPairs_le_geomCap
+#print axioms FoldBounds.Geometry.parityContactCount_le_contactPairs
+#print axioms FoldBounds.Geometry.parityContacts_le_geomCap
+#print axioms FoldBounds.MemTransfer.ffContacts_eq_ffPart
+#print axioms FoldBounds.MemTransfer.ffj_le_slots
+#print axioms FoldBounds.MemTransfer.loAt_le_ffj
+#print axioms FoldBounds.MemTransfer.ffj_le_lo_add_out
+#print axioms FoldBounds.MemTransfer.memState_inv
+#print axioms FoldBounds.MemTransfer.memCover_spec
+#print axioms FoldBounds.MemTransfer.memCover
+#print axioms FoldBounds.MemTransfer.memContacts_bounds
+#print axioms FoldBounds.Families.length_pdWords
+#print axioms FoldBounds.Families.nodup_pdWords
+#print axioms FoldBounds.Families.trace_pd
+#print axioms FoldBounds.Families.card_pdFamily
+#print axioms FoldBounds.Families.pdFamily_subset_ext
+#print axioms FoldBounds.Families.mem_pdFamily_test
+#print axioms FoldBounds.Families.two_pow_le_pdCount
+#print axioms FoldBounds.FrontierNext.enumEnc_sound
+#print axioms FoldBounds.FrontierNext.famChoose_spec
+#print axioms FoldBounds.FrontierNext.fam_wit_lower
+#print axioms FoldBounds.FrontierNext.mem_facts
+#print axioms FoldBounds.FrontierNext.memEnc_upper_sound
+#print axioms FoldBounds.FrontierNext.memEnc_lower_sound
+#print axioms FoldBounds.FrontierNext.memEnc_sound
+#print axioms FoldBounds.FrontierNext.checkNode_sound
+#print axioms FoldBounds.FrontierNext.check_sound
+#print axioms FoldBounds.FrontierNext.check_coupled_probability_sound
+#print axioms FoldBounds.FrontierNext.checkFlat2_sound
+#print axioms FoldBounds.Refinement.step_rel
+#print axioms FoldBounds.Refinement.spec_mono
+#print axioms FoldBounds.Refinement.minPerim_mono
+#print axioms FoldBounds.Refinement.geomCap_anti
+#print axioms FoldBounds.Refinement.memUppers_mono
+#print axioms FoldBounds.Refinement.memUppers_le_basic
+#print axioms FoldBounds.FrontierNextTests.h6_probability_exact
+#print axioms FoldBounds.FrontierNextTests.accept_root_mem3_witness
+#print axioms FoldBounds.FrontierNextTests.legacy_agrees_with_v1
+#print axioms FoldBounds.FrontierNextTests.reject_flat_missing_branch

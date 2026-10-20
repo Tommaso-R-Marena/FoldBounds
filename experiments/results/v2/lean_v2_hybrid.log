@@ -1,0 +1,31 @@
+    HHHHHHHHHHHH q=  2 thr=4 d=6 kappa=None X=0/71 ms=4713 P=[0.0756,0.8962] exactP=0.4068 ok=True
+    HHHHHHHHHHHH q=  2 thr=4 d=6 kappa=4 X=0/71 ms=4747 P=[0.0756,0.8962] exactP=0.4068 ok=True
+    HHHHHHHHHHHH q=  2 thr=4 d=6 kappa=3 X=0/71 ms=4754 P=[0.0756,0.8962] exactP=0.4068 ok=True
+    HHHHHHHHHHHH q=  2 thr=4 d=6 kappa=2 X=8/71 ms=4410 P=[0.1961,0.7922] exactP=0.4068 ok=True
+    HHHHHHHHHHHH q=  2 thr=4 d=6 kappa=1 X=30/71 ms=3165 P=[0.3357,0.5712] exactP=0.4068 ok=True
+    HHHHHHHHHHHH q=  2 thr=4 d=6 kappa=0 X=71/71 ms=535 P=[0.4068,0.4068] exactP=0.4068 ok=True
+    HPHHPHHPHHHH q=  2 thr=4 d=6 kappa=None X=0/71 ms=4783 P=[0.0053,0.6287] exactP=0.1196 ok=True
+    HPHHPHHPHHHH q=  2 thr=4 d=6 kappa=4 X=0/71 ms=4736 P=[0.0053,0.6287] exactP=0.1196 ok=True
+    HPHHPHHPHHHH q=  2 thr=4 d=6 kappa=3 X=0/71 ms=4733 P=[0.0053,0.6287] exactP=0.1196 ok=True
+    HPHHPHHPHHHH q=  2 thr=4 d=6 kappa=2 X=6/71 ms=4495 P=[0.0472,0.4409] exactP=0.1196 ok=True
+    HPHHPHHPHHHH q=  2 thr=4 d=6 kappa=1 X=24/71 ms=3540 P=[0.0904,0.2310] exactP=0.1196 ok=True
+    HPHHPHHPHHHH q=  2 thr=4 d=6 kappa=0 X=71/71 ms=509 P=[0.1196,0.1196] exactP=0.1196 ok=True
+    HPHHPHHPHHHH q=3/2 thr=2 d=6 kappa=None X=0/71 ms=4415 P=[0.0758,0.9094] exactP=0.4633 ok=True
+    HPHHPHHPHHHH q=3/2 thr=2 d=6 kappa=4 X=0/71 ms=4376 P=[0.0758,0.9094] exactP=0.4633 ok=True
+    HPHHPHHPHHHH q=3/2 thr=2 d=6 kappa=3 X=0/71 ms=4390 P=[0.0758,0.9094] exactP=0.4633 ok=True
+    HPHHPHHPHHHH q=3/2 thr=2 d=6 kappa=2 X=6/71 ms=4250 P=[0.1802,0.9094] exactP=0.4633 ok=True
+    HPHHPHHPHHHH q=3/2 thr=2 d=6 kappa=1 X=24/71 ms=3425 P=[0.3372,0.7578] exactP=0.4633 ok=True
+    HPHHPHHPHHHH q=3/2 thr=2 d=6 kappa=0 X=71/71 ms=530 P=[0.4633,0.4633] exactP=0.4633 ok=True
+  HPHPPHHPHPPHPH q=  2 thr=2 d=8 kappa=None X=0/543 ms=44952 P=[0.0413,0.8274] exactP=0.2908 ok=True
+  HPHPPHHPHPPHPH q=  2 thr=2 d=8 kappa=4 X=0/543 ms=44673 P=[0.0413,0.8274] exactP=0.2908 ok=True
+  HPHPPHHPHPPHPH q=  2 thr=2 d=8 kappa=3 X=0/543 ms=44686 P=[0.0413,0.8274] exactP=0.2908 ok=True
+  HPHPPHHPHPPHPH q=  2 thr=2 d=8 kappa=2 X=6/543 ms=44105 P=[0.0692,0.8274] exactP=0.2908 ok=True
+  HPHPPHHPHPPHPH q=  2 thr=2 d=8 kappa=1 X=86/543 ms=39027 P=[0.1915,0.6308] exactP=0.2908 ok=True
+  HPHPPHHPHPPHPH q=  2 thr=2 d=8 kappa=0 X=543/543 ms=4911 P=[0.2908,0.2908] exactP=0.2908 ok=True
+  HHHHHHHHHHHHHH q=  2 thr=4 d=8 kappa=None X=0/543 ms=46842 P=[0.1679,0.9475] exactP=0.5806 ok=True
+  HHHHHHHHHHHHHH q=  2 thr=4 d=8 kappa=4 X=0/543 ms=46440 P=[0.1679,0.9475] exactP=0.5806 ok=True
+  HHHHHHHHHHHHHH q=  2 thr=4 d=8 kappa=3 X=38/543 ms=44360 P=[0.3231,0.9225] exactP=0.5806 ok=True
+  HHHHHHHHHHHHHH q=  2 thr=4 d=8 kappa=2 X=124/543 ms=38806 P=[0.4713,0.8261] exactP=0.5806 ok=True
+  HHHHHHHHHHHHHH q=  2 thr=4 d=8 kappa=1 X=308/543 ms=25195 P=[0.5514,0.6820] exactP=0.5806 ok=True
+  HHHHHHHHHHHHHH q=  2 thr=4 d=8 kappa=0 X=543/543 ms=5311 P=[0.5806,0.5806] exactP=0.5806 ok=True
+rows: 30 problems: 0

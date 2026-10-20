@@ -16,3 +16,9 @@ globs = ["FoldBounds", "FoldBounds.+"]
 name = "foldcheck"
 srcDir = "scripts"
 root = "foldcheck"
+
+# Compiled runner for the version-2 verified checker (unverified I/O shell).
+[[lean_exe]]
+name = "foldcheck2"
+srcDir = "scripts"
+root = "foldcheck2"

@@ -22,3 +22,10 @@ public import FoldBounds.FrontierSoundness
 public import FoldBounds.FrontierPartition
 public import FoldBounds.FrontierFlat
 public import FoldBounds.FrontierCLI
+public import FoldBounds.VerifiedGeometry
+public import FoldBounds.VerifiedMemoryTransfer
+public import FoldBounds.VerifiedFamilies
+public import FoldBounds.FrontierNext
+public import FoldBounds.CertifiedRefinement
+public import FoldBounds.FrontierNextFlat
+public import FoldBounds.FrontierNextCLI
