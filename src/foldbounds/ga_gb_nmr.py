@@ -15,7 +15,7 @@ from pathlib import Path
 from typing import Iterable
 
 RES3={"ALA":"A","ARG":"R","ASN":"N","ASP":"D","CYS":"C","GLN":"Q","GLU":"E","GLY":"G","HIS":"H","ILE":"I","LEU":"L","LYS":"K","MET":"M","PHE":"F","PRO":"P","SER":"S","THR":"T","TRP":"W","TYR":"Y","VAL":"V"}
-GA95="TTYKLILNLKQAKEEAIKELVDAGIAEKYIKLIANAKTVEGVWTLKDEIKTFTVTE"
+GA95="TTYKLILNLKQAKEEAIKELVDAGTAEKYIKLIANAKTVEGVWTLKDEIKTFTVTE"
 MUTATIONS={20:("L","A"),30:("I","F"),45:("L","Y")}
 def mutate(seq:str,changes:dict[int,tuple[str,str]])->str:
     a=list(seq)
