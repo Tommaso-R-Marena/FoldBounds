@@ -11,6 +11,16 @@ on:
       - 'tests/test_precommitted_scoring.py'
       - 'tests/test_real_output_validation.py'
       - 'docs/REAL_GA_GB_BENCHMARK.md'
+      - 'docs/EXPERIMENTAL_DISTANCE_REPORTER.md'
+      - 'src/foldbounds/real_aromatic_geometry.py'
+      - 'src/foldbounds/real_fold_reporters.py'
+      - 'experiments/analyze_ga_gb_advanced.py'
+      - 'experiments/find_fold_reporters.py'
+      - 'tests/test_real_aromatic_geometry.py'
+      - 'tests/test_real_fold_reporters.py'
+      - 'tests/test_real_advanced_frozen_reference.py'
+      - 'experiments/results/ga_gb_advanced_20261020.json'
+      - 'experiments/results/ga_gb_distance_reporters_20261020.json'
       - '.github/workflows/real-ga-gb-benchmark.yml'
   workflow_dispatch:
 permissions:
@@ -30,7 +40,7 @@ jobs:
       - name: Install test dependencies
         run: python -m pip install -e '.[test]'
       - name: Verify parsing, conservation, provenance, and population algebra
-        run: python -m pytest -q tests/test_real_fold_benchmark.py tests/test_precommitted_scoring.py tests/test_real_output_validation.py tests/test_real_nmr_frozen_reference.py
+        run: python -m pytest -q tests/test_real_fold_benchmark.py tests/test_precommitted_scoring.py tests/test_real_output_validation.py tests/test_real_nmr_frozen_reference.py tests/test_real_aromatic_geometry.py tests/test_real_fold_reporters.py tests/test_real_advanced_frozen_reference.py
 
   analyze-authentic-rcsb-nmr-ensembles:
     runs-on: ubuntu-latest
@@ -70,6 +80,24 @@ jobs:
           assert actual==frozen, 'real NMR report changed from independently reviewed frozen reference'
           print('PASS: authentic PDB input hashes and complete NMR structural observations reproduce exactly')
           PY
+      - name: Independently recompute ring planes, contact-map separation, and pairwise reporters
+        run: |
+          python experiments/analyze_ga_gb_advanced.py --ga /tmp/real-pdb-data/2KDL.pdb --gb /tmp/real-pdb-data/2KDM.pdb --out /tmp/real-pdb-data/advanced.json > /dev/null
+          python experiments/find_fold_reporters.py --ga /tmp/real-pdb-data/2KDL.pdb --gb /tmp/real-pdb-data/2KDM.pdb --out /tmp/real-pdb-data/reporters.json > /dev/null
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          for actual,expected in (
+            ('advanced.json','ga_gb_advanced_20261020.json'),
+            ('reporters.json','ga_gb_distance_reporters_20261020.json'),
+          ):
+              a=json.loads(Path('/tmp/real-pdb-data',actual).read_text())
+              b=json.loads(Path('experiments/results',expected).read_text())
+              assert a==b,(actual,expected)
+          p=a['top_ten'][0]
+          assert (p['i'],p['j'])==(11,21) and p['worst_case_separation_A']>16
+          print('PASS: independent 20x20 contact-map contrast and 349 prospective structural-reporter candidate calculations')
+          PY
       - name: Publish only the verified structural statistics and input hashes
         uses: actions/upload-artifact@v4
         with:
@@ -77,6 +105,8 @@ jobs:
           path: |
             /tmp/real-pdb-data/2KDL.pdb
             /tmp/real-pdb-data/2KDM.pdb
+            /tmp/real-pdb-data/advanced.json
+            /tmp/real-pdb-data/reporters.json
             /tmp/real-pdb-data/real_ensembles.json
             /tmp/real-pdb-data/geometry_summary.json
             /tmp/real-pdb-data/SHA256SUMS
