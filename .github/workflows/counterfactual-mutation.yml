@@ -1,0 +1,69 @@
+name: Counterfactual mutation reweighting and epistasis
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  counterfactual-python:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        python-version: ['3.11','3.12','3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install package and test dependencies
+        run: python -m pip install -e '.[test]'
+      - name: Independently validate mutation reweighting against exact four-sequence populations
+        run: python -m pytest -q tests/test_counterfactual_reweighting.py
+      - name: Reproduce all 768 noncontact mutation cycles and physical calibration
+        if: matrix.python-version == '3.11'
+        run: |
+          python experiments/counterfactual_reweighting_benchmark.py > /tmp/actual-counterfactual.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          a=json.loads(Path('/tmp/actual-counterfactual.json').read_text())
+          b=json.loads(Path('experiments/counterfactual_reweighting_results.json').read_text())
+          assert a == b
+          z=a['eight_mer_pairwise_nondirect']
+          assert z['same_parity_two_site_cycles']==768
+          assert z['nonzero_exact_odds_epistasis']==504
+          assert z['positive_sign_count']==140
+          assert z['negative_sign_count']==364
+          assert a['10_mer']['microstates']==308981
+          assert .11 < a['energy_calibration']['critical_abs_independent_per_conformation_energy_error_kcal_mol_10mer'] < .12
+          PY
+  counterfactual-lean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject forbidden proof shortcuts
+        run: python3 scripts/check_lean_sources.py
+      - name: Build pinned Lean and Mathlib
+        uses: leanprover/lean-action@v1
+      - name: Kernel check two-state covariance and strict sign identities
+        run: lake env lean FoldBounds/CounterfactualEpistasis.lean
+      - name: Verify axiom closure of the new declarations
+        run: |
+          set -o pipefail
+          lake env lean FoldBounds/CounterfactualEpistasisAudit.lean | tee /tmp/counterfactual-axioms.txt
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          s=Path('/tmp/counterfactual-axioms.txt').read_text()
+          for name in ('two_state_mutation_covariance','two_state_positive_covariance','two_state_negative_covariance'):
+              prefix="'FoldBounds.CounterfactualEpistasis."+name+"'"
+              lines=[x for x in s.splitlines() if x.startswith(prefix)]
+              assert len(lines)==1,(prefix,lines)
+              if 'does not depend on any axioms' in lines[0]:continue
+              match=re.search(r'depends on axioms: \[([^]]*)\]',lines[0])
+              assert match,lines[0]
+              actual={x.strip() for x in match.group(1).split(',')}
+              assert actual <= {'propext','Classical.choice','Quot.sound'},actual
+          PY
