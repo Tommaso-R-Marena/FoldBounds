@@ -1,0 +1,89 @@
+{
+  "3d_reference": {
+    "coefficients_positive": 55,
+    "coefficients_total": 55,
+    "conformations": 13565,
+    "crossover_brackets": {
+      "2": [
+        "524365017169/1099511627776",
+        "2097460068691/4398046511104"
+      ],
+      "3/2": [
+        "3769861991581/4398046511104",
+        "942465497899/1099511627776"
+      ]
+    },
+    "histogram_bins": 22,
+    "interval": [
+      "149019/566171",
+      "27968768/37452129"
+    ],
+    "model": "3D anchored cubic-lattice HP",
+    "sequence": "HPHHPHHH"
+  },
+  "certified_box": {
+    "b": [
+      "1/4",
+      "4"
+    ],
+    "high_float": 0.8098896125214166,
+    "low_float": 0.1662323993763089,
+    "lower": "84529143/508499807",
+    "naive_lower": "3130709/242528510002517",
+    "naive_upper": "3487036971417600/3487037024413933",
+    "naive_width_float": 0.9999999718932787,
+    "positive_derivative_coefficients": 133,
+    "q": [
+      "3/2",
+      "2"
+    ],
+    "sharp_width_float": 0.6436572131451076,
+    "upper": "1108499200/1368704059",
+    "zero_derivative_coefficients": 0
+  },
+  "crossover_brackets": {
+    "2": {
+      "approximately": 0.6470134168656614,
+      "descartes_sign_changes": 1,
+      "lower": "711398775169/1099511627776",
+      "upper": "2845595100691/4398046511104",
+      "verified_straddle": [
+        true,
+        true
+      ]
+    },
+    "3": {
+      "approximately": 0.26385742381728505,
+      "descartes_sign_changes": 1,
+      "lower": "1160457222241/4398046511104",
+      "upper": "72528576391/274877906944",
+      "verified_straddle": [
+        true,
+        true
+      ]
+    },
+    "3/2": {
+      "approximately": 1.1734220287675043,
+      "descartes_sign_changes": 1,
+      "lower": "2580382329833/2199023255552",
+      "upper": "5160764659681/4398046511104",
+      "verified_straddle": [
+        true,
+        true
+      ]
+    }
+  },
+  "event": "at least two nonconsecutive HH contacts",
+  "guaranteed_majority": {
+    "above_b": "1174/1000",
+    "all_contact_q": "[3/2,2]",
+    "below_b": "647/1000",
+    "majority_lower": "561653329300058486375148935149947/1123059264168024733879743924206435",
+    "minority_upper": "1418832711280038648161397795337952/2837695901580049547354598382528745"
+  },
+  "joint_histogram_bins": 52,
+  "model": "2D anchored HP lattice, HH contact reward q, bend propensity b",
+  "runtime_seconds": 4.0746,
+  "sequence": "HPHHPHHPHHHH",
+  "states": 30073
+}
