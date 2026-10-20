@@ -52,3 +52,22 @@ jobs:
           # The repository-wide audit script expects every global theorem;
           # this intentionally checks the independent new theorem instead.
           grep -F "'FoldBounds.RobustReweighting.robust_population_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]" /tmp/robust-uncertainty-axioms.log
+      - name: Kernel-check Bernstein weighted ratio convex hull theorem
+        run: lake env lean FoldBounds/BernsteinRatio.lean
+      - name: Audit Bernstein weighted ratio theorem axioms
+        run: |
+          set -o pipefail
+          lake env lean FoldBounds/BernsteinRatioAudit.lean | tee /tmp/bernstein-ratio-axioms.log
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('/tmp/bernstein-ratio-axioms.log').read_text()
+          name="FoldBounds.BernsteinRatio.weighted_ratio_enclosure"
+          lines=[x for x in s.splitlines() if x.startswith("'"+name+"'")]
+          assert len(lines)==1, (name,lines)
+          if "does not depend on any axioms" not in lines[0]:
+              match=re.search(r"depends on axioms: \[([^]]*)\]",lines[0])
+              assert match,lines[0]
+              ax={x.strip() for x in match.group(1).split(",")}
+              assert ax <= {'propext','Classical.choice','Quot.sound'},ax
+          PY
