@@ -1,0 +1,121 @@
+      HPHHPHHPHHHH q=  1 thr=2 d=4  v1-B nodes=    9 bytes=    109 ms=2 Z=[0,5.905e+04] P=[0,1] exactZ=3.007e+04 P=0.2854 ok=True
+      HPHHPHHPHHHH q=  1 thr=2 d=4  v1-T nodes=    9 bytes=    109 ms=471 Z=[2304,3.805e+04] P=[0,1] exactZ=3.007e+04 P=0.2854 ok=True
+      HPHHPHHPHHHH q=  1 thr=2 d=4 v1-TW nodes=    9 bytes=   2944 ms=542 Z=[2304,3.805e+04] P=[0.002147,0.9936] exactZ=3.007e+04 P=0.2854 ok=True
+      HPHHPHHPHHHH q=  1 thr=2 d=4    M0 nodes=    9 bytes=    118 ms=495 Z=[1.026e+04,3.805e+04] P=[0,1] exactZ=3.007e+04 P=0.2854 ok=True
+      HPHHPHHPHHHH q=  1 thr=2 d=4    M2 nodes=    9 bytes=    118 ms=1539 Z=[1.026e+04,3.805e+04] P=[0,1] exactZ=3.007e+04 P=0.2854 ok=True
+      HPHHPHHPHHHH q=  1 thr=2 d=4    M4 nodes=    9 bytes=    118 ms=2642 Z=[1.026e+04,3.106e+04] P=[0,1] exactZ=3.007e+04 P=0.2854 ok=True
+      HPHHPHHPHHHH q=  1 thr=2 d=4   M2W nodes=    9 bytes=   2953 ms=1649 Z=[1.044e+04,3.805e+04] P=[0.002818,0.9925] exactZ=3.007e+04 P=0.2854 ok=True
+      HPHHPHHPHHHH q=  1 thr=2 d=4   M4W nodes=    9 bytes=   2953 ms=2732 Z=[1.044e+04,3.106e+04] P=[0.003247,0.975] exactZ=3.007e+04 P=0.2854 ok=True
+      HPHHPHHPHHHH q=  1 thr=2 d=6  v1-B nodes=   71 bytes=    561 ms=10 Z=[0,5.176e+04] P=[0,1] exactZ=3.007e+04 P=0.2854 ok=True
+      HPHHPHHPHHHH q=  1 thr=2 d=6  v1-T nodes=   71 bytes=    561 ms=1290 Z=[4288,3.326e+04] P=[0.009222,1] exactZ=3.007e+04 P=0.2854 ok=True
+      HPHHPHHPHHHH q=  1 thr=2 d=6 v1-TW nodes=   71 bytes=  18411 ms=1845 Z=[4432,3.326e+04] P=[0.02661,0.9424] exactZ=3.007e+04 P=0.2854 ok=True
+      HPHHPHHPHHHH q=  1 thr=2 d=6    M0 nodes=   71 bytes=    632 ms=1394 Z=[1.286e+04,3.326e+04] P=[0.009222,1] exactZ=3.007e+04 P=0.2854 ok=True
+      HPHHPHHPHHHH q=  1 thr=2 d=6    M2 nodes=   71 bytes=    632 ms=2555 Z=[1.286e+04,3.326e+04] P=[0.01096,1] exactZ=3.007e+04 P=0.2854 ok=True
+      HPHHPHHPHHHH q=  1 thr=2 d=6    M4 nodes=   71 bytes=    632 ms=3691 Z=[1.286e+04,3.007e+04] P=[0.01177,1] exactZ=3.007e+04 P=0.2854 ok=True
+      HPHHPHHPHHHH q=  1 thr=2 d=6   M2W nodes=   71 bytes=  18482 ms=3279 Z=[1.44e+04,3.326e+04] P=[0.03633,0.9136] exactZ=3.007e+04 P=0.2854 ok=True
+      HPHHPHHPHHHH q=  1 thr=2 d=6   M4W nodes=   71 bytes=  18482 ms=4367 Z=[1.44e+04,3.007e+04] P=[0.03891,0.8176] exactZ=3.007e+04 P=0.2854 ok=True
+      HPHHPHHPHHHH q=  1 thr=4 d=4  v1-B nodes=    9 bytes=    109 ms=1 Z=[0,5.905e+04] P=[0,1] exactZ=3.007e+04 P=0.01742 ok=True
+      HPHHPHHPHHHH q=  1 thr=4 d=4  v1-T nodes=    9 bytes=    109 ms=507 Z=[2304,3.805e+04] P=[0,1] exactZ=3.007e+04 P=0.01742 ok=True
+      HPHHPHHPHHHH q=  1 thr=4 d=4 v1-TW nodes=    9 bytes=   2944 ms=610 Z=[2304,3.805e+04] P=[7.932e-05,0.9918] exactZ=3.007e+04 P=0.01742 ok=True
+      HPHHPHHPHHHH q=  1 thr=4 d=4    M0 nodes=    9 bytes=    118 ms=536 Z=[1.026e+04,3.805e+04] P=[0,1] exactZ=3.007e+04 P=0.01742 ok=True
+      HPHHPHHPHHHH q=  1 thr=4 d=4    M2 nodes=    9 bytes=    118 ms=1749 Z=[1.026e+04,3.805e+04] P=[0,1] exactZ=3.007e+04 P=0.01742 ok=True
+      HPHHPHHPHHHH q=  1 thr=4 d=4    M4 nodes=    9 bytes=    118 ms=2912 Z=[1.026e+04,3.106e+04] P=[0,1] exactZ=3.007e+04 P=0.01742 ok=True
+      HPHHPHHPHHHH q=  1 thr=4 d=4   M2W nodes=    9 bytes=   2953 ms=1830 Z=[1.044e+04,3.805e+04] P=[8.321e-05,0.9718] exactZ=3.007e+04 P=0.01742 ok=True
+      HPHHPHHPHHHH q=  1 thr=4 d=4   M4W nodes=    9 bytes=   2953 ms=2978 Z=[1.044e+04,3.106e+04] P=[0.0001002,0.78] exactZ=3.007e+04 P=0.01742 ok=True
+      HPHHPHHPHHHH q=  1 thr=4 d=6  v1-B nodes=   71 bytes=    561 ms=10 Z=[0,5.176e+04] P=[0,1] exactZ=3.007e+04 P=0.01742 ok=True
+      HPHHPHHPHHHH q=  1 thr=4 d=6  v1-T nodes=   71 bytes=    561 ms=1422 Z=[4288,3.326e+04] P=[0,1] exactZ=3.007e+04 P=0.01742 ok=True
+      HPHHPHHPHHHH q=  1 thr=4 d=6 v1-TW nodes=   71 bytes=  18411 ms=1944 Z=[4432,3.326e+04] P=[0.0007275,0.8641] exactZ=3.007e+04 P=0.01742 ok=True
+      HPHHPHHPHHHH q=  1 thr=4 d=6    M0 nodes=   71 bytes=    632 ms=1548 Z=[1.286e+04,3.326e+04] P=[0,1] exactZ=3.007e+04 P=0.01742 ok=True
+      HPHHPHHPHHHH q=  1 thr=4 d=6    M2 nodes=   71 bytes=    632 ms=2823 Z=[1.286e+04,3.326e+04] P=[0,1] exactZ=3.007e+04 P=0.01742 ok=True
+      HPHHPHHPHHHH q=  1 thr=4 d=6    M4 nodes=   71 bytes=    632 ms=4046 Z=[1.286e+04,3.007e+04] P=[0,1] exactZ=3.007e+04 P=0.01742 ok=True
+      HPHHPHHPHHHH q=  1 thr=4 d=6   M2W nodes=   71 bytes=  18482 ms=3516 Z=[1.44e+04,3.326e+04] P=[0.0007405,0.5404] exactZ=3.007e+04 P=0.01742 ok=True
+      HPHHPHHPHHHH q=  1 thr=4 d=6   M4W nodes=   71 bytes=  18482 ms=4738 Z=[1.44e+04,3.007e+04] P=[0.0008116,0.1718] exactZ=3.007e+04 P=0.01742 ok=True
+      HPHHPHHPHHHH q=3/2 thr=2 d=4  v1-B nodes=    9 bytes=    111 ms=2 Z=[0,1.915e+07] P=[0,1] exactZ=5e+04 P=0.4633 ok=True
+      HPHHPHHPHHHH q=3/2 thr=2 d=4  v1-T nodes=    9 bytes=    111 ms=482 Z=[2560,4.015e+05] P=[0,1] exactZ=5e+04 P=0.4633 ok=True
+      HPHHPHHPHHHH q=3/2 thr=2 d=4 v1-TW nodes=    9 bytes=   2946 ms=550 Z=[2560,3.988e+05] P=[0.0006232,0.9993] exactZ=5e+04 P=0.4633 ok=True
+      HPHHPHHPHHHH q=3/2 thr=2 d=4    M0 nodes=    9 bytes=    120 ms=491 Z=[1.052e+04,2.138e+05] P=[0,1] exactZ=5e+04 P=0.4633 ok=True
+      HPHHPHHPHHHH q=3/2 thr=2 d=4    M2 nodes=    9 bytes=    120 ms=1544 Z=[1.052e+04,1.393e+05] P=[0,1] exactZ=5e+04 P=0.4633 ok=True
+      HPHHPHHPHHHH q=3/2 thr=2 d=4    M4 nodes=    9 bytes=    120 ms=2639 Z=[1.052e+04,5.492e+04] P=[0,1] exactZ=5e+04 P=0.4633 ok=True
+      HPHHPHHPHHHH q=3/2 thr=2 d=4   M2W nodes=    9 bytes=   2955 ms=1644 Z=[1.082e+04,1.391e+05] P=[0.00299,0.998] exactZ=5e+04 P=0.4633 ok=True
+      HPHHPHHPHHHH q=3/2 thr=2 d=4   M4W nodes=    9 bytes=   2955 ms=2726 Z=[1.082e+04,5.492e+04] P=[0.006724,0.9905] exactZ=5e+04 P=0.4633 ok=True
+      HPHHPHHPHHHH q=3/2 thr=2 d=6  v1-B nodes=   71 bytes=    563 ms=9 Z=[0,8.276e+06] P=[0,1] exactZ=5e+04 P=0.4633 ok=True
+      HPHHPHHPHHHH q=3/2 thr=2 d=6  v1-T nodes=   71 bytes=    563 ms=1286 Z=[5120,1.622e+05] P=[0.005114,1] exactZ=5e+04 P=0.4633 ok=True
+      HPHHPHHPHHHH q=3/2 thr=2 d=6 v1-TW nodes=   71 bytes=  18413 ms=1852 Z=[5515,1.542e+05] P=[0.01736,0.985] exactZ=5e+04 P=0.4633 ok=True
+      HPHHPHHPHHHH q=3/2 thr=2 d=6    M0 nodes=   71 bytes=    634 ms=1422 Z=[1.44e+04,1.252e+05] P=[0.006545,1] exactZ=5e+04 P=0.4633 ok=True
+      HPHHPHHPHHHH q=3/2 thr=2 d=6    M2 nodes=   71 bytes=    634 ms=2570 Z=[1.44e+04,8.288e+04] P=[0.01365,1] exactZ=5e+04 P=0.4633 ok=True
+      HPHHPHHPHHHH q=3/2 thr=2 d=6    M4 nodes=   71 bytes=    634 ms=3715 Z=[1.44e+04,5e+04] P=[0.02101,1] exactZ=5e+04 P=0.4633 ok=True
+      HPHHPHHPHHHH q=3/2 thr=2 d=6   M2W nodes=   71 bytes=  18484 ms=3231 Z=[1.711e+04,8.132e+04] P=[0.05128,0.9648] exactZ=5e+04 P=0.4633 ok=True
+      HPHHPHHPHHHH q=3/2 thr=2 d=6   M4W nodes=   71 bytes=  18484 ms=4422 Z=[1.711e+04,5e+04] P=[0.07585,0.9094] exactZ=5e+04 P=0.4633 ok=True
+      HPHHPHHPHHHH q=3/2 thr=4 d=4  v1-B nodes=    9 bytes=    111 ms=1 Z=[0,1.915e+07] P=[0,1] exactZ=5e+04 P=0.0575 ok=True
+      HPHHPHHPHHHH q=3/2 thr=4 d=4  v1-T nodes=    9 bytes=    111 ms=516 Z=[2560,4.015e+05] P=[0,1] exactZ=5e+04 P=0.0575 ok=True
+      HPHHPHHPHHHH q=3/2 thr=4 d=4 v1-TW nodes=    9 bytes=   2946 ms=613 Z=[2560,3.988e+05] P=[3.898e-05,0.9989] exactZ=5e+04 P=0.0575 ok=True
+      HPHHPHHPHHHH q=3/2 thr=4 d=4    M0 nodes=    9 bytes=    120 ms=532 Z=[1.052e+04,2.138e+05] P=[0,1] exactZ=5e+04 P=0.0575 ok=True
+      HPHHPHHPHHHH q=3/2 thr=4 d=4    M2 nodes=    9 bytes=    120 ms=1747 Z=[1.052e+04,1.393e+05] P=[0,1] exactZ=5e+04 P=0.0575 ok=True
+      HPHHPHHPHHHH q=3/2 thr=4 d=4    M4 nodes=    9 bytes=    120 ms=2932 Z=[1.052e+04,5.492e+04] P=[0,1] exactZ=5e+04 P=0.0575 ok=True
+      HPHHPHHPHHHH q=3/2 thr=4 d=4   M2W nodes=    9 bytes=   2955 ms=1831 Z=[1.082e+04,1.391e+05] P=[0.0001275,0.9939] exactZ=5e+04 P=0.0575 ok=True
+      HPHHPHHPHHHH q=3/2 thr=4 d=4   M4W nodes=    9 bytes=   2955 ms=3006 Z=[1.082e+04,5.492e+04] P=[0.0003141,0.9378] exactZ=5e+04 P=0.0575 ok=True
+      HPHHPHHPHHHH q=3/2 thr=4 d=6  v1-B nodes=   71 bytes=    563 ms=10 Z=[0,8.276e+06] P=[0,1] exactZ=5e+04 P=0.0575 ok=True
+      HPHHPHHPHHHH q=3/2 thr=4 d=6  v1-T nodes=   71 bytes=    563 ms=1407 Z=[5120,1.622e+05] P=[0,1] exactZ=5e+04 P=0.0575 ok=True
+      HPHHPHHPHHHH q=3/2 thr=4 d=6 v1-TW nodes=   71 bytes=  18413 ms=2011 Z=[5515,1.542e+05] P=[0.0008136,0.9631] exactZ=5e+04 P=0.0575 ok=True
+      HPHHPHHPHHHH q=3/2 thr=4 d=6    M0 nodes=   71 bytes=    634 ms=1496 Z=[1.44e+04,1.252e+05] P=[0,1] exactZ=5e+04 P=0.0575 ok=True
+      HPHHPHHPHHHH q=3/2 thr=4 d=6    M2 nodes=   71 bytes=    634 ms=2871 Z=[1.44e+04,8.288e+04] P=[0,1] exactZ=5e+04 P=0.0575 ok=True
+      HPHHPHHPHHHH q=3/2 thr=4 d=6    M4 nodes=   71 bytes=    634 ms=4012 Z=[1.44e+04,5e+04] P=[0,1] exactZ=5e+04 P=0.0575 ok=True
+      HPHHPHHPHHHH q=3/2 thr=4 d=6   M2W nodes=   71 bytes=  18484 ms=3529 Z=[1.711e+04,8.132e+04] P=[0.001629,0.8192] exactZ=5e+04 P=0.0575 ok=True
+      HPHHPHHPHHHH q=3/2 thr=4 d=6   M4W nodes=   71 bytes=  18484 ms=4714 Z=[1.711e+04,5e+04] P=[0.002571,0.4267] exactZ=5e+04 P=0.0575 ok=True
+      HPHHPHHPHHHH q=  2 thr=2 d=4  v1-B nodes=    9 bytes=    109 ms=1 Z=[0,1.182e+09] P=[0,1] exactZ=8.189e+04 P=0.607 ok=True
+      HPHHPHHPHHHH q=  2 thr=2 d=4  v1-T nodes=    9 bytes=    109 ms=483 Z=[2816,2.37e+06] P=[0,1] exactZ=8.189e+04 P=0.607 ok=True
+      HPHHPHHPHHHH q=  2 thr=2 d=4 v1-TW nodes=    9 bytes=   2944 ms=557 Z=[2816,2.354e+06] P=[0.0002619,0.9999] exactZ=8.189e+04 P=0.607 ok=True
+      HPHHPHHPHHHH q=  2 thr=2 d=4    M0 nodes=    9 bytes=    118 ms=497 Z=[1.078e+04,8.739e+05] P=[0,1] exactZ=8.189e+04 P=0.607 ok=True
+      HPHHPHHPHHHH q=  2 thr=2 d=4    M2 nodes=    9 bytes=    118 ms=1532 Z=[1.078e+04,4.255e+05] P=[0,1] exactZ=8.189e+04 P=0.607 ok=True
+      HPHHPHHPHHHH q=  2 thr=2 d=4    M4 nodes=    9 bytes=    118 ms=2646 Z=[1.078e+04,9.893e+04] P=[0,1] exactZ=8.189e+04 P=0.607 ok=True
+      HPHHPHHPHHHH q=  2 thr=2 d=4   M2W nodes=    9 bytes=   2953 ms=1643 Z=[1.128e+04,4.246e+05] P=[0.003048,0.9993] exactZ=8.189e+04 P=0.607 ok=True
+      HPHHPHHPHHHH q=  2 thr=2 d=4   M4W nodes=    9 bytes=   2953 ms=2752 Z=[1.128e+04,9.893e+04] P=[0.01143,0.9956] exactZ=8.189e+04 P=0.607 ok=True
+      HPHHPHHPHHHH q=  2 thr=2 d=6  v1-B nodes=   71 bytes=    561 ms=10 Z=[0,3.195e+08] P=[0,1] exactZ=8.189e+04 P=0.607 ok=True
+      HPHHPHHPHHHH q=  2 thr=2 d=6  v1-T nodes=   71 bytes=    561 ms=1293 Z=[6080,5.56e+05] P=[0.00328,1] exactZ=8.189e+04 P=0.607 ok=True
+      HPHHPHHPHHHH q=  2 thr=2 d=6 v1-TW nodes=   71 bytes=  18411 ms=1857 Z=[7500,5.226e+05] P=[0.01258,0.9948] exactZ=8.189e+04 P=0.607 ok=True
+      HPHHPHHPHHHH q=  2 thr=2 d=6    M0 nodes=   71 bytes=    632 ms=1414 Z=[1.606e+04,3.744e+05] P=[0.004674,1] exactZ=8.189e+04 P=0.607 ok=True
+      HPHHPHHPHHHH q=  2 thr=2 d=6    M2 nodes=   71 bytes=    632 ms=2575 Z=[1.606e+04,1.858e+05] P=[0.01539,1] exactZ=8.189e+04 P=0.607 ok=True
+      HPHHPHHPHHHH q=  2 thr=2 d=6    M4 nodes=   71 bytes=    632 ms=3709 Z=[1.606e+04,8.189e+04] P=[0.03083,1] exactZ=8.189e+04 P=0.607 ok=True
+      HPHHPHHPHHHH q=  2 thr=2 d=6   M2W nodes=   71 bytes=  18482 ms=3226 Z=[2.06e+04,1.809e+05] P=[0.06484,0.9832] exactZ=8.189e+04 P=0.607 ok=True
+      HPHHPHHPHHHH q=  2 thr=2 d=6   M4W nodes=   71 bytes=  18482 ms=4392 Z=[2.06e+04,8.189e+04] P=[0.1203,0.9484] exactZ=8.189e+04 P=0.607 ok=True
+      HPHHPHHPHHHH q=  2 thr=4 d=4  v1-B nodes=    9 bytes=    109 ms=2 Z=[0,1.182e+09] P=[0,1] exactZ=8.189e+04 P=0.1196 ok=True
+      HPHHPHHPHHHH q=  2 thr=4 d=4  v1-T nodes=    9 bytes=    109 ms=516 Z=[2816,2.37e+06] P=[0,1] exactZ=8.189e+04 P=0.1196 ok=True
+      HPHHPHHPHHHH q=  2 thr=4 d=4 v1-TW nodes=    9 bytes=   2944 ms=591 Z=[2816,2.354e+06] P=[2.16e-05,0.9997] exactZ=8.189e+04 P=0.1196 ok=True
+      HPHHPHHPHHHH q=  2 thr=4 d=4    M0 nodes=    9 bytes=    118 ms=531 Z=[1.078e+04,8.739e+05] P=[0,1] exactZ=8.189e+04 P=0.1196 ok=True
+      HPHHPHHPHHHH q=  2 thr=4 d=4    M2 nodes=    9 bytes=    118 ms=1748 Z=[1.078e+04,4.255e+05] P=[0,1] exactZ=8.189e+04 P=0.1196 ok=True
+      HPHHPHHPHHHH q=  2 thr=4 d=4    M4 nodes=    9 bytes=    118 ms=2904 Z=[1.078e+04,9.893e+04] P=[0,1] exactZ=8.189e+04 P=0.1196 ok=True
+      HPHHPHHPHHHH q=  2 thr=4 d=4   M2W nodes=    9 bytes=   2953 ms=1825 Z=[1.128e+04,4.246e+05] P=[0.0001499,0.9978] exactZ=8.189e+04 P=0.1196 ok=True
+      HPHHPHHPHHHH q=  2 thr=4 d=4   M4W nodes=    9 bytes=   2953 ms=3011 Z=[1.128e+04,9.893e+04] P=[0.0006414,0.975] exactZ=8.189e+04 P=0.1196 ok=True
+      HPHHPHHPHHHH q=  2 thr=4 d=6  v1-B nodes=   71 bytes=    561 ms=11 Z=[0,3.195e+08] P=[0,1] exactZ=8.189e+04 P=0.1196 ok=True
+      HPHHPHHPHHHH q=  2 thr=4 d=6  v1-T nodes=   71 bytes=    561 ms=1401 Z=[6080,5.56e+05] P=[0,1] exactZ=8.189e+04 P=0.1196 ok=True
+      HPHHPHHPHHHH q=  2 thr=4 d=6 v1-TW nodes=   71 bytes=  18411 ms=1978 Z=[7500,5.226e+05] P=[0.0007933,0.9857] exactZ=8.189e+04 P=0.1196 ok=True
+      HPHHPHHPHHHH q=  2 thr=4 d=6    M0 nodes=   71 bytes=    632 ms=1512 Z=[1.606e+04,3.744e+05] P=[0,1] exactZ=8.189e+04 P=0.1196 ok=True
+      HPHHPHHPHHHH q=  2 thr=4 d=6    M2 nodes=   71 bytes=    632 ms=2844 Z=[1.606e+04,1.858e+05] P=[0,1] exactZ=8.189e+04 P=0.1196 ok=True
+      HPHHPHHPHHHH q=  2 thr=4 d=6    M4 nodes=   71 bytes=    632 ms=4053 Z=[1.606e+04,8.189e+04] P=[0,1] exactZ=8.189e+04 P=0.1196 ok=True
+      HPHHPHHPHHHH q=  2 thr=4 d=6   M2W nodes=   71 bytes=  18482 ms=3495 Z=[2.06e+04,1.809e+05] P=[0.002549,0.9174] exactZ=8.189e+04 P=0.1196 ok=True
+      HPHHPHHPHHHH q=  2 thr=4 d=6   M4W nodes=   71 bytes=  18482 ms=4755 Z=[2.06e+04,8.189e+04] P=[0.005298,0.6287] exactZ=8.189e+04 P=0.1196 ok=True
+    HPHPPHHPHPPHPH q=  2 thr=2 d=6  v1-B nodes=   71 bytes=    563 ms=14 Z=[0,3.057e+08] P=[0,1] exactZ=3.801e+05 P=0.2908 ok=True
+    HPHPPHHPHPPHPH q=  2 thr=2 d=6  v1-T nodes=   71 bytes=    563 ms=3840 Z=[2.022e+04,6.133e+06] P=[0,1] exactZ=3.801e+05 P=0.2908 ok=True
+    HPHPPHHPHPPHPH q=  2 thr=2 d=6 v1-TW nodes=   71 bytes=  22919 ms=4575 Z=[2.072e+04,6.083e+06] P=[0.0001192,0.9995] exactZ=3.801e+05 P=0.2908 ok=True
+    HPHPPHHPHPPHPH q=  2 thr=2 d=6    M0 nodes=   71 bytes=    634 ms=3999 Z=[7.594e+04,4.797e+06] P=[0,1] exactZ=3.801e+05 P=0.2908 ok=True
+    HPHPPHHPHPPHPH q=  2 thr=2 d=6    M2 nodes=   71 bytes=    634 ms=10722 Z=[7.594e+04,3.233e+06] P=[0,1] exactZ=3.801e+05 P=0.2908 ok=True
+    HPHPPHHPHPPHPH q=  2 thr=2 d=6    M4 nodes=   71 bytes=    634 ms=23256 Z=[7.594e+04,7.904e+05] P=[0,1] exactZ=3.801e+05 P=0.2908 ok=True
+    HPHPPHHPHPPHPH q=  2 thr=2 d=6   M2W nodes=   71 bytes=  22990 ms=11522 Z=[7.845e+04,3.219e+06] P=[0.0002689,0.9991] exactZ=3.801e+05 P=0.2908 ok=True
+    HPHPPHHPHPPHPH q=  2 thr=2 d=6   M4W nodes=   71 bytes=  22990 ms=24485 Z=[7.845e+04,7.872e+05] P=[0.001177,0.9946] exactZ=3.801e+05 P=0.2908 ok=True
+    HPHPPHHPHPPHPH q=  2 thr=2 d=8  v1-B nodes=  543 bytes=   4953 ms=103 Z=[0,2.393e+08] P=[0,1] exactZ=3.801e+05 P=0.2908 ok=True
+    HPHPPHHPHPPHPH q=  2 thr=2 d=8  v1-T nodes=  543 bytes=   4953 ms=10749 Z=[3.706e+04,1.433e+06] P=[0.001279,1] exactZ=3.801e+05 P=0.2908 ok=True
+    HPHPPHHPHPPHPH q=  2 thr=2 d=8 v1-TW nodes=  543 bytes= 140249 ms=16887 Z=[4.252e+04,1.348e+06] P=[0.007978,0.9829] exactZ=3.801e+05 P=0.2908 ok=True
+    HPHPPHHPHPPHPH q=  2 thr=2 d=8    M0 nodes=  543 bytes=   5496 ms=12320 Z=[1.058e+05,1.357e+06] P=[0.002595,1] exactZ=3.801e+05 P=0.2908 ok=True
+    HPHPPHHPHPPHPH q=  2 thr=2 d=8    M2 nodes=  543 bytes=   5496 ms=23288 Z=[1.058e+05,8.171e+05] P=[0.004974,1] exactZ=3.801e+05 P=0.2908 ok=True
+    HPHPPHHPHPPHPH q=  2 thr=2 d=8    M4 nodes=  543 bytes=   5496 ms=38266 Z=[1.058e+05,3.801e+05] P=[0.01077,1] exactZ=3.801e+05 P=0.2908 ok=True
+    HPHPPHHPHPPHPH q=  2 thr=2 d=8   M2W nodes=  543 bytes= 140792 ms=29548 Z=[1.275e+05,7.901e+05] P=[0.02014,0.9571] exactZ=3.801e+05 P=0.2908 ok=True
+    HPHPPHHPHPPHPH q=  2 thr=2 d=8   M4W nodes=  543 bytes= 140792 ms=45893 Z=[1.275e+05,3.801e+05] P=[0.04134,0.8274] exactZ=3.801e+05 P=0.2908 ok=True
+HPHPPHHPHPPHPHHPPH q=  2 thr=2 d=10  v1-B nodes= 4073 bytes=  44865 ms=1265 Z=[0,1.138e+12] P=[0,1]
+HPHPPHHPHPPHPHHPPH q=  2 thr=2 d=10  v1-T nodes= 4073 bytes=  44865 ms=323546 Z=[1.161e+06,1.024e+08] P=[0.001222,1]
+HPHPPHHPHPPHPHHPPH q=  2 thr=2 d=10 v1-TW nodes= 4073 bytes=1306539 ms=None FAILED timeout V1/V2 MISMATCH
+HPHPPHHPHPPHPHHPPH q=  2 thr=2 d=10    M0 nodes= 4073 bytes=  48932 ms=371464 Z=[4.654e+06,1.01e+08] P=[0.004567,1]
+HPHPPHHPHPPHPHHPPH q=  2 thr=2 d=10    M2 nodes= 4073 bytes=  48932 ms=None FAILED timeout
+HPHPPHHPHPPHPHHPPH q=  2 thr=2 d=10    M4 nodes= 4073 bytes=  48932 ms=None FAILED timeout
+HPHPPHHPHPPHPHHPPH q=  2 thr=2 d=10   M2W nodes= 4073 bytes=1310606 ms=None FAILED timeout
+HPHPPHHPHPPHPHHPPH q=  2 thr=2 d=10   M4W nodes= 4073 bytes=1310606 ms=None FAILED timeout
+rows: 120 problems: 1
