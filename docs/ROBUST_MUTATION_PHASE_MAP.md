@@ -92,3 +92,30 @@ python -m json.tool /tmp/mutation_screen.json >/dev/null
 ```
 
 `experiments/certified_mutation_screen_results.json` contains the canonical exact-rational output. The certificate checker recomputes actual histograms and coefficient bounds; it does **not** trust a JSON value. Python 3.11/3.12/3.13 GitHub CI should compare recomputed parsed JSON to the checked-in reference.
+
+## Independent longer-chain replication: all 308,981 ten-residue cubic conformations
+
+The same mutation-driven robust compactness switch was also demonstrated on **all 308,981 anchored length-10 cubic self-avoiding walks**, with a *stricter mutation-independent event of at least three nonconsecutive geometric contacts*.
+
+- Parent sequence: `PHPHPHPHPH` (alternating P/H, no possible HH contact because of lattice parity).
+- Mutant sequence: `HHPHPHPHPH` (one P1H substitution).
+- Exact fingerprint grouping of the full 3D state space: **1,852 unique contact-graph/bend/compactness fingerprints** retaining every geometric contact edge; all 308,981 original states are represented with exact multiplicity.
+- Parameter-and-error rectangle is **identical** to the eight-mer: `q∈[8,12]`, `b∈[3/4,5/4]`, independent conformational weight corrections in `[5/6,6/5]`.
+- Nominal *parent* compact-state probability lies in `[96869817/882992602, 3166978825/21138324794]` (~10.97%–14.98%).
+- Nominal *mutant* compact-state probability lies in `[2983192704/5014904995, 295886625000/375469692019]` (~59.49%–78.80%).
+- **Worst-case original upper:** `4560449508/22531795477` (~20.24%).
+- **Worst-case mutant lower:** `2071661600/4103373891` (~50.49%).
+- Strict separation across *every* parameter and admissible independent error correction: `27965026026403587572/92456381277673691007`, or at least **30.25 percentage points**.
+- At nominal q=8,b=1, the original population is exactly `40932/308981` (~13.25%) and the mutant is `1264000/1997213` (~63.29%).
+
+Unlike the original compressed-certificate calculation, `experiments/independent_n10_oracle.py` uses a **separately coded depth-first lattice enumerator** and directly scores all 308,981 complete states. It obtains the same 40,932 compact conformations and the same exact weighted mutant probability at q=8,b=1. This independently validates the reference-case 10-mer histogram and lossless fingerprint totals; the entire continuous parameter box is certified through the rational Bernstein bound, which is also checked against explicit corner values.
+
+The longer-chain replication still does **not** show that the compactness class corresponds to a true molecular fold, or that the parameter/error budget matches a realistic solvent force field. The 10-mer enumeration is exponential in chain length, although its lossless contact-graph grouping makes many sequence changes cheaper to score.
+
+Reproduce:
+
+```bash
+PYTHONPATH=src python -m pytest -q tests/test_mutation_switch_10.py
+PYTHONPATH=src python experiments/certified_mutation_10_benchmark.py > /tmp/10mer.json
+PYTHONPATH=src python experiments/independent_n10_oracle.py
+```
