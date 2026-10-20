@@ -75,6 +75,8 @@ jobs:
         with:
           name: verified-GA95-GB95-NMR-structural-statistics
           path: |
+            /tmp/real-pdb-data/2KDL.pdb
+            /tmp/real-pdb-data/2KDM.pdb
             /tmp/real-pdb-data/real_ensembles.json
             /tmp/real-pdb-data/geometry_summary.json
             /tmp/real-pdb-data/SHA256SUMS
