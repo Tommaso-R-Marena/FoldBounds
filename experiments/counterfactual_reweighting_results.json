@@ -1,0 +1,64 @@
+{
+  "10_mer": {
+    "complement_conditional_covariance": "-52223374644/71850266401",
+    "complement_interaction": "333209835557/385433210201",
+    "direct_contact_possible": false,
+    "event_conditional_covariance": "-10236904090/34904763",
+    "event_interaction": "467924391/1491614800",
+    "four_event_probabilities": [
+      "40932/308981",
+      "1264000/1997213",
+      "566436/1092113",
+      "5487240/6730333"
+    ],
+    "initial": "PHPHPHPHPH",
+    "microstates": 308981,
+    "mutated_sites": [
+      1,
+      3
+    ],
+    "odds_epistasis_factor": "13873353858036762507/38232363247875957200"
+  },
+  "8_mer": {
+    "complement_conditional_covariance": "-8072064/23349605",
+    "complement_interaction": "17182111/19872799",
+    "direct_contact_possible": false,
+    "event_conditional_covariance": "-1400273/15870",
+    "event_interaction": "871102/2271375",
+    "four_event_probabilities": [
+      "552/2713",
+      "16152/22423",
+      "4500/7669",
+      "151496/175349"
+    ],
+    "initial": "PHPHPHPH",
+    "microstates": 13565,
+    "mutated_sites": [
+      1,
+      3
+    ],
+    "odds_epistasis_factor": "17311234954498/39027017372625"
+  },
+  "eight_mer_pairwise_nondirect": {
+    "max_absolute_odds_interaction_factor": "39027017372625/17311234954498",
+    "max_case": [
+      "PPPHPHPH",
+      1,
+      3
+    ],
+    "negative_sign_count": 364,
+    "nonzero_exact_odds_epistasis": 504,
+    "positive_sign_count": 140,
+    "same_parity_two_site_cycles": 768,
+    "zero_exact_odds_epistasis": 264
+  },
+  "energy_calibration": {
+    "RT_kcal_per_mol": 0.5825489284205593,
+    "critical_abs_independent_per_conformation_energy_error_kcal_mol_10mer": 0.11188294137571791,
+    "critical_abs_independent_per_conformation_energy_error_kcal_mol_8mer": 0.229156984850067,
+    "energy_error_of_weight_multiplier_1p2_kcal_mol": 0.10621122753828639,
+    "published_GA95_GB95_opposite_90_percent_population_minimum_mutation_free_energy_shift_kcal_mol": 2.5599816460530618,
+    "scope": "Thermodynamic implication of literature populations; no predicted GA95/GB95 relative free energy",
+    "temperature_K": 293.15
+  }
+}

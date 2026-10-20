@@ -1,0 +1,26 @@
+{
+  "amino_acid_mutations": [
+    [
+      20,
+      "L",
+      "A"
+    ],
+    [
+      30,
+      "I",
+      "F"
+    ],
+    [
+      45,
+      "L",
+      "Y"
+    ]
+  ],
+  "aromatic_three_class_hamming_distance": 2,
+  "broad_hp_hamming_distance": 0,
+  "exact_amino_acid_hamming_distance": 3,
+  "ga_pdb": "2KDL",
+  "gb_pdb": "2KDM",
+  "length": 56,
+  "y_polar_hp_hamming_distance": 1
+}
