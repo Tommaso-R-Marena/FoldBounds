@@ -10,6 +10,8 @@ from foldbounds.ensemble_crossover import (
     naive_decoupled_population_bounds,
 )
 
+from foldbounds.ensemble_crossover_3d import certified_3d_example
+
 def main():
     seq='HPHHPHHPHHHH';threshold=2
     start=perf_counter()
@@ -42,6 +44,8 @@ def main():
     data['guaranteed_majority']={'below_b':'647/1000','above_b':'1174/1000',
         'all_contact_q':'[3/2,2]','minority_upper':str(low.upper_probability),
         'majority_lower':str(high.lower_probability)}
+    three=certified_3d_example()
+    data['3d_reference']={k: ({str(key):[str(v[0]),str(v[1])] for key,v in value.items()} if k=='crossover_brackets' else [str(x) for x in value] if k=='interval' else value) for k,value in three.items()}
     data['runtime_seconds']=round(perf_counter()-start,4)
     print(json.dumps(data,indent=2,sort_keys=True))
 
