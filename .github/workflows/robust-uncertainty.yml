@@ -37,5 +37,8 @@ jobs:
         run: lake env lean FoldBounds/RobustReweighting.lean
       - name: Audit the theorem's axiom dependencies
         run: |
+          set -o pipefail
           lake env lean FoldBounds/RobustReweightingAudit.lean | tee /tmp/robust-uncertainty-axioms.log
-          python3 scripts/check_lean_sources.py /tmp/robust-uncertainty-axioms.log
+          # The repository-wide audit script expects every global theorem;
+          # this intentionally checks the independent new theorem instead.
+          grep -F "'FoldBounds.RobustReweighting.robust_population_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]" /tmp/robust-uncertainty-axioms.log
