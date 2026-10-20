@@ -85,3 +85,27 @@ No experimental energy bound l/u has been established. The 2D and 3D models do n
 Next steps: (a) atomistic force-field or potential-of-mean-force uncertainty *calibrated* on genuinely held-out NMR ensemble benchmarks, (b) compact bounds on unsampled conformation masses, (c) Lean-proved propagation from `FrontierNext.check_sound` to these reweighting bounds, and (d) prospective GA/GB population discrimination against NMR and established ensemble methods.
 
 Literature: Wankowicz & Bonomi, *Nature Methods* 2026, “From possibility to precision in macromolecular ensemble prediction”; Lee & Porter, *Annual Review of Biomedical Data Science* 2026; Alexander et al., *PNAS* 2009; GA95/GB95 aromatic contacts, *Chemical Science* 2025.
+
+## Failure of universal bending monotonicity and the Bernstein fallback
+
+A direct falsification scan covered all **256 eight-residue H/P sequences** in both 2D and 3D (event: at least one H-H contact). Of 212 sequences with nontrivial event/complement mass in either dimension:
+
+| Dimension | Nontrivial sequences | Passed exact shifted-coefficient bend certificate | Failed coefficient criterion | **True bend nonmonotonicity witness** on rational q,b grid |
+|---|---:|---:|---:|---:|
+| 2D | 212 | 92 | 120 | 37 |
+| 3D | 212 | 199 | 13 | 3 |
+
+A failed coefficient criterion alone **does not imply** nonmonotonicity. For the last column, the experiment exhibited an *actual strictly decreasing probability pair* using exact rational arithmetic. Representative examples are `HHHPPHHH` in 2D and `HHPPPPPH` in 3D at q=3/2, where P(b=4) > P(b=8). This refutes any universal claim that a contact-rich state must increase with a generic bend preference.
+
+The fallback in `src/foldbounds/bernstein_population.py` expresses the exact event and complement generating polynomials E(q,b), C(q,b) on any positive parameter rectangle using a tensor-product Bernstein basis of common bidegree (K,R). With coefficients E_ij,C_ij≥0 and E_ij+C_ij>0:
+
+\[
+P(q,b)=\sum_{ij} \frac{E_{ij}}{E_{ij}+C_{ij}}
+ \underbrace{\frac{(E_{ij}+C_{ij}) B_{i,K}(t)B_{j,R}(s)}{E(q,b)+C(q,b)}}_{\ge0,\ \text{weights sum to 1}}.
+\]
+
+Consequently **the minimum and maximum exact coefficient ratios enclose P throughout the entire continuous rectangle**, even when P(q,b) is non-monotone. Recursive exact rational subdivision produces tighter enclosures; optional worst-case statewise energy errors transform both endpoints by the sharp odds reweighting rule. The checker rejects invalid input and recomputes the histogram and Bernstein coefficients. The root cause is nonnegative basis functions and their partition of unity, *not* a numerical grid fit.
+
+For `HHPPPPPH` (3D, 13,565 SAWs, q∈[3/2,2], b∈[1/4,8], threshold1) the Bernstein checker certifies the contact-rich event is a **minority for every parameter pair and every allowed statewise factor in [5/6,6/5]**, despite the contact probability genuinely decreasing between b=4 and b=8. It produces a nonvacuous, robust classification for a case rejected by the former sufficient monotonicity certificate.
+
+This polynomial enclosure is a standard form of Bernstein convex-hull reasoning; new algorithmic or biological novelty is **not established**. Exact histograms remain exponential to generate in these toy models, and the Bernstein checker is Python-tested rather than Lean-kernel-verified. The Lean theorem above certifies only the generic mass-error propagation step.
