@@ -18,6 +18,7 @@ def synthetic_pdb(entry,seq,n=20):
 
 def test_three_exact_canonical_real_mutations():
     assert len(GA95)==len(GB95)==56
+    assert GA95[24]==GB95[24]=="T"  # authentic PDB residue 25
     assert [(i,a,b) for i,(a,b) in enumerate(zip(GA95,GB95),1) if a!=b]==[(20,'L','A'),(30,'I','F'),(45,'L','Y')]
 
 def test_synthetic_parser_multi_nmr_models():
