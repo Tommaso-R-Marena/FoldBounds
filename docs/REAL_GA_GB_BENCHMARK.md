@@ -73,3 +73,54 @@ This is a scoring interface, not a pre-trained model. A credible prospective tes
 - Formal end-to-end bridging of independently computed atomistic energy bounds and conformational populations with the Lean checker.
 
 **Scientific success criterion:** blinded and reproducible improvements in properly scored *probabilistic fold population estimates* with calibrated uncertainty and out-of-distribution mutation generalization. Anything less is a useful step, but not a revolution in protein folding.
+
+## First verified real-coordinate results (2026-10-20)
+
+Authenticated, SHA-256-pinned official PDB downloads, with all 20 submitted NMR
+coordinate models accepted for **each** of 2KDL and 2KDM. These are structural
+ensembles of *one fold each*, **not** thermodynamic distributions.
+
+| C-alpha geometry descriptor | GA95 (2KDL) | GB95 (2KDM) |
+| --- | ---: | ---: |
+| 75%-NMR-model consensus intrachain contacts (C-alpha <8 Å, separation >=4) | 71 | 110 |
+| Local i→i+3 helix-like fraction (4.5–6.6 Å) | 0.6557 | 0.3019 |
+| Local i→i+3 extended-like fraction (9.2–11.6 Å) | 0.1142 | 0.5113 |
+
+The consensus networks have **14 shared contacts**, with **57 GA95-exclusive**
+and **96 GB95-exclusive** contacts, giving a contact-map Jaccard index of
+**14/167 ≈ 0.08383**. This is an experimentally grounded description of
+radically different contact topologies from almost identical sequences,
+NOT a novel structure prediction.
+
+Representative mean aromatic ring-centroid distances for GB95 (20/20
+deposited NMR models within 7 Å): **Y29–F30 6.26 Å, F30–F52 5.83 Å,
+Y45–F52 5.06 Å**. In GA95, F30 and Y45 do not exist; the available
+Y29–F52 pair is ~8.46 Å in mean centroid separation and 0/20 models
+meet 7 Å. Centroid proximity alone is not sufficient to establish actual
+pi stacking, orientation, free energy or a causal mechanism, but these
+specific geometric observations independently agree with the focus of
+the published 2025 GA95/GB95 aromatic-interaction study.
+
+**Critical data-integrity discovery:** the first manually transcribed GA95
+template accidentally used I25 instead of the true PDB Thr25. Strict
+PDB-versus-sequence verification rejected the downloaded coordinate data.
+The corrected GA95/GB95 source now contains Thr25 in **both** sequences,
+and the canonical three substitutions remain L20A/I30F/L45Y. We preserved
+this regression test so future sequence drift cannot silently contaminate
+mutation-site analyses.
+
+Official coordinate files (RCSB version used by the workflow) have raw SHA-256:
+
+- 2KDL.pdb: `fb75cc55eb8b89e0cec5e2be69901b348e60916375b9c410a0573edfca1db591`
+- 2KDM.pdb: `1c49e5faa25b443285432d935c621151294ed3b636b0106e6b1a7f7ccf2d00ec`
+
+All full contact-pair sets, model summary statistics, aromatic-pair geometry
+and source hashes are frozen in
+`experiments/results/ga_gb_nmr_verified_20261020.json`.
+CI re-downloads both authentic structures, checks their byte hashes, then
+demands **exact JSON agreement** with this frozen result; any new structure
+version must be explicitly reviewed and rebaselined, not accepted silently.
+
+This analysis does NOT provide populations, equilibrium free energies,
+folding trajectories, or performance on the 2026 60-variant experimental
+benchmark; a genuine predictor of those quantities remains future work.
