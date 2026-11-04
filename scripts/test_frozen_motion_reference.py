@@ -19,21 +19,25 @@ def npy(shape, dtype, values):
     return hdr + struct.pack("<" + str(len(values)) + code, *values)
 
 
-def frozen_npz(make_nan=False):
+def frozen_npz(make_nan=False, bad_pair=False):
+    # Seven residues, noncontiguous PDB IDs and one eligible 0-based pair.
+    # This catches the former off-by-one position-versus-residue-ID bug.
     buffer = io.BytesIO()
     with zipfile.ZipFile(buffer, "w") as z:
-        vals = [0.0, 0.0, 0.0, 8.0, 0.0, 0.0]
+        xs = [1000.0, 0.0, 200.0, 300.0, 400.0, 8.0, 500.0]
+        vals = [v for xx in xs for v in (xx, 0.0, 0.0)]
         if make_nan:
-            vals[4] = float("nan")
-        z.writestr("reference_coords.npy", npy((2, 3), "<f8", vals))
-        z.writestr("residues.npy", npy((2,), "<i4", [1, 2]))
+            vals[16] = float("nan")
+        z.writestr("reference_coords.npy", npy((7, 3), "<f8", vals))
+        z.writestr("residues.npy",
+                   npy((7,), "<i4", [11, 17, 20, 23, 29, 35, 42]))
         z.writestr("pair_i.npy", npy((1,), "<i4", [1]))
-        z.writestr("pair_j.npy", npy((1,), "<i4", [2]))
+        z.writestr("pair_j.npy", npy((1,), "<i4", [4 if bad_pair else 5]))
     return buffer.getvalue()
 
 
-def archive(path, make_nan=False, tamper=False):
-    a = frozen_npz(make_nan)
+def archive(path, make_nan=False, tamper=False, bad_pair=False):
+    a = frozen_npz(make_nan, bad_pair)
     b = frozen_npz()
     files = {
         "CspB_FROZEN_BEFORE_TARGET.npz": a,
@@ -66,11 +70,14 @@ def main():
         path = os.path.join(td, "fixture.zip")
         archive(path)
         result = export_archive(path)
-        assert result["format"] == "FOLDREF-RAT-1"
-        assert result["inputs"]["CspB"]["coordinate_rationals"][1][0] == [8, 1]
-        assert result["inputs"]["Crambin"]["evaluation_pair_residue_ids"] == [[1, 2]]
+        assert result["format"] == "FOLDREF-RAT-2"
+        assert result["inputs"]["CspB"]["coordinate_rationals"][5][0] == [8, 1]
+        assert result["inputs"]["CspB"]["evaluation_pair_positions"] == [[1, 5]]
+        assert result["inputs"]["CspB"]["evaluation_pair_residue_ids"] == [[17, 35]]
+        assert result["inputs"]["Crambin"]["evaluation_pair_residue_ids"] == [[17, 35]]
         expect_bad(path, tamper=True)
         expect_bad(path, make_nan=True)
+        expect_bad(path, bad_pair=True)
     print("PASS: frozen reference exact-rational parser, hash-tamper rejection and NaN rejection")
 
 
