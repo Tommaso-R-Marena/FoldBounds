@@ -15,6 +15,7 @@ import FoldBounds.MotionScaledOrdering
 import FoldBounds.MotionBulkChain
 import FoldBounds.MotionBulkRealSmoke
 import FoldBounds.MotionDyadicDivision
+import FoldBounds.MotionSparseResponse
 
 /-! Axiom audit: every headline theorem depends only on the standard axioms
 `propext`, `Classical.choice`, `Quot.sound`. -/
@@ -184,3 +185,8 @@ accepted score intervals now have a uniquely existing ground-truth response. -/
 
 /-! Signed exact integer quotient/remainder enclosure. -/
 #print axioms FoldBounds.MotionDyadicDivision.checkQuotient_sound
+
+/-! Sparse true-protein Hessian residual and fail-closed score soundness. -/
+#print axioms FoldBounds.MotionSparseResponse.sparseRowTerm_eq
+#print axioms FoldBounds.MotionSparseResponse.sparseMatVec_eq
+#print axioms FoldBounds.MotionSparseResponse.checkSparseScaledPair_sound
