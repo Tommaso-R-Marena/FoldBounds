@@ -16,6 +16,7 @@ import FoldBounds.MotionBulkChain
 import FoldBounds.MotionBulkRealSmoke
 import FoldBounds.MotionDyadicDivision
 import FoldBounds.MotionSparseResponse
+import FoldBounds.MotionContactCompleteness
 
 /-! Axiom audit: every headline theorem depends only on the standard axioms
 `propext`, `Classical.choice`, `Quot.sound`. -/
@@ -190,3 +191,9 @@ accepted score intervals now have a uniquely existing ground-truth response. -/
 #print axioms FoldBounds.MotionSparseResponse.sparseRowTerm_eq
 #print axioms FoldBounds.MotionSparseResponse.sparseMatVec_eq
 #print axioms FoldBounds.MotionSparseResponse.checkSparseScaledPair_sound
+
+/-! Full cutoff graph validation: no missing, spurious or duplicate contacts. -/
+#print axioms FoldBounds.MotionContactCompleteness.checkContactNetwork_sound
+#print axioms FoldBounds.MotionContactCompleteness.checked_contact_present
+#print axioms FoldBounds.MotionContactCompleteness.checked_contact_active
+#print axioms FoldBounds.MotionContactCompleteness.checkCompleteSparseScore_sound
