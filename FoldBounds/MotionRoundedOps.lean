@@ -79,7 +79,6 @@ theorem checkMul_sound (a out : ScaledInterval) (x : ℚ) (y : ℤ)
   have hid : binaryScale * (x * ((y : ℚ) / binaryScale)) =
       x * (y : ℚ) := by
     field_simp [ne_of_gt hs]
-    ring
   rcases ha with ⟨ha1, ha2⟩
   have hbounds :
       (out.lower : ℚ) * binaryScale ≤
@@ -138,10 +137,16 @@ theorem checkMul_sound (a out : ScaledInterval) (x : ℚ) (y : ℤ)
       have hh2 := hbounds.2
       simp only [if_neg hy] at hh1 hh2
       constructor <;> nlinarith
-  have hlo : (out.lower : ℚ) ≤ x * (y : ℚ) :=
-    (mul_le_mul_right hs).mp (by nlinarith [hprod.1])
-  have hhi : x * (y : ℚ) ≤ (out.upper : ℚ) :=
-    (mul_le_mul_right hs).mp (by nlinarith [hprod.2])
+  have hlo : (out.lower : ℚ) ≤ x * (y : ℚ) := by
+    by_contra h
+    have hd : 0 < (out.lower : ℚ) - x * (y : ℚ) := by linarith
+    have hp := mul_pos hd hs
+    nlinarith [hprod.1]
+  have hhi : x * (y : ℚ) ≤ (out.upper : ℚ) := by
+    by_contra h
+    have hd : 0 < x * (y : ℚ) - (out.upper : ℚ) := by linarith
+    have hp := mul_pos hd hs
+    nlinarith [hprod.2]
   simpa only [contains, hid] using And.intro hlo hhi
 
 end FoldBounds.MotionRoundedOps
