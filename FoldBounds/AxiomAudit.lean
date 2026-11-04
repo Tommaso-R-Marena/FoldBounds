@@ -10,6 +10,7 @@ import FoldBounds.MotionVerifiedInverse
 import FoldBounds.MotionExactSolvability
 import FoldBounds.MotionRealPairSamples
 import FoldBounds.MotionScaledCertificates
+import FoldBounds.MotionRoundedOps
 
 /-! Axiom audit: every headline theorem depends only on the standard axioms
 `propext`, `Classical.choice`, `Quot.sound`. -/
@@ -156,3 +157,10 @@ accepted score intervals now have a uniquely existing ground-truth response. -/
 #print axioms FoldBounds.MotionScaledCertificates.checkValue_sound
 #print axioms FoldBounds.MotionScaledCertificates.checkEnclosure_sound
 #print axioms FoldBounds.MotionScaledCertificates.checkScaledPairScore_exists_unique_sound
+
+/-! Outward 2^96 arithmetic: integer-gated signed multiplication soundness. -/
+#print axioms FoldBounds.MotionRoundedOps.scaleInt_cast
+#print axioms FoldBounds.MotionRoundedOps.scaleInt_pos
+#print axioms FoldBounds.MotionRoundedOps.addBox_sound
+#print axioms FoldBounds.MotionRoundedOps.negBox_sound
+#print axioms FoldBounds.MotionRoundedOps.checkMul_sound
