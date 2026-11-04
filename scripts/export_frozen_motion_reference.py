@@ -13,6 +13,7 @@ import hashlib
 import io
 import json
 import math
+from fractions import Fraction
 import struct
 import sys
 import zipfile
@@ -71,18 +72,33 @@ def parse_reference_npz(blob):
         raise ValueError("inconsistent shapes")
     if not all(math.isfinite(value) for value in coords):
         raise ValueError("nonfinite coordinates")
+    # pair_i and pair_j are coordinate-array POSITIONS, not PDB residue IDs.
+    # The original PyMOL _pair_list loops over 0-based array positions.
     ids_set = set(ids)
     pairs = list(zip(pi, pj))
-    if len(ids_set) != n or len(set(pairs)) != len(pairs) or any(
-            i >= j or i not in ids_set or j not in ids_set for i, j in pairs):
-        raise ValueError("invalid residue indices or duplicate pair")
-    rational_coords = []
-    for i in range(n):
-        rational_coords.append([
-            list(coords[3*i + axis].as_integer_ratio()) for axis in range(3)])
+    if (len(ids_set) != n or any(v <= 0 for v in ids)
+            or len(set(pairs)) != len(pairs)
+            or any(i < 0 or j >= n or i >= j for i, j in pairs)):
+        raise ValueError("invalid residue IDs or pair positions")
+    rational_coords = [
+        [list(coords[3*i + axis].as_integer_ratio()) for axis in range(3)]
+        for i in range(n)]
+    exact = [[Fraction(num, den) for num, den in row]
+             for row in rational_coords]
+    expected = []
+    for a in range(1, n-1):  # exclude both terminal residues
+        for b in range(a+4, n-1):  # minimum sequence-index difference 4
+            d2 = sum(((exact[a][k] - exact[b][k]) ** 2
+                      for k in range(3)), Fraction(0))
+            if Fraction(25) <= d2 <= Fraction(256):
+                expected.append((a, b))
+    if pairs != expected:
+        raise ValueError("frozen positions differ from complete reference-only pair rule")
     return {"residue_ids": list(ids),
             "coordinate_rationals": rational_coords,
-            "evaluation_pair_residue_ids": [[i, j] for i, j in pairs]}
+            "evaluation_pair_positions": [[i, j] for i, j in pairs],
+            "evaluation_pair_residue_ids": [[ids[i], ids[j]] for i, j in pairs],
+            "pair_position_semantics": "zero_based_coordinate_array_positions"}
 
 
 def export_archive(path):
@@ -107,7 +123,7 @@ def export_archive(path):
                 or protocol.get("distance_scale_A") != 7.0):
             raise ValueError("unexpected frozen protocol")
         result = {
-            "format": "FOLDREF-RAT-1",
+            "format": "FOLDREF-RAT-2",
             "archive_sha256": sha(open(path, "rb").read()),
             "model": {"contact_squared_A2": [100, 1],
                       "ridge": [1, 5],
