@@ -18,6 +18,7 @@ import FoldBounds.MotionDyadicDivision
 import FoldBounds.MotionSparseResponse
 import FoldBounds.MotionContactCompleteness
 import FoldBounds.MotionRobustResponse
+import FoldBounds.MotionRobustOrdering
 
 /-! Axiom audit: every headline theorem depends only on the standard axioms
 `propext`, `Classical.choice`, `Quot.sound`. -/
@@ -201,3 +202,6 @@ accepted score intervals now have a uniquely existing ground-truth response. -/
 
 /-! Uniform response validity across arbitrary structural uncertainty and contact switches. -/
 #print axioms FoldBounds.MotionRobustResponse.uniform_score_sound
+
+/-! Uniform strict rank ordering across variable-coordinate and variable-contact worlds. -/
+#print axioms FoldBounds.MotionRobustOrdering.uniform_strict_pair_order
