@@ -39,7 +39,16 @@ the coordinate-derived matrix and pair-distance functions. -/
 def canonicalPair {n : ℕ} (i j : Fin n) : Spring n :=
   ⟨i, j, fun _ => 0⟩
 
-/-- Exact, mathematically specified reference contact network. -/
+/-- Count the submitted oriented edges for a residue pair. This finite
+cardinality avoids nonconstructive existential search in the executable gate. -/
+def contactMultiplicity {n m : ℕ}
+    (edges : Fin m → Spring n) (i j : Fin n) : ℕ :=
+  (Finset.univ.filter (fun e : Fin m =>
+    (edges e).source = i ∧ (edges e).target = j)).card
+
+/-- Every pair below the cutoff has multiplicity exactly one, while
+every submitted edge is active and oriented source<target. Together
+these rules exclude missing, duplicate and spurious contacts. -/
 def ExactContactNetwork {n m : ℕ}
     (edges : Fin m → Spring n)
     (coords : Fin n → Fin 3 → ℚ)
@@ -47,14 +56,12 @@ def ExactContactNetwork {n m : ℕ}
   0 < cutoffSq ∧
   (∀ i j : Fin n, i < j →
     0 < distSq (canonicalPair i j) coords) ∧
-  (∀ e : Fin m, (edges e).source < (edges e).target) ∧
+  (∀ e : Fin m,
+    (edges e).source < (edges e).target ∧
+      distSq (edges e) coords ≤ cutoffSq) ∧
   (∀ i j : Fin n, i < j →
     (distSq (canonicalPair i j) coords ≤ cutoffSq ↔
-      ∃ e : Fin m,
-        (edges e).source = i ∧ (edges e).target = j)) ∧
-  (∀ a b : Fin m,
-    (edges a).source = (edges b).source →
-    (edges a).target = (edges b).target → a = b)
+      contactMultiplicity edges i j = 1))
 
 /-- Executable complete-graph acceptance; all quantifiers range over
 finite, explicit types and arithmetic uses exact rationals. -/
@@ -80,8 +87,18 @@ theorem checked_contact_present {n m : ℕ}
     (hc : distSq (canonicalPair i j) coords ≤ cutoffSq) :
     ∃ e : Fin m,
       (edges e).source = i ∧ (edges e).target = j := by
-  exact ((checkContactNetwork_sound edges coords cutoffSq h).2.2.2.1
-    i j hij).mp hc
+  have hcard : contactMultiplicity edges i j = 1 :=
+    ((checkContactNetwork_sound edges coords cutoffSq h).2.2.2
+      i j hij).mp hc
+  have hpos : 0 <
+      (Finset.univ.filter (fun e : Fin m =>
+        (edges e).source = i ∧ (edges e).target = j)).card := by
+    simpa [contactMultiplicity] using (show 0 < contactMultiplicity edges i j by
+      rw [hcard]; norm_num)
+  obtain ⟨e, he⟩ := Finset.card_pos.mp hpos
+  have hm : (edges e).source = i ∧ (edges e).target = j := by
+    simpa only [Finset.mem_filter, Finset.mem_univ, true_and] using he
+  exact ⟨e, hm⟩
 
 /-- Every supplied contact is canonical and under the cutoff. -/
 theorem checked_contact_active {n m : ℕ}
@@ -91,14 +108,7 @@ theorem checked_contact_active {n m : ℕ}
     (e : Fin m) :
     (edges e).source < (edges e).target ∧
       distSq (edges e) coords ≤ cutoffSq := by
-  have hh := checkContactNetwork_sound edges coords cutoffSq h
-  have horder := hh.2.2.1 e
-  have he : ∃ k : Fin m,
-      (edges k).source = (edges e).source ∧
-      (edges k).target = (edges e).target := ⟨e, rfl, rfl⟩
-  have hk := ((hh.2.2.2.1 (edges e).source (edges e).target horder).mpr he)
-  -- distSq and canonicalPair depend solely on the ordered endpoints.
-  exact ⟨horder, by simpa [distSq, canonicalPair] using hk⟩
+  exact (checkContactNetwork_sound edges coords cutoffSq h).2.2.1 e
 
 /-- A full-network protein certificate accepts ONLY when its graph is
 complete and the sparse, exact-rational physical score certificate passes. -/
