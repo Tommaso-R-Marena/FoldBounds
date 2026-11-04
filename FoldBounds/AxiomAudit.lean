@@ -14,6 +14,7 @@ import FoldBounds.MotionRoundedOps
 import FoldBounds.MotionScaledOrdering
 import FoldBounds.MotionBulkChain
 import FoldBounds.MotionBulkRealSmoke
+import FoldBounds.MotionDyadicDivision
 
 /-! Axiom audit: every headline theorem depends only on the standard axioms
 `propext`, `Classical.choice`, `Quot.sound`. -/
@@ -180,3 +181,6 @@ accepted score intervals now have a uniquely existing ground-truth response. -/
 #print axioms FoldBounds.MotionBulkRealSmoke.crambin_frozen_rank_arithmetic
 #print axioms FoldBounds.MotionBulkRealSmoke.cspb_frozen_strict
 #print axioms FoldBounds.MotionBulkRealSmoke.crambin_frozen_strict
+
+/-! Signed exact integer quotient/remainder enclosure. -/
+#print axioms FoldBounds.MotionDyadicDivision.checkQuotient_sound
