@@ -6,6 +6,7 @@ import FoldBounds.MotionProteinHessian
 import FoldBounds.MotionResidual
 import FoldBounds.MotionProteinResponse
 import FoldBounds.MotionPairOrdering
+import FoldBounds.MotionVerifiedInverse
 
 /-! Axiom audit: every headline theorem depends only on the standard axioms
 `propext`, `Classical.choice`, `Quot.sound`. -/
@@ -126,3 +127,8 @@ rank-one PSD energy and regularized coercivity. -/
 /-! Fail-closed comparative predicted-motion rank certificates. -/
 #print axioms FoldBounds.MotionPairOrdering.strictlyOrdered_sound
 #print axioms FoldBounds.MotionPairOrdering.checkPairOrder_sound
+
+/-! Exact rational right-inverse witness; assumption-free pair score. -/
+#print axioms FoldBounds.MotionVerifiedInverse.checkRightInverse_valid
+#print axioms FoldBounds.MotionVerifiedInverse.checked_inverse_solves
+#print axioms FoldBounds.MotionVerifiedInverse.checkPairScoreWithInverse_sound
