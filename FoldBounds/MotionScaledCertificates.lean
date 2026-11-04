@@ -53,28 +53,28 @@ def upperQ (s : ScaledInterval) : ℚ := (s.upper : ℚ) / binaryScale
 /-- Exact rational inclusion of a value, checked in integer-scaled units.
 The checker does not trust the proposed interval constructor. -/
 def checkValue (s : ScaledInterval) (v : ℚ) : Bool :=
-  decide ((s.lower : ℚ) ≤ binaryScale * v ∧
-    binaryScale * v ≤ (s.upper : ℚ))
+  decide ((s.lower : ℚ) ≤ v * binaryScale ∧
+    v * binaryScale ≤ (s.upper : ℚ))
 
 theorem checkValue_sound (s : ScaledInterval) (v : ℚ)
     (h : checkValue s v = true) :
     lowerQ s ≤ v ∧ v ≤ upperQ s := by
-  have hs : (s.lower : ℚ) ≤ binaryScale * v ∧
-    binaryScale * v ≤ (s.upper : ℚ) := of_decide_eq_true h
+  have hs : (s.lower : ℚ) ≤ v * binaryScale ∧
+    v * binaryScale ≤ (s.upper : ℚ) := of_decide_eq_true h
   constructor
   · exact (div_le_iff₀ binaryScale_pos).2 hs.1
   · exact (le_div_iff₀ binaryScale_pos).2 hs.2
 
 /-- Exact integer-scaled gates for an already-computed rational enclosure. -/
 def checkEnclosure (s : ScaledInterval) (lo hi : ℚ) : Bool :=
-  decide ((s.lower : ℚ) ≤ binaryScale * lo ∧
-    binaryScale * hi ≤ (s.upper : ℚ))
+  decide ((s.lower : ℚ) ≤ lo * binaryScale ∧
+    hi * binaryScale ≤ (s.upper : ℚ))
 
 theorem checkEnclosure_sound (s : ScaledInterval) (lo hi : ℚ)
     (h : checkEnclosure s lo hi = true) :
     lowerQ s ≤ lo ∧ hi ≤ upperQ s := by
-  have hs : (s.lower : ℚ) ≤ binaryScale * lo ∧
-    binaryScale * hi ≤ (s.upper : ℚ) := of_decide_eq_true h
+  have hs : (s.lower : ℚ) ≤ lo * binaryScale ∧
+    hi * binaryScale ≤ (s.upper : ℚ) := of_decide_eq_true h
   exact ⟨(div_le_iff₀ binaryScale_pos).2 hs.1,
     (le_div_iff₀ binaryScale_pos).2 hs.2⟩
 
