@@ -2,6 +2,7 @@ import FoldBounds.MotionContactCompleteness
 
 open FoldBounds.MotionUncertainty
 open FoldBounds.MotionProteinHessian
+open FoldBounds.MotionHessian
 open FoldBounds.MotionProteinResponse
 open FoldBounds.MotionScaledCertificates
 open FoldBounds.MotionContactCompleteness
