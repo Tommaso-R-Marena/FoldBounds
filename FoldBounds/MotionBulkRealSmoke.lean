@@ -37,9 +37,9 @@ def crambin : List ScaledInterval := [
   ⟨17450141670767598317215934846, 17450141670767608600857274835⟩
 ]
 
-theorem cspb_frozen_rank_arithmetic : checkAdjacent cspb = true := by native_decide
+theorem cspb_frozen_rank_arithmetic : checkAdjacent cspb = true := by decide
 theorem crambin_frozen_rank_arithmetic :
-    checkAdjacent crambin = true := by native_decide
+    checkAdjacent crambin = true := by decide
 
 theorem cspb_frozen_strict : StrictAdjacent cspb :=
   checkAdjacent_sound cspb cspb_frozen_rank_arithmetic
