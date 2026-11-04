@@ -97,7 +97,7 @@ theorem sparseMatVec_eq {n m : ℕ} (edges : Fin m → Spring n)
       (contactWeight (edges e) coords cutoffSq *
         incidence (edges e) coords p) *
       dotQ (incidence (edges e) coords) u) + τ * u p at hh
-  rw [← hh]
+  rw [hh]
   unfold sparseMatVec
   congr 1
   apply Finset.sum_congr rfl
