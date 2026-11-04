@@ -75,7 +75,8 @@ theorem incidence_dot {n : ℕ} (e : Spring n)
     dotQ (incidence e x) (flat u) =
         ∑ p : Fin n × Fin 3, incidence e x p * u p.1 p.2 := rfl
     _ = ∑ i : Fin n, ∑ a : Fin 3, incidence e x (i, a) * u i a := by
-          rw [Fintype.sum_prod_type']
+          exact Fintype.sum_prod_type' (fun i a =>
+            incidence e x (i, a) * u i a)
     _ = ∑ a : Fin 3, ∑ i : Fin n, incidence e x (i, a) * u i a := by
           rw [Finset.sum_comm]
     _ = ∑ a : Fin 3, (u e.source a - u e.target a) * coordDelta e x a := by
@@ -116,8 +117,18 @@ def proteinHessian {n m : ℕ} (edges : Fin m → Spring n)
 /-- Flattened displacement squared norm equals the original 3D norm. -/
 theorem flat_dot {n : ℕ} (u : Fin n → Fin 3 → ℚ) :
     dotQ (flat u) (flat u) = displacementSqQ u := by
-  unfold dotQ displacementSqQ
-  rw [Fintype.sum_prod_type']
+  change (∑ p : Fin n × Fin 3, u p.1 p.2 * u p.1 p.2) =
+    ∑ i : Fin n, ∑ a : Fin 3, (u i a) ^ 2
+  calc
+    (∑ p : Fin n × Fin 3, u p.1 p.2 * u p.1 p.2) =
+        ∑ i : Fin n, ∑ a : Fin 3, u i a * u i a := by
+          exact Fintype.sum_prod_type' (fun i a => u i a * u i a)
+    _ = ∑ i : Fin n, ∑ a : Fin 3, (u i a) ^ 2 := by
+          apply Finset.sum_congr rfl
+          intro i _
+          apply Finset.sum_congr rfl
+          intro a _
+          ring
 
 /-- Main bridge: the actual physical energy is exactly the quadratic
 form of the explicit Cartesian Hessian, not merely an analogy. -/
