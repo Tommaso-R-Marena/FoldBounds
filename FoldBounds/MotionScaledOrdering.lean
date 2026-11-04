@@ -53,12 +53,21 @@ theorem checkScaledOrder_sound {n m : ℕ}
       matVecQ (proteinHessian edges coords cutoffSq τ) yB =
         pairForce pairB coords ∧
       pairScore pairA coords yA < pairScore pairB coords yB := by
-  have hc : ((checkScaledPairScore edges coords cutoffSq τ pairA candidateA a &&
-      checkScaledPairScore edges coords cutoffSq τ pairB candidateB b) = true) ∧
-      decide (a.upper < b.lower) = true := by
-    exact Bool.and_eq_true.mp h
-  have hab := Bool.and_eq_true.mp hc.1
-  have ht : a.upper < b.lower := of_decide_eq_true hc.2
+  have hA : checkScaledPairScore edges coords cutoffSq τ
+      pairA candidateA a = true := by
+    cases ha : checkScaledPairScore edges coords cutoffSq τ
+        pairA candidateA a with
+    | false => simp [checkScaledOrder, ha] at h
+    | true => exact ha
+  have hB : checkScaledPairScore edges coords cutoffSq τ
+      pairB candidateB b = true := by
+    cases hb : checkScaledPairScore edges coords cutoffSq τ
+        pairB candidateB b with
+    | false => simp [checkScaledOrder, hA, hb] at h
+    | true => exact hb
+  have hDec : decide (a.upper < b.lower) = true := by
+    simpa [checkScaledOrder, hA, hB] using h
+  have ht : a.upper < b.lower := of_decide_eq_true hDec
   have htq : (a.upper : ℚ) < (b.lower : ℚ) := by exact_mod_cast ht
   have hscaled : upperQ a < lowerQ b := by
     unfold upperQ lowerQ
@@ -66,10 +75,10 @@ theorem checkScaledOrder_sound {n m : ℕ}
     exact mul_lt_mul_of_pos_right htq binaryScale_pos
   obtain ⟨yA, hyA, _⟩ :=
     checkScaledPairScore_exists_unique_sound edges coords cutoffSq τ
-      pairA candidateA a hab.1
+      pairA candidateA a hA
   obtain ⟨yB, hyB, _⟩ :=
     checkScaledPairScore_exists_unique_sound edges coords cutoffSq τ
-      pairB candidateB b hab.2
+      pairB candidateB b hB
   refine ⟨yA, yB, hyA.1, hyB.1, ?_⟩
   exact lt_of_lt_of_le (lt_of_le_of_lt hyA.2.2 hscaled) hyB.2.1
 
