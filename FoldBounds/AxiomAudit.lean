@@ -5,6 +5,7 @@ import FoldBounds.MotionInverseFourth
 import FoldBounds.MotionProteinHessian
 import FoldBounds.MotionResidual
 import FoldBounds.MotionProteinResponse
+import FoldBounds.MotionPairOrdering
 
 /-! Axiom audit: every headline theorem depends only on the standard axioms
 `propext`, `Classical.choice`, `Quot.sound`. -/
@@ -121,3 +122,7 @@ rank-one PSD energy and regularized coercivity. -/
 
 /-! Normalized protein pair-response gate, using no square roots. -/
 #print axioms FoldBounds.MotionProteinResponse.checkPairScore_sound
+
+/-! Fail-closed comparative predicted-motion rank certificates. -/
+#print axioms FoldBounds.MotionPairOrdering.strictlyOrdered_sound
+#print axioms FoldBounds.MotionPairOrdering.checkPairOrder_sound
