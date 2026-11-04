@@ -24,6 +24,7 @@ open FoldBounds.MotionResidual
 open FoldBounds.MotionUncertainty
 open FoldBounds.MotionProteinHessian
 open FoldBounds.MotionProteinResponse
+open FoldBounds.MotionVariableDirections
 
 variable {I : Type*} [Fintype I] [DecidableEq I]
 
@@ -32,10 +33,11 @@ theorem dotQ_self_eq_zero_iff (u : I → ℚ) :
   constructor
   · intro hz i
     have hs : (u i) ^ 2 ≤ (∑ j : I, (u j) ^ 2) := by
-      apply Finset.single_le_sum
-      · intro j _
-        exact sq_nonneg (u j)
-      · exact Finset.mem_univ i
+      have hm := Finset.single_le_sum
+        (s := (Finset.univ : Finset I))
+        (f := fun j : I => (u j) ^ 2)
+        (fun j _ => sq_nonneg (u j)) (Finset.mem_univ i)
+      simpa using hm
     have hsum : (∑ j : I, (u j) ^ 2) = 0 := by
       calc
         (∑ j : I, (u j) ^ 2) =
