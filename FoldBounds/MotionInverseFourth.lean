@@ -158,7 +158,7 @@ theorem weightedEnergyTerm_sound {n : ℕ} (e : Spring n)
           (mul_le_mul_of_nonneg_left hRatio.2 h0)
       · simp only [weightedEnergyTerm, if_neg hOn]
         have hUpperN : 0 ≤ (squared (stretchInterval e boxes u)).upper :=
-          le_trans (squared_lower_nonneg _) hsq.1 |>.trans hsq.2
+          le_trans (squared_lower_nonneg _) (le_trans hsq.1 hsq.2)
         exact mul_nonneg h0 (div_nonneg hUpperN (sq_nonneg _))
 
 /-- Complete finite-network enclosure for the weighted elastic ANM energy,
