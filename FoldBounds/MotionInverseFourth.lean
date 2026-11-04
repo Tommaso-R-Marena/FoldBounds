@@ -187,4 +187,74 @@ theorem safeNetwork_energy_sound {n m : ℕ}
     exact (weightedEnergyTerm_sound (edges i) boxes x u cutoffSq
       (hmin i) hx).2
 
+
+/-- Exact weighted network quadratic form for a fixed configuration. -/
+def weightedNetworkEnergy {n m : ℕ} (edges : Fin m → Spring n)
+    (x u : Fin n → Fin 3 → ℚ) (cutoffSq : ℚ) : ℚ :=
+  ∑ i : Fin m, weightedEnergyTerm (edges i) x u cutoffSq
+
+/-- Every individual inverse-fourth spring contributes nonnegative energy. -/
+theorem weightedEnergyTerm_nonneg {n : ℕ} (e : Spring n)
+    (x u : Fin n → Fin 3 → ℚ) (cutoffSq : ℚ) :
+    0 ≤ weightedEnergyTerm e x u cutoffSq := by
+  unfold weightedEnergyTerm
+  split_ifs
+  · positivity
+  · exact le_refl _
+
+/-- The physical weighted contact network is positive semidefinite in its
+rational displacement field, including arbitrary allowed contact topologies. -/
+theorem weightedNetworkEnergy_nonneg {n m : ℕ}
+    (edges : Fin m → Spring n) (x u : Fin n → Fin 3 → ℚ)
+    (cutoffSq : ℚ) :
+    0 ≤ weightedNetworkEnergy edges x u cutoffSq := by
+  unfold weightedNetworkEnergy
+  apply Finset.sum_nonneg
+  intro i _
+  exact weightedEnergyTerm_nonneg (edges i) x u cutoffSq
+
+/-- Rational 3D displacement-field squared norm. -/
+def displacementSqQ {n : ℕ} (u : Fin n → Fin 3 → ℚ) : ℚ :=
+  ∑ i : Fin n, ∑ a : Fin 3, (u i a) ^ 2
+
+theorem displacementSqQ_nonneg {n : ℕ}
+    (u : Fin n → Fin 3 → ℚ) : 0 ≤ displacementSqQ u := by
+  unfold displacementSqQ
+  apply Finset.sum_nonneg
+  intro i _
+  apply Finset.sum_nonneg
+  intro a _
+  exact sq_nonneg _
+
+/-- Ridge regularization supplies coercivity for any nonnegative stiffness
+network, including coordinate-dependent directions and switching contacts. -/
+def weightedRidgeEnergy {n m : ℕ} (edges : Fin m → Spring n)
+    (x u : Fin n → Fin 3 → ℚ) (cutoffSq τ : ℚ) : ℚ :=
+  weightedNetworkEnergy edges x u cutoffSq + τ * displacementSqQ u
+
+theorem weightedRidgeEnergy_coercive {n m : ℕ}
+    (edges : Fin m → Spring n) (x u : Fin n → Fin 3 → ℚ)
+    (cutoffSq τ : ℚ) :
+    τ * displacementSqQ u ≤
+      weightedRidgeEnergy edges x u cutoffSq τ := by
+  dsimp [weightedRidgeEnergy]
+  have h := weightedNetworkEnergy_nonneg edges x u cutoffSq
+  linarith
+
+/-- The active-network interval theorem stated directly in terms of the
+physically weighted network energy. -/
+theorem weightedNetworkEnergy_interval {n m : ℕ}
+    (edges : Fin m → Spring n)
+    (boxes : Fin n → Fin 3 → Box) (cutoffSq : ℚ)
+    (u : Fin n → Fin 3 → ℚ)
+    (h : safeNetwork edges boxes cutoffSq = true) :
+    ∀ (x : Fin n → Fin 3 → ℚ),
+      (∀ j a, contains (boxes j a) (x j a)) →
+      (∑ i : Fin m, weightedLowerTerm (edges i) boxes u cutoffSq) ≤
+        weightedNetworkEnergy edges x u cutoffSq ∧
+      weightedNetworkEnergy edges x u cutoffSq ≤
+        (∑ i : Fin m, weightedUpperTerm (edges i) boxes u cutoffSq) := by
+  intro x hx
+  exact safeNetwork_energy_sound edges boxes cutoffSq u h x hx
+
 end FoldBounds.MotionInverseFourth
