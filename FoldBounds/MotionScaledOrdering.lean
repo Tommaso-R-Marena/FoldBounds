@@ -63,7 +63,7 @@ theorem checkScaledOrder_sound {n m : ℕ}
   have hscaled : upperQ a < lowerQ b := by
     unfold upperQ lowerQ
     apply (div_lt_div_iff₀ binaryScale_pos binaryScale_pos).2
-    exact (mul_lt_mul_right binaryScale_pos).2 htq
+    exact mul_lt_mul_of_pos_right htq binaryScale_pos
   obtain ⟨yA, hyA, _⟩ :=
     checkScaledPairScore_exists_unique_sound edges coords cutoffSq τ
       pairA candidateA a hab.1
