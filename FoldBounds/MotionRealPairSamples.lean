@@ -54,11 +54,11 @@ def crambin : Fin 2 → Fin 3 → ℚ :=
 
 theorem cspb_frozen_sq_distance :
     distSq pair cspb = (173805739498313 : ℚ) / 1099511627776 := by
-  norm_num [distSq, Fin.sum_univ_three, pair, cspb, crambin]
+  simp [distSq, Fin.sum_univ_three, pair, cspb, crambin] <;> norm_num
 
 theorem crambin_frozen_sq_distance :
     distSq pair crambin = (164516495665547 : ℚ) / 1099511627776 := by
-  norm_num [distSq, Fin.sum_univ_three, pair, cspb, crambin]
+  simp [distSq, Fin.sum_univ_three, pair, cspb, crambin] <;> norm_num
 
 theorem cspb_reference_pair_eligible :
     (25 : ℚ) ≤ distSq pair cspb ∧ distSq pair cspb ≤ 256 := by
