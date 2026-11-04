@@ -25,7 +25,7 @@ namespace FoldBounds.MotionRealPairSamples
 open FoldBounds.MotionVariableDirections
 open FoldBounds.MotionUncertainty
 
-private def pair : Spring 2 :=
+def pair : Spring 2 :=
   ⟨0, 1, ![1, 0, 0]⟩
 
 /-- CspB crystal 1CSP, reference array positions 1 and 5. -/
