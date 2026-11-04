@@ -129,7 +129,6 @@ theorem residual_square_ineq (r d : I → ℚ) (τ : ℚ) :
                    2 * τ * (∑ i : I, r i * d i) +
                      τ ^ 2 * (∑ i : I, d i * d i)
               rw [Finset.mul_sum, Finset.mul_sum]
-              ring
   rw [hs] at hn
   exact hn
 
@@ -165,7 +164,6 @@ theorem symmetric_residual_enclosure (H : Matrix I I ℚ)
     exact matVecQ_vsub H y x |>.symm
   have hrd : dotQ r d = E := by
     rw [dotQ_comm r d, hr]
-    rfl
   have hn : 0 ≤ N := dotQ_self_nonneg d
   have hc : τ * N ≤ E := hcoercive d
   have hE : 0 ≤ E := le_trans (mul_nonneg hτ.le hn) hc
@@ -177,7 +175,7 @@ theorem symmetric_residual_enclosure (H : Matrix I I ℚ)
     mul_le_mul_of_nonneg_left hc hτ.le
   have hR : τ * E ≤ R := by
     nlinarith [hsq, hmul]
-  have hER : E ≤ R / τ := (le_div_iff₀ hτ).2 hR
+  have hER : E ≤ R / τ := (le_div_iff₀ hτ).2 (by nlinarith [hR])
   constructor
   · dsimp [E] at hE
     linarith [hgap, hE]
