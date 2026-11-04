@@ -1,6 +1,7 @@
 """Dependency-free independent Fraction validation of outward integer kernel."""
 from fractions import Fraction as F
-from motion_fixedpoint_core import D, B, Y_SCALE, hessian_boxes, bound_score
+import random
+from motion_fixedpoint_core import D, B, Y_SCALE, hessian_boxes, bound_score, mul_int_interval
 
 
 def exact_matrix(coords):
@@ -33,7 +34,37 @@ def check_entries(coords):
     return count
 
 
+def check_signed_rounding():
+    """Independent exact-fraction attack on signed interval multiplication.
+
+    Checks 1000 randomly generated signed boxes and positive/negative
+    2^-96 witnesses, including large magnitudes and exact endpoints.
+    Matches the integer acceptance inequalities in MotionRoundedOps.lean.
+    """
+    rng = random.Random(20261104)
+    for _ in range(1000):
+        a, b = sorted((rng.randrange(-(2**110), 2**110),
+                       rng.randrange(-(2**110), 2**110)))
+        y = rng.randrange(-(2**99), 2**99)
+        lo, hi = mul_int_interval((a, b), y)
+        assert lo <= hi
+        if y >= 0:
+            assert lo*B <= a*y and b*y <= hi*B
+        else:
+            assert lo*B <= b*y and a*y <= hi*B
+        for num in (a, b, a+b):
+            den = 1 if num != a+b else 2
+            if den == 2:
+                val = F(a+b, 2*B)
+            else:
+                val = F(num, B)
+            product = val * F(y, B)
+            assert F(lo, B) <= product <= F(hi, B)
+    return 1000
+
+
 def main():
+    signed_checks=check_signed_rounding()
     coords=[[0,0,0],[8*D,0,0]]
     assert check_entries(coords)==1
     rows,_=hessian_boxes(coords)
@@ -89,6 +120,7 @@ def main():
         pass
     else:
         raise AssertionError("zero-length index pair accepted")
+    print(f"PASS: {signed_checks} independent signed fixed-point interval multiplications")
     print("PASS: exact Fraction matrix bounds, independent exact solutions, failed-input rejection")
 
 
