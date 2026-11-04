@@ -17,6 +17,7 @@ import FoldBounds.MotionBulkRealSmoke
 import FoldBounds.MotionDyadicDivision
 import FoldBounds.MotionSparseResponse
 import FoldBounds.MotionContactCompleteness
+import FoldBounds.MotionRobustResponse
 
 /-! Axiom audit: every headline theorem depends only on the standard axioms
 `propext`, `Classical.choice`, `Quot.sound`. -/
@@ -197,3 +198,6 @@ accepted score intervals now have a uniquely existing ground-truth response. -/
 #print axioms FoldBounds.MotionContactCompleteness.checked_contact_present
 #print axioms FoldBounds.MotionContactCompleteness.checked_contact_active
 #print axioms FoldBounds.MotionContactCompleteness.checkCompleteSparseScore_sound
+
+/-! Uniform response validity across arbitrary structural uncertainty and contact switches. -/
+#print axioms FoldBounds.MotionRobustResponse.uniform_score_sound
