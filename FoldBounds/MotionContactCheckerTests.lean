@@ -35,6 +35,5 @@ example (c : RawContacts 3) (d2 k : Fin 3 → ℚ)
     (h : check c d2 k = true) :
     ∀ i, lowerWeight c i ≤ actualWeight c d2 k i ∧
       actualWeight c d2 k i ≤ upperWeight c i := by
-  have hh : accepts c = true ∧ decide (admissible c d2 k) = true :=
-    Bool.and_eq_true.mp h
-  exact weight_interval_sound c d2 k hh.1 (of_decide_eq_true hh.2)
+  have hh := check_valid c d2 k h
+  exact weight_interval_sound c d2 k hh.1 hh.2
