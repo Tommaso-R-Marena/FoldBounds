@@ -16,7 +16,7 @@ def main():
         {"CspB":(entries,"0"*64)}, "1"*64,3)
     assert stats["CspB"]["adjacent_comparisons"]==5
     assert stats["CspB"]["blocks"]==3
-    assert "checkAdjacent CspB_block_002 = true := by native_decide" in source
+    assert "checkAdjacent CspB_block_002 = true := by decide" in source
     assert "checkAdjacent_sound CspB_block_002 CspB_block_002_ok" in source
     assert source==generate_source({"CspB":(entries,"0"*64)}, "1"*64,3)[0]
     assert len(sha(source.encode()))==64
