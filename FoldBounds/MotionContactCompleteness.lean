@@ -68,15 +68,22 @@ finite, explicit types and arithmetic uses exact rationals. -/
 def checkContactNetwork {n m : ℕ}
     (edges : Fin m → Spring n)
     (coords : Fin n → Fin 3 → ℚ)
-    (cutoffSq : ℚ) : Bool :=
-  decide (ExactContactNetwork edges coords cutoffSq)
+    (cutoffSq : ℚ) : Bool := by
+  letI : Decidable (ExactContactNetwork edges coords cutoffSq) := by
+    unfold ExactContactNetwork
+    infer_instance
+  exact decide (ExactContactNetwork edges coords cutoffSq)
 
 theorem checkContactNetwork_sound {n m : ℕ}
     (edges : Fin m → Spring n)
     (coords : Fin n → Fin 3 → ℚ) (cutoffSq : ℚ)
     (h : checkContactNetwork edges coords cutoffSq = true) :
     ExactContactNetwork edges coords cutoffSq := by
-  exact of_decide_eq_true h
+  letI : Decidable (ExactContactNetwork edges coords cutoffSq) := by
+    unfold ExactContactNetwork
+    infer_instance
+  apply of_decide_eq_true
+  simpa only [checkContactNetwork] using h
 
 /-- In particular, no candidate network may exclude an active contact. -/
 theorem checked_contact_present {n m : ℕ}
