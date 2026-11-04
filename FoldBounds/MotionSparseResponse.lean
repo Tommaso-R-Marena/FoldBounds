@@ -83,7 +83,6 @@ theorem sparseRowTerm_eq {n : ℕ} (e : Spring n)
         intro heq
         exact hs (ht.trans heq)
       simp [sparseRowTerm, sparseEdgeTerm, incidence, hs, ht, hne]
-      ring
     · simp [sparseRowTerm, incidence, hs, ht]
 
 /-- The sparse exact-rational computation equals the complete weighted
