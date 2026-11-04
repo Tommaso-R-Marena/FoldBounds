@@ -18,7 +18,7 @@ example : ∃! y : Fin 2 → ℚ, matVecQ (hessianQ b w 1) y = z := by
   · norm_num
   · intro i
     fin_cases i
-    norm_num
+    norm_num [w]
 
 example : ∃! y : Fin 2 → ℚ,
     matVecQ (hessianQ b w 1) y = z ∧
