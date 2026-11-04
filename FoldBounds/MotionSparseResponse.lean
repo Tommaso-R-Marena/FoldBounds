@@ -78,7 +78,6 @@ theorem sparseRowTerm_eq {n : ℕ} (e : Spring n)
         intro heq
         exact ht (hs.trans heq)
       simp [sparseRowTerm, sparseEdgeTerm, incidence, hs, ht, hne]
-      ring
   · by_cases ht : p.1 = e.target
     · have hne : e.target ≠ e.source := by
         intro heq
