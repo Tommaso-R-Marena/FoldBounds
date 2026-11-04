@@ -32,11 +32,10 @@ The trailing interval overlaps the first interval of the next chunk
 when exported in the multi-chunk replay format. -/
 def checkAdjacent : List ScaledInterval → Bool
   | [] => true
-  | [_] => true
-  | a :: b :: xs =>
-      separated a b && checkAdjacent (b :: xs)
-termination_by
-  xs => xs.length + 1
+  | a :: tail =>
+      match tail with
+      | [] => true
+      | b :: _ => separated a b && checkAdjacent tail
 
 /-- Logical meaning of an all-adjacent integer separation certificate. -/
 inductive StrictAdjacent : List ScaledInterval → Prop
