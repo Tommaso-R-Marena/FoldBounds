@@ -2,6 +2,7 @@ import FoldBounds
 import FoldBounds.MotionCoordinates
 import FoldBounds.MotionVariableDirections
 import FoldBounds.MotionInverseFourth
+import FoldBounds.MotionProteinHessian
 
 /-! Axiom audit: every headline theorem depends only on the standard axioms
 `propext`, `Classical.choice`, `Quot.sound`. -/
@@ -89,3 +90,16 @@ rank-one PSD energy and regularized coercivity. -/
 #print axioms FoldBounds.MotionInverseFourth.weightedNetworkEnergy_interval
 
 #print axioms FoldBounds.MotionInverseFourth.checkNetworkEnergy_sound
+
+/-! Exact rational Hessian, physical Cartesian incidence, and coercivity. -/
+#print axioms FoldBounds.MotionHessian.hessianQ_symmetric
+#print axioms FoldBounds.MotionHessian.matVecQ_hessian
+#print axioms FoldBounds.MotionHessian.dot_matVec_hessian
+#print axioms FoldBounds.MotionHessian.hessianQ_coercive
+#print axioms FoldBounds.MotionProteinHessian.incidence_dot
+#print axioms FoldBounds.MotionProteinHessian.contactWeight_nonneg
+#print axioms FoldBounds.MotionProteinHessian.weight_stretch_energy
+#print axioms FoldBounds.MotionProteinHessian.flat_dot
+#print axioms FoldBounds.MotionProteinHessian.proteinHessian_energy
+#print axioms FoldBounds.MotionProteinHessian.proteinHessian_symm
+#print axioms FoldBounds.MotionProteinHessian.proteinHessian_coercive
