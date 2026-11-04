@@ -52,12 +52,7 @@ def check_signed_rounding():
             assert lo*B <= a*y and b*y <= hi*B
         else:
             assert lo*B <= b*y and a*y <= hi*B
-        for num in (a, b, a+b):
-            den = 1 if num != a+b else 2
-            if den == 2:
-                val = F(a+b, 2*B)
-            else:
-                val = F(num, B)
+        for val in (F(a, B), F(b, B), F(a+b, 2*B)):
             product = val * F(y, B)
             assert F(lo, B) <= product <= F(hi, B)
     return 1000
