@@ -1,6 +1,4 @@
-module
-
-public import FoldBounds.MotionUncertainty
+import FoldBounds.MotionUncertainty
 
 /-! Independent Lean axiom-dependency audit of the new theorem family. -/
 
