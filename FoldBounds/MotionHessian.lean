@@ -68,6 +68,8 @@ theorem matVecQ_hessian {m : ℕ} (b : Fin m → I → ℚ)
       _ = ∑ e : Fin m, (w e * b e i) * dotQ (b e) u := by
             apply Finset.sum_congr rfl
             intro e _
+            change (∑ j : I, (w e * b e i * b e j) * u j) =
+              (w e * b e i) * (∑ j : I, b e j * u j)
             rw [Finset.mul_sum]
             apply Finset.sum_congr rfl
             intro j _
@@ -104,12 +106,15 @@ theorem dot_matVec_hessian {m : ℕ} (b : Fin m → I → ℚ)
             calc
               (∑ i : I, u i * ((w e * b e i) * dotQ (b e) u)) =
                   (w e * dotQ (b e) u) * dotQ (b e) u := by
+                    change (∑ i : I, u i * ((w e * b e i) * dotQ (b e) u)) =
+                      (w e * dotQ (b e) u) * (∑ i : I, b e i * u i)
                     rw [Finset.mul_sum]
                     apply Finset.sum_congr rfl
                     intro i _
                     ring
               _ = w e * (dotQ (b e) u) ^ 2 := by ring
   have hridge : (∑ i : I, u i * (τ * u i)) = τ * dotQ u u := by
+    change (∑ i : I, u i * (τ * u i)) = τ * (∑ i : I, u i * u i)
     rw [Finset.mul_sum]
     apply Finset.sum_congr rfl
     intro i _
