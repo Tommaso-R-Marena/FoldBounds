@@ -30,13 +30,27 @@ def pair : Spring 2 :=
 
 /-- CspB crystal 1CSP, reference array positions 1 and 5. -/
 def cspb : Fin 2 → Fin 3 → ℚ :=
-  ![![1108607 / 131072, 370475 / 16384, 10617881 / 1048576],
-    ![9162457 / 524288, 8750891 / 524288, 2173567 / 131072]]
+  fun i a =>
+    if i = 0 then
+      if a = 0 then 1108607 / 131072
+      else if a = 1 then 370475 / 16384
+      else 10617881 / 1048576
+    else
+      if a = 0 then 9162457 / 524288
+      else if a = 1 then 8750891 / 524288
+      else 2173567 / 131072
 
 /-- Crambin crystal 1CRN, reference array positions 1 and 5. -/
 def crambin : Fin 2 → Fin 3 → ℚ :=
-  ![![14529069 / 1048576, 6013059 / 524288, 3180331 / 524288],
-    ![2273575 / 262144, 5572133 / 1048576, 16021193 / 1048576]]
+  fun i a =>
+    if i = 0 then
+      if a = 0 then 14529069 / 1048576
+      else if a = 1 then 6013059 / 524288
+      else 3180331 / 524288
+    else
+      if a = 0 then 2273575 / 262144
+      else if a = 1 then 5572133 / 1048576
+      else 16021193 / 1048576
 
 theorem cspb_frozen_sq_distance :
     distSq pair cspb = (173805739498313 : ℚ) / 1099511627776 := by
