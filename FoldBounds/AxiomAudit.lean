@@ -4,6 +4,7 @@ import FoldBounds.MotionVariableDirections
 import FoldBounds.MotionInverseFourth
 import FoldBounds.MotionProteinHessian
 import FoldBounds.MotionResidual
+import FoldBounds.MotionProteinResponse
 
 /-! Axiom audit: every headline theorem depends only on the standard axioms
 `propext`, `Classical.choice`, `Quot.sound`. -/
@@ -117,3 +118,6 @@ rank-one PSD energy and regularized coercivity. -/
 #print axioms FoldBounds.MotionResidual.symmetric_residual_enclosure
 #print axioms FoldBounds.MotionResidual.rankOne_residual_enclosure
 #print axioms FoldBounds.MotionResidual.checkResponse_sound
+
+/-! Normalized protein pair-response gate, using no square roots. -/
+#print axioms FoldBounds.MotionProteinResponse.checkPairScore_sound
