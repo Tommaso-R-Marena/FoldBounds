@@ -72,11 +72,18 @@ theorem sparseRowTerm_eq {n : ℕ} (e : Spring n)
   rw [hdot]
   by_cases hs : p.1 = e.source
   · by_cases ht : p.1 = e.target
-    · simp [sparseRowTerm, incidence, hs, ht]
-    · simp [sparseRowTerm, sparseEdgeTerm, incidence, hs, ht]
+    · have heq : e.source = e.target := hs.symm.trans ht
+      simp [sparseRowTerm, incidence, hs, ht, heq]
+    · have hne : e.source ≠ e.target := by
+        intro heq
+        exact ht (hs.trans heq)
+      simp [sparseRowTerm, sparseEdgeTerm, incidence, hs, ht, hne]
       ring
   · by_cases ht : p.1 = e.target
-    · simp [sparseRowTerm, sparseEdgeTerm, incidence, hs, ht]
+    · have hne : e.target ≠ e.source := by
+        intro heq
+        exact hs (ht.trans heq)
+      simp [sparseRowTerm, sparseEdgeTerm, incidence, hs, ht, hne]
       ring
     · simp [sparseRowTerm, incidence, hs, ht]
 
