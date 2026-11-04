@@ -3,6 +3,7 @@ import FoldBounds.MotionCoordinates
 import FoldBounds.MotionVariableDirections
 import FoldBounds.MotionInverseFourth
 import FoldBounds.MotionProteinHessian
+import FoldBounds.MotionResidual
 
 /-! Axiom audit: every headline theorem depends only on the standard axioms
 `propext`, `Classical.choice`, `Quot.sound`. -/
@@ -103,3 +104,16 @@ rank-one PSD energy and regularized coercivity. -/
 #print axioms FoldBounds.MotionProteinHessian.proteinHessian_energy
 #print axioms FoldBounds.MotionProteinHessian.proteinHessian_symm
 #print axioms FoldBounds.MotionProteinHessian.proteinHessian_coercive
+
+/-! Exact rational Hessian residual bounds and executable Option checker. -/
+#print axioms FoldBounds.MotionResidual.dotQ_comm
+#print axioms FoldBounds.MotionResidual.dotQ_vsub_left
+#print axioms FoldBounds.MotionResidual.dotQ_vsub_right
+#print axioms FoldBounds.MotionResidual.matVecQ_vsub
+#print axioms FoldBounds.MotionResidual.dotQ_self_nonneg
+#print axioms FoldBounds.MotionResidual.dotQ_matVec_symmetric
+#print axioms FoldBounds.MotionResidual.dual_gap_identity
+#print axioms FoldBounds.MotionResidual.residual_square_ineq
+#print axioms FoldBounds.MotionResidual.symmetric_residual_enclosure
+#print axioms FoldBounds.MotionResidual.rankOne_residual_enclosure
+#print axioms FoldBounds.MotionResidual.checkResponse_sound
