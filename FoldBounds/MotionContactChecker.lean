@@ -61,7 +61,8 @@ def actualWeight {m : ℕ} (c : RawContacts m)
 /-- Execute both the interval-consistency and concrete-witness gates. -/
 def check {m : ℕ} (c : RawContacts m)
     (d2 k : Fin m → ℚ) : Bool :=
-  accepts c && decide (admissible c d2 k)
+  accepts c && decide (∀ i, c.d2Lower i ≤ d2 i ∧
+    d2 i ≤ c.d2Upper i ∧ c.kLower i ≤ k i ∧ k i ≤ c.kUpper i)
 
 theorem accepts_valid {m : ℕ} (c : RawContacts m)
     (h : accepts c = true) :
@@ -123,6 +124,21 @@ theorem lower_le_upper {m : ℕ} (c : RawContacts m)
     · simp [upperWeight, hOff]
       linarith
 
+/-- Extract the proved validity of every interval and witness from the
+actual executable Boolean gate, without assuming proposer honesty. -/
+theorem check_valid {m : ℕ} (c : RawContacts m) (d2 k : Fin m → ℚ)
+    (h : check c d2 k = true) :
+    accepts c = true ∧ admissible c d2 k := by
+  have hc : accepts c = true := by
+    cases haccept : accepts c with
+    | false => simp [check, haccept] at h
+    | true => exact haccept
+  have hd : decide (∀ i, c.d2Lower i ≤ d2 i ∧
+      d2 i ≤ c.d2Upper i ∧ c.kLower i ≤ k i ∧
+      k i ≤ c.kUpper i) = true := by
+    simpa [check, hc] using h
+  exact ⟨hc, of_decide_eq_true hd⟩
+
 /-- A successful executable check supplies every hypothesis needed for
 all possible orientations/displacements of the contact supergraph. -/
 theorem check_energy_sound {n m : ℕ}
@@ -133,10 +149,8 @@ theorem check_energy_sound {n m : ℕ}
       springEnergy edges (fun i => (actualWeight c d2 k i : ℝ)) u ∧
     springEnergy edges (fun i => (actualWeight c d2 k i : ℝ)) u ≤
       springEnergy edges (fun i => (upperWeight c i : ℝ)) u := by
-  have hh : accepts c = true ∧ decide (admissible c d2 k) = true := by
-    exact Bool.and_eq_true.mp h
-  have hdata : admissible c d2 k := of_decide_eq_true hh.2
-  have hbounds := weight_interval_sound c d2 k hh.1 hdata
+  have hh := check_valid c d2 k h
+  have hbounds := weight_interval_sound c d2 k hh.1 hh.2
   constructor
   · apply springEnergy_mono
     intro i
