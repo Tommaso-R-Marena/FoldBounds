@@ -456,7 +456,7 @@ def archiveInterval : ScaledInterval :=
 
 theorem frozen_full_crambin_score_accepted :
     checkSparseScaledPair edges coords 100 (1 / 5) targetPair
-      (flat candidate) archiveInterval = true := by decide
+      (flat candidate) archiveInterval = true := by native_decide
 
 theorem frozen_full_crambin_score_sound :
     ∃! y : (Fin 46 × Fin 3) → ℚ,
