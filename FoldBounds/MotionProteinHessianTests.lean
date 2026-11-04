@@ -35,4 +35,4 @@ example (v : Fin 2 → Fin 3 → ℚ) :
     dotQ (flat v) (flat v) ≤
       dotQ (flat v)
         (matVecQ (proteinHessian edges x 100 1) (flat v)) :=
-  proteinHessian_coercive edges x v 100 1
+  by simpa using (proteinHessian_coercive edges x v 100 1)
