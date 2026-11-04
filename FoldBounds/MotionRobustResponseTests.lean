@@ -44,4 +44,7 @@ example :
       worldScore (worlds ω) pair y ≤ 45 / 2 := by
   have h := uniform_score_sound worlds 100 (1 / 5)
     pair v 64 144 0 0 288 uniform_two_world_envelope
-  simpa using h
+  have hl : (max (0 : ℚ) 0) / 144 = 0 := by norm_num
+  have hu : ((0 : ℚ) + 288 / (1 / 5)) / 64 = 45 / 2 := by norm_num
+  intro ω
+  simpa only [hl, hu] using (h ω)
