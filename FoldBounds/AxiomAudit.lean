@@ -1,5 +1,6 @@
 import FoldBounds
 import FoldBounds.MotionCoordinates
+import FoldBounds.MotionVariableDirections
 
 /-! Axiom audit: every headline theorem depends only on the standard axioms
 `propext`, `Classical.choice`, `Quot.sound`. -/
@@ -66,3 +67,10 @@ import FoldBounds.MotionCoordinates
 #print axioms FoldBounds.MotionCoordinates.squaredDistance_sound
 #print axioms FoldBounds.MotionCoordinates.contactBoxes_admissible
 #print axioms FoldBounds.MotionCoordinates.coordinate_contact_energy_sound
+
+/-! Variable-direction rank-one contact energy certificates. -/
+#print axioms FoldBounds.MotionVariableDirections.addBox_sound
+#print axioms FoldBounds.MotionVariableDirections.scaleBox_sound
+#print axioms FoldBounds.MotionVariableDirections.stretchBox_sound
+#print axioms FoldBounds.MotionVariableDirections.energyTerm_sound
+#print axioms FoldBounds.MotionVariableDirections.variable_direction_energy_sound
