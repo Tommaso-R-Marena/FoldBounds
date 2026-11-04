@@ -1,4 +1,5 @@
 import FoldBounds
+import FoldBounds.MotionCoordinates
 
 /-! Axiom audit: every headline theorem depends only on the standard axioms
 `propext`, `Classical.choice`, `Quot.sound`. -/
@@ -53,3 +54,15 @@ import FoldBounds
 #print axioms FoldBounds.LatticeModel.advance_injective
 #print axioms FoldBounds.LatticeModel.trace_injective
 #print axioms FoldBounds.LatticeModel.walkFrom_injective
+
+/-! Executable exact-rational contact and coordinate-box certification. -/
+#print axioms FoldBounds.MotionContactChecker.accepts_valid
+#print axioms FoldBounds.MotionContactChecker.weight_interval_sound
+#print axioms FoldBounds.MotionContactChecker.check_valid
+#print axioms FoldBounds.MotionContactChecker.check_energy_sound
+#print axioms FoldBounds.MotionContactChecker.all_admissible_energy_sound
+#print axioms FoldBounds.MotionCoordinates.difference_sound
+#print axioms FoldBounds.MotionCoordinates.squared_sound
+#print axioms FoldBounds.MotionCoordinates.squaredDistance_sound
+#print axioms FoldBounds.MotionCoordinates.contactBoxes_admissible
+#print axioms FoldBounds.MotionCoordinates.coordinate_contact_energy_sound
