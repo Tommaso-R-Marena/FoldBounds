@@ -63,3 +63,13 @@ example (xx uu : Fin 2 → Fin 3 → ℚ) (τ : ℚ) :
     τ * displacementSqQ uu ≤
       weightedRidgeEnergy edges xx uu 100 τ := by
   exact weightedRidgeEnergy_coercive edges xx uu 100 τ
+
+
+-- End-to-end check API: success returns exact rational endpoints, while
+-- collision/invalid cutoff produces an explicit rejection.
+example : checkNetworkEnergy edges (![zero, exactEight]) u 100 =
+    some (49 / 64, 49 / 64) := by native_decide
+example : checkNetworkEnergy edges (![zero, collision]) u 100 = none :=
+  by native_decide
+example : checkNetworkEnergy edges (![zero, exactEight]) u 0 = none :=
+  by native_decide
