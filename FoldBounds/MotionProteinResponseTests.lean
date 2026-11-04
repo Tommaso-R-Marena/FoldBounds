@@ -1,6 +1,7 @@
 import FoldBounds.MotionProteinResponse
 
 open FoldBounds.MotionUncertainty
+open FoldBounds.MotionVariableDirections
 open FoldBounds.MotionHessian
 open FoldBounds.MotionInverseFourth
 open FoldBounds.MotionProteinHessian
