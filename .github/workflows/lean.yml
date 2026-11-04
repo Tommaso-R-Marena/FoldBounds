@@ -28,6 +28,8 @@ jobs:
         run: python3 scripts/check_motion_rational_reference.py
       - name: Validate frozen NPZ rational byte adapter and fail-closed tests
         run: python3 scripts/test_frozen_motion_reference.py
+      - name: Cross-check outward integer intervals against independent exact fractions
+        run: python3 scripts/test_motion_fixedpoint_core.py
       - name: Audit headline theorem axioms
         run: |
           lake env lean FoldBounds/AxiomAudit.lean | tee /tmp/foldbounds-axioms.log
