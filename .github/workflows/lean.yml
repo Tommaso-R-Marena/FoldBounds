@@ -32,6 +32,8 @@ jobs:
         run: python3 scripts/test_motion_fixedpoint_core.py
       - name: Syntax-check optional full frozen-protein batch replay
         run: python3 -m py_compile scripts/check_frozen_bulk_intervals.py
+      - name: Validate deterministic frozen ranking Lean exporter
+        run: python3 scripts/test_export_bulk_lean_rank_proofs.py
       - name: Audit headline theorem axioms
         run: |
           lake env lean FoldBounds/AxiomAudit.lean | tee /tmp/foldbounds-axioms.log
