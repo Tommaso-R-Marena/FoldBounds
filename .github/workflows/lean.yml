@@ -24,6 +24,16 @@ jobs:
         env:
           PYTHONPATH: src
         run: python3 scripts/cross_language_diff.py
+      - name: Check exact rational weighted Hessian and score semantics
+        run: python3 scripts/check_motion_rational_reference.py
+      - name: Validate frozen NPZ rational byte adapter and fail-closed tests
+        run: python3 scripts/test_frozen_motion_reference.py
+      - name: Cross-check outward integer intervals against independent exact fractions
+        run: python3 scripts/test_motion_fixedpoint_core.py
+      - name: Syntax-check optional full frozen-protein batch replay
+        run: python3 -m py_compile scripts/check_frozen_bulk_intervals.py
+      - name: Validate deterministic frozen ranking Lean exporter
+        run: python3 scripts/test_export_bulk_lean_rank_proofs.py
       - name: Audit headline theorem axioms
         run: |
           lake env lean FoldBounds/AxiomAudit.lean | tee /tmp/foldbounds-axioms.log
