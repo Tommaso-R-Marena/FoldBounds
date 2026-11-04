@@ -257,4 +257,43 @@ theorem weightedNetworkEnergy_interval {n m : ℕ}
   intro x hx
   exact safeNetwork_energy_sound edges boxes cutoffSq u h x hx
 
+
+/-- Executable, fail-closed rational network-energy certificate checker.
+Untrusted box descriptions are accepted only if all edges are collision-safe;
+the successful result contains exact lower and upper energy endpoints. -/
+def checkNetworkEnergy {n m : ℕ}
+    (edges : Fin m → Spring n)
+    (boxes : Fin n → Fin 3 → Box)
+    (u : Fin n → Fin 3 → ℚ) (cutoffSq : ℚ) :
+    Option (ℚ × ℚ) :=
+  if safeNetwork edges boxes cutoffSq then
+    some (∑ i : Fin m, weightedLowerTerm (edges i) boxes u cutoffSq,
+          ∑ i : Fin m, weightedUpperTerm (edges i) boxes u cutoffSq)
+  else none
+
+/-- **End-to-end executable soundness:** every successful return from the
+actual rational checker encloses the weighted physical network energy for
+all rational coordinate configurations inside the supplied boxes. The proof
+does not assume that untrusted input boxes have passed a separate gate. -/
+theorem checkNetworkEnergy_sound {n m : ℕ}
+    (edges : Fin m → Spring n)
+    (boxes : Fin n → Fin 3 → Box)
+    (u : Fin n → Fin 3 → ℚ) (cutoffSq : ℚ)
+    (bounds : ℚ × ℚ)
+    (h : checkNetworkEnergy edges boxes u cutoffSq = some bounds) :
+    ∀ (x : Fin n → Fin 3 → ℚ),
+      (∀ j a, contains (boxes j a) (x j a)) →
+      bounds.1 ≤ weightedNetworkEnergy edges x u cutoffSq ∧
+      weightedNetworkEnergy edges x u cutoffSq ≤ bounds.2 := by
+  have hs : safeNetwork edges boxes cutoffSq = true := by
+    cases hval : safeNetwork edges boxes cutoffSq with
+    | false => simp [checkNetworkEnergy, hval] at h
+    | true => rfl
+  have heq :
+      (∑ i : Fin m, weightedLowerTerm (edges i) boxes u cutoffSq,
+       ∑ i : Fin m, weightedUpperTerm (edges i) boxes u cutoffSq) = bounds := by
+    simpa [checkNetworkEnergy, hs] using h
+  cases heq
+  exact weightedNetworkEnergy_interval edges boxes cutoffSq u hs
+
 end FoldBounds.MotionInverseFourth
