@@ -1,6 +1,7 @@
 import FoldBounds
 import FoldBounds.MotionCoordinates
 import FoldBounds.MotionVariableDirections
+import FoldBounds.MotionInverseFourth
 
 /-! Axiom audit: every headline theorem depends only on the standard axioms
 `propext`, `Classical.choice`, `Quot.sound`. -/
@@ -74,3 +75,15 @@ import FoldBounds.MotionVariableDirections
 #print axioms FoldBounds.MotionVariableDirections.stretchBox_sound
 #print axioms FoldBounds.MotionVariableDirections.energyTerm_sound
 #print axioms FoldBounds.MotionVariableDirections.variable_direction_energy_sound
+
+/-! Inverse-fourth physical spring model, collision-safe executable gate,
+rank-one PSD energy and regularized coercivity. -/
+#print axioms FoldBounds.MotionInverseFourth.squared_lower_nonneg
+#print axioms FoldBounds.MotionInverseFourth.squared_ratio_enclosure
+#print axioms FoldBounds.MotionInverseFourth.safeNetwork_valid
+#print axioms FoldBounds.MotionInverseFourth.weightedEnergyTerm_sound
+#print axioms FoldBounds.MotionInverseFourth.safeNetwork_energy_sound
+#print axioms FoldBounds.MotionInverseFourth.weightedEnergyTerm_nonneg
+#print axioms FoldBounds.MotionInverseFourth.weightedNetworkEnergy_nonneg
+#print axioms FoldBounds.MotionInverseFourth.weightedRidgeEnergy_coercive
+#print axioms FoldBounds.MotionInverseFourth.weightedNetworkEnergy_interval
