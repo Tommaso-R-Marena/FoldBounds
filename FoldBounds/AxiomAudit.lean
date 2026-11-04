@@ -7,6 +7,7 @@ import FoldBounds.MotionResidual
 import FoldBounds.MotionProteinResponse
 import FoldBounds.MotionPairOrdering
 import FoldBounds.MotionVerifiedInverse
+import FoldBounds.MotionExactSolvability
 
 /-! Axiom audit: every headline theorem depends only on the standard axioms
 `propext`, `Classical.choice`, `Quot.sound`. -/
@@ -132,3 +133,12 @@ rank-one PSD energy and regularized coercivity. -/
 #print axioms FoldBounds.MotionVerifiedInverse.checkRightInverse_valid
 #print axioms FoldBounds.MotionVerifiedInverse.checked_inverse_solves
 #print axioms FoldBounds.MotionVerifiedInverse.checkPairScoreWithInverse_sound
+
+/-! Finite positive-ridge rational Hessians have unique exact solutions;
+accepted score intervals now have a uniquely existing ground-truth response. -/
+#print axioms FoldBounds.MotionExactSolvability.dotQ_self_eq_zero_iff
+#print axioms FoldBounds.MotionExactSolvability.coercive_matrix_injective
+#print axioms FoldBounds.MotionExactSolvability.coercive_matrix_solvable
+#print axioms FoldBounds.MotionExactSolvability.rankOne_solvable
+#print axioms FoldBounds.MotionExactSolvability.checkResponse_exists_unique_sound
+#print axioms FoldBounds.MotionExactSolvability.checkPairScore_exists_unique_sound
