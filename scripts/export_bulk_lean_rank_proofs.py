@@ -123,7 +123,7 @@ def generate_source(proteins, archive_sha, block_size=32):
             for i, (lo, hi, original_pair_index) in enumerate(block):
                 comma = "," if i + 1 != len(block) else ""
                 lines.append(f"  ⟨{lo}, {hi}⟩{comma} -- frozen pair #{original_pair_index}")
-            lines += ["]", f"theorem {tag}_ok : checkAdjacent {tag} = true := by native_decide",
+            lines += ["]", f"theorem {tag}_ok : checkAdjacent {tag} = true := by decide",
                       f"theorem {tag}_strict : StrictAdjacent {tag} :=",
                       f"  checkAdjacent_sound {tag} {tag}_ok", ""]
     lines += ["end FoldBounds.FrozenRankReplay", ""]
