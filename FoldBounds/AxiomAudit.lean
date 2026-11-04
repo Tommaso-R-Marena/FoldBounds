@@ -8,6 +8,7 @@ import FoldBounds.MotionProteinResponse
 import FoldBounds.MotionPairOrdering
 import FoldBounds.MotionVerifiedInverse
 import FoldBounds.MotionExactSolvability
+import FoldBounds.MotionRealPairSamples
 
 /-! Axiom audit: every headline theorem depends only on the standard axioms
 `propext`, `Classical.choice`, `Quot.sound`. -/
@@ -142,3 +143,9 @@ accepted score intervals now have a uniquely existing ground-truth response. -/
 #print axioms FoldBounds.MotionExactSolvability.rankOne_solvable
 #print axioms FoldBounds.MotionExactSolvability.checkResponse_exists_unique_sound
 #print axioms FoldBounds.MotionExactSolvability.checkPairScore_exists_unique_sound
+
+/-! Two frozen crystal-derived exact rational distance checks. -/
+#print axioms FoldBounds.MotionRealPairSamples.cspb_frozen_sq_distance
+#print axioms FoldBounds.MotionRealPairSamples.crambin_frozen_sq_distance
+#print axioms FoldBounds.MotionRealPairSamples.cspb_reference_pair_eligible
+#print axioms FoldBounds.MotionRealPairSamples.crambin_reference_pair_eligible
