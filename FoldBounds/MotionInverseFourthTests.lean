@@ -51,3 +51,15 @@ example : safeNetwork edges (![zero, collision]) 100 = false := by native_decide
 example : safeNetwork edges (![zero, reversed]) 100 = false := by native_decide
 example : safeNetwork edges (![zero, exactEight]) 0 = false := by native_decide
 example : safeNetwork edges (![zero, zero]) 100 = false := by native_decide
+
+
+-- Exact model-level PSD/ridge regression for the same 8 A example.
+example : weightedNetworkEnergy edges x u 100 = 49 / 64 := by native_decide
+example : weightedRidgeEnergy edges x u 100 1 = 49 / 64 + 1 := by native_decide
+
+-- Universal nonnegative-energy and coercivity proofs are kernel-checked,
+-- not merely verified on the numerical example above.
+example (xx uu : Fin 2 → Fin 3 → ℚ) (τ : ℚ) :
+    τ * displacementSqQ uu ≤
+      weightedRidgeEnergy edges xx uu 100 τ := by
+  exact weightedRidgeEnergy_coercive edges xx uu 100 τ
