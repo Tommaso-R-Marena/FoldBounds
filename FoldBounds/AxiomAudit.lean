@@ -9,6 +9,7 @@ import FoldBounds.MotionPairOrdering
 import FoldBounds.MotionVerifiedInverse
 import FoldBounds.MotionExactSolvability
 import FoldBounds.MotionRealPairSamples
+import FoldBounds.MotionScaledCertificates
 
 /-! Axiom audit: every headline theorem depends only on the standard axioms
 `propext`, `Classical.choice`, `Quot.sound`. -/
@@ -149,3 +150,9 @@ accepted score intervals now have a uniquely existing ground-truth response. -/
 #print axioms FoldBounds.MotionRealPairSamples.crambin_frozen_sq_distance
 #print axioms FoldBounds.MotionRealPairSamples.cspb_reference_pair_eligible
 #print axioms FoldBounds.MotionRealPairSamples.crambin_reference_pair_eligible
+
+/-! Actual acceptance of external fixed-point intervals by exact model. -/
+#print axioms FoldBounds.MotionScaledCertificates.binaryScale_pos
+#print axioms FoldBounds.MotionScaledCertificates.checkValue_sound
+#print axioms FoldBounds.MotionScaledCertificates.checkEnclosure_sound
+#print axioms FoldBounds.MotionScaledCertificates.checkScaledPairScore_exists_unique_sound
