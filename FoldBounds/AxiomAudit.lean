@@ -87,3 +87,5 @@ rank-one PSD energy and regularized coercivity. -/
 #print axioms FoldBounds.MotionInverseFourth.weightedNetworkEnergy_nonneg
 #print axioms FoldBounds.MotionInverseFourth.weightedRidgeEnergy_coercive
 #print axioms FoldBounds.MotionInverseFourth.weightedNetworkEnergy_interval
+
+#print axioms FoldBounds.MotionInverseFourth.checkNetworkEnergy_sound
