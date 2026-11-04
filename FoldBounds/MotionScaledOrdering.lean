@@ -58,13 +58,13 @@ theorem checkScaledOrder_sound {n m : ℕ}
     cases ha : checkScaledPairScore edges coords cutoffSq τ
         pairA candidateA a with
     | false => simp [checkScaledOrder, ha] at h
-    | true => exact ha
+    | true => rfl
   have hB : checkScaledPairScore edges coords cutoffSq τ
       pairB candidateB b = true := by
     cases hb : checkScaledPairScore edges coords cutoffSq τ
         pairB candidateB b with
     | false => simp [checkScaledOrder, hA, hb] at h
-    | true => exact hb
+    | true => rfl
   have hDec : decide (a.upper < b.lower) = true := by
     simpa [checkScaledOrder, hA, hB] using h
   have ht : a.upper < b.lower := of_decide_eq_true hDec
