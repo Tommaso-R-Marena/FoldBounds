@@ -24,6 +24,8 @@ jobs:
         env:
           PYTHONPATH: src
         run: python3 scripts/cross_language_diff.py
+      - name: Check exact rational weighted Hessian and score semantics
+        run: python3 scripts/check_motion_rational_reference.py
       - name: Audit headline theorem axioms
         run: |
           lake env lean FoldBounds/AxiomAudit.lean | tee /tmp/foldbounds-axioms.log
