@@ -11,6 +11,7 @@ import FoldBounds.MotionExactSolvability
 import FoldBounds.MotionRealPairSamples
 import FoldBounds.MotionScaledCertificates
 import FoldBounds.MotionRoundedOps
+import FoldBounds.MotionScaledOrdering
 
 /-! Axiom audit: every headline theorem depends only on the standard axioms
 `propext`, `Classical.choice`, `Quot.sound`. -/
@@ -164,3 +165,6 @@ accepted score intervals now have a uniquely existing ground-truth response. -/
 #print axioms FoldBounds.MotionRoundedOps.addBox_sound
 #print axioms FoldBounds.MotionRoundedOps.negBox_sound
 #print axioms FoldBounds.MotionRoundedOps.checkMul_sound
+
+/-! Verified strict ordering from two accepted scaled integer score enclosures. -/
+#print axioms FoldBounds.MotionScaledOrdering.checkScaledOrder_sound
