@@ -132,12 +132,15 @@ theorem check_valid {m : ℕ} (c : RawContacts m) (d2 k : Fin m → ℚ)
   have hc : accepts c = true := by
     cases haccept : accepts c with
     | false => simp [check, haccept] at h
-    | true => exact haccept
+    | true => rfl
   have hd : decide (∀ i, c.d2Lower i ≤ d2 i ∧
       d2 i ≤ c.d2Upper i ∧ c.kLower i ≤ k i ∧
       k i ≤ c.kUpper i) = true := by
     simpa [check, hc] using h
-  exact ⟨hc, of_decide_eq_true hd⟩
+  have hdata : ∀ i, c.d2Lower i ≤ d2 i ∧
+      d2 i ≤ c.d2Upper i ∧ c.kLower i ≤ k i ∧
+      k i ≤ c.kUpper i := of_decide_eq_true hd
+  exact ⟨hc, hdata⟩
 
 /-- A successful executable check supplies every hypothesis needed for
 all possible orientations/displacements of the contact supergraph. -/
