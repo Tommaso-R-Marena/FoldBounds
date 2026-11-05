@@ -202,3 +202,50 @@ python -m pytest -q scripts/test_gnm_exact_certificates.py scripts/test_gnm_topo
 
 All Stage1 model results are reference-only; no source data or predictive model
 are silently updated after seeing a target.
+
+## Retrospective target-ranked concordance interval (new independent bridge)
+
+With the separately revealed and SHA-256 verified RNase A 7RSA->2AAS
+32-conformer NMR dataset (Stage2 digest
+`4f1ea752ada45453a44ea9128b6e7a43f4070e6824062b796a27144c340dfc6c`),
+we applied the **reference-only** exact-integer GNM structural uncertainty
+intervals to all target-nontied pair comparisons. None of the predictor
+parameters or original blind acceptance criteria were altered.
+
+For target pair distance variance values `t_i`, define pair comparison
+contribution `sign((q_i-q_j)*(t_i-t_j))` (0 for predicted tie), and average
+over distinct `t_i != t_j`. This is Kendall-style *signed concordance*,
+NOT Kendall tau-b, Spearman rho, a confidence interval, a p-value, or an
+independent trial. For every world whose GNM contact network is induced by
+coordinates in the stipulated box, disjoint certified response intervals
+fix the contribution; ambiguous intervals contribute conservatively
+`[-1,+1]`. We DO NOT assume independent rank comparisons or attainable
+simultaneity of every uncertain sign.
+
+| Reference Cartesian coordinate box (each component) | Certified signed concordance bounds | Certified comparison count |
+|---|---:|---:|
+| ±0.0005 Å | `[404305/1138397, 404305/1138397]` ~`0.355153` | `3415191/3415191` |
+| ±0.005 Å | `[1161499/3415191, 1269265/3415191]` ~`[0.340098,0.371653]` | `3361308/3415191` |
+| ±0.05 Å | `[-15117/1138397, 2244865/3415191]` ~`[-0.013279,0.657318]` | `2270083/3415191` |
+
+At ±0.005 Å the **defined model** retains positive directional agreement
+with the NMR structural ensemble labels even for every admissible contact
+switch. This is a conditional proof about an unweighted GNM graph model and
+fixed deposited target labels, NOT an empirical guarantee of dynamic
+prediction quality or a new blind success.
+
+Reproduce with `scripts/gnm_target_concordance.py` and the source Stage1,
+source Stage2, plus `gnm_structural_robustness.json`. The command
+**first invokes** an independently written integer-coordinate source
+replay (`gnm_independent_box_replay.py`) of all endpoint response envelopes;
+then checks source freeze, target 32-conformer arrays, label regeneration,
+and computes exact integer interval-comparison counts using a sorted-target
+algorithm. `scripts/test_gnm_target_concordance.py` (exhaustive brute-force
+comparison against independent O(n²) logic on thousands of small adversarial
+box/tie cases) passed. Exact rational endpoint bounds are checked in Python;
+the formal proof `MotionRobustConcordance.sum_alignedSign_interval` is in
+Lean, but the 3,415,191 dataset-specific comparisons have **not** been
+kernel-replayed in Lean.
+
+The large ±0.05 Å enclosure includes negative concordance; the system
+correctly abstains from guaranteeing useful agreement at that radius.
