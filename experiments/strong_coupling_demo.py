@@ -7,7 +7,7 @@ from foldbounds.strong_coupling import (
 
 
 def main() -> None:
-    for width, height, threshold in ((10, 5, 20), (10, 10, 40)):
+    for width, height, threshold in ((10, 5, 20), (10, 10, 40), (50, 20, 500)):
         sequence = "H" * (width * height)
         path = serpentine_witness(width, height)
         cert = StrongCouplingCertificate(
