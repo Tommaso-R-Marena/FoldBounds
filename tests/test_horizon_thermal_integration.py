@@ -26,3 +26,17 @@ def test_opt_in_horizon_tightens_and_stays_sound():
 def test_zero_horizon_backwards_compatibility():
     cert=build_frontier('HPHHPHPH',Fraction(3,2),1,2)
     assert thermal_response_bounds(cert)==thermal_response_bounds(cert,horizon_steps=0)
+
+
+def test_horizon_event_specific_probability_caps():
+    for sequence, threshold in (('HHHHHHHH',1), ('HPHHPHHH',1), ('HHHHHHHHHH',2)):
+        cert=build_frontier(sequence,Fraction(2),threshold,2)
+        no_horizon=thermal_response_bounds(cert,use_saw_count_cap=True,use_geometric_contact_cap=True)
+        checked=thermal_response_bounds(cert,use_saw_count_cap=True,use_geometric_contact_cap=True,horizon_steps=6)
+        spectrum=exact_spectrum(sequence)
+        z=sum((count*Fraction(2)**score for score,count in spectrum.items()),Fraction())
+        e=sum((count*Fraction(2)**score for score,count in spectrum.items() if score>=threshold),Fraction())
+        p=e/z
+        assert checked.probability_lower<=p<=checked.probability_upper
+        assert checked.probability_lower>=no_horizon.probability_lower
+        assert checked.probability_upper<=no_horizon.probability_upper
