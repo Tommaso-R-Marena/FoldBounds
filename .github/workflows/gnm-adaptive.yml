@@ -1,0 +1,35 @@
+name: GNM adaptive contact case certificates
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  lean-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject Lean proof holes / custom axioms
+        run: python3 scripts/check_lean_sources.py
+      - name: Build pinned Lean 4.28 and Mathlib
+        uses: leanprover/lean-action@v1
+      - name: Compile contact-case theory and proof tests
+        run: |
+          lake env lean FoldBounds/MotionGNMAdaptiveCases.lean
+          lake env lean FoldBounds/MotionGNMAdaptiveCasesTests.lean
+      - name: Audit complete Lean axiom inventory
+        run: |
+          lake env lean FoldBounds/AxiomAudit.lean | tee /tmp/gnm-adaptive-axioms.log
+          python3 scripts/check_lean_sources.py /tmp/gnm-adaptive-axioms.log
+  python-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install numerical/symbolic test dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy sympy pytest
+      - name: Compile exact parser and production code
+        run: python3 -m py_compile scripts/gnm_adaptive_partition.py scripts/gnm_adaptive_independent_replay.py
+      - name: Check adversarial and exhaustive synthetic graph cases
+        run: python3 -m pytest -q scripts/test_gnm_adaptive_partition.py
