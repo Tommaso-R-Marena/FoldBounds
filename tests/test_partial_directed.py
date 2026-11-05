@@ -134,3 +134,21 @@ def test_east_family_matches_independent_exact_generating_function():
         seq='P'*(r+2)
         got=sum(_rooted_axis_spectrum(seq,root,'E').values())
         assert got==expected[r]
+
+
+def test_analytic_rooted_partition_lower_bound_scales_and_is_sound():
+    from foldbounds.partial_directed import (
+        east_directed_path_count, universal_hp_partition_lower,
+    )
+    assert [east_directed_path_count(r) for r in range(7)] == [1,3,7,17,41,99,239]
+    for n in range(2,10):
+        seq='H' * n
+        for q in (Fraction(1),Fraction(3,2),Fraction(2)):
+            full=sum((q**independent_contact_score(seq,p) for p in enumerate_all_walks(n)),Fraction(0))
+            assert universal_hp_partition_lower(seq,q) <= full
+    assert east_directed_path_count(1000) > 2**1000
+    for bad in (-1,True,2.5):
+        with pytest.raises(ValueError):
+            east_directed_path_count(bad)
+    with pytest.raises(ValueError):
+        universal_hp_partition_lower('HHH', Fraction(1,2))
