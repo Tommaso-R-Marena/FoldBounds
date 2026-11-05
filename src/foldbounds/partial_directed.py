@@ -141,3 +141,35 @@ def is_partially_directed_path(path: Path) -> bool:
         if valid and (axis == "E" or west):
             return True
     return False
+
+
+def east_directed_path_count(remaining_steps: int) -> int:
+    """Closed recurrence for rooted E-progressive SAW subset cardinality.
+
+    Number of E/N/S paths with vertical sign fixed inside each column:
+    A(z)=(1+z)/(1-2z-z²), a(0)=1, a(1)=3 and
+    a(r)=2*a(r-1)+a(r-2). Runs in O(r) integer operations, with no DP
+    over coordinates or contacts. This is classical PDSAW enumeration.
+    """
+    if type(remaining_steps) is not int or remaining_steps < 0:
+        raise ValueError('remaining_steps must be a nonnegative integer')
+    if remaining_steps == 0:
+        return 1
+    previous, current = 1, 3
+    for _ in range(2, remaining_steps+1):
+        previous, current = current, 2*current+previous
+    return current
+
+
+def universal_hp_partition_lower(sequence: str, q) -> int:
+    """Nonenumerative rigorous Z>=a(n-2) for every 2D HP sequence and q>=1.
+
+    For every E-progressive rooted walk, its Boltzmann weight q**k >=1.
+    Distinct directed walks are genuine distinct anchored SAWs, therefore
+    their elementary integer cardinality lower-bounds the full partition.
+    This coarse bound loses all energy information but scales to long n.
+    """
+    from .lattice import _check_q
+    _check_sequence(sequence)
+    _check_q(q)
+    return east_directed_path_count(len(sequence)-2)
