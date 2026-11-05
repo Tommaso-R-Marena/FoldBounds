@@ -3,10 +3,13 @@ on:
   pull_request:
     paths:
       - 'FoldBounds/LocalRewireConfidence.lean'
+      - 'FoldBounds/ParityNoGo.lean'
       - 'src/foldbounds/local_rewire_confidence.py'
       - 'src/foldbounds/cubic_groundstate_no_go.py'
+      - 'src/foldbounds/parity_no_go.py'
       - 'tests/test_local_rewire_confidence.py'
       - 'tests/test_cubic_groundstate_no_go.py'
+      - 'tests/test_parity_no_go.py'
       - '.github/workflows/local-rewire-confidence.yml'
   workflow_dispatch:
 permissions:
@@ -52,11 +55,43 @@ jobs:
             raise SystemExit('missing or unexpected reports: '+str(set(observed)^declarations))
           print('Local confidence: three Lean theorems, only standard axioms')
           PY
+      - name: Kernel-check bipartite contact obstruction
+        run: lake env lean FoldBounds/ParityNoGo.lean | tee /tmp/parity-nogo-axioms.log
+      - name: Audit bipartite theorem dependencies
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          log=Path('/tmp/parity-nogo-axioms.log').read_text()
+          names={
+            'FoldBounds.ParityNoGo.same_color_hydrophobes_cannot_contact',
+            'FoldBounds.ParityNoGo.fixed_color_class_has_no_internal_edges',
+          }
+          reports={}
+          for line in log.splitlines():
+            match=re.match(r"^'(FoldBounds\.ParityNoGo\.[A-Za-z0-9_]+)' (.*)$",line.strip())
+            if not match: continue
+            name,message=match.groups()
+            if name in reports: raise SystemExit('duplicate parity axiom report')
+            reports[name]=message
+            if message.startswith('depends on axioms:'):
+              actual=set(re.findall(r'[A-Za-z_][A-Za-z0-9_.]*',
+                                    message.partition('depends on axioms:')[2]))
+              bad=actual-{'Classical.choice','Quot.sound','propext'}
+              if bad: raise SystemExit(f'forbidden axioms: {sorted(bad)}')
+            elif message != 'does not depend on any axioms':
+              raise SystemExit('malformed parity axiom report '+message)
+          if set(reports)!=names:
+            raise SystemExit(f'missing parity axiom reports: {names-set(reports)}')
+          print('Parity obstruction: kernel-checked, standard axioms only')
+          PY
       - name: Run independent cubic rewiring and adversarial oracle
         run: |
           python3 -m pip install -e '.[test]'
-          python3 -m pytest -q tests/test_local_rewire_confidence.py tests/test_cubic_groundstate_no_go.py
+          python3 -m pytest -q tests/test_local_rewire_confidence.py tests/test_cubic_groundstate_no_go.py tests/test_parity_no_go.py
       - name: Reproduce synthetic structural confidence ceilings
         run: python3 experiments/local_rewire_confidence_demo.py
       - name: Reproduce globally optimal cubic ground-state ambiguity
         run: python3 experiments/cubic_groundstate_no_go_demo.py
+      - name: Reproduce all-conformation HP parity obstruction
+        run: python3 experiments/parity_no_go_demo.py
