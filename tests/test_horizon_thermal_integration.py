@@ -40,3 +40,23 @@ def test_horizon_event_specific_probability_caps():
         assert checked.probability_lower<=p<=checked.probability_upper
         assert checked.probability_lower>=no_horizon.probability_lower
         assert checked.probability_upper<=no_horizon.probability_upper
+
+
+def test_horizon_with_directed_spectral_subset_and_overlap_witness():
+    sequence = 'HHHHHHHH'
+    cert = build_frontier(sequence, Fraction(2), 1, 2)
+    common = dict(use_saw_count_cap=True,
+                  use_geometric_contact_cap=True,
+                  use_partially_directed_spectra=True,
+                  witnesses=(tuple((i, 0) for i in range(8)),))
+    baseline = thermal_response_bounds(cert, **common)
+    refined = thermal_response_bounds(cert, horizon_steps=4, **common)
+    exact = exact_spectrum(sequence)
+    z = sum((count * Fraction(2)**k for k, count in exact.items()), Fraction(0))
+    e = sum((count * Fraction(2)**k for k, count in exact.items() if k >= 1), Fraction(0))
+    p = e / z
+    assert refined.partition_lower <= z <= refined.partition_upper
+    assert refined.partition_upper <= baseline.partition_upper
+    assert refined.probability_lower <= p <= refined.probability_upper
+    assert refined.probability_lower >= baseline.probability_lower
+    assert refined.probability_upper <= baseline.probability_upper
