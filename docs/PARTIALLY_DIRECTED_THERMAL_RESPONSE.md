@@ -32,6 +32,18 @@ When both residues i,j are H and j-i >= 2, increment k once. A longitudinal step
 
 Summing terminal counts gives a genuine subset contact polynomial P(x) = sum_k count[k] x^k, which supplies **lower** partition and moment contributions for every rational q >= 1 without enumerating each restricted path. For E-only path counts, the independent known generating function is A(z)=(1+z)/(1-2z-z^2), yielding the recurrence a(0)=1, a(1)=3, a(r)=2a(r-1)+a(r-2).
 
+## Analytic sequence-independent bound at long lengths
+
+For any valid HP sequence of length n and any rational q>=1, every
+E-progressive conformation contributes a Boltzmann weight q**k >= 1.
+Therefore the **full** partition satisfies Z(sequence,q) >= a(n-2),
+where a(0)=1, a(1)=3, a(r)=2a(r-1)+a(r-2). This classical
+partially directed walk recurrence is exposed as
+'east_directed_path_count(remaining_steps)' and checked by
+'universal_hp_partition_lower(sequence,q)'. The recurrence uses O(n)
+integer operations and was tested for n=1000; it does not imply an
+informative probability or folding response bound by itself.
+
 ## Existing frontier / thermal-response interface
 
 The new option
