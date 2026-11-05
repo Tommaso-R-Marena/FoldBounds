@@ -73,3 +73,18 @@ Reference-only file-provenance controls use the original fixed SHA256 digests; a
 ## Literature context
 
 The rank-one resistance-update formula is standard (e.g. *The resistance perturbation distance: A metric for the analysis of dynamic networks*, 2017, https://www.sciencedirect.com/science/article/pii/S0166218X17304626). See also *Evolution of Robustness in Growing Random Networks* (Entropy 2023), https://pmc.ncbi.nlm.nih.gov/articles/PMC10528878/ . No priority claim is made for contact-set partitioning or effective-resistance monotonicity.
+
+## Follow-up implementation: low-rank witness reuse
+
+The optional `--inverse-policy woodbury` in `gnm_adaptive_partition.py` replaces **128 separate floating-point dense inverse proposals** by **two** source-graph inverses plus low-rank updates for the same 64 cases. Every resulting *untrusted* approximate inverse is independently rechecked with the **same exact integer residual gate**. For the full 64-case RNase dataset, the low-rank approach independently replayed to the **identical exact concordance interval** `[33131/3415191, 2201509/3415191]`; its own valid certificate digest is `e6ce76fdda4575126aa5b94c5fef603f0b1e7694d1f60112f7fe159dc7636baa`. This is a **different valid witness file**: the floating proposals can differ in their least significant bits and therefore the untrusted inverse matrices need not be identical.
+
+Performance on one local CPU session with `OPENBLAS_NUM_THREADS=1`, 124 residues and 128 graph endpoints:
+
+| Task | Direct inverses | Low-rank reuse |
+|---|---:|---:|
+| Proposal production alone | 0.697 s | 0.381 s |
+| Proposal **and exact integer residual verification** | 3.272 s | 3.345 s |
+
+Thus source-only numerical proposal production is ~1.83× faster in this one run, but **there is no demonstrated end-to-end speedup at 124 residues**, because exact integer verification dominates. Larger-protein performance remains to be measured. No low-rank numerical output is trusted until the integer checks pass. Sherman–Morrison–Woodbury is established mathematics, not a new inverse law.
+
+Five deliberate attacks on the real certificate were tested: missing case, fabricated case concordance, strongly corrupted **relevant** inverse-witness entry, changed contact identity and invalid spanning-tree constant. All five were rejected. The independent checker does not require unused numerical proposal entries to match a canonical value: a different approximation can remain valid if the *resulting certificate statements* still check. Byte-level integrity of the distributed reference certificate is separately provided by the published SHA-256 and archive manifest.
