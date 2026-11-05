@@ -1,0 +1,70 @@
+# Nonenumerative strong-coupling population certificates
+
+## Status and claim boundary
+
+This contribution proves useful **conditional mathematical guarantees for the anchored 2D square-lattice HP toy model**. It does not predict experimental protein folds, describe real protein energetics, demonstrate biological validity, or claim a new scientific discovery. The checker is exact-rational Python and is **not yet Lean-kernel checked**. This branch is strictly additive, separate from the motion, uncertainty, RNase A and Aristotle research PRs.
+
+## The mechanism
+
+Fix a sequence of `n` residues. Every conformation is an anchored self-avoiding square-lattice walk starting with `(0,0)->(1,0)`. Let `K(s)` be its number of nonconsecutive hydrophobic nearest-neighbor contacts, and `q>=1` an exact contact-weight parameter. Nominal weight is `q^K(s)`. Allow an arbitrary per-conformation multiplicative correction `a_s` in a *common* interval `[l,u]` with `0<l<=u`; no independence and no simultaneous-attainability assumption.
+
+Suppose we want the event `A={K>=t}` to have probability above one half. Submit any finite set of distinct canonical complete walk witnesses. The checker reconstructs each coordinate and its contact count; submitted energies or mass estimates are **not** trusted. Define
+
+- `Ew(q) = sum(q^K(s) : submitted witnesses s in A)`.
+- `Nw(q) = sum(q^K(s) : submitted witnesses s not in A)`.
+- `C_n` = rigorously bounded number of all complete anchored walks.
+- `R = C_n - number_of_distinct_valid_witnesses` (nonnegative).
+- `m = min(t-1,M)` where `M` is the conservative maximum number of nonconsecutive odd-separation H/H pairs.
+
+Every unsubmitted non-event conformation has `K<=m`, and there are at most `R` of them. Thus
+
+```
+event_mass >= l * Ew(q)
+non_event_mass <= u * (Nw(q) + R*q**m)
+P_q(A) >= l*Ew(q) / [l*Ew(q) + u*(Nw(q)+R*q**m)]
+```
+
+All calculations are exact `fractions.Fraction`. Likewise, the checker supplies conservative event, complement and partition upper/lower masses and an upper probability bound.
+
+### Why the path-count cap is valid
+
+Consider any self-avoiding prefix ending with a fixed orientation of its last bond. The next `k` valid steps are a subset of all free-space anchored square-lattice walks of length `k` after that bond: preceding occupied vertices **only eliminate** possible extensions. The checker exhaustively enumerates these *small free-space blocks*, `k=1,...,8`, yielding counts
+
+```
+k:      0  1  2  3  4   5    6     7     8
+count:  1  3  9 25 71 195 543 1479  4067
+```
+
+By sequentially partitioning the `n-2` remaining moves into arbitrary blocks of size at most eight and multiplying their counts, one gets a universal valid cap. Integer dynamic programming minimizes this product over all such partitions. This reduces the naive nonbacktracking `3**(n-2)` count cap without enumerating complete length-`n` conformations.
+
+This does **not** infer that all block choices are jointly feasible. It bounds the number of choices above using overcounting, which is the safe direction.
+
+### Uniform half-line guarantee
+
+Every submitted event witness has contact count `K>=t`. Every non-event term in the upper bound has `K<t`. Thus the ratio `l*Ew(q) / [u*(Nw(q)+R*q**m)]` is nondecreasing for every real `q>=1`. If its lower probability bound exceeds `1/2` at one exact rational `q0`, **the event is guaranteed a strict majority for every real q>=q0**, even when individual correction factors vary adversarially across both conformations and q values within `[l,u]`.
+
+The `minimum_integer_majority_q` search computes the smallest **integer q** where this *conservative certificate* crosses `1/2`; it is **not the true thermodynamic crossover**.
+
+## Reproducible large-chain demonstrations
+
+The witness proposer makes a deterministic serpentine rectangular path through every vertex of a `width x height` grid; its output undergoes the same independent checker as every other untrusted witness.
+
+| Model | Event | Explicit witness contacts | Walk cap | Correction range | Smallest certifiable integer q | Lower P at threshold |
+|---|---|---:|---:|---|---:|---:|
+| 50 all-H residues, 10x5 grid | K>=20 | 36 | 4067^6 | [1/2,2] | **21** | ~0.6240 |
+| 100 all-H residues, 10x10 grid | K>=40 | 81 | 4067^12*9 | [1/2,2] | **12** | ~0.7417 |
+
+The correction interval gives a factor-four worst-case event-versus-non-event relative reweighting, independently for every conformation. Both reported majority claims hold for **all real q above their stated threshold** under every such permitted correction. They do not assert that those parameter values are physically relevant temperatures, nor that the event describes protein-native states.
+
+### Reproduce
+
+```bash
+python -m pytest tests/test_strong_coupling.py
+python experiments/strong_coupling_demo.py
+```
+
+The regression suite independently enumerates short-chain conformations, independently scores contacts, and verifies both worst-case adversarial population extremes. Additional negative controls reject duplicates, intersections, nonunit lattice steps, bad types and invalid correction bounds.
+
+## What would make this scientifically consequential
+
+This creates an inexpensive **validity-preserving large-chain regime** for simple model events, but the guarantee becomes uninformative at weak coupling. The important future research questions are whether stronger combinatorial complement-count bounds, genuine structural data, and more physical conformational models can produce *nonvacuous* guarantees at experimentally plausible parameter values. Before making any real-protein claim, freeze model definitions and independent experimental thresholds and validate out of sample.
