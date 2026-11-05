@@ -1,0 +1,64 @@
+name: Cubic family mass implication (Lean + independent Python)
+on:
+  pull_request:
+    paths:
+      - 'FoldBounds/CubicFamilyMass.lean'
+      - 'src/foldbounds/cubic_tiling.py'
+      - 'src/foldbounds/cubic_density_tail.py'
+      - 'tests/test_cubic_tiling.py'
+      - 'tests/test_cubic_density_tail.py'
+      - '.github/workflows/cubic-family-lean.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  cubic-family-lean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Audit Lean sources for forbidden proof bypasses
+        run: python3 scripts/check_lean_sources.py
+      - name: Build pinned Lean and Mathlib
+        uses: leanprover/lean-action@v1
+      - name: Kernel check generic mass and infinite-tail theorems
+        run: lake env lean FoldBounds/CubicFamilyMass.lean | tee /tmp/cubic-family-axioms.log
+      - name: Verify named axiom reports
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          log = Path('/tmp/cubic-family-axioms.log').read_text()
+          names = {
+              'FoldBounds.CubicFamilyMass.probability_lower_of_masses',
+              'FoldBounds.CubicFamilyMass.majority_of_mass_gap',
+              'FoldBounds.CubicFamilyMass.uniform_population_from_tail',
+          }
+          reports = {}
+          for line in log.splitlines():
+              match = re.match(
+                  r"^'(FoldBounds\.CubicFamilyMass\.[A-Za-z0-9_]+)' (.*)$",
+                  line.strip()
+              )
+              if not match:
+                  continue
+              name, message = match.groups()
+              if name in reports:
+                  raise SystemExit(f'Duplicate Lean report: {name}')
+              reports[name] = message
+              if message.startswith('depends on axioms:'):
+                  tail = message.partition('depends on axioms:')[2]
+                  actual = set(re.findall(r'[A-Za-z_][A-Za-z0-9_.]*', tail))
+                  unexpected = actual - {'Classical.choice', 'Quot.sound', 'propext'}
+                  if unexpected:
+                      raise SystemExit(f'Unexpected Lean dependencies: {sorted(unexpected)}')
+              elif message != 'does not depend on any axioms':
+                  raise SystemExit(f'Unrecognized Lean report: {line}')
+          if set(reports) != names:
+              raise SystemExit(f'Missing or extra reports: {set(reports)^names}')
+          print('Cubic family mass implication: 3 kernel-checked declarations')
+          PY
+      - name: Independently verify 3D construction and adversarial bounds
+        run: |
+          python3 -m pip install -e '.[test]'
+          python3 -m pytest -q tests/test_cubic_tiling.py tests/test_cubic_density_tail.py
