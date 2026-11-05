@@ -32,7 +32,7 @@ jobs:
         run: python3 -m pip install --disable-pip-version-check numpy sympy pytest
       - name: Exact symbolic cross-checks, malicious inputs, blind PyMOL mock
         run: |
-          python3 -m pytest -q scripts/test_gnm_exact_certificates.py scripts/test_gnm_topology_boxes.py scripts/test_hybrid_and_blind_stage.py
+          python3 -m pytest -q scripts/test_gnm_exact_certificates.py scripts/test_gnm_topology_boxes.py scripts/test_hybrid_and_blind_stage.py scripts/test_thio_stage2_mock.py
       - name: Syntax-check production scripts
         run: |
-          python3 -m py_compile scripts/gnm_exact_certificates.py scripts/gnm_independent_replay.py scripts/gnm_topology_boxes.py scripts/hybrid_reference_model.py scripts/fb_thioredoxin_stage1.py
+          python3 -m py_compile scripts/gnm_exact_certificates.py scripts/gnm_independent_replay.py scripts/gnm_independent_box_replay.py scripts/gnm_topology_boxes.py scripts/hybrid_reference_model.py scripts/fb_thioredoxin_stage1.py scripts/fb_thioredoxin_stage2.py
