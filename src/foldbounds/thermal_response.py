@@ -72,6 +72,8 @@ class _Unknown:
     min_contacts: int
     max_contacts: int
     mass_upper: Fraction
+    event_mass_upper: Fraction | None = None
+    complement_mass_upper: Fraction | None = None
 
 
 def _contact_range(sequence: str, path: tuple[tuple[int, int], ...]) -> tuple[int, int]:
@@ -276,11 +278,14 @@ def thermal_response_bounds(
             checked = verify_horizon_certificate(selected, q, t)
             unknown[index] = _Unknown(
                 block.min_contacts, block.max_contacts,
-                min(block.mass_upper, checked.partition_upper))
+                min(block.mass_upper, checked.partition_upper),
+                checked.event_upper, checked.complement_upper)
         raw_z_upper = z_known + sum(
             (block.mass_upper for block in unknown), Fraction(0))
 
     extra_mass = [Fraction(0) for _ in unknown]
+    credited_event = [Fraction(0) for _ in unknown]
+    credited_complement = [Fraction(0) for _ in unknown]
     seen_witnesses: set[tuple[tuple[int, int], ...]] = set()
     cone_witness_scores: list[dict[int, int]] = [{} for _ in unknown]
     directed_witness_scores: list[dict[int, int]] = [{} for _ in unknown]
@@ -311,9 +316,11 @@ def thermal_response_bounds(
         known_scores.append(k_low)
         known_atoms.append((k_low, w))
         if k_low >= t:
+            credited_event[index] += w
             event_mass += w
             event_moment += w * k_low
         else:
+            credited_complement[index] += w
             comp_mass += w
             comp_moment += w * k_low
 
@@ -358,19 +365,35 @@ def thermal_response_bounds(
                 known_atoms.append((score, mass))
                 known_scores.append(score)
                 if score >= t:
+                    credited_event[index] += mass
                     event_mass += mass
                     event_moment += mass * score
                 else:
+                    credited_complement[index] += mass
                     comp_mass += mass
                     comp_moment += mass * score
 
     residual: list[_Unknown] = []
-    for node, credited in zip(unknown, extra_mass):
+    for index, (node, credited) in enumerate(zip(unknown, extra_mass)):
         if credited > node.mass_upper:
             raise AssertionError("validated witness mass exceeds universal cap")
-        if credited < node.mass_upper:
+        if credited_event[index] + credited_complement[index] != credited:
+            raise AssertionError("witness class mass accounting disagrees")
+        residual_mass = node.mass_upper - credited
+        if node.event_mass_upper is not None:
+            if (node.complement_mass_upper is None or
+                    node.event_mass_upper < credited_event[index] or
+                    node.complement_mass_upper < credited_complement[index]):
+                raise AssertionError("horizon class cap contradicts validated witnesses")
+            residual_event = min(
+                residual_mass, node.event_mass_upper - credited_event[index])
+            residual_complement = min(
+                residual_mass, node.complement_mass_upper - credited_complement[index])
+        else:
+            residual_event = residual_complement = None
+        if residual_mass:
             residual.append(_Unknown(node.min_contacts, node.max_contacts,
-                                     node.mass_upper - credited))
+                                     residual_mass, residual_event, residual_complement))
     unknown = residual
     z_upper = z_known + sum((x.mass_upper for x in unknown), Fraction(0))
     if z_upper != raw_z_upper:
@@ -383,9 +406,13 @@ def thermal_response_bounds(
     event_upper, complement_upper = event_mass, comp_mass
     for x in unknown:
         if x.max_contacts >= t:
-            event_upper += x.mass_upper
+            event_upper += min(
+                x.mass_upper, x.event_mass_upper
+                if x.event_mass_upper is not None else x.mass_upper)
         if x.min_contacts < t:
-            complement_upper += x.mass_upper
+            complement_upper += min(
+                x.mass_upper, x.complement_mass_upper
+                if x.complement_mass_upper is not None else x.mass_upper)
     prob_lo = (event_mass / (event_mass + complement_upper)
                if event_mass else Fraction(0))
     prob_hi = (event_upper / (event_upper + comp_mass) if comp_mass
