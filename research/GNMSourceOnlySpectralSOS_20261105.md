@@ -76,3 +76,17 @@ FOLDBOUNDS_RNASE_STAGE1=STAGE1.zip FOLDBOUNDS_SPECTRAL_CERT=spectral.json python
 ```
 
 The signed original Stage 1 archive and exact certificate SHA digests must match. If they do not, the verifier rejects rather than adjusting the acceptance threshold.
+
+## Source-only precision ablation: concrete computational impact
+
+To distinguish a merely smaller algebraic coefficient from an improvement in practical certificate strength, I regenerated **the same** grounded-GNM approximate inverse witness with several dyadic denominator sizes, then checked every residual with the existing exact-integer checker. I compared the original tree constant \(B=262\) with the newly proven \(B=1000000/169821\) on all 2,614 frozen **reference-only** pair scores. The numerical proposal is identical at each precision for both bounds, and neither the test nor the producer opens the NMR target.
+
+| Dyadic witness denominator | Certified adjacent score orders with B=262 | With exact spectral SOS B | Maximum certified response interval width (old → spectral) |
+|---|---:|---:|---|
+| \(2^{16}\) | **102** | **2,138** | 0.000529128 → 0.0000118924 |
+| \(2^{18}\) | 1,586 | 2,559 | 0.0000315493 → 0.0000007091 |
+| \(2^{20}\) | 2,506 | 2,586 | 0.00000209526 → 0.00000004709 |
+| \(2^{24}\) | 2,589 | 2,590 | 8.7794×10⁻⁹ → 1.9732×10⁻¹⁰ |
+| \(2^{55}\) | 2,590 | 2,590 | 3.8886×10⁻²⁷ → 8.7398×10⁻²⁹ |
+
+There are 2,613 adjacent comparisons across the 2,614 pairs; some nominal or near-tied comparisons remain uncertifiable with either coefficient. The ordering in this table is the lower-bound ordering of the corresponding exact intervals at each precision, **not an NMR-observed biological ranking**. In particular, at \(2^{16}\) the exact spectral certificate establishes 2,138 adjacent GNM score orders compared with 102 under the same old tree bound. This is a substantial source-only computational assurance gain, not improved biological prediction accuracy. Full generated data are in `research/source_only_precision_ablation.json`; rerun using `scripts/gnm_precision_ablation.py` with the sealed Stage1 archive and the pre-existing FoldBounds GNM checker modules.
