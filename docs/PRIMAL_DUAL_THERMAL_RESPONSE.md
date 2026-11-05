@@ -108,3 +108,40 @@ The base Python frontier checker and its interpretation remain outside
 Lean's trusted kernel; no new Lean refinement has been proved. This work
 does not validate 3D HP, empirical NMR, real temperature calibration,
 protein kinetics, or experimentally observed conformational switching.
+
+
+## Additional refinement: submultiplicative exact rooted-SAW block caps
+
+The optional `use_saw_count_cap=True` tightens the generic unexpanded
+subtree bound `3**r * q**kmax` without enumerating full-length walks.
+For `k <= block_max` (default 8), count **all** rooted anchored 2D
+self-avoiding extensions of `k` sites by short direct enumeration,
+obtaining the integer `A(k)`. Each continuation of an arbitrary valid
+prefix with `r = k1 + ... + kj` steps injects into its sequence of
+rigidly oriented, independently legal rooted step blocks; forgetting
+collisions between blocks only enlarges the set. Thus
+
+```text
+number_of_full_extensions <= A(k1) * ... * A(kj).
+```
+
+An integer dynamic program picks the smallest block-count product over all
+partitions of `r` with allowed block sizes. The certificate stores the
+partition and exact product. The validator re-enumerates all short base
+blocks and checks that the partition sums to `r`, the product is
+exact, and it does not exceed `3**r`. Multiplying by the existing
+parity-aware `q**kmax` cap then gives a strictly stronger **model-relative**
+upper bound in many cases. This is a standard submultiplicativity argument,
+not a new asymptotic growth constant or proof that the full SAW model can
+be solved efficiently.
+
+In local all-H, `q=1`, depth-two tests, enabling count caps in addition
+to cone spectra reduced the original *partition* upper bound by factors
+1.61 (n=10), 4.80 (n=30), 311 (n=100), and 130,848 (n=200), relative
+to cone spectra with the original `3**r` cap. At n=100 the positive
+variance lower bound increased by ~96,539x. **Absolute lower bounds
+remain extremely small.** No experimental protein conclusion follows.
+
+Run `python -m pytest tests/test_saw_count_cap.py` to reproduce the
+independent rooted-walk oracle, forged-product rejection, randomized
+exact-Gibbs enclosure tests, and long-chain smoke tests.
