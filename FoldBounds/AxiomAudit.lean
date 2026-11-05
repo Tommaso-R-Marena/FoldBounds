@@ -20,6 +20,8 @@ import FoldBounds.MotionContactCompleteness
 import FoldBounds.MotionRobustResponse
 import FoldBounds.MotionRobustOrdering
 import FoldBounds.MotionRobustConcordance
+import FoldBounds.MotionGNMExact
+import FoldBounds.MotionGNMTopologyRobust
 
 /-! Axiom audit: every headline theorem depends only on the standard axioms
 `propext`, `Classical.choice`, `Quot.sound`. -/
@@ -211,3 +213,10 @@ accepted score intervals now have a uniquely existing ground-truth response. -/
 #print axioms FoldBounds.MotionRobustConcordance.alignedSign_bounds
 #print axioms FoldBounds.MotionRobustConcordance.alignedSign_interval
 #print axioms FoldBounds.MotionRobustConcordance.sum_alignedSign_interval
+
+/-! Exact scalar GNM resistance and two-extreme-network soundness. -/
+#print axioms FoldBounds.MotionGNMExact.checkExactGNM_sound
+#print axioms FoldBounds.MotionGNMExact.gnm_residual_enclosure
+#print axioms FoldBounds.MotionGNMTopologyRobust.scalarNetworkEnergy_mono
+#print axioms FoldBounds.MotionGNMTopologyRobust.scalarResponse_antitone
+#print axioms FoldBounds.MotionGNMTopologyRobust.scalarResponse_extremes
