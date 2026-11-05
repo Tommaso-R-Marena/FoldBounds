@@ -17,7 +17,8 @@ def main():
         for q in (2,10,100):
             prev=sum((count*Fraction(q)**k for k,count in reference.items()),Fraction(0))
             separate=verify_compact_strip_certificate(build_compact_strip_certificate(
-                sequence,height=height,disjoint_from_partially_directed=True),Fraction(q))
+                sequence,height=height,disjoint_from_partially_directed=True,
+                include_reflection=True),Fraction(q))
             hybrid=compact_plus_directed_mass(sequence,Fraction(q),height=height)
             assert hybrid.partition_lower==prev+separate.partition_lower
             print(f'n={n:2} tile_h={height} q={q:3} ' 
