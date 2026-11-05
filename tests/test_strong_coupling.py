@@ -41,7 +41,7 @@ def independent_score(seq, path):
 @pytest.mark.parametrize("n", range(2, 9))
 def test_block_count_upper_encloses_independent_complete_walk_count(n):
     oracle = independent_paths(n)
-    for block in (1, 2, 4, 8):
+    for block in (1, 2, 4, 8, 12, 16):
         cap = anchored_walk_count_upper(n, block_steps=block)
         assert len(oracle) <= cap <= 3 ** (n - 2)
     assert anchored_walk_count_upper(n) == len(oracle)
@@ -94,16 +94,16 @@ def test_large_fifty_residue_fourfold_energy_robustness_and_threshold():
     assert len(path) == 50
     assert independent_score("H" * 50, path) == 36
     cert = StrongCouplingCertificate(
-        "H" * 50, Fraction(21), 20, (path,), Fraction(1, 2), Fraction(2))
+        "H" * 50, Fraction(20), 20, (path,), Fraction(1, 2), Fraction(2))
     b = certify_majority_halfline(cert)
     assert b.witness_count == b.event_witness_count == 1
-    assert b.all_walk_count_upper == 4067**6
+    assert b.all_walk_count_upper == 1567634615925097146309
     assert b.guaranteed_event_majority
-    assert b.probability_lower > Fraction(3, 5)
-    assert minimum_integer_majority_q(cert, max_q=100) == 21
+    assert b.probability_lower > Fraction(2, 3)
+    assert minimum_integer_majority_q(cert, max_q=100) == 20
     with pytest.raises(ValueError):
-        certify_majority_halfline(replace(cert, q=Fraction(20)))
-    for q in (Fraction(21), Fraction(43, 2), Fraction(22),
+        certify_majority_halfline(replace(cert, q=Fraction(19)))
+    for q in (Fraction(20), Fraction(41, 2), Fraction(21),
               Fraction(50), Fraction(100)):
         assert check_strong_coupling(replace(cert, q=q)).guaranteed_event_majority
 
@@ -115,9 +115,9 @@ def test_large_hundred_residue_fourfold_energy_robustness_and_threshold():
     cert = StrongCouplingCertificate(
         "H" * 100, Fraction(12), 40, (path,), Fraction(1, 2), Fraction(2))
     b = certify_majority_halfline(cert)
-    assert b.all_walk_count_upper == 4067**12 * 9
+    assert b.all_walk_count_upper == 22117304601419641590952984519611498170911329
     assert b.guaranteed_event_majority
-    assert b.probability_lower > Fraction(7, 10)
+    assert b.probability_lower > Fraction(19, 20)
     assert minimum_integer_majority_q(cert, max_q=100) == 12
     assert not check_strong_coupling(replace(cert, q=Fraction(11))).guaranteed_event_majority
 
@@ -155,7 +155,7 @@ def test_reject_duplicate_and_bad_energy_uncertainty():
         check_strong_coupling(replace(base, sequence="HPHx"))
     with pytest.raises(ValueError):
         check_strong_coupling(replace(base, witnesses=list(base.witnesses)))
-    for invalid_steps in (0, 9, 2.0, True):
+    for invalid_steps in (0, 17, 2.0, True):
         with pytest.raises(ValueError):
             anchored_walk_count_upper(50, block_steps=invalid_steps)
 
