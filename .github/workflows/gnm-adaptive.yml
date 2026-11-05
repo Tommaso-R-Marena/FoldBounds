@@ -30,6 +30,6 @@ jobs:
       - name: Install numerical/symbolic test dependencies
         run: python3 -m pip install --disable-pip-version-check numpy sympy pytest
       - name: Compile exact parser and production code
-        run: python3 -m py_compile scripts/gnm_adaptive_partition.py scripts/gnm_adaptive_independent_replay.py
+        run: python3 -m py_compile scripts/gnm_adaptive_partition.py scripts/gnm_adaptive_independent_replay.py scripts/gnm_lowrank_witnesses.py scripts/benchmark_gnm_witness_proposals.py
       - name: Check adversarial and exhaustive synthetic graph cases
-        run: python3 -m pytest -q scripts/test_gnm_adaptive_partition.py scripts/test_gnm_adaptive_real_tamper.py
+        run: python3 -m pytest -q scripts/test_gnm_adaptive_partition.py scripts/test_gnm_lowrank_witnesses.py scripts/test_gnm_adaptive_real_tamper.py
