@@ -59,7 +59,7 @@ As k tends to infinity, F(m0+ks) tends to zero with an exponentially negative le
 
 | Contact weight q | Threshold t/n | First certified side m for P>=99% | Chain length n | Witness Kstar | Rigorous lower probability at m |
 |---|---:|---:|---:|---:|---:|
-| 3 | 1/20 | 100 | 10,000 | 9,801 | > 0.9999999999999999999999 |
+| 3 | 1/20 | 100 | 10,000 | 9,801 | > 0.999999999999999999999 |
 | 4 | 1/4 | **124** | **15,376** | **15,129** | **> 0.999980** |
 | 5 | 1/3 | 60 | 3,600 | 3,481 | > 0.999984 |
 
