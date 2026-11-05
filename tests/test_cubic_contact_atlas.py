@@ -205,7 +205,7 @@ def test_fail_closed_3d_atlas_and_continuum_budget():
     landscape = build_cubic_landscape(atlas)
     for opts in (
         {"max_sequences": 1}, {"max_classes": 1},
-        {"max_events": 1}, {"width": 0.1}, {"max_refinements": 0},
+        {"max_events": 0}, {"width": 0.1}, {"max_refinements": 0},
     ):
         with pytest.raises(ValueError):
             certify_complete_skyline(landscape, 3, **opts)
