@@ -13,6 +13,7 @@ An additional exact symmetry reduction is available: reflection in the x-axis ma
 ```bash
 python -m pytest tests/test_contact_map_atlas.py
 python experiments/contact_map_atlas_demo.py
+python experiments/benchmark_contact_map_atlas.py
 ```
 
 ```python
