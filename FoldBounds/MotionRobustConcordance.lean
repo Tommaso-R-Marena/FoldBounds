@@ -67,10 +67,10 @@ theorem sum_alignedSign_interval {m : ℕ}
     (loA hiA loB hiB x y : Fin m → ℚ)
     (ha : ∀ i, loA i ≤ x i ∧ x i ≤ hiA i)
     (hb : ∀ i, loB i ≤ y i ∧ y i ≤ hiB i) :
-    (∑ i : Fin m, if hiA i < loB i then (1 : ℚ) else -1) ≤
-        ∑ i : Fin m, alignedSign (x i) (y i) ∧
-    (∑ i : Fin m, alignedSign (x i) (y i)) ≤
-        ∑ i : Fin m, if hiB i < loA i then (-1 : ℚ) else 1 := by
+    ((∑ i : Fin m, if hiA i < loB i then (1 : ℚ) else -1) ≤
+        (∑ i : Fin m, alignedSign (x i) (y i))) ∧
+    ((∑ i : Fin m, alignedSign (x i) (y i)) ≤
+        (∑ i : Fin m, if hiB i < loA i then (-1 : ℚ) else 1)) := by
   constructor
   · apply Finset.sum_le_sum
     intro i _
