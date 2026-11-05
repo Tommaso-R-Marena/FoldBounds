@@ -22,6 +22,7 @@ from .monotone_spectral import (monotone_spectral_histogram,
 from .saw_count_cap import optimal_saw_count_cap, verify_saw_count_cap
 from .partial_directed import partially_directed_spectrum, is_partially_directed_path
 from .isoperimetric import prefix_contact_cap
+from .horizon_certificate import select_best_horizon_certificate, verify_horizon_certificate
 
 if TYPE_CHECKING:
     from .lattice import Certificate
@@ -63,6 +64,7 @@ class ThermalResponseBounds:
     partially_directed_paths: int
     partially_directed_subtrees: int
     geometric_contact_cap_enabled: bool
+    horizon_steps: int = 0
 
 
 @dataclass(frozen=True)
@@ -70,6 +72,8 @@ class _Unknown:
     min_contacts: int
     max_contacts: int
     mass_upper: Fraction
+    event_mass_upper: Fraction | None = None
+    complement_mass_upper: Fraction | None = None
 
 
 def _contact_range(sequence: str, path: tuple[tuple[int, int], ...]) -> tuple[int, int]:
@@ -158,7 +162,8 @@ def thermal_response_bounds(
         use_monotone_spectra: bool = False,
         use_saw_count_cap: bool = False,
         use_partially_directed_spectra: bool = False,
-        use_geometric_contact_cap: bool = False
+        use_geometric_contact_cap: bool = False,
+        horizon_steps: int = 0
 ) -> ThermalResponseBounds:
     """Check an existing frontier, then enclose Gibbs response observables.
 
@@ -192,6 +197,8 @@ def thermal_response_bounds(
         raise ValueError("different spectral families overlap; select only one")
     if type(use_geometric_contact_cap) is not bool:
         raise ValueError("use_geometric_contact_cap must be a boolean")
+    if type(horizon_steps) is not int or not 0 <= horizon_steps <= 10:
+        raise ValueError("horizon_steps must be an integer between 0 and 10")
     verified = verify_certificate(cert)
     n = len(cert.sequence)
     q = cert.q
@@ -260,7 +267,25 @@ def thermal_response_bounds(
                                       min(unknown_block.mass_upper, mass_cap))
         raw_z_upper = z_known + sum((x.mass_upper for x in unknown), Fraction(0))
 
+    if horizon_steps:
+        # This separate checker covers ALL legal completions, not just the
+        # restricted partially directed subset credited below. Search/choice
+        # of horizon depth is untrusted; every candidate is replayed by the
+        # horizon validator before its upper mass can tighten the result.
+        for index, (block, prefix) in enumerate(zip(unknown, unknown_paths)):
+            selected = select_best_horizon_certificate(
+                cert.sequence, prefix, q=q, horizon=horizon_steps)
+            checked = verify_horizon_certificate(selected, q, t)
+            unknown[index] = _Unknown(
+                block.min_contacts, block.max_contacts,
+                min(block.mass_upper, checked.partition_upper),
+                checked.event_upper, checked.complement_upper)
+        raw_z_upper = z_known + sum(
+            (block.mass_upper for block in unknown), Fraction(0))
+
     extra_mass = [Fraction(0) for _ in unknown]
+    credited_event = [Fraction(0) for _ in unknown]
+    credited_complement = [Fraction(0) for _ in unknown]
     seen_witnesses: set[tuple[tuple[int, int], ...]] = set()
     cone_witness_scores: list[dict[int, int]] = [{} for _ in unknown]
     directed_witness_scores: list[dict[int, int]] = [{} for _ in unknown]
@@ -291,9 +316,11 @@ def thermal_response_bounds(
         known_scores.append(k_low)
         known_atoms.append((k_low, w))
         if k_low >= t:
+            credited_event[index] += w
             event_mass += w
             event_moment += w * k_low
         else:
+            credited_complement[index] += w
             comp_mass += w
             comp_moment += w * k_low
 
@@ -338,19 +365,35 @@ def thermal_response_bounds(
                 known_atoms.append((score, mass))
                 known_scores.append(score)
                 if score >= t:
+                    credited_event[index] += mass
                     event_mass += mass
                     event_moment += mass * score
                 else:
+                    credited_complement[index] += mass
                     comp_mass += mass
                     comp_moment += mass * score
 
     residual: list[_Unknown] = []
-    for node, credited in zip(unknown, extra_mass):
+    for index, (node, credited) in enumerate(zip(unknown, extra_mass)):
         if credited > node.mass_upper:
             raise AssertionError("validated witness mass exceeds universal cap")
-        if credited < node.mass_upper:
+        if credited_event[index] + credited_complement[index] != credited:
+            raise AssertionError("witness class mass accounting disagrees")
+        residual_mass = node.mass_upper - credited
+        if node.event_mass_upper is not None:
+            if (node.complement_mass_upper is None or
+                    node.event_mass_upper < credited_event[index] or
+                    node.complement_mass_upper < credited_complement[index]):
+                raise AssertionError("horizon class cap contradicts validated witnesses")
+            residual_event = min(
+                residual_mass, node.event_mass_upper - credited_event[index])
+            residual_complement = min(
+                residual_mass, node.complement_mass_upper - credited_complement[index])
+        else:
+            residual_event = residual_complement = None
+        if residual_mass:
             residual.append(_Unknown(node.min_contacts, node.max_contacts,
-                                     node.mass_upper - credited))
+                                     residual_mass, residual_event, residual_complement))
     unknown = residual
     z_upper = z_known + sum((x.mass_upper for x in unknown), Fraction(0))
     if z_upper != raw_z_upper:
@@ -363,9 +406,13 @@ def thermal_response_bounds(
     event_upper, complement_upper = event_mass, comp_mass
     for x in unknown:
         if x.max_contacts >= t:
-            event_upper += x.mass_upper
+            event_upper += min(
+                x.mass_upper, x.event_mass_upper
+                if x.event_mass_upper is not None else x.mass_upper)
         if x.min_contacts < t:
-            complement_upper += x.mass_upper
+            complement_upper += min(
+                x.mass_upper, x.complement_mass_upper
+                if x.complement_mass_upper is not None else x.mass_upper)
     prob_lo = (event_mass / (event_mass + complement_upper)
                if event_mass else Fraction(0))
     prob_hi = (event_upper / (event_upper + comp_mass) if comp_mass
@@ -425,4 +472,5 @@ def thermal_response_bounds(
         z_upper, support_lo, support_hi,
         known_count, len(seen_witnesses), len(unknown), prob_lo, prob_hi,
         not unknown, dual, monotone_paths, monotone_subtrees, use_saw_count_cap,
-        directed_paths, directed_subtrees, use_geometric_contact_cap)
+        directed_paths, directed_subtrees, use_geometric_contact_cap,
+        horizon_steps)
