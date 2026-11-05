@@ -17,7 +17,8 @@ jobs:
       - name: Check global concordance theorem and axiom audit
         run: |
           lake env lean FoldBounds/MotionRobustConcordance.lean
-          lake env lean FoldBounds/MotionRobustConcordanceTests.lean | tee /tmp/concordance-axioms.log
+          lake env lean FoldBounds/MotionRobustConcordanceTests.lean
+          lake env lean FoldBounds/AxiomAudit.lean | tee /tmp/concordance-axioms.log
           python3 scripts/check_lean_sources.py /tmp/concordance-axioms.log
       - name: Exhaustive/adversarial exact-arithmetic differential tests
         run: python3 scripts/test_motion_robust_concordance.py
