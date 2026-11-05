@@ -8,7 +8,7 @@ import pytest
 from foldbounds.strong_coupling import (
     StrongCouplingCertificate, anchored_walk_count_upper,
     certify_majority_halfline, check_strong_coupling,
-    minimum_integer_majority_q, serpentine_witness,
+    minimum_integer_majority_q, serpentine_witness, _contact_cap,
 )
 
 
@@ -174,3 +174,33 @@ def test_vacuous_events_are_correctly_classified():
         c = StrongCouplingCertificate("HHHH", Fraction(2), t, (path,))
         b = check_strong_coupling(c)
         assert b.probability_lower == b.probability_upper == p
+
+
+def test_geometric_contact_cap_vs_independent_path_oracle():
+    # Recompute the true maximum by a *separate* exhaustive O(n^2) scorer.
+    for n in range(2, 8):
+        paths = independent_paths(n)
+        for letters in product("HP", repeat=n):
+            seq = "".join(letters)
+            assert max(independent_score(seq, p) for p in paths) <= _contact_cap(seq)
+    assert _contact_cap("H" * 100) == 101
+    assert _contact_cap("H" * 1000) == 1001
+
+
+def test_thousand_residue_nonenumerative_halfline_certificate():
+    # No full length-1000 enumeration: exactly one checked 50x20 witness.
+    # Both the walk bound and contact-score reconstruction scale without
+    # generating the astronomical ensemble or trusting submitted scores.
+    witness = serpentine_witness(50, 20)
+    cert = StrongCouplingCertificate(
+        "H" * 1000, Fraction(11), 500, (witness,),
+        Fraction(1, 2), Fraction(2))
+    result = certify_majority_halfline(cert)
+    assert result.sequence_length == 1000
+    assert result.witness_count == 1
+    assert result.event_witness_count == 1
+    assert result.max_possible_contacts == 1001
+    assert result.all_walk_count_upper < 3**998
+    assert result.probability_lower > Fraction(999, 1000)
+    assert minimum_integer_majority_q(cert, max_q=20) == 11
+    assert not check_strong_coupling(replace(cert, q=Fraction(10))).guaranteed_event_majority
