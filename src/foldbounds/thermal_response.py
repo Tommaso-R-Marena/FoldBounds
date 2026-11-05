@@ -15,6 +15,12 @@ from dataclasses import dataclass
 from fractions import Fraction
 from typing import TYPE_CHECKING
 
+from .variance_dual import (VarianceDualCertificate, maximize_relaxed_variance,
+                            verify_variance_dual)
+from .monotone_spectral import (monotone_spectral_histogram,
+                                is_monotone_cone_suffix)
+from .saw_count_cap import optimal_saw_count_cap, verify_saw_count_cap
+
 if TYPE_CHECKING:
     from .lattice import Certificate
 
@@ -48,6 +54,10 @@ class ThermalResponseBounds:
     probability_lower: Fraction
     probability_upper: Fraction
     exact: bool
+    variance_dual: VarianceDualCertificate
+    monotone_paths: int
+    monotone_subtrees: int
+    saw_count_cap_enabled: bool
 
 
 @dataclass(frozen=True)
@@ -139,7 +149,9 @@ def _validate_witness(path: tuple[tuple[int, int], ...], n: int) -> None:
 
 def thermal_response_bounds(
         cert: Certificate, *,
-        witnesses: tuple[tuple[tuple[int, int], ...], ...] = ()
+        witnesses: tuple[tuple[tuple[int, int], ...], ...] = (),
+        use_monotone_spectra: bool = False,
+        use_saw_count_cap: bool = False
 ) -> ThermalResponseBounds:
     """Check an existing frontier, then enclose Gibbs response observables.
 
@@ -163,6 +175,10 @@ def thermal_response_bounds(
     """
     from .lattice import verify_certificate
 
+    if type(use_monotone_spectra) is not bool:
+        raise ValueError('use_monotone_spectra must be a boolean')
+    if type(use_saw_count_cap) is not bool:
+        raise ValueError('use_saw_count_cap must be a boolean')
     verified = verify_certificate(cert)
     n = len(cert.sequence)
     q = cert.q
@@ -173,6 +189,7 @@ def thermal_response_bounds(
     unknown: list[_Unknown] = []
     unknown_paths: list[tuple[tuple[int, int], ...]] = []
     known_scores: list[int] = []
+    known_atoms: list[tuple[int, Fraction]] = []
 
     for node in cert.frontier:
         if node.kind == "dead":
@@ -193,6 +210,7 @@ def thermal_response_bounds(
                 comp_moment += w * low
             known_count += 1
             known_scores.append(low)
+            known_atoms.append((low, w))
         else:
             upper = Fraction(3 ** (n - len(node.path))) * q ** high
             unknown.append(_Unknown(low, high, upper))
@@ -205,8 +223,22 @@ def thermal_response_bounds(
             len(unknown) != verified.bounded_subtrees):
         raise AssertionError("thermal-response tally disagrees with base verifier")
 
+    if use_saw_count_cap:
+        # Every continuation injects into a product of short rooted SAW
+        # blocks. Independent enumeration checks each factor; taking their
+        # product tightens the generic 3**remaining subtree count bound.
+        for index, (block, prefix) in enumerate(zip(unknown, unknown_paths)):
+            count_cert = optimal_saw_count_cap(n-len(prefix))
+            if not verify_saw_count_cap(count_cert):
+                raise AssertionError('SAW count certificate rejected by validator')
+            cap = count_cert.count_upper*q**block.max_contacts
+            unknown[index] = _Unknown(block.min_contacts, block.max_contacts,
+                                      min(block.mass_upper, cap))
+        raw_z_upper = z_known + sum((x.mass_upper for x in unknown), Fraction(0))
+
     extra_mass = [Fraction(0) for _ in unknown]
     seen_witnesses: set[tuple[tuple[int, int], ...]] = set()
+    cone_witness_scores: list[dict[int, int]] = [{} for _ in unknown]
     for path in witnesses:
         _validate_witness(path, n)
         if path in seen_witnesses:
@@ -222,16 +254,54 @@ def thermal_response_bounds(
             raise AssertionError("validated terminal witness has uncertain score")
         w = q ** k_low
         extra_mass[index] += w
+        if use_monotone_spectra and is_monotone_cone_suffix(unknown_paths[index], path):
+            scores = cone_witness_scores[index]
+            scores[k_low] = scores.get(k_low, 0) + 1
         z_known += w
         m1_known += w * k_low
         m2_known += w * k_low ** 2
         known_scores.append(k_low)
+        known_atoms.append((k_low, w))
         if k_low >= t:
             event_mass += w
             event_moment += w * k_low
         else:
             comp_mass += w
             comp_moment += w * k_low
+
+    # Count exponentially many genuine monotone extensions in polynomial-state
+    # exact-rational DP; exclude all externally credited witnesses in the union.
+    monotone_paths = monotone_subtrees = 0
+    if use_monotone_spectra:
+        for index, prefix in enumerate(unknown_paths):
+            spectrum = dict(monotone_spectral_histogram(cert.sequence, prefix))
+            if spectrum:
+                monotone_subtrees += 1
+            for score, count in cone_witness_scores[index].items():
+                if count > spectrum.get(score, 0):
+                    raise AssertionError('cone overlap exceeds checked spectrum')
+            for score, total in spectrum.items():
+                if not unknown[index].min_contacts <= score <= unknown[index].max_contacts:
+                    raise AssertionError('cone score outside universally checked range')
+                fresh = total-cone_witness_scores[index].get(score, 0)
+                if fresh < 0:
+                    raise AssertionError('negative disjoint cone multiplicity')
+                if not fresh:
+                    continue
+                mass = fresh*q**score
+                monotone_paths += fresh
+                extra_mass[index] += mass
+                z_known += mass
+                m1_known += mass*score
+                m2_known += mass*score*score
+                known_atoms.append((score, mass))
+                known_scores.append(score)
+                if score >= t:
+                    event_mass += mass
+                    event_moment += mass*score
+                else:
+                    comp_mass += mass
+                    comp_moment += mass*score
 
     residual: list[_Unknown] = []
     for node, credited in zip(unknown, extra_mass):
@@ -282,6 +352,18 @@ def thermal_response_bounds(
     upper_bhatia_davis = (support_hi - mu_star) * (mu_star - support_lo)
     var_hi = min(m2_hi - mu_lo ** 2, upper_bhatia_davis)
 
+    # Exact maximization over the relaxed remaining score/mass polytope.
+    # Both rational primal attainment and the universal centered-quadratic
+    # dual inequality are checked independently before accepting the cap.
+    dual_caps = tuple((x.min_contacts, x.max_contacts, x.mass_upper)
+                      for x in unknown)
+    dual = maximize_relaxed_variance(tuple(known_atoms), dual_caps)
+    if not verify_variance_dual(tuple(known_atoms), dual_caps, dual):
+        raise AssertionError('independent primal-dual verifier rejected certificate')
+    if dual.upper > var_hi:
+        raise AssertionError('sharp relaxed variance exceeds general variance cap')
+    var_hi = dual.upper
+
     susceptibility_lo = event_known_pair / z_upper ** 2
     susceptibility_hi = (support_hi - support_lo) * _maximum_bernoulli_variance(
         prob_lo, prob_hi)
@@ -301,4 +383,4 @@ def thermal_response_bounds(
         susceptibility_lo, susceptibility_hi, z_known,
         z_upper, support_lo, support_hi,
         known_count, len(seen_witnesses), len(unknown), prob_lo, prob_hi,
-        not unknown)
+        not unknown, dual, monotone_paths, monotone_subtrees, use_saw_count_cap)
