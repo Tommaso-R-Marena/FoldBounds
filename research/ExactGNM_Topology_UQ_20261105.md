@@ -249,3 +249,44 @@ kernel-replayed in Lean.
 
 The large ±0.05 Å enclosure includes negative concordance; the system
 correctly abstains from guaranteeing useful agreement at that radius.
+
+## Cross-protein falsification of fixed topology/anisotropy mixtures
+
+The physically motivated 50% isotropic/50% directional hybrid showed a small
+post-reveal gain on RNase A (rho 0.5174 vs 0.5110 GNM). However, the exact
+same model on the **previously revealed** CspB and crambin data is inferior to
+the original weighted ANM, using identical reference-only pair masks:
+
+| Protein | GNM rho | Weighted ANM rho | 50:50 G-ANM rho | GNM 75%/ANM 25% rank-fusion rho |
+|---|---:|---:|---:|---:|
+| RNase A | 0.5110 | 0.4214 | 0.5174 | 0.5228 |
+| CspB | 0.1856 | 0.4104 | 0.3427 | 0.2610 |
+| Crambin | 0.1175 | 0.4154 | 0.2902 | 0.1979 |
+
+The observed variation makes a universal fixed hybrid unsupported. It does NOT
+invalidate exact GNM model certificates. The thioredoxin Stage1 model is **not
+silently retuned** to fit this exploratory observation; its future target is a
+falsification test, with the original stringent gate preserved.
+
+A second exploratory **selective model-consensus** diagnostic examines only
+pair order comparisons where frozen GNM and weighted ANM agree. This cannot
+be called uncertainty-certified dual-model inference because the complete
+ANM coordinate-box certificate is unavailable for these 2,614 RNase pairs.
+It is also a post-hoc target-revealed diagnostic (all pair comparisons are
+statistically dependent):
+
+| Protein | GNM/ANM pair-order consensus coverage | Target-correct among agreed pairs |
+|---|---:|---:|
+| RNase A | 73.70% | 71.88% |
+| CspB | 69.69% | 64.59% |
+| Crambin | 76.16% | 61.88% |
+
+The consensus signed agreement is 0.438 (RNase), 0.292 (CspB), and 0.238
+(crambin). In the crambin case the selective consensus is **worse than the
+weighted ANM's overall signed agreement** (~0.283), so consensus is not
+universally superior either. This is an exploratory coverage/accuracy
+trade-off, NOT a prospective win. Scripts are
+`scripts/audit_exposed_prior_proteins.py` and
+`scripts/model_consensus_audit.py`; the input user archives are pinned by
+SHA-256 and tests may be rerun locally with NumPy/SciPy. See the companion
+machine-readable JSON audits.
