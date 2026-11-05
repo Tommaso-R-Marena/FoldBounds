@@ -108,9 +108,9 @@ theorem gnm_residual_enclosure {I : Type*} [Fintype I] [DecidableEq I]
   have hc : ∀ u : I → ℚ,
       (1 / B : ℚ) * dotQ u u ≤ dotQ u (matVecQ A u) := by
     intro u
-    apply (div_le_iff₀ hB).2
-    have hz := hcoercive u
-    simpa only [one_div, inv_mul_eq_div] using hz
+    have hdiv : dotQ u u / B ≤ dotQ u (matVecQ A u) :=
+      (div_le_iff₀ hB).2 (by simpa [mul_comm] using hcoercive u)
+    simpa [one_div, div_eq_mul_inv, mul_comm] using hdiv
   obtain ⟨hl, hu⟩ := symmetric_residual_enclosure A (1 / B) z x y
     ht hA hc hy
   constructor
@@ -118,7 +118,7 @@ theorem gnm_residual_enclosure {I : Type*} [Fintype I] [DecidableEq I]
   · have hs :
       dotQ (vsub z (matVecQ A x)) (vsub z (matVecQ A x)) / (1 / B) =
       B * dotQ (vsub z (matVecQ A x)) (vsub z (matVecQ A x)) := by
-        field_simp
+        field_simp [ne_of_gt hB]
     rw [hs] at hu
     exact hu
 
