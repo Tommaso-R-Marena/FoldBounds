@@ -91,14 +91,20 @@ def frozen_target(stage1_arrays,stage2):
             raise ValueError('ABSTAIN: target variance changed')
     return observed
 
-def make_graph_witness(edges,n,root,tree_B,pairs):
+def make_graph_witness(edges,n,root,tree_B,pairs,base_inverse=None,added_edges=None):
     A,idx=g.grounded_laplacian(edges,n,root)
-    N=g.untrusted_inverse_proposal(A,Q)
+    if base_inverse is None:
+        N=g.untrusted_inverse_proposal(A,Q)
+    else:
+        from gnm_lowrank_witnesses import integer_proposal
+        N=integer_proposal(base_inverse,root,n,added_edges or [],Q)
     R=g.verify_integer_witness(A,N,Q)
     scores=[g.score_numerators(p,N,R,Q,tree_B,idx) for p in pairs]
     return N,scores
 
-def make_certificate(stage1_zip,stage2_zip,output_path,epsilon=EPSILON,split_count=N_SPLITS):
+def make_certificate(stage1_zip,stage2_zip,output_path,epsilon=EPSILON,split_count=N_SPLITS,inverse_policy="direct"):
+    if inverse_policy not in ("direct","woodbury"):
+        raise ValueError("ABSTAIN: invalid witness proposal policy")
     if epsilon != EPSILON:raise ValueError('ABSTAIN: this trial has exactly the frozen 0.05 A radius')
     if type(split_count) is not int or not 0<=split_count<=N_SPLITS:
         raise ValueError('ABSTAIN: invalid split count')
@@ -114,6 +120,15 @@ def make_certificate(stage1_zip,stage2_zip,output_path,epsilon=EPSILON,split_cou
     selected,importance=select_split_edges(coords,fixed,optional,root,pairs,split_count)
     if len(set(selected))!=split_count:raise AssertionError('Bad split uniqueness')
     remaining=[e for k,e in enumerate(optional) if k not in selected]
+    # Every low-graph is (certain+remaining) plus a subset of selected edges.
+    # Every high-graph is certain plus that subset. Compute the two source-
+    # only base inverses once for the optional Woodbury proposal policy.
+    base_inverse={}
+    if inverse_policy=="woodbury":
+        for kind,base_edges in [('all_remaining_on',fixed+remaining),
+                                ('all_remaining_off',fixed)]:
+            base_A,_=g.grounded_laplacian(base_edges,n,root)
+            base_inverse[kind]=np.linalg.inv(np.asarray(base_A,dtype=float))
     # 2^split_count disjoint cases, each with two extreme graphs.
     records=[];models=[]
     lower_global=Fraction(1,1);upper_global=Fraction(-1,1)
@@ -124,7 +139,8 @@ def make_certificate(stage1_zip,stage2_zip,output_path,epsilon=EPSILON,split_cou
         scores=[]
         graph_ids=[]
         for kind,edges in [('all_remaining_on',graphs[0]),('all_remaining_off',graphs[1])]:
-            N,val=make_graph_witness(edges,n,root,B,pairs)
+            N,val=make_graph_witness(edges,n,root,B,pairs,
+                  base_inverse=base_inverse.get(kind),added_edges=forced)
             model={'mask':mask,'kind':kind,'n_contacts':len(edges),
                    'integer_inverse_proposal':N}
             models.append(model)
@@ -147,7 +163,7 @@ def make_certificate(stage1_zip,stage2_zip,output_path,epsilon=EPSILON,split_cou
          'n_residues':n,'n_score_pairs':len(pairs),
          'always_on':len(fixed),'always_off':len(off),'optional_edges':len(optional),
          'root':root,'tree_parent':parent,'tree_B':B,
-         'Q':Q,'selected_optional_indices':selected,'selected_edges':[list(optional[k]) for k in selected],
+         'Q':Q,'inverse_proposal_policy':inverse_policy,'selected_optional_indices':selected,'selected_edges':[list(optional[k]) for k in selected],
          'selection_importances':importance,
          'method':'all 2^k selected-contact cases, each with exact-integer endpoint certificates; every other optional contact is universally quantified via Rayleigh monotonicity',
          'lower_concordance':str(lower_global),'upper_concordance':str(upper_global),
@@ -167,5 +183,6 @@ if __name__=='__main__':
     parser=argparse.ArgumentParser()
     parser.add_argument('stage1_zip');parser.add_argument('stage2_zip');parser.add_argument('output_json')
     parser.add_argument('--splits',type=int,default=N_SPLITS)
+    parser.add_argument('--inverse-policy',choices=['direct','woodbury'],default='direct')
     args=parser.parse_args()
-    make_certificate(args.stage1_zip,args.stage2_zip,args.output_json,split_count=args.splits)
+    make_certificate(args.stage1_zip,args.stage2_zip,args.output_json,split_count=args.splits,inverse_policy=args.inverse_policy)
