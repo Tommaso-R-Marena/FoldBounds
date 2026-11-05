@@ -53,11 +53,11 @@ theorem alignedSign_interval
   constructor
   · split_ifs with h
     · have hxy : x < y := lt_of_le_of_lt ha.2 (lt_of_lt_of_le h hb.1)
-      rw [alignedSign_of_lt hxy]
+      simpa [alignedSign_of_lt hxy]
     · exact (alignedSign_bounds x y).1
   · split_ifs with h
     · have hyx : y < x := lt_of_le_of_lt hb.2 (lt_of_lt_of_le h ha.1)
-      rw [alignedSign_of_gt hyx]
+      simpa [alignedSign_of_gt hyx]
     · exact (alignedSign_bounds x y).2
 
 /-- Global concordance bounds from any finite family of intervals. Each
