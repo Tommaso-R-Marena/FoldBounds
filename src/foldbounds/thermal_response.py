@@ -20,6 +20,8 @@ from .variance_dual import (VarianceDualCertificate, maximize_relaxed_variance,
 from .monotone_spectral import (monotone_spectral_histogram,
                                 is_monotone_cone_suffix)
 from .saw_count_cap import optimal_saw_count_cap, verify_saw_count_cap
+from .partial_directed import partially_directed_spectrum, is_partially_directed_path
+from .isoperimetric import prefix_contact_cap
 
 if TYPE_CHECKING:
     from .lattice import Certificate
@@ -58,6 +60,9 @@ class ThermalResponseBounds:
     monotone_paths: int
     monotone_subtrees: int
     saw_count_cap_enabled: bool
+    partially_directed_paths: int
+    partially_directed_subtrees: int
+    geometric_contact_cap_enabled: bool
 
 
 @dataclass(frozen=True)
@@ -151,7 +156,9 @@ def thermal_response_bounds(
         cert: Certificate, *,
         witnesses: tuple[tuple[tuple[int, int], ...], ...] = (),
         use_monotone_spectra: bool = False,
-        use_saw_count_cap: bool = False
+        use_saw_count_cap: bool = False,
+        use_partially_directed_spectra: bool = False,
+        use_geometric_contact_cap: bool = False
 ) -> ThermalResponseBounds:
     """Check an existing frontier, then enclose Gibbs response observables.
 
@@ -179,6 +186,12 @@ def thermal_response_bounds(
         raise ValueError('use_monotone_spectra must be a boolean')
     if type(use_saw_count_cap) is not bool:
         raise ValueError('use_saw_count_cap must be a boolean')
+    if type(use_partially_directed_spectra) is not bool:
+        raise ValueError("use_partially_directed_spectra must be a boolean")
+    if use_monotone_spectra and use_partially_directed_spectra:
+        raise ValueError("different spectral families overlap; select only one")
+    if type(use_geometric_contact_cap) is not bool:
+        raise ValueError("use_geometric_contact_cap must be a boolean")
     verified = verify_certificate(cert)
     n = len(cert.sequence)
     q = cert.q
@@ -223,22 +236,34 @@ def thermal_response_bounds(
             len(unknown) != verified.bounded_subtrees):
         raise AssertionError("thermal-response tally disagrees with base verifier")
 
-    if use_saw_count_cap:
-        # Every continuation injects into a product of short rooted SAW
-        # blocks. Independent enumeration checks each factor; taking their
-        # product tightens the generic 3**remaining subtree count bound.
-        for index, (block, prefix) in enumerate(zip(unknown, unknown_paths)):
-            count_cert = optimal_saw_count_cap(n-len(prefix))
-            if not verify_saw_count_cap(count_cert):
-                raise AssertionError('SAW count certificate rejected by validator')
-            cap = count_cert.count_upper*q**block.max_contacts
-            unknown[index] = _Unknown(block.min_contacts, block.max_contacts,
-                                      min(block.mass_upper, cap))
+    if use_saw_count_cap or use_geometric_contact_cap:
+        # Optional short-block path-count and prefix-specific geometric caps.
+        for index, (unknown_block, prefix) in enumerate(zip(unknown, unknown_paths)):
+            score_cap = unknown_block.max_contacts
+            if use_geometric_contact_cap:
+                score_cap = min(score_cap, prefix_contact_cap(prefix, n))
+                if score_cap < unknown_block.min_contacts:
+                    # No completed continuation can retain the fixed prefix
+                    # contact score and also satisfy the perimeter inequality.
+                    unknown[index] = _Unknown(unknown_block.min_contacts,
+                                              unknown_block.min_contacts, Fraction(0))
+                    continue
+            if use_saw_count_cap:
+                count_cert = optimal_saw_count_cap(n-len(prefix))
+                if not verify_saw_count_cap(count_cert):
+                    raise AssertionError("SAW count certificate rejected by validator")
+                count_upper = count_cert.count_upper
+            else:
+                count_upper = 3**(n-len(prefix))
+            mass_cap = count_upper * q**score_cap
+            unknown[index] = _Unknown(unknown_block.min_contacts, score_cap,
+                                      min(unknown_block.mass_upper, mass_cap))
         raw_z_upper = z_known + sum((x.mass_upper for x in unknown), Fraction(0))
 
     extra_mass = [Fraction(0) for _ in unknown]
     seen_witnesses: set[tuple[tuple[int, int], ...]] = set()
     cone_witness_scores: list[dict[int, int]] = [{} for _ in unknown]
+    directed_witness_scores: list[dict[int, int]] = [{} for _ in unknown]
     for path in witnesses:
         _validate_witness(path, n)
         if path in seen_witnesses:
@@ -257,6 +282,9 @@ def thermal_response_bounds(
         if use_monotone_spectra and is_monotone_cone_suffix(unknown_paths[index], path):
             scores = cone_witness_scores[index]
             scores[k_low] = scores.get(k_low, 0) + 1
+        if use_partially_directed_spectra and is_partially_directed_path(path):
+            scores = directed_witness_scores[index]
+            scores[k_low] = scores.get(k_low, 0) + 1
         z_known += w
         m1_known += w * k_low
         m2_known += w * k_low ** 2
@@ -269,39 +297,52 @@ def thermal_response_bounds(
             comp_mass += w
             comp_moment += w * k_low
 
-    # Count exponentially many genuine monotone extensions in polynomial-state
-    # exact-rational DP; exclude all externally credited witnesses in the union.
+    # The spectral families are individually genuine and disjoint across
+    # frontier prefixes. Reject simultaneous families because their unions
+    # overlap and inclusion-exclusion has not been certified.
     monotone_paths = monotone_subtrees = 0
-    if use_monotone_spectra:
+    directed_paths = directed_subtrees = 0
+    if use_monotone_spectra or use_partially_directed_spectra:
         for index, prefix in enumerate(unknown_paths):
-            spectrum = dict(monotone_spectral_histogram(cert.sequence, prefix))
+            if use_partially_directed_spectra:
+                spectrum = dict(partially_directed_spectrum(cert.sequence, prefix))
+                overlap = directed_witness_scores[index]
+            else:
+                spectrum = dict(monotone_spectral_histogram(cert.sequence, prefix))
+                overlap = cone_witness_scores[index]
             if spectrum:
-                monotone_subtrees += 1
-            for score, count in cone_witness_scores[index].items():
+                if use_partially_directed_spectra:
+                    directed_subtrees += 1
+                else:
+                    monotone_subtrees += 1
+            for score, count in overlap.items():
                 if count > spectrum.get(score, 0):
-                    raise AssertionError('cone overlap exceeds checked spectrum')
+                    raise AssertionError("witness overlap exceeds checked spectrum")
             for score, total in spectrum.items():
                 if not unknown[index].min_contacts <= score <= unknown[index].max_contacts:
-                    raise AssertionError('cone score outside universally checked range')
-                fresh = total-cone_witness_scores[index].get(score, 0)
+                    raise AssertionError("subset score outside conservative score range")
+                fresh = total - overlap.get(score, 0)
                 if fresh < 0:
-                    raise AssertionError('negative disjoint cone multiplicity')
+                    raise AssertionError("negative disjoint subset multiplicity")
                 if not fresh:
                     continue
-                mass = fresh*q**score
-                monotone_paths += fresh
+                mass = fresh * q**score
+                if use_partially_directed_spectra:
+                    directed_paths += fresh
+                else:
+                    monotone_paths += fresh
                 extra_mass[index] += mass
                 z_known += mass
-                m1_known += mass*score
-                m2_known += mass*score*score
+                m1_known += mass * score
+                m2_known += mass * score * score
                 known_atoms.append((score, mass))
                 known_scores.append(score)
                 if score >= t:
                     event_mass += mass
-                    event_moment += mass*score
+                    event_moment += mass * score
                 else:
                     comp_mass += mass
-                    comp_moment += mass*score
+                    comp_moment += mass * score
 
     residual: list[_Unknown] = []
     for node, credited in zip(unknown, extra_mass):
@@ -383,4 +424,5 @@ def thermal_response_bounds(
         susceptibility_lo, susceptibility_hi, z_known,
         z_upper, support_lo, support_hi,
         known_count, len(seen_witnesses), len(unknown), prob_lo, prob_hi,
-        not unknown, dual, monotone_paths, monotone_subtrees, use_saw_count_cap)
+        not unknown, dual, monotone_paths, monotone_subtrees, use_saw_count_cap,
+        directed_paths, directed_subtrees, use_geometric_contact_cap)
