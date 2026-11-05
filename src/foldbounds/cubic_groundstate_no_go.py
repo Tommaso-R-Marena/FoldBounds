@@ -26,7 +26,6 @@ from .local_rewire_confidence import (
     StructuralModel, StructuralConfidence, check_structural_confidence,
     hp_pair_weights, make_macro_target,
 )
-from .cubic_tiling import OFFSETS
 
 
 @dataclass(frozen=True)
@@ -74,9 +73,9 @@ def certify_cubic_groundstate_no_go(
     # edges, then subtract the n-1 known covalent bonds. Every edge is
     # counted exactly once by checking only positive unit directions.
     edges = sum(
-        (x + 1, y, z) in occupied
-        + ((x, y + 1, z) in occupied)
-        + ((x, y, z + 1) in occupied)
+        int((x + 1, y, z) in occupied)
+        + int((x, y + 1, z) in occupied)
+        + int((x, y, z + 1) in occupied)
         for x, y, z in occupied
     )
     contacts = edges - (n - 1)
