@@ -117,3 +117,33 @@ def test_untrusted_inverse_witness_fail_closed_format():
 def test_absent_or_malformed_claims_fail_closed():
     with pytest.raises(ValueError):count_independent([3,1],[2,2],[1,2])
     with pytest.raises(ValueError):count_independent([1,2],[2,3],[1,1])
+
+
+
+def test_five_vertex_exact_resistance_exhibits_case_split_advantage():
+    """Constructive strictness witness: naive marginal hull misses a true order.
+
+    For the path graph 0-1-2-3-4 and optional contact 0-2, resistance
+    (0,2) is always lower than resistance (0,3), although the global
+    marginal score ranges overlap. Case-splitting certifies both worlds.
+    """
+    import sympy as sp
+    n=5
+    base=[(0,1),(1,2),(2,3),(3,4)]
+    def resist(edges,p):
+        A=sp.zeros(n-1)
+        for i,j in edges:
+            b=sp.zeros(n-1,1)
+            if i!=0:b[i-1]+=1
+            if j!=0:b[j-1]-=1
+            A+=b*b.T
+        u=sp.zeros(n-1,1)
+        if p[0]!=0:u[p[0]-1]+=1
+        if p[1]!=0:u[p[1]-1]-=1
+        return (u.T*A.inv()*u)[0]
+    a0,b0=resist(base,(0,2)),resist(base,(0,3))
+    a1,b1=resist(base+[(0,2)],(0,2)),resist(base+[(0,2)],(0,3))
+    assert (a0,b0,a1,b1)==(sp.Integer(2),sp.Integer(3),sp.Rational(2,3),sp.Rational(5,3))
+    assert a0<b0 and a1<b1
+    assert max(a0,a1) >= min(b0,b1)  # naive independent hull ABSTAINS
+    assert (sp.Integer(0)<min(b0-a0,b1-a1))  # case-split robust STRICT order
