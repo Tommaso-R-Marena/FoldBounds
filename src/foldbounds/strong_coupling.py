@@ -110,32 +110,35 @@ def _contact_cap(sequence: str) -> int:
                for j in range(i + 3, len(sequence), 2))
 
 
-@lru_cache(maxsize=8)
+@lru_cache(maxsize=16)
 def _free_block_counts(max_steps: int) -> tuple[int, ...]:
-    """EXACT small free-space counts for k steps after a fixed first bond.
+    """Count exact free-space anchored walks via constant-memory DFS.
 
-    Starting from ROOT, enumerate up to eight further non-repeating moves.
-    With any preceding path, legal extensions embed in this free-space set
-    by translation and rotation; old obstacles only remove extensions.
+    Iterative frontier storage grows exponentially in memory, which is
+    unnecessary for a counting oracle. This checker performs a *small* exact
+    DFS to obtain c[k] for every k<=max_steps. The complete large-chain
+    conformational ensemble is never enumerated.
     """
-    frontier = [ROOT]
-    counts = [1]
-    for _ in range(max_steps):
-        nxt: list[Path] = []
-        for path in frontier:
-            x, y = path[-1]
-            occupied = set(path)
-            for dx, dy in DIRECTIONS:
-                p = (x + dx, y + dy)
-                if p not in occupied:
-                    nxt.append(path + (p,))
-        frontier = nxt
-        counts.append(len(frontier))
+    counts = [0] * (max_steps + 1)
+    occupied = {(0, 0), (1, 0)}
+
+    def dfs(k: int, x: int, y: int) -> None:
+        counts[k] += 1
+        if k == max_steps:
+            return
+        for dx, dy in DIRECTIONS:
+            nxt = (x + dx, y + dy)
+            if nxt not in occupied:
+                occupied.add(nxt)
+                dfs(k + 1, *nxt)
+                occupied.remove(nxt)
+
+    dfs(0, 1, 0)
     return tuple(counts)
 
 
 @lru_cache(maxsize=2048)
-def anchored_walk_count_upper(length: int, *, block_steps: int = 8) -> int:
+def anchored_walk_count_upper(length: int, *, block_steps: int = 16) -> int:
     """Exact upper bound by optimal product of free-space block counts.
 
     After any SAW prefix ending in a bond, its next k legal steps are a
@@ -143,13 +146,13 @@ def anchored_walk_count_upper(length: int, *, block_steps: int = 8) -> int:
     most c[k]. Therefore any composition r=k1+...+km of remaining steps
     gives an upper bound prod(c[ki]) for the full walk tree.
 
-    Dynamic programming minimizes over all block partitions with ki<=8.
+    Dynamic programming minimizes over all block partitions with ki<=16.
     This is a universal *count bound*, not a claim to enumerate all paths.
     """
     if type(length) is not int or length < 2:
         raise ValueError("length must be an integer >= 2")
-    if type(block_steps) is not int or not 1 <= block_steps <= 8:
-        raise ValueError("block_steps must be an integer in [1,8]")
+    if type(block_steps) is not int or not 1 <= block_steps <= 16:
+        raise ValueError("block_steps must be an integer in [1,16]")
     counts = _free_block_counts(block_steps)
     remaining = length - 2
     best = [1]
@@ -160,7 +163,7 @@ def anchored_walk_count_upper(length: int, *, block_steps: int = 8) -> int:
 
 
 def check_strong_coupling(cert: StrongCouplingCertificate, *,
-                          block_steps: int = 8) -> StrongCouplingResult:
+                          block_steps: int = 16) -> StrongCouplingResult:
     """Verify witnesses, then bound all missing conformations adversarially.
 
     A full ensemble state has nominal weight q**K; its actual weight may be
@@ -221,7 +224,7 @@ def check_strong_coupling(cert: StrongCouplingCertificate, *,
 
 def minimum_integer_majority_q(cert: StrongCouplingCertificate, *,
                                max_q: int = 1_000_000,
-                               block_steps: int = 8) -> int | None:
+                               block_steps: int = 16) -> int | None:
     """Find smallest integer q>=1 for which this checker certifies event majority.
 
     No claim that this is the true phase-transition point: it is the threshold
@@ -252,7 +255,7 @@ def minimum_integer_majority_q(cert: StrongCouplingCertificate, *,
 
 
 def certify_majority_halfline(cert: StrongCouplingCertificate, *,
-                              block_steps: int = 8) -> StrongCouplingResult:
+                              block_steps: int = 16) -> StrongCouplingResult:
     """Prove event probability >1/2 for EVERY real q >= cert.q.
 
     The uncertainty multipliers may independently vary with q and with
