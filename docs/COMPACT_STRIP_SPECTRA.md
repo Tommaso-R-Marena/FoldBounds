@@ -23,11 +23,11 @@ This follows exactly from counting occupied grid edges and subtracting the `n−
 
     147 · 360^(B-1) distinct full-rooted folds
 
-of contact score `28 B − 7`, for every integer `B >= 1`. These conclusions require only the explicit 32-site tile witnesses and their independently validated Cartesian concatenation; they do not assume an unproved general formula for tile counts. For example, when `B=2` there are **52,920 distinct conformations** of length 64 with **49 HH contacts each**. The elementary box/perimeter bound `k ≤ 64+1−ceil(2√64) = 49` shows that each is maximally contacting in this 2D all-H model.
+of contact score `28 B − 7`, for every integer `B >= 1`. Reflection about the line `y=0` preserves the canonical East first edge, self-avoidance, and all HH contacts. Every tiled conformation occupies positive y sites and its reflection negative y sites, so the two families are disjoint. Enabling `include_reflection=True` therefore doubles the witness multiplicity to **294·360^(B−1)** for each `B>=1`. These conclusions require only the explicit 32-site tile witnesses and their independently validated Cartesian concatenation; they do not assume an unproved general formula for tile counts. For example, when `B=2` there are **52,920 unreflected and 105,840 including reflected distinct conformations** of length 64 with **49 HH contacts each**. The elementary box/perimeter bound `k ≤ 64+1−ceil(2√64) = 49` shows that each is maximally contacting in this 2D all-H model.
 
 For any rational `q >= 1`, this certifies the exact *restricted-family* mass and a rigorous lower bound on the total HP partition function:
 
-    Z_(32B)(q) >= 147 · 360^(B−1) · q^(28B−7)
+    Z_(32B)(q) >= 294 · 360^(B−1) · q^(28B−7)   (including reflections)
 
 Consequently, along `n=32B`, `liminf_B log(Z_(32B)(q))/(32B) >= [log(360) + 28 log(q)]/32`. This is **only** a model-relative analytic lower bound, not a new physical thermodynamic limit theorem.
 
@@ -39,7 +39,7 @@ FoldBounds' PR #56 partially directed subset is the disjoint union of:
 - North-progressive walks with at least one West step (no South steps);
 - South-progressive walks with at least one West step (no North steps).
 
-The new `disjoint_from_partially_directed=True` certificate counts **only** compact paths containing at least one West, one North and one South step. Such a path satisfies none of the three partially directed languages. Therefore these compact paths and the PR #56 paths are provably disjoint, and their integer contact histograms and weighted masses can be **added** without overlapping witnesses. The code checks the direction mask for each finite tile combination through the transfer recurrence, rather than assuming every tile variant is disjoint. It deliberately does not add the entire unfiltered compact family or multiple competing tile heights.
+The new `disjoint_from_partially_directed=True` certificate counts **only** compact paths containing at least one West, one North and one South step. Such a path satisfies none of the three partially directed languages. Therefore these compact paths and the PR #56 paths are provably disjoint, and their integer contact histograms and weighted masses can be **added** without overlapping witnesses. The code checks the direction mask for each finite tile combination through the transfer recurrence, rather than assuming every tile variant is disjoint. Horizontal reflection exchanges North/South but preserves the joint W/N/S predicate, so the mirrored family is also disjoint from PDSAW and from the original compact family. It deliberately does not add the entire unfiltered compact family or multiple competing tile heights.
 
 The `compact_plus_directed_mass` consumer recomputes the existing partially directed spectrum and combines it with the separately checked disjoint compact certificate. It does not modify the preexisting thermodynamic-response calculation; reviewers can add it as an independent trusted input after auditing the exact bridge.
 
@@ -50,10 +50,10 @@ All-H `n=64`, `q=10`, event threshold `k>=1`:
 | Witness family | Exact lower mass |
 |---|---:|
 | Existing partially directed family | 13,394,219,636,175,161,757,789,276,985,333,749,427,840,163,576,552,435 |
-| New disjoint compact family | `52,920 × 10^49` |
-| Union (verified disjoint) | prior mass + new mass = **40.50958×** the previous partially directed mass |
+| New disjoint compact family (including reflections) | `105,840 × 10^49` |
+| Union (verified disjoint) | prior mass + new mass = **80.01916×** the previous partially directed mass |
 
-At `q=100`, the new compact subset alone is about **3,411×** the partially directed lower mass in the same model. These factors are improvements in *proven lower bounds*, not tighter upper bounds, accuracy, a practical folding-prediction benchmark, or an empirical discovery. The true partition sum may exceed both lower bounds by a large factor. At `q=2` the new subset can have relatively little weight and the previous method may dominate.
+At `q=100`, the new compact subset alone is about **6,822×** the partially directed lower mass in the same model. These factors are improvements in *proven lower bounds*, not tighter upper bounds, accuracy, a practical folding-prediction benchmark, or an empirical discovery. The true partition sum may exceed both lower bounds by a large factor. At `q=2` the new subset can have relatively little weight and the previous method may dominate.
 
 ## Independent tests and assurance boundary
 
@@ -68,4 +68,4 @@ Tests use an independently coded bitmask Hamiltonian-path enumerator to reconstr
 
 If the minimum contact exponent in the filtered compact spectrum is **at least** the maximum exponent of the PDSAW spectrum, then the *ratio of the disjoint compact mass to the PDSAW mass* is nondecreasing in `q>=1`. Proof: for each compact exponent `a` and PDSAW exponent `b`, the exponent difference `a-b` is nonnegative, so multiplying the nonnegative finite sums shows `C(q2)P(q1) >= C(q1)P(q2)` whenever `q2>=q1>=1`. Therefore `1+C(q)/P(q)` is nondecreasing. This is a simple finite polynomial order argument, not an original general theorem.
 
-`build_tail_dominance_certificate('H'*64, height=8, q_min=Fraction(10))` recomputes the spectra and confirms this exponent-order condition. Its separately replayed rational certificate then establishes that **for every real `q>=10`, not just sampled integer q**, the PDSAW-plus-compact lower mass is at least `40.50958...` times the original PDSAW lower mass. The factor approaches `1+52920/2=26461` as `q` increases without bound, because the existing PDSAW coefficient at contact score 49 is two. The claim concerns a ratio of lower bounds, not a bound on the unknown true partition-function error.
+`build_tail_dominance_certificate('H'*64, height=8, q_min=Fraction(10))` recomputes the spectra and confirms this exponent-order condition. Its separately replayed rational certificate then establishes that **for every real `q>=10`, not just sampled integer q**, the PDSAW-plus-compact lower mass is at least `80.01916...` times the original PDSAW lower mass. The factor approaches `1+105840/2=52921` as `q` increases without bound, because the existing PDSAW coefficient at contact score 49 is two. This continuum certificate uses the default mirrored disjoint subset and independent tests check the reflection geometry explicitly. The claim concerns a ratio of lower bounds, not a bound on the unknown true partition-function error.
