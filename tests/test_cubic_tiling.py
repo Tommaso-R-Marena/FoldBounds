@@ -124,9 +124,7 @@ def test_two_cube_transfer_count_and_heterogeneous_contacts():
 
 def test_known_short_free_3d_saw_counts():
     assert _free_saw_counts_3d(8) == (
-        1, 5, 25, 125, 625, 3121, 15605, 77805, 387181
-    ) or _free_saw_counts_3d(8) == (
-        1, 5, 25, 125, 625, 3105, 15525, 77195, 385000
+        1, 5, 25, 121, 589, 2821, 13565, 64661, 308981
     )
     # Independent count comparison, without importing a table as ground truth.
     for n in range(2, 9):
