@@ -1,5 +1,3 @@
-module
-
 import FoldBounds.MotionRobustConcordance
 
 open FoldBounds.MotionRobustConcordance
