@@ -38,10 +38,17 @@ theorem confidence_ceiling
   have hA : 0 < hi * W := mul_pos hhi hW
   have hDen1 : 0 < T + O := by linarith
   have hDen2 : 0 < hi * W + lo * W * (S - 1) := by linarith
+  have hTB :
+      T * (lo * W * (S - 1)) ≤ (hi * W) * (lo * W * (S - 1)) :=
+    mul_le_mul_of_nonneg_right hTarget hB
+  have hAO :
+      (hi * W) * (lo * W * (S - 1)) ≤ (hi * W) * O :=
+    mul_le_mul_of_nonneg_left hOther hA.le
   have hScaled :
       T / (T + O) ≤
-        (hi * W) / (hi * W + lo * W * (S - 1)) :=
-    FoldBounds.ratio_le_ratio hT.le hB hTarget hOther hDen1 hDen2
+        (hi * W) / (hi * W + lo * W * (S - 1)) := by
+    apply (div_le_div_iff₀ hDen1 hDen2).2
+    nlinarith [hTB, hAO]
   have hD : 0 < hi + lo * (S - 1) := by
     have : 0 ≤ lo * (S - 1) := mul_nonneg hlo.le hSm
     linarith
