@@ -22,6 +22,7 @@ from .monotone_spectral import (monotone_spectral_histogram,
 from .saw_count_cap import optimal_saw_count_cap, verify_saw_count_cap
 from .partial_directed import partially_directed_spectrum, is_partially_directed_path
 from .isoperimetric import prefix_contact_cap
+from .horizon_certificate import select_best_horizon_certificate, verify_horizon_certificate
 
 if TYPE_CHECKING:
     from .lattice import Certificate
@@ -63,6 +64,7 @@ class ThermalResponseBounds:
     partially_directed_paths: int
     partially_directed_subtrees: int
     geometric_contact_cap_enabled: bool
+    horizon_steps: int = 0
 
 
 @dataclass(frozen=True)
@@ -158,7 +160,8 @@ def thermal_response_bounds(
         use_monotone_spectra: bool = False,
         use_saw_count_cap: bool = False,
         use_partially_directed_spectra: bool = False,
-        use_geometric_contact_cap: bool = False
+        use_geometric_contact_cap: bool = False,
+        horizon_steps: int = 0
 ) -> ThermalResponseBounds:
     """Check an existing frontier, then enclose Gibbs response observables.
 
@@ -192,6 +195,8 @@ def thermal_response_bounds(
         raise ValueError("different spectral families overlap; select only one")
     if type(use_geometric_contact_cap) is not bool:
         raise ValueError("use_geometric_contact_cap must be a boolean")
+    if type(horizon_steps) is not int or not 0 <= horizon_steps <= 10:
+        raise ValueError("horizon_steps must be an integer between 0 and 10")
     verified = verify_certificate(cert)
     n = len(cert.sequence)
     q = cert.q
@@ -259,6 +264,21 @@ def thermal_response_bounds(
             unknown[index] = _Unknown(unknown_block.min_contacts, score_cap,
                                       min(unknown_block.mass_upper, mass_cap))
         raw_z_upper = z_known + sum((x.mass_upper for x in unknown), Fraction(0))
+
+    if horizon_steps:
+        # This separate checker covers ALL legal completions, not just the
+        # restricted partially directed subset credited below. Search/choice
+        # of horizon depth is untrusted; every candidate is replayed by the
+        # horizon validator before its upper mass can tighten the result.
+        for index, (block, prefix) in enumerate(zip(unknown, unknown_paths)):
+            selected = select_best_horizon_certificate(
+                cert.sequence, prefix, q=q, horizon=horizon_steps)
+            checked = verify_horizon_certificate(selected, q, t)
+            unknown[index] = _Unknown(
+                block.min_contacts, block.max_contacts,
+                min(block.mass_upper, checked.partition_upper))
+        raw_z_upper = z_known + sum(
+            (block.mass_upper for block in unknown), Fraction(0))
 
     extra_mass = [Fraction(0) for _ in unknown]
     seen_witnesses: set[tuple[tuple[int, int], ...]] = set()
@@ -425,4 +445,5 @@ def thermal_response_bounds(
         z_upper, support_lo, support_hi,
         known_count, len(seen_witnesses), len(unknown), prob_lo, prob_hi,
         not unknown, dual, monotone_paths, monotone_subtrees, use_saw_count_cap,
-        directed_paths, directed_subtrees, use_geometric_contact_cap)
+        directed_paths, directed_subtrees, use_geometric_contact_cap,
+        horizon_steps)
