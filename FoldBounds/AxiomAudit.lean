@@ -22,6 +22,7 @@ import FoldBounds.MotionRobustOrdering
 import FoldBounds.MotionRobustConcordance
 import FoldBounds.MotionGNMExact
 import FoldBounds.MotionGNMTopologyRobust
+import FoldBounds.MotionGNMAdaptiveCases
 
 /-! Axiom audit: every headline theorem depends only on the standard axioms
 `propext`, `Classical.choice`, `Quot.sound`. -/
@@ -220,3 +221,8 @@ accepted score intervals now have a uniquely existing ground-truth response. -/
 #print axioms FoldBounds.MotionGNMTopologyRobust.scalarNetworkEnergy_mono
 #print axioms FoldBounds.MotionGNMTopologyRobust.scalarResponse_antitone
 #print axioms FoldBounds.MotionGNMTopologyRobust.scalarResponse_extremes
+
+/-! Case-split graph dominance and universal protein rank concordance. -/
+#print axioms FoldBounds.MotionGNMAdaptiveCases.case_contact_sandwich
+#print axioms FoldBounds.MotionGNMAdaptiveCases.case_response_sandwich
+#print axioms FoldBounds.MotionGNMAdaptiveCases.all_contact_worlds_concordance
