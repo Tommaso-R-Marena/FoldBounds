@@ -99,3 +99,7 @@ A five-vertex unit-resistor path with edges (0,1),(1,2),(2,3),(3,4) and optional
 | ON | 2/3 | 5/3 | Yes |
 
 The independent marginal intervals are A ∈ [2/3,2] and B ∈ [5/3,3]. They **overlap**, so an all-on/all-off *per-score* hull cannot prove A < B. Exhaustive splitting on the ONE selected edge proves A < B for both possible networks, with exact rational Laplacian inverses. This constructive example establishes that case-level correlations can provide a strictly stronger ranking certificate than marginal response bounds. An executable exact SymPy test reproduces it; the corresponding universal case-cover principle has a separate Lean theorem. This is not itself a novel graph-theoretic discovery.
+
+## Reproduction integrity follow-up
+
+The production script now finalizes and prints the six reference-only split edges **before opening the sealed 2AAS Stage 2 ZIP**. With the default `--inverse-policy direct`, it re-generated the entire 64-case certificate **byte-for-byte identical** to the original published SHA-256 `01409446a15a7d49ad7ed38c3142a88523608c5d3fb954d32c133d961e8bf9fc`. This strengthens procedural source/target separation but does not turn the already-revealed RNase experiment into a new blind test.
