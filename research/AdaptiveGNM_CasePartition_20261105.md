@@ -88,3 +88,14 @@ Performance on one local CPU session with `OPENBLAS_NUM_THREADS=1`, 124 residues
 Thus source-only numerical proposal production is ~1.83× faster in this one run, but **there is no demonstrated end-to-end speedup at 124 residues**, because exact integer verification dominates. Larger-protein performance remains to be measured. No low-rank numerical output is trusted until the integer checks pass. Sherman–Morrison–Woodbury is established mathematics, not a new inverse law.
 
 Five deliberate attacks on the real certificate were tested: missing case, fabricated case concordance, strongly corrupted **relevant** inverse-witness entry, changed contact identity and invalid spanning-tree constant. All five were rejected. The independent checker does not require unused numerical proposal entries to match a canonical value: a different approximation can remain valid if the *resulting certificate statements* still check. Byte-level integrity of the distributed reference certificate is separately provided by the published SHA-256 and archive manifest.
+
+## Small exact mathematical witness of the improvement
+
+A five-vertex unit-resistor path with edges (0,1),(1,2),(2,3),(3,4) and optional edge (0,2) has two possible networks. Let A denote the effective resistance between (0,2) and B between (0,3):
+
+| Contact (0,2) | A = R(0,2) | B = R(0,3) | Strict A < B? |
+|---|---:|---:|---|
+| OFF | 2 | 3 | Yes |
+| ON | 2/3 | 5/3 | Yes |
+
+The independent marginal intervals are A ∈ [2/3,2] and B ∈ [5/3,3]. They **overlap**, so an all-on/all-off *per-score* hull cannot prove A < B. Exhaustive splitting on the ONE selected edge proves A < B for both possible networks, with exact rational Laplacian inverses. This constructive example establishes that case-level correlations can provide a strictly stronger ranking certificate than marginal response bounds. An executable exact SymPy test reproduces it; the corresponding universal case-cover principle has a separate Lean theorem. This is not itself a novel graph-theoretic discovery.
