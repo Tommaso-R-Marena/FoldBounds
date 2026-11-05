@@ -21,7 +21,7 @@ from foldbounds.contact_map_atlas import build_atlas, audit_atlas
 
 a = build_atlas(9, max_nodes=2_000_000)
 assert audit_atlas(a)  # full independent re-enumeration
-assert a.spectrum('HHHHHHHHH') == a.spectrum('HHHHHHHHH')
+assert sum(a.spectrum('HHHHHHHHH').values()) == a.conformations
 z = a.partition('HHPPHHPHH', Fraction(2))
 p = a.event_probability('HHPPHHPHH', Fraction(2), threshold=1)
 mean, variance = a.contact_moments('HHPPHHPHH', Fraction(2))
