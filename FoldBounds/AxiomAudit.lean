@@ -23,6 +23,7 @@ import FoldBounds.MotionRobustConcordance
 import FoldBounds.MotionGNMExact
 import FoldBounds.MotionGNMTopologyRobust
 import FoldBounds.MotionGNMAdaptiveCases
+import FoldBounds.MotionGNMPrefixTree
 
 /-! Axiom audit: every headline theorem depends only on the standard axioms
 `propext`, `Classical.choice`, `Quot.sound`. -/
@@ -226,3 +227,11 @@ accepted score intervals now have a uniquely existing ground-truth response. -/
 #print axioms FoldBounds.MotionGNMAdaptiveCases.case_contact_sandwich
 #print axioms FoldBounds.MotionGNMAdaptiveCases.case_response_sandwich
 #print axioms FoldBounds.MotionGNMAdaptiveCases.all_contact_worlds_concordance
+
+/-! Variable-depth Boolean contact trees, interval refinement and concordance soundness. -/
+#print axioms FoldBounds.MotionGNMPrefixTree.pickLeaf_sound
+#print axioms FoldBounds.MotionGNMPrefixTree.leafCount_eq_splitCount_add_one
+#print axioms FoldBounds.MotionGNMPrefixTree.lowerVote_mono
+#print axioms FoldBounds.MotionGNMPrefixTree.leafLower_mono
+#print axioms FoldBounds.MotionGNMPrefixTree.intersect_valid
+#print axioms FoldBounds.MotionGNMPrefixTree.prefixTree_concordance_sound
