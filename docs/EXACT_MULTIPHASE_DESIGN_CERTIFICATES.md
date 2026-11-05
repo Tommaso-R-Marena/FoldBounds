@@ -68,7 +68,7 @@ has **exactly two distinct positive roots**, proved with the full Sturm count. T
 - B is the unique global maximizer for q>q2;
 - A and B tie at the two crossover roots; all 3,003 sequences tie at q=1.
 
-The two exact roots are isolated in rational intervals corresponding approximately to **q1=1.29287** and **q2=7.51964**, with the exact brackets produced by the demo and regression test. This is complete across **all real q>1**, not a finite temperature grid. Its statements remain model-relative and conditional on the independently audited geometry and correctly executed Python.
+The two exact roots are isolated in rational intervals corresponding approximately to **q1≈1.293014** and **q2≈7.520025**, with the exact brackets produced by the demo and regression test. This is complete across **all real q>1**, not a finite temperature grid. Its statements remain model-relative and conditional on the independently audited geometry and correctly executed Python.
 
 These results concern the full partition sum, not a biological native-structure design objective, event probability, or measured fitness.
 
