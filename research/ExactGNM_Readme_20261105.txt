@@ -24,6 +24,8 @@ Independent reproducibility archives:
   gnm_structural_robustness.json (all optional contact graph states bounded)
   scripts/gnm_independent_replay.py and gnm_independent_box_replay.py
   research/ExactGNM_Topology_UQ_20261105.md (full audit)
+  gnm_rnase_revealed_concordance.json (retrospective signed concordance
+    intervals vs real 2AAS, with a separate Python integer replay)
 
 Never treat the old RNase A failure as a success or mistake. No 1XOA targets
 were used in choosing model settings. NMR model spread is NOT physical dynamics.
