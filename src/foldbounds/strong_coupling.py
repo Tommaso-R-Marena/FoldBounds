@@ -97,17 +97,45 @@ def _validate_certificate(cert: StrongCouplingCertificate) -> None:
 
 
 def _contact_count(sequence: str, path: Path) -> int:
-    return sum(sequence[i] == "H" and sequence[j] == "H"
-               and abs(path[i][0] - path[j][0]) + abs(path[i][1] - path[j][1]) == 1
-               for i in range(len(sequence))
-               for j in range(i + 2, len(sequence)))
+    """Reconstruct HH contacts in O(n) by checking four lattice neighbors.
+
+    Path validity (unique lattice coordinates and unit steps) is checked
+    before this helper is called. Every noncovalent contact is counted
+    exactly once by restricting the partner index to j>i+1.
+    """
+    index = {xy: i for i, xy in enumerate(path)}
+    contacts = 0
+    for i, (x, y) in enumerate(path):
+        if sequence[i] != "H":
+            continue
+        for dx, dy in DIRECTIONS:
+            j = index.get((x + dx, y + dy))
+            if j is not None and j > i + 1 and sequence[j] == "H":
+                contacts += 1
+    return contacts
 
 
 def _contact_cap(sequence: str) -> int:
-    """Every noncovalent 2D lattice contact has odd chain distance >=3."""
-    return sum(sequence[i] == "H" and sequence[j] == "H"
-               for i in range(len(sequence))
-               for j in range(i + 3, len(sequence), 2))
+    """Independent O(n) upper bound from lattice bipartition and coordination.
+
+    On a square lattice, nonconsecutive contacts span odd residue index
+    differences. The number of all parity-compatible H/H pairs is
+    H_even * H_odd - number_of_adjacent_HH_pairs.
+
+    Every H has at most 2 noncovalent contact slots if it is internal,
+    and at most 3 if it is a chain endpoint (degree four minus chain
+    bonds). Each HH contact consumes two slots. Taking the smaller of
+    these two unconditional caps remains safe for any conformation.
+    """
+    h_even = sequence[::2].count("H")
+    h_odd = sequence[1::2].count("H")
+    chain_hh = sum(sequence[i] == sequence[i + 1] == "H"
+                   for i in range(len(sequence) - 1))
+    parity_cap = h_even * h_odd - chain_hh
+    h_ends = int(sequence[0] == "H") + int(sequence[-1] == "H")
+    h_interior = sequence[1:-1].count("H")
+    coordination_cap = (3 * h_ends + 2 * h_interior) // 2
+    return min(parity_cap, coordination_cap)
 
 
 @lru_cache(maxsize=16)
