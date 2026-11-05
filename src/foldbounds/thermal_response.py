@@ -19,6 +19,7 @@ from .variance_dual import (VarianceDualCertificate, maximize_relaxed_variance,
                             verify_variance_dual)
 from .monotone_spectral import (monotone_spectral_histogram,
                                 is_monotone_cone_suffix)
+from .saw_count_cap import optimal_saw_count_cap, verify_saw_count_cap
 
 if TYPE_CHECKING:
     from .lattice import Certificate
@@ -56,6 +57,7 @@ class ThermalResponseBounds:
     variance_dual: VarianceDualCertificate
     monotone_paths: int
     monotone_subtrees: int
+    saw_count_cap_enabled: bool
 
 
 @dataclass(frozen=True)
@@ -148,7 +150,8 @@ def _validate_witness(path: tuple[tuple[int, int], ...], n: int) -> None:
 def thermal_response_bounds(
         cert: Certificate, *,
         witnesses: tuple[tuple[tuple[int, int], ...], ...] = (),
-        use_monotone_spectra: bool = False
+        use_monotone_spectra: bool = False,
+        use_saw_count_cap: bool = False
 ) -> ThermalResponseBounds:
     """Check an existing frontier, then enclose Gibbs response observables.
 
@@ -174,6 +177,8 @@ def thermal_response_bounds(
 
     if type(use_monotone_spectra) is not bool:
         raise ValueError('use_monotone_spectra must be a boolean')
+    if type(use_saw_count_cap) is not bool:
+        raise ValueError('use_saw_count_cap must be a boolean')
     verified = verify_certificate(cert)
     n = len(cert.sequence)
     q = cert.q
@@ -217,6 +222,19 @@ def thermal_response_bounds(
             known_count != verified.exact_paths or
             len(unknown) != verified.bounded_subtrees):
         raise AssertionError("thermal-response tally disagrees with base verifier")
+
+    if use_saw_count_cap:
+        # Every continuation injects into a product of short rooted SAW
+        # blocks. Independent enumeration checks each factor; taking their
+        # product tightens the generic 3**remaining subtree count bound.
+        for index, (block, prefix) in enumerate(zip(unknown, unknown_paths)):
+            count_cert = optimal_saw_count_cap(n-len(prefix))
+            if not verify_saw_count_cap(count_cert):
+                raise AssertionError('SAW count certificate rejected by validator')
+            cap = count_cert.count_upper*q**block.max_contacts
+            unknown[index] = _Unknown(block.min_contacts, block.max_contacts,
+                                      min(block.mass_upper, cap))
+        raw_z_upper = z_known + sum((x.mass_upper for x in unknown), Fraction(0))
 
     extra_mass = [Fraction(0) for _ in unknown]
     seen_witnesses: set[tuple[tuple[int, int], ...]] = set()
@@ -365,4 +383,4 @@ def thermal_response_bounds(
         susceptibility_lo, susceptibility_hi, z_known,
         z_upper, support_lo, support_hi,
         known_count, len(seen_witnesses), len(unknown), prob_lo, prob_hi,
-        not unknown, dual, monotone_paths, monotone_subtrees)
+        not unknown, dual, monotone_paths, monotone_subtrees, use_saw_count_cap)
