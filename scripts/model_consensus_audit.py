@@ -8,8 +8,6 @@ scores, and whether that mutually agreed sign tracks the target NMR variance.
 import io,zipfile,json,hashlib
 from pathlib import Path
 import numpy as np
-from scipy.stats import kendalltau
-from hybrid_reference_model import rankdata
 
 STAGE1_SHA='ec077437f4bd4b17f3c4527891bada306a77aab1953794ec5b08d76ca8c86cff'
 STAGE2_SHA='4f1ea752ada45453a44ea9128b6e7a43f4070e6824062b796a27144c340dfc6c'
