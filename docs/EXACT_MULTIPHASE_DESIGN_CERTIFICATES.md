@@ -52,7 +52,23 @@ The positive partition polynomial from PR #47 is expressed in powers of `t=q-1>=
 | 5 | 792 | 2 | `HPPHPHPPHPPH` and `HPPHPPHPHPPH` (same polynomial) |
 | 6 | 924 | **1** | **`HPPHPHHPHPPH`**, strictly better for all q>1 |
 
-At n=14, k=6, an independent full-walk geometry run found 3,003 candidates reduced to **two** coefficientwise-nondominated candidates. Neither is coefficientwise dominant over the others; this is pruning, not a global-winner guarantee.
+At n=14, k=6, an independent full-walk geometry audit verified **220,375 walks**, compressed into **5,953 contact maps**. All **3,003 six-H sequences** reduce by coefficientwise dominance to just two globally relevant candidates:
+
+    A = HPPHPHPPHPHPPH: Z_A(t) = 220375 + 140328*t + 41454*t^2 + 6812*t^3 + 620*t^4 + 36*t^5 + 2*t^6
+    B = HPPHPPHHPPHPPH: Z_B(t) = 220375 + 142046*t + 35966*t^2 + 5524*t^3 + 640*t^4 + 56*t^5 + 6*t^6
+
+Every eliminated sequence is dominated by **at least one** survivor through transitivity of finite coefficientwise dominance. Thus the global maximum over all 3,003 sequences must be attained by A or B at every q>=1. The exact difference
+
+    Z_A-Z_B = t*(-1718 + 5488*t + 1288*t^2 - 20*t^3 - 20*t^4 - 4*t^5)
+
+has **exactly two distinct positive roots**, proved with the full Sturm count. This completes the **global parameter phase diagram**, not merely a pruning list:
+
+- B is the unique global maximizer for 1<q<q1;
+- A is the unique global maximizer for q1<q<q2;
+- B is the unique global maximizer for q>q2;
+- A and B tie at the two crossover roots; all 3,003 sequences tie at q=1.
+
+The two exact roots are isolated in rational intervals corresponding approximately to **q1=1.29287** and **q2=7.51964**, with the exact brackets produced by the demo and regression test. This is complete across **all real q>1**, not a finite temperature grid. Its statements remain model-relative and conditional on the independently audited geometry and correctly executed Python.
 
 These results concern the full partition sum, not a biological native-structure design objective, event probability, or measured fitness.
 
