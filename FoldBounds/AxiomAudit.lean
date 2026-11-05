@@ -24,6 +24,7 @@ import FoldBounds.MotionGNMExact
 import FoldBounds.MotionGNMTopologyRobust
 import FoldBounds.MotionGNMAdaptiveCases
 import FoldBounds.MotionGNMPrefixTree
+import FoldBounds.MotionGNMFlowCoercivity
 
 /-! Axiom audit: every headline theorem depends only on the standard axioms
 `propext`, `Classical.choice`, `Quot.sound`. -/
@@ -235,3 +236,11 @@ accepted score intervals now have a uniquely existing ground-truth response. -/
 #print axioms FoldBounds.MotionGNMPrefixTree.leafLower_mono
 #print axioms FoldBounds.MotionGNMPrefixTree.intersect_valid
 #print axioms FoldBounds.MotionGNMPrefixTree.prefixTree_concordance_sound
+
+/-! Source-only electrical-flow identity; finite coercivity and unique exact GNM response. -/
+#print axioms FoldBounds.MotionGNMFlowCoercivity.checkFlowIdentity_sound
+#print axioms FoldBounds.MotionGNMFlowCoercivity.checkFlowCertificate_sound
+#print axioms FoldBounds.MotionGNMFlowCoercivity.flow_reconstruct
+#print axioms FoldBounds.MotionGNMFlowCoercivity.flow_coercivity
+#print axioms FoldBounds.MotionGNMFlowCoercivity.flow_response_exists_unique
+#print axioms FoldBounds.MotionGNMFlowCoercivity.checkFlowResponse_sound
