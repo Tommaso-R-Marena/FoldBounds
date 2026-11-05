@@ -212,3 +212,75 @@ injection, adversarial performance against published heterogeneous
 comparison to existing HP transfer/branch-and-bound methods,
 and blinded experimental protein validation. Do not merge or
 claim real-protein predictive success based on these results alone.
+
+
+## Generalized periodicity and contact-density theorem
+
+The specialized one-P-in-11, event K>=n/2 calculation is now
+supplemented by \`src/foldbounds/cubic_general_tail.py\`.
+The generalized checker permits ANY integer period p>=2 and ANY
+exact rational contact-count density rho in (0,2), although it may
+fail closed on weak coupling or noninformative contact bounds.
+
+Take the deterministic periodic sequence with P precisely at indices
+0,p,2p,... and H elsewhere. Require macro side m to be a positive
+multiple of s=lcm(p,denominator(rho)). This conservative congruence
+restriction guarantees n=8m³ is divisible by p, and t=rho*n is
+an integer. In particular the sequence has n/p P residues, starts
+with P and ends with H.
+
+Every complete constructive Hamiltonian family member has
+
+    K_HH >= (16-32/p)m³ -12m².
+
+Because the exact finite 2×2×2 tile counts give a family of
+at least C=2*4^(m³) distinct conformations and the complete 3D
+SAW count is at most W=c8^(m³), the event A={K_HH>=rho*n}
+has adversarially robust failure-odds upper bound
+
+    F(m) = (u/(2l))*(c8/4)^(m³)
+           *q^[-8(2-rho-4/p)m³ +12m²-1].
+
+For one eligible starting side m0, define the **exact rational**
+
+    g = 8*(2-rho-4/p) - 12/m0.
+
+If g>0, the finite **integer** gate
+
+    c8^(denominator(g)) <=
+      4^(denominator(g))*q^(numerator(g))
+
+proves F(m+s)<=F(m) for EVERY eligible m>=m0 and F(m)->0
+along that progression. The proof uses the elementary positive-increment
+inequality Delta(m²)/Delta(m³)<=1/m<=1/m0 for the constant s.
+The checker additionally demands that the initial probability
+1/(1+F(m0)) meets the requested target. A failed gate is an
+**abstention**, not evidence that the event probability is low.
+
+### Additional independently checked synthetic regimes
+
+All event probabilities below are rigorously greater than 99%
+for **every** indicated cube side in the infinite progression,
+assuming arbitrary per-state correction factors in [1/2,2]:
+
+| H/P composition | q | Contact-count event | Eligible macro sides m | First n | Guaranteed K_HH for family members |
+|---|---:|---|---|---:|---:|
+| 80% H / 20% P (p=5) | 5 | K>=n/4 | 20, 40, 60, ... | 64,000 | 72,000 |
+| 75% H / 25% P (p=4) | 8 | K>=n/4 | 24, 28, 32, ... | 110,592 | 103,680 |
+
+The first example uses physical 3D box side 40 and 12,800 polar residues;
+the second uses physical side 48 and 27,648 polar residues. Both
+initial failure-odds upper bounds are <10^-9.
+
+The new regression suite independently compares the 64,000-residue
+closed-form tail result to the full **finite-state cube-family
+transfer** result on the identical sequence and event, verifying
+that the finite method finds at least the analytical family count,
+the analytical minimum HH score, and no greater universal
+non-event count cap.
+
+**Interpretation:** these extensions show scalability to less
+extremely hydrophobic *synthetic* mixtures. They do not establish
+biological importance at q=5 or q=8. For natural proteins, H/P
+coarse-graining is inadequate, and no experimental benchmark or
+realistic temperature mapping has been supplied.
