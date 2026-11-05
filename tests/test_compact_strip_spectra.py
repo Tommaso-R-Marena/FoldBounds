@@ -158,6 +158,10 @@ def test_all_H_compact_maximal_contact_64():
     assert 49 == max_contacts
     b=verify_compact_strip_certificate(cert,Fraction(10))
     assert b.partition_lower == 52920 * 10**49
+    reflected=verify_compact_strip_certificate(build_compact_strip_certificate(
+        'H'*n,height=8,include_reflection=True),Fraction(10))
+    assert reflected.witnessed_paths == 105840
+    assert reflected.partition_lower == 2*b.partition_lower
     assert b.event_lower == b.partition_lower
 
 
@@ -192,7 +196,7 @@ def test_hybrid_improves_existing_model_relative_lower_bound():
     pdsaw=sum(c*q**k for k,c in partially_directed_spectrum('H'*n))
     combined=compact_plus_directed_mass('H'*n,Fraction(q),height=8)
     assert combined.partition_lower > 40*pdsaw
-    assert combined.partition_lower == pdsaw + 52920*q**49
+    assert combined.partition_lower == pdsaw + 105840*q**49
 
 
 def test_invalid_inputs_and_tampering_rejected():
@@ -227,7 +231,7 @@ def test_exact_continuum_strong_coupling_certificate():
     from foldbounds.partial_directed import partially_directed_spectrum
     cert=build_tail_dominance_certificate('H'*64,height=8,q_min=Fraction(10))
     assert verify_tail_dominance_certificate(cert)
-    assert cert.ratio_lower > 40
+    assert cert.ratio_lower > 80
     for q in (Fraction(10),Fraction(13,2)*2,Fraction(20),Fraction(100),Fraction(1000)):
         pdsaw=sum((c*q**k for k,c in partially_directed_spectrum('H'*64)),Fraction(0))
         hybrid=compact_plus_directed_mass('H'*64,q,height=8)
@@ -236,3 +240,31 @@ def test_exact_continuum_strong_coupling_certificate():
         verify_tail_dominance_certificate(replace(cert,ratio_lower=cert.ratio_lower+1))
     with pytest.raises(ValueError):
         build_tail_dominance_certificate('H'*16,height=8,q_min=Fraction(10))
+
+
+def test_mirror_produces_exact_disjoint_heterogeneous_subset():
+    # An independent, explicit coordinate reflection with root-edge and
+    # contact checks (not just algebraically multiplying a count).
+    h=3
+    ps=independent_tile_paths(h)
+    n=2*h*4+2
+    seq=('HPHHPHHP'*4)[:n]
+    for disjoint in (False,True):
+        original=brute_tiled_spectrum(seq,h,disjoint)
+        mirrored=Counter()
+        for variants in product(ps,repeat=2):
+            if variants[0][1] != (1,0):continue
+            path=construct_path(variants,h,2)
+            moves={(b[0]-a[0],b[1]-a[1]) for a,b in zip(path,path[1:])}
+            if disjoint and not {(-1,0),(0,1),(0,-1)}.issubset(moves):continue
+            reflected=tuple((x,-y) for x,y in path)
+            assert reflected[:2]==((0,0),(1,0))
+            assert len(set(reflected))==n
+            assert reflected!=path
+            assert naive_score(seq,reflected)==naive_score(seq,path)
+            mirrored[naive_score(seq,reflected)]+=1
+        assert dict(mirrored)==original
+        cert=build_compact_strip_certificate(seq,height=h,
+             disjoint_from_partially_directed=disjoint, include_reflection=True)
+        assert dict(cert.spectrum)=={k:2*v for k,v in original.items()}
+        verify_compact_strip_certificate(cert,Fraction(7,3))
