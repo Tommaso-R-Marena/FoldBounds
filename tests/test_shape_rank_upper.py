@@ -78,3 +78,46 @@ def test_parity_sparse_patterns_and_higher_thresholds():
             assert b.partition_upper>=z
             assert b.event_upper>=e
             assert b.complement_upper>=z-e
+
+
+def test_separate_exhaustive_relaxed_trajectory_histograms():
+    """Independently enumerate finite-memory *invalid* walks, not only true SAWs."""
+    from collections import Counter
+    from foldbounds.shape_rank_upper import ShapeClass
+    moves=((1,0),(0,1),(-1,0),(0,-1))
+    for n in range(3,10):
+        true_walks=walks(n)
+        for seq in ('H'*n,('HPPH'*n)[:n]):
+            potential=sum(seq[i]==seq[j]=='H' and (j-i)%2==1
+                          for i in range(n) for j in range(i+3,n))
+            for prefix in (ROOT,true_walks[len(true_walks)//3][:min(5,n)]):
+                used_prefix=set(prefix)
+                fixed=0
+                potential_suffix=0
+                for i in range(n):
+                    if seq[i]!='H':continue
+                    for j in range(i+3,n,2):
+                        if seq[j]!='H':continue
+                        if j>=len(prefix):potential_suffix+=1
+                        elif (abs(prefix[i][0]-prefix[j][0])+
+                              abs(prefix[i][1]-prefix[j][1])==1):fixed+=1
+                for memory in (2,4):
+                    hist=Counter()
+                    def visit(path):
+                        if len(path)==n:
+                            xs=[p[0] for p in path];ys=[p[1] for p in path]
+                            w=max(xs)-min(xs)+1;h=max(ys)-min(ys)+1
+                            cap=min(fixed+potential_suffix,max(0,n+1-w-h))
+                            if w*h>=n and cap>=fixed:
+                                hist[cap]+=1
+                            return
+                        x,y=path[-1]
+                        for dx,dy in moves:
+                            dest=(x+dx,y+dy)
+                            if dest in used_prefix or dest in path[-memory:]:
+                                continue
+                            visit(path+(dest,))
+                    visit(prefix)
+                    expected=tuple(ShapeClass(k,hist[k]) for k in sorted(hist,reverse=True))
+                    got=build_shape_rank_certificate(seq,prefix,suffix_memory=memory)
+                    assert got.histogram==expected
