@@ -196,3 +196,28 @@ def test_forged_native_witness_and_invalid_q(executables,tmp_path):
             CheckedNativeGap(SEQUENCE,11,2032,2,5**14).lower_native_probability(bad)
     with pytest.raises(ValueError):
         contact_score(SEQUENCE,tuple([(0,0,0)]*16))
+
+
+def test_small_positive_native_gap_certificate_and_all_q_bound(executables,tmp_path):
+    """Fast end-to-end positive gap2 proof, always exercised in hosted CI."""
+    producer, checker = executables
+    s = "H"*8
+    atlas = build_cubic_atlas(8)
+    assert atlas.spectrum(s)[5] == 24
+    assert 4 not in atlas.spectrum(s)
+    excited_path = (
+        (0,0,0),(1,0,0),(2,0,0),(3,0,0),
+        (3,1,0),(2,1,0),(1,1,0),(0,1,0),
+    )
+    assert contact_score(s, excited_path) == 3
+    files = tuple(generate(producer,tmp_path/f"small_t{t}.cut",s,t)
+                  for t in (4,5,6))
+    proof = certify_native_gap(files,checker,excited_path)
+    assert (proof.ground_contacts,proof.ground_conformations,proof.gap) == (5,24,2)
+    assert proof.max_total_conformations == 5**6
+    assert proof.upper_non_ground_envelopes[0]
+    for q in (Fraction(1),Fraction(3,2),Fraction(2),Fraction(100)):
+        z=atlas.partition(s,q)
+        actual = 24*q**5/z
+        assert proof.lower_native_probability(q) <= actual
+    assert proof.minimum_integer_weight(Fraction(9,10)) >= 1
