@@ -1,0 +1,58 @@
+name: Local 3D rewiring structural-confidence audit
+on:
+  pull_request:
+    paths:
+      - 'FoldBounds/LocalRewireConfidence.lean'
+      - 'src/foldbounds/local_rewire_confidence.py'
+      - 'tests/test_local_rewire_confidence.py'
+      - '.github/workflows/local-rewire-confidence.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  local-rewire-confidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Source-level Lean assurance scan
+        run: python3 scripts/check_lean_sources.py
+      - name: Build pinned Lean and Mathlib
+        uses: leanprover/lean-action@v1
+      - name: Kernel-check generic microstate confidence theorem
+        run: lake env lean FoldBounds/LocalRewireConfidence.lean | tee /tmp/local-rewire-axioms.log
+      - name: Fail-closed axiom dependency audit
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          log=Path('/tmp/local-rewire-axioms.log').read_text()
+          declarations={
+            'FoldBounds.LocalRewireConfidence.confidence_ceiling',
+            'FoldBounds.LocalRewireConfidence.isoenergetic_ceiling',
+            'FoldBounds.LocalRewireConfidence.excludes_majority',
+          }
+          observed={}
+          for line in log.splitlines():
+            match=re.match(r"^'(FoldBounds\.LocalRewireConfidence\.[A-Za-z0-9_]+)' (.*)$",line.strip())
+            if not match: continue
+            name,report=match.groups()
+            if name in observed: raise SystemExit('duplicate report: '+name)
+            observed[name]=report
+            if report.startswith('depends on axioms:'):
+              actual=set(re.findall(r'[A-Za-z_][A-Za-z0-9_.]*',
+                                    report.split('depends on axioms:',1)[1]))
+              forbidden=actual-{'Classical.choice','Quot.sound','propext'}
+              if forbidden: raise SystemExit('forbidden axioms '+str(sorted(forbidden)))
+            elif report != 'does not depend on any axioms':
+              raise SystemExit('invalid axiom output: '+report)
+          if set(observed)!=declarations:
+            raise SystemExit('missing or unexpected reports: '+str(set(observed)^declarations))
+          print('Local confidence: three Lean theorems, only standard axioms')
+          PY
+      - name: Run independent cubic rewiring and adversarial oracle
+        run: |
+          python3 -m pip install -e '.[test]'
+          python3 -m pytest -q tests/test_local_rewire_confidence.py
+      - name: Reproduce synthetic structural confidence ceilings
+        run: python3 experiments/local_rewire_confidence_demo.py
