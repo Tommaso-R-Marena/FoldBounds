@@ -5,8 +5,10 @@ on:
       - 'FoldBounds/CubicFamilyMass.lean'
       - 'src/foldbounds/cubic_tiling.py'
       - 'src/foldbounds/cubic_density_tail.py'
+      - 'src/foldbounds/cubic_general_tail.py'
       - 'tests/test_cubic_tiling.py'
       - 'tests/test_cubic_density_tail.py'
+      - 'tests/test_cubic_general_tail.py'
       - '.github/workflows/cubic-family-lean.yml'
   workflow_dispatch:
 permissions:
@@ -61,4 +63,4 @@ jobs:
       - name: Independently verify 3D construction and adversarial bounds
         run: |
           python3 -m pip install -e '.[test]'
-          python3 -m pytest -q tests/test_cubic_tiling.py tests/test_cubic_density_tail.py
+          python3 -m pytest -q tests/test_cubic_tiling.py tests/test_cubic_density_tail.py tests/test_cubic_general_tail.py
