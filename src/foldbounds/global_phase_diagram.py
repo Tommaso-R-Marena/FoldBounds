@@ -36,6 +36,20 @@ def certify_global_phase_diagram(landscape, h_count, *,
         raise ValueError("width must be a positive exact Fraction")
     dom = certify_fixed_composition_dominance(landscape, h_count)
     candidates = dom.coefficientwise_nondominated
+    # Recheck that the *final* candidates cover every sequence directly.
+    # This extra O(binomial(n,k)*candidate_count) pass does not rely on the
+    # correctness of the partial-order pruning algorithm's transitivity.
+    from itertools import combinations
+    from .fixed_composition_dominance import sequence_from_mask
+    winner_vectors = [landscape.polynomial(s) for s in candidates]
+    for positions in combinations(range(landscape.length), h_count):
+        mask = sum(1 << i for i in positions)
+        row = landscape.polynomial(sequence_from_mask(mask, landscape.length))
+        if not any(all(
+            (w[j] if j < len(w) else 0) >= (row[j] if j < len(row) else 0)
+            for j in range(max(len(w), len(row)))
+        ) for w in winner_vectors):
+            raise ArithmeticError("survivor dominance does not cover every sequence")
     if len(candidates) == 1:
         return GlobalPhaseDiagram(
             landscape.length, h_count, dom.sequences_checked,
