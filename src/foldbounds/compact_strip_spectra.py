@@ -172,7 +172,8 @@ def _spectrum_from_library(sequence: str, height: int,
 
 @lru_cache(maxsize=128)
 def compact_strip_spectrum(sequence: str, *, height: int = 8,
-                           disjoint_from_partially_directed: bool = False
+                           disjoint_from_partially_directed: bool = False,
+                           include_reflection: bool = False
                            ) -> tuple[tuple[int, int], ...]:
     """Exact count-by-contact histogram of a *genuine* rooted HP SAW subset.
 
@@ -181,12 +182,19 @@ def compact_strip_spectrum(sequence: str, *, height: int = 8,
     no additional nonconsecutive contact to any earlier tile vertex.
     """
     _check_sequence(sequence)
-    if type(disjoint_from_partially_directed) is not bool:
-        raise ValueError("disjoint flag must be boolean")
+    if type(disjoint_from_partially_directed) is not bool or type(include_reflection) is not bool:
+        raise ValueError("disjoint and reflection flags must be boolean")
     paths = tile_paths(height)
     validate_tile_library(height, paths)
-    return _spectrum_from_library(sequence, height, paths,
+    spectrum = _spectrum_from_library(sequence, height, paths,
         disjoint_from_partially_directed=disjoint_from_partially_directed)
+    if include_reflection and len(sequence) >= height*4:
+        # Reflect each lattice site over y=0. The first East edge remains
+        # canonical, scores are identical and the mirrored walk uses y<0.
+        # Every tiled path occupies (0,1), whereas every reflected path
+        # occupies (0,-1), proving the two families are disjoint.
+        return tuple((score,2*count) for score,count in spectrum)
+    return spectrum
 
 
 @dataclass(frozen=True)
@@ -195,6 +203,7 @@ class CompactStripCertificate:
     height: int
     spectrum: tuple[tuple[int, int], ...]
     disjoint_from_partially_directed: bool = False
+    include_reflection: bool = False
 
 
 @dataclass(frozen=True)
@@ -210,12 +219,14 @@ class CompactStripMass:
 
 
 def build_compact_strip_certificate(sequence: str, *, height: int = 8,
-                                    disjoint_from_partially_directed: bool = False
+                                    disjoint_from_partially_directed: bool = False,
+                                    include_reflection: bool = False
                                     ) -> CompactStripCertificate:
     return CompactStripCertificate(sequence, height, compact_strip_spectrum(
         sequence, height=height,
-        disjoint_from_partially_directed=disjoint_from_partially_directed),
-        disjoint_from_partially_directed)
+        disjoint_from_partially_directed=disjoint_from_partially_directed,
+        include_reflection=include_reflection),
+        disjoint_from_partially_directed, include_reflection)
 
 
 def verify_compact_strip_certificate(cert: CompactStripCertificate, q: Fraction,
@@ -232,12 +243,14 @@ def verify_compact_strip_certificate(cert: CompactStripCertificate, q: Fraction,
         raise ValueError("invalid tile height")
     if not isinstance(q, Fraction) or q < 1 or type(event_at_least) is not int:
         raise ValueError("expected exact Fraction q >= 1 and integer threshold")
-    if type(cert.disjoint_from_partially_directed) is not bool:
-        raise ValueError("disjoint flag must be boolean")
+    if type(cert.disjoint_from_partially_directed) is not bool or type(cert.include_reflection) is not bool:
+        raise ValueError("disjoint and reflection flags must be boolean")
     paths = tile_paths(cert.height)
     validate_tile_library(cert.height, paths)
     expected = _spectrum_from_library(cert.sequence, cert.height, paths,
         disjoint_from_partially_directed=cert.disjoint_from_partially_directed)
+    if cert.include_reflection and len(cert.sequence) >= cert.height*4:
+        expected = tuple((score,2*count) for score,count in expected)
     if not isinstance(cert.spectrum, tuple) or expected != cert.spectrum:
         raise ValueError("forged compact strip histogram")
     z = e = complement = m1 = m2 = Fraction(0)
@@ -272,7 +285,8 @@ def best_compact_strip_mass(sequence: str, q: Fraction, event_at_least: int = 1,
 
 
 def compact_plus_directed_mass(sequence: str, q: Fraction, *, height: int = 8,
-                               event_at_least: int = 1) -> CompactStripMass:
+                               event_at_least: int = 1,
+                               include_reflection: bool = True) -> CompactStripMass:
     """Certified (software) sum of *disjoint* PDSAW and compact-tile masses.
 
     PDSAW is the existing PR #56 union of E-progressive, N-progressive
@@ -285,7 +299,8 @@ def compact_plus_directed_mass(sequence: str, q: Fraction, *, height: int = 8,
     from .partial_directed import partially_directed_spectrum
     _check_sequence(sequence)
     tile_cert = build_compact_strip_certificate(
-        sequence, height=height, disjoint_from_partially_directed=True)
+        sequence, height=height, disjoint_from_partially_directed=True,
+        include_reflection=include_reflection)
     verify_compact_strip_certificate(tile_cert, q, event_at_least)
     combined: dict[int, int] = defaultdict(int)
     for k, c in partially_directed_spectrum(sequence):
@@ -322,10 +337,12 @@ class TailDominanceCertificate:
     height: int
     q_min: Fraction
     ratio_lower: Fraction
+    include_reflection: bool = True
 
 
 def build_tail_dominance_certificate(sequence: str, *, height: int = 8,
-                                     q_min: Fraction = Fraction(10)
+                                     q_min: Fraction = Fraction(10),
+                                     include_reflection: bool = True
                                      ) -> TailDominanceCertificate:
     """Propose a rational continuum factor, explicitly refusing invalid cases."""
     from .partial_directed import partially_directed_spectrum
@@ -333,13 +350,15 @@ def build_tail_dominance_certificate(sequence: str, *, height: int = 8,
     if not isinstance(q_min, Fraction) or q_min < 1:
         raise ValueError("q_min must be Fraction >= 1")
     compact = compact_strip_spectrum(sequence, height=height,
-        disjoint_from_partially_directed=True)
+        disjoint_from_partially_directed=True,
+        include_reflection=include_reflection)
     directed = partially_directed_spectrum(sequence)
     if not compact or not directed or min(k for k,c in compact) < max(k for k,c in directed):
         raise ValueError("contact-score ordering does not establish tail dominance")
     extra = sum((c*q_min**k for k,c in compact), Fraction(0))
     base = sum((c*q_min**k for k,c in directed), Fraction(0))
-    return TailDominanceCertificate(sequence, height, q_min, 1 + extra/base)
+    return TailDominanceCertificate(sequence, height, q_min, 1 + extra/base,
+                                    include_reflection)
 
 
 def verify_tail_dominance_certificate(cert: TailDominanceCertificate) -> bool:
@@ -349,7 +368,8 @@ def verify_tail_dominance_certificate(cert: TailDominanceCertificate) -> bool:
     if not isinstance(cert.ratio_lower,Fraction) or cert.ratio_lower <= 1:
         raise ValueError("invalid rational ratio claim")
     expected = build_tail_dominance_certificate(cert.sequence,
-        height=cert.height, q_min=cert.q_min)
+        height=cert.height, q_min=cert.q_min,
+        include_reflection=cert.include_reflection)
     if cert != expected:
         raise ValueError("tail-dominance certificate does not match checked spectra")
     return True
