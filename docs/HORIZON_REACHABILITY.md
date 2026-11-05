@@ -47,3 +47,15 @@ Optional API: `thermal_response_bounds(cert, use_saw_count_cap=True, use_geometr
 5. Establish a trusted parser/refinement bridge from Python certificate serialization to Lean-checkable propositions.
 
 Existing Monte Carlo, structural benchmarks, and actual protein folding predictions are outside the result's trust boundary.
+
+## Event-conditioned upper accounting (additive extension)
+
+The integration also retains the horizon checker's **separate event and
+complement** mass upper bounds. When independently validated whole-walk
+witnesses or a directed-spectrum subset are credited as known mass, their
+exact event/complement contributions are removed from the corresponding
+upper caps exactly once. The surviving residual class caps are intersected
+with the residual total-mass cap before tightening the probability interval.
+This prevents the common error of treating a witness as both known mass and
+unknown event/complement mass. Existing variance certificates remain sound but
+are not yet optimized with these additional class constraints.
