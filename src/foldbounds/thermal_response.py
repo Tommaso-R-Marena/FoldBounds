@@ -23,6 +23,7 @@ from .saw_count_cap import optimal_saw_count_cap, verify_saw_count_cap
 from .partial_directed import partially_directed_spectrum, is_partially_directed_path
 from .isoperimetric import prefix_contact_cap
 from .horizon_certificate import select_best_horizon_certificate, verify_horizon_certificate
+from .shape_rank_upper import build_shape_rank_certificate, verify_shape_rank_certificate
 
 if TYPE_CHECKING:
     from .lattice import Certificate
@@ -65,6 +66,7 @@ class ThermalResponseBounds:
     partially_directed_subtrees: int
     geometric_contact_cap_enabled: bool
     horizon_steps: int = 0
+    shape_memory: int = 0
 
 
 @dataclass(frozen=True)
@@ -163,7 +165,8 @@ def thermal_response_bounds(
         use_saw_count_cap: bool = False,
         use_partially_directed_spectra: bool = False,
         use_geometric_contact_cap: bool = False,
-        horizon_steps: int = 0
+        horizon_steps: int = 0,
+        shape_memory: int = 0
 ) -> ThermalResponseBounds:
     """Check an existing frontier, then enclose Gibbs response observables.
 
@@ -199,6 +202,8 @@ def thermal_response_bounds(
         raise ValueError("use_geometric_contact_cap must be a boolean")
     if type(horizon_steps) is not int or not 0 <= horizon_steps <= 10:
         raise ValueError("horizon_steps must be an integer between 0 and 10")
+    if type(shape_memory) is not int or shape_memory not in (0, 2, 3, 4, 5, 6, 7):
+        raise ValueError("shape_memory must be 0 (off) or 2..7")
     verified = verify_certificate(cert)
     n = len(cert.sequence)
     q = cert.q
@@ -280,6 +285,29 @@ def thermal_response_bounds(
                 block.min_contacts, block.max_contacts,
                 min(block.mass_upper, checked.partition_upper),
                 checked.event_upper, checked.complement_upper)
+        raw_z_upper = z_known + sum(
+            (block.mass_upper for block in unknown), Fraction(0))
+
+    if shape_memory:
+        # Relaxed walks are a SUPERSET of genuine completions, but each is
+        # scored only by its own bounding box. A separately checked global
+        # SAW count cap limits how many candidate weights can be selected.
+        # Event/complement class caps are retained for later exact witness
+        # subtraction; no independence between energy and shape is assumed.
+        for index, (block, prefix) in enumerate(zip(unknown, unknown_paths)):
+            candidate = build_shape_rank_certificate(
+                cert.sequence, prefix, suffix_memory=shape_memory)
+            checked = verify_shape_rank_certificate(candidate, q, t)
+            event_cap = min(
+                block.event_mass_upper if block.event_mass_upper is not None
+                else block.mass_upper, checked.event_upper)
+            comp_cap = min(
+                block.complement_mass_upper if block.complement_mass_upper is not None
+                else block.mass_upper, checked.complement_upper)
+            unknown[index] = _Unknown(
+                block.min_contacts, block.max_contacts,
+                min(block.mass_upper, checked.partition_upper),
+                event_cap, comp_cap)
         raw_z_upper = z_known + sum(
             (block.mass_upper for block in unknown), Fraction(0))
 
@@ -473,4 +501,4 @@ def thermal_response_bounds(
         known_count, len(seen_witnesses), len(unknown), prob_lo, prob_hi,
         not unknown, dual, monotone_paths, monotone_subtrees, use_saw_count_cap,
         directed_paths, directed_subtrees, use_geometric_contact_cap,
-        horizon_steps)
+        horizon_steps, shape_memory)
