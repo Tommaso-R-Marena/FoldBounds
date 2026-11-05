@@ -21,14 +21,14 @@ private def lineInverse : Matrix (Fin 2) (Fin 2) ℚ :=
 -- Two unit contacts, 0--1--2.  Ground vertex 2; resistance(0,2)=2.
 example : checkExactGNM (2 : Fin 3) lineEdges lineCoords
     1 (canonicalPair 0 2) lineInverse = some 2 := by
-  decide
+  native_decide
 
 -- Omitted last contact must be rejected even with a plausible inverse.
 private def incompleteEdges : Fin 1 → Spring 3 := fun _ => canonicalPair 0 1
 
 example : checkExactGNM (2 : Fin 3) incompleteEdges lineCoords
     1 (canonicalPair 0 2) lineInverse = none := by
-  decide
+  native_decide
 
 -- Wrong inverse must be rejected even on a complete contact network.
 private def wrongInverse : Matrix (Fin 2) (Fin 2) ℚ :=
@@ -36,6 +36,6 @@ private def wrongInverse : Matrix (Fin 2) (Fin 2) ℚ :=
 
 example : checkExactGNM (2 : Fin 3) lineEdges lineCoords
     1 (canonicalPair 0 2) wrongInverse = none := by
-  decide
+  native_decide
 
 end FoldBounds.MotionGNMExactTests
