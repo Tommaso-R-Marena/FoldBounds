@@ -133,8 +133,8 @@ def _validate(model: StructuralModel) -> dict[Point, int]:
         raise ValueError("pair_weights must be an explicit mapping")
     alphabet = sorted(set(seq))
     expected = {_pair(a, b) for a, b in product(alphabet, repeat=2)}
-    if set(model.pair_weights) != expected:
-        raise ValueError("pair_weights must explicitly cover every unordered pair")
+    if not expected.issubset(set(model.pair_weights)):
+        raise ValueError("pair_weights must explicitly cover every unordered pair of sequence types")
     if any(not isinstance(v, Fraction) or v <= 0
            for v in model.pair_weights.values()):
         raise ValueError("pair weights must be positive exact Fractions")
