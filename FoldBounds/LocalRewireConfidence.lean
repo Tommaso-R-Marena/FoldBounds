@@ -52,7 +52,9 @@ theorem confidence_ceiling
         W * (hi + lo * (S - 1)) := by ring
     rw [hden]
     field_simp [ne_of_gt hW, ne_of_gt hD]
-  exact hScaled.trans_eq hcancel
+  calc
+    T / (T + O) ≤ (hi * W) / (hi * W + lo * W * (S - 1)) := hScaled
+    _ = hi / (hi + lo * (S - 1)) := hcancel
 
 /-- Equal-energy alternatives are the special case S=D with no
 microscopic correction uncertainty. The cap 1/D is independent of
@@ -66,7 +68,7 @@ theorem isoenergetic_ceiling
   have h := confidence_ceiling hT hW (show (0:ℚ)<1 by norm_num)
       (show (0:ℚ)<1 by norm_num) hD (by simpa using hTarget)
       (by simpa using hOther)
-  simpa using h
+  simpa [show (1 : ℚ) + (D - 1) = D by ring] using h
 
 /-- A model-independent strict no-majority test. -/
 theorem excludes_majority
