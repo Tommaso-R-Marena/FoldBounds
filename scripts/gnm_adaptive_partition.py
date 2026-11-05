@@ -109,7 +109,6 @@ def make_certificate(stage1_zip,stage2_zip,output_path,epsilon=EPSILON,split_cou
     if type(split_count) is not int or not 0<=split_count<=N_SPLITS:
         raise ValueError('ABSTAIN: invalid split count')
     arrays,sha_npz=g.open_sealed_stage1(stage1_zip)
-    obs=frozen_target(arrays,stage2_zip)
     coords=arrays['reference_coords'];n=len(coords)
     xi,xj=arrays['pair_i'],arrays['pair_j'];x,pairs=g._validate_inputs(coords,xi,xj)
     if len(pairs)!=2614 or n!=124:raise ValueError('ABSTAIN: unexpected source dimensions')
@@ -119,6 +118,10 @@ def make_certificate(stage1_zip,stage2_zip,output_path,epsilon=EPSILON,split_cou
     root,B,depth,parent=g.choose_tree(graph)
     selected,importance=select_split_edges(coords,fixed,optional,root,pairs,split_count)
     if len(set(selected))!=split_count:raise AssertionError('Bad split uniqueness')
+    # Procedural anti-leakage gate: finalize the reference-only split policy
+    # BEFORE opening any target NMR archive (even for this retrospective test).
+    print('FROZEN SOURCE-ONLY CONTACT SPLITS', [optional[k] for k in selected], flush=True)
+    obs=frozen_target(arrays,stage2_zip)
     remaining=[e for k,e in enumerate(optional) if k not in selected]
     # Every low-graph is (certain+remaining) plus a subset of selected edges.
     # Every high-graph is certain plus that subset. Compute the two source-
@@ -163,7 +166,7 @@ def make_certificate(stage1_zip,stage2_zip,output_path,epsilon=EPSILON,split_cou
          'n_residues':n,'n_score_pairs':len(pairs),
          'always_on':len(fixed),'always_off':len(off),'optional_edges':len(optional),
          'root':root,'tree_parent':parent,'tree_B':B,
-         'Q':Q,'inverse_proposal_policy':inverse_policy,'selected_optional_indices':selected,'selected_edges':[list(optional[k]) for k in selected],
+         'Q':Q,'selected_optional_indices':selected,'selected_edges':[list(optional[k]) for k in selected],
          'selection_importances':importance,
          'method':'all 2^k selected-contact cases, each with exact-integer endpoint certificates; every other optional contact is universally quantified via Rayleigh monotonicity',
          'lower_concordance':str(lower_global),'upper_concordance':str(upper_global),
@@ -173,6 +176,8 @@ def make_certificate(stage1_zip,stage2_zip,output_path,epsilon=EPSILON,split_cou
             'Coordinate boxes are hypothetical, not measurement-error distributions',
             'The target NMR conformers do not sample a physical equilibrium trajectory',
             'Lean proof of general inequalities is separate from Python-specific byte decoding']}
+    if inverse_policy!='direct':
+        ret['inverse_proposal_policy']=inverse_policy
     path=Path(output_path);path.parent.mkdir(parents=True,exist_ok=True)
     path.write_text(json.dumps(ret,separators=(',',':'),sort_keys=True)+'\n')
     print('SOURCE-ONLY SPLIT EDGES',ret['selected_edges'])
