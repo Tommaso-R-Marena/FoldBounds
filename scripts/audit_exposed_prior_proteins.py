@@ -8,7 +8,7 @@ from pathlib import Path
 from hashlib import sha256
 import zipfile,io,json
 import numpy as np
-from scipy.stats import spearmanr
+from hybrid_reference_model import rankdata
 from hybrid_reference_model import frozen_methods
 
 ARCHIVE_SHA='400dd9a242c1f34c71781f50079ad87f8a394eb03b3fc309aa71736aa2595923'
@@ -40,7 +40,7 @@ def evaluate(archive):
                           'packing_inverse','reference_distance','sequence_distance']:
                     x=methods[m]; target=f['prediction_'+m]
                     if np.max(abs(x-target))>1e-9:raise AssertionError('Old baseline changed: '+m)
-                scores={m:float(spearmanr(x[keep],observed).statistic)
+                scores={m:float(np.corrcoef(rankdata(x[keep]),rankdata(observed))[0,1])
                         for m,x in methods.items()}
                 best_old=max(scores[x] for x in ['GNM_resistance','ANM_weighted_inverse_square',
                           'ANM_ridge','packing_inverse','reference_distance','sequence_distance'])
