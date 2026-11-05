@@ -1,0 +1,38 @@
+name: FoldBounds exact GNM and topology robustness
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  gnm-math:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Block proof holes and custom axioms
+        run: python3 scripts/check_lean_sources.py
+      - name: Compile Lean/Mathlib with pinned toolchain
+        uses: leanprover/lean-action@v1
+      - name: Compile grounded-GNM and topology theorems
+        run: |
+          lake env lean FoldBounds/MotionGNMExact.lean
+          lake env lean FoldBounds/MotionGNMExactTests.lean
+          lake env lean FoldBounds/MotionGNMTopologyRobust.lean
+      - name: Full axiom inventory audit (not a subset)
+        run: |
+          lake env lean FoldBounds/AxiomAudit.lean | tee /tmp/foldbounds-gnm-audit.log
+          python3 scripts/check_lean_sources.py /tmp/foldbounds-gnm-audit.log
+  gnm-python:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install numerical testing requirements
+        run: python3 -m pip install --disable-pip-version-check numpy sympy pytest
+      - name: Exact symbolic cross-checks, malicious inputs, blind PyMOL mock
+        run: |
+          python3 -m pytest -q scripts/test_gnm_exact_certificates.py scripts/test_gnm_topology_boxes.py scripts/test_hybrid_and_blind_stage.py
+      - name: Syntax-check production scripts
+        run: |
+          python3 -m py_compile scripts/gnm_exact_certificates.py scripts/gnm_independent_replay.py scripts/gnm_topology_boxes.py scripts/hybrid_reference_model.py scripts/fb_thioredoxin_stage1.py
