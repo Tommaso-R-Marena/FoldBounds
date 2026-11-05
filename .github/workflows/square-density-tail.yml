@@ -1,0 +1,29 @@
+name: Square-density tail algebra (Lean kernel)
+on:
+  pull_request:
+    paths:
+      - 'FoldBounds/SquareDensityTail.lean'
+      - 'src/foldbounds/square_density.py'
+      - 'tests/test_square_density.py'
+      - '.github/workflows/square-density-tail.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  square-density-lean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scan all Lean source for proof bypasses
+        run: python3 scripts/check_lean_sources.py
+      - name: Build pinned Lean and Mathlib
+        uses: leanprover/lean-action@v1
+      - name: Kernel-check generic infinite-tail population theorem
+        run: lake env lean FoldBounds/SquareDensityTail.lean | tee /tmp/square-density-axioms.log
+      - name: Audit printed theorem dependencies
+        run: python3 scripts/check_lean_sources.py /tmp/square-density-axioms.log
+      - name: Run independent Python oracle tests
+        run: |
+          python3 -m pip install -e '.[test]'
+          python3 -m pytest -q tests/test_square_density.py
