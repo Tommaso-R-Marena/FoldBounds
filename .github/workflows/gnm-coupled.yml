@@ -31,5 +31,5 @@ jobs:
         run: python3 -m pip install --disable-pip-version-check numpy sympy pytest
       - name: Compile and test independent contract
         run: |
-          python3 -m py_compile scripts/gnm_coupled_producer.py scripts/gnm_coupled_independent_replay.py
-          python3 -m pytest -q scripts/test_gnm_coupled_cone.py
+          python3 -m py_compile scripts/gnm_coupled_producer.py scripts/gnm_coupled_independent_replay.py scripts/gnm_coupled_crossprotein.py
+          python3 -m pytest -q scripts/test_gnm_coupled_cone.py scripts/test_gnm_coupled_crossprotein.py
