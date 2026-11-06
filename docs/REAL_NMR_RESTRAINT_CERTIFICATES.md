@@ -82,3 +82,45 @@ However, if the restraint graph has C connected components, the components can b
 The observed subgraphs contain many cycles; they are **not** mostly trees. Crucially, the no-go concerns only the carefully selected **unambiguous atom-specific NOE subset**, not the entire protein structure determination. Chemical covalent bonds, angle constraints, chirality, excluded ambiguous NOEs, steric constraints and additional experiments can couple these components and remove the demonstrated translation freedom. No biological claim of intrinsic protein nonuniqueness follows.
 
 Reproduce with `python -m pytest tests/test_noe_identifiability.py -q`.
+
+
+## Positive source-only consequence: 469 new conditional atom-pair proximity bounds
+
+A separate path-certificate module uses only converted NEF *upper limits*, never PDB
+coordinates, to derive further upper bounds. For any restraint path
+`x=v0, v1, ..., vk=y`, the Euclidean triangle inequality establishes
+
+    distance(x,y) <= sum_{j=0}^{k-1} upper_limit(v_j,v_{j+1}).
+
+The producer performs bounded Dijkstra search over the included exact-atom
+restraint graph. A **separate checker** replays each proposed path by verifying
+its ordered atom identities, source restraint IDs, source upper limits,
+integer sum, <=8000 milliangstrom cutoff and absence of a directly measured
+pair. Consequently a fault in shortest-path optimization cannot silently
+produce an invalid certificate.
+
+On the frozen source-pinned atom-specific subset:
+
+| Source | New previously unmeasured atom pairs conditionally within 8 Å | Of those, sequence separation >= 5 |
+|---|---:|---:|
+| 2PNG | **110** | **1** |
+| 6NBN | **359** | **39** |
+| Combined | **469** | **40** |
+
+Independent JavaScript all-pairs Floyd-Warshall crosschecked these counts;
+the new Python implementation uses Dijkstra plus checked path witnesses.
+No lower-bound distance or precise coordinate is inferred. In both source
+examples, no **directly measured** lower limit exceeded the all-path derived
+upper limit; this does **not** prove joint Euclidean feasibility of the
+original intervals.
+
+**Crucial condition:** these are mathematical implications if the selected
+processed NEF upper bounds are simultaneously valid. They are *not* new
+measurements, independent predictions, or proven physical contacts. Since
+converted restraints and prepared coordinate models have shared provenance,
+a held-out experimental test remains necessary. The additional long-range
+pairs are atom-specific (not Cα contacts), and no ambiguous NOE restraint is
+silently reused. The triangle inequality and shortest paths are established
+mathematics; originality or discovery priority is not claimed.
+
+Run `python -m pytest tests/test_noe_metric_closure.py -q`.
