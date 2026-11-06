@@ -179,3 +179,10 @@ Reproduce:
 No new mathematical priority is claimed: the lower witness uses a standard
 graph matching/vertex-cover bound and the triangle inequality; the
 contribution is exact independent certificate composition on real data.
+
+
+## Post-hoc local chemistry falsification (not part of the optimization)
+
+An independent check fetched the original PDBStat AMBER-prepared 6NBN coordinates (upstream Git blob `5b13f49fda78a0d98e018902fab353ae73ce9bf4`) and recomputed the Val69 H–N–Cα angle before/after the **sparsest four-atom** correction, holding Val69 N and Cα fixed. The angle changes from approximately **120.00° to 77.79°** (a 42.21° change). The H–N bond length changes much less, from ~0.982 Å to ~0.952 Å.
+
+This is a *negative chemical-plausibility control*: exact satisfaction of the selected NOE intervals and certified optimization under their restricted coordinate model **does not** imply an admissible molecular structure. The optimization omits bond angles, steric interactions, and most ambiguous or unmapped experimental restraints. Applying these missing constraints could substantially change the optimum. The check is post-hoc, not a held-out predictive biological test.
