@@ -105,7 +105,7 @@ def test_corrupt_or_malformed_certificate_is_rejected(synthetic):
         replace(c,bottleneck_milliang=c.bottleneck_milliang+1),
         replace(c,corrupted_channels=3),
         replace(c,coordinate_hashes={"2KDL":"fake","2KDM":"fake"}),
-        replace(c,stronger_graph_cover_left=()),
+        replace(c,stronger_graph_cover_left=(1,2,3,4,5)),
         replace(c,reporters=c.reporters[:4]),
         replace(c,all_candidate_count=0),
         replace(c,classifier_error_milliang_strict_bound=Fraction(1)),
