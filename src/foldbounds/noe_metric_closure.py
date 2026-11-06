@@ -110,3 +110,82 @@ def discover_proximities(records:Sequence[NOERestraint], *,
                 raise AssertionError("producer path rejected by checker")
             result.append(witness)
     return tuple(result)
+
+
+@dataclass(frozen=True)
+class UpperOnlySharpnessCertificate:
+    """A 1D embedding satisfying every included upper-distance restraint.
+
+    Together with a path upper bound of U, an endpoint separation equal to U
+    proves U is the *best possible* universal bound from upper-only data.
+    Lower-distance limits, stereochemistry and excluded restraints are not used.
+    """
+    coordinate_potential_mA: tuple[tuple[AtomRef,int], ...]
+
+
+def propose_upper_only_sharpness(records:Sequence[NOERestraint],
+                                 witness:ProximityWitness)->UpperOnlySharpnessCertificate:
+    """Construct a source-distance potential; independently check the result."""
+    records=tuple(records)
+    if not verify_proximity_witness(records,witness,
+                                    cutoff_mA=witness.upper_bound_mA):
+        raise ValueError("invalid source path witness")
+    adj,_,_=_graph(records)
+    nodes=sorted(adj,key=lambda p:(p.residue,p.atom))
+    source=witness.atoms[0]
+    dist={source:0}
+    index={p:i for i,p in enumerate(nodes)}
+    queue=[(0,index[source],source)]
+    while queue:
+        d,_,u=heappop(queue)
+        if dist[u]!=d:continue
+        for v,upper,_ in adj[u]:
+            nd=d+upper
+            if v not in dist or nd<dist[v]:
+                dist[v]=nd
+                heappush(queue,(nd,index[v],v))
+    candidate=UpperOnlySharpnessCertificate(tuple((p,dist.get(p,0)) for p in nodes))
+    if not verify_upper_only_sharpness(records,witness,candidate):
+        raise AssertionError("shortest-path dual potential rejected")
+    return candidate
+
+
+def verify_upper_only_sharpness(records:Sequence[NOERestraint],
+                                witness:ProximityWitness,
+                                cert:UpperOnlySharpnessCertificate)->bool:
+    """Exact primal path + dual Lipschitz potential optimality check.
+
+    Path of weight U proves all Euclidean embeddings satisfy d(s,t)<=U.
+    Integer potential phi with phi(s)=0, phi(t)=U and
+    |phi(u)-phi(v)|<=U_uv for every observed upper constraint explicitly
+    realizes all upper restraints by 3D coordinates (phi(v),0,0). Hence no
+    smaller universal bound is possible using these upper limits alone.
+    """
+    if type(cert) is not UpperOnlySharpnessCertificate:
+        return False
+    try:
+        records=tuple(records)
+        if not verify_proximity_witness(records,witness,
+                                        cutoff_mA=witness.upper_bound_mA):
+            return False
+        adj,_,_=_graph(records)
+        values=cert.coordinate_potential_mA
+        if not isinstance(values,tuple) or len(values)!=len(adj):
+            return False
+        phi={}
+        for item in values:
+            if not isinstance(item,tuple) or len(item)!=2:
+                return False
+            atom,d=item
+            if type(atom) is not AtomRef or type(d) is not int or atom in phi:
+                return False
+            phi[atom]=d
+        if set(phi)!=set(adj):
+            return False
+        if (phi[witness.atoms[0]]!=0 or
+            phi[witness.atoms[-1]]!=witness.upper_bound_mA):
+            return False
+        return all(abs(phi[r.left]-phi[r.right])<=r.upper_mA
+                   for r in records)
+    except (ValueError,TypeError,IndexError,AttributeError,KeyError):
+        return False
