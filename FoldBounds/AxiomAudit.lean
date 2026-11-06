@@ -26,6 +26,7 @@ import FoldBounds.MotionGNMAdaptiveCases
 import FoldBounds.MotionGNMPrefixTree
 import FoldBounds.MotionGNMFlowCoercivity
 import FoldBounds.MotionGNMSpectralSOS
+import FoldBounds.MotionGNMIntegerInverse
 
 /-! Axiom audit: every headline theorem depends only on the standard axioms
 `propext`, `Classical.choice`, `Quot.sound`. -/
@@ -251,3 +252,9 @@ accepted score intervals now have a uniquely existing ground-truth response. -/
 #print axioms FoldBounds.MotionGNMSpectralSOS.checkSpectralSOS_coercive
 #print axioms FoldBounds.MotionGNMSpectralSOS.checkSpectralSOS_solvable
 #print axioms FoldBounds.MotionGNMSpectralSOS.checkSpectralResponse_sound
+
+/-! Exact integer scaled matrix right-inverse and universal rational solve. -/
+#print axioms FoldBounds.MotionGNMIntegerInverse.checkScaledInverse_valid
+#print axioms FoldBounds.MotionGNMIntegerInverse.checkScaledInverse_to_rational
+#print axioms FoldBounds.MotionGNMIntegerInverse.checkScaledInverse_rightInverse
+#print axioms FoldBounds.MotionGNMIntegerInverse.checkScaledInverse_solves
