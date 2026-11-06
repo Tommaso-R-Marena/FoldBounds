@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'FoldBounds/CubicParityGeometry.lean'
+      - 'FoldBounds/CubicSplice.lean'
       - '.github/workflows/cubic-parity-geometry.yml'
       - 'tests/test_cubic_geometry_bridge.py'
   workflow_dispatch:
@@ -50,6 +51,40 @@ jobs:
           if set(reports)!=expected:
             raise SystemExit(f'missing or unexpected axiom checks: {expected^set(reports)}')
           print('Concrete 3D parity + monotone family: six exact kernel declarations audited')
+          PY
+      - name: Kernel-check local fold splice occupancy and injection
+        run: lake env lean FoldBounds/CubicSplice.lean | tee /tmp/cubic-splice-axioms.log
+      - name: Audit six local fold splice Lean declarations
+        run: |
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+          source=Path('/tmp/cubic-splice-axioms.log').read_text()
+          expected={
+            'FoldBounds.CubicSplice.splice_perm',
+            'FoldBounds.CubicSplice.splice_preserves_nodup',
+            'FoldBounds.CubicSplice.splice_preserves_occupied_sites',
+            'FoldBounds.CubicSplice.splice_injective',
+            'FoldBounds.CubicSplice.splice_family_card',
+            'FoldBounds.CubicSplice.splice_preserves_length',
+          }
+          reports={}
+          for line in source.splitlines():
+            m=re.match(r"^'(FoldBounds\.CubicSplice\.[A-Za-z0-9_]+)' (.*)$",line.strip())
+            if not m: continue
+            name,result=m.groups()
+            if name in reports: raise SystemExit(f'duplicate axiom report {name}')
+            reports[name]=result
+            if result == 'does not depend on any axioms': continue
+            if not result.startswith('depends on axioms:'):
+              raise SystemExit(f'unknown Lean report {line}')
+            axioms=set(re.findall(r'[A-Za-z_][A-Za-z0-9_.]*',
+                                  result.partition('depends on axioms:')[2]))
+            if axioms-{'propext','Classical.choice','Quot.sound'}:
+              raise SystemExit(f'nonstandard axioms for {name}: {axioms}')
+          if set(reports)!=expected:
+            raise SystemExit(f'missing or extra proofs: {expected^set(reports)}')
+          print('Local geometric splice: six kernel declarations audited')
           PY
       - name: Independently compare concrete steps and parity with Python
         run: |
