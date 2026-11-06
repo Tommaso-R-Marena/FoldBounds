@@ -46,3 +46,32 @@ def test_full_nmr_real_pair_closure():
         assert sum(w.sequence_separation>=5 for w in witnesses)==long_range
         assert len(set(frozenset(w.pair) for w in witnesses))==len(witnesses)
         assert all(verify_proximity_witness(data[name],w) for w in witnesses)
+
+
+from foldbounds.noe_metric_closure import (
+    UpperOnlySharpnessCertificate, propose_upper_only_sharpness,
+    verify_upper_only_sharpness)
+
+
+def test_upper_only_distance_certificate_sharp():
+    data=[make(1,1,2,3000),make(2,2,3,4000)]
+    w=discover_proximities(data)[0]
+    dual=propose_upper_only_sharpness(data,w)
+    assert verify_upper_only_sharpness(data,w,dual)
+    counterfeit=list(dual.coordinate_potential_mA)
+    counterfeit[-1]=(counterfeit[-1][0],10000)
+    assert not verify_upper_only_sharpness(
+        data,w,UpperOnlySharpnessCertificate(tuple(counterfeit)))
+    assert not verify_upper_only_sharpness(
+        data,replace(w,upper_bound_mA=6999),dual)
+
+
+def test_source_only_sharpness_for_all_real_nmr_proximities():
+    if not FIXTURE.exists():
+        pytest.skip("source-pinned fixture in FoldBounds PR")
+    samples=load_pinned_reference(FIXTURE)
+    for name in ('2png','6nbn'):
+        witnesses=discover_proximities(samples[name],cutoff_mA=8000)
+        for w in witnesses:
+            cert=propose_upper_only_sharpness(samples[name],w)
+            assert verify_upper_only_sharpness(samples[name],w,cert)
