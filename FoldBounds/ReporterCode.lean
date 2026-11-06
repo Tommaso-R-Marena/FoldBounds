@@ -84,16 +84,14 @@ theorem matching_card_le_cover
     intro e he d hd h
     by_cases ha : Sum.inl e.1 ∈ cover
     · by_cases hb : Sum.inl d.1 ∈ cover
-      · simp only [pickedCovered, dif_pos ha, dif_pos hb,
-          Sum.inl.injEq] at h
+      · simp [pickedCovered, ha, hb] at h
         exact hLeft e he d hd h
-      · simp only [pickedCovered, dif_pos ha, dif_neg hb] at h
+      · simp [pickedCovered, ha, hb] at h
         cases h
     · by_cases hb : Sum.inl d.1 ∈ cover
-      · simp only [pickedCovered, dif_neg ha, dif_pos hb] at h
+      · simp [pickedCovered, ha, hb] at h
         cases h
-      · simp only [pickedCovered, dif_neg ha, dif_neg hb,
-          Sum.inr.injEq] at h
+      · simp [pickedCovered, ha, hb] at h
         exact hRight e he d hd h
   let assignment : {e // e ∈ selected} → {v // v ∈ cover} :=
     fun e => ⟨pickedCovered cover e.1, memPick e.1 e.2⟩
