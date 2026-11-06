@@ -123,7 +123,7 @@ All energies are **kcal/mol**. The 20% budget actually selects 159 of 638
 available eligible variants (24.92%) because of ceiling, over 69 panels.
 For 20%, an exploratory 10,000-resample paired protein-cluster bootstrap
 of the model's advantage over **uniform random K-subsets** gave a 95%
-percentile interval of approximately **0.215–0.831 kcal/mol**. The 60 splits
+percentile interval of approximately **0.219–0.827 kcal/mol**. The 60 splits
 are **not** 60 independent datasets and should not be treated as such.
 
 With 20% candidate budget, nominal 90% **protein group** conformal coverage
