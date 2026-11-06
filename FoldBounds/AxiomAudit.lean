@@ -25,6 +25,7 @@ import FoldBounds.MotionGNMTopologyRobust
 import FoldBounds.MotionGNMAdaptiveCases
 import FoldBounds.MotionGNMPrefixTree
 import FoldBounds.MotionGNMFlowCoercivity
+import FoldBounds.MotionGNMSpectralSOS
 
 /-! Axiom audit: every headline theorem depends only on the standard axioms
 `propext`, `Classical.choice`, `Quot.sound`. -/
@@ -244,3 +245,9 @@ accepted score intervals now have a uniquely existing ground-truth response. -/
 #print axioms FoldBounds.MotionGNMFlowCoercivity.flow_coercivity
 #print axioms FoldBounds.MotionGNMFlowCoercivity.flow_response_exists_unique
 #print axioms FoldBounds.MotionGNMFlowCoercivity.checkFlowResponse_sound
+
+/-! Exact-rational spectral SOS identity, grounded coercivity and unique model response. -/
+#print axioms FoldBounds.MotionGNMSpectralSOS.checkSpectralSOS_sound
+#print axioms FoldBounds.MotionGNMSpectralSOS.checkSpectralSOS_coercive
+#print axioms FoldBounds.MotionGNMSpectralSOS.checkSpectralSOS_solvable
+#print axioms FoldBounds.MotionGNMSpectralSOS.checkSpectralResponse_sound

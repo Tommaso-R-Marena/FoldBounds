@@ -1,0 +1,35 @@
+name: GNM exact source-only spectral SOS proof gate
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  lean-sos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fail-closed Lean source scan
+        run: python3 scripts/check_lean_sources.py
+      - name: Build pinned Lean 4.28 and Mathlib
+        uses: leanprover/lean-action@v1
+      - name: Check rational SOS acceptance, coercivity and unique response
+        run: |
+          lake env lean FoldBounds/MotionGNMSpectralSOS.lean
+          lake env lean FoldBounds/MotionGNMSpectralSOSTests.lean
+      - name: Audit complete theorem inventory
+        run: |
+          lake env lean FoldBounds/AxiomAudit.lean | tee /tmp/gnm-spectral-axioms.log
+          python3 scripts/check_lean_sources.py /tmp/gnm-spectral-axioms.log
+  python-sos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install exact verifier dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy pytest
+      - name: Test and compile fail-closed source-only SOS verifier
+        run: |
+          python3 -m py_compile scripts/gnm_spectral_sos_producer.py scripts/gnm_spectral_sos_independent_replay.py scripts/gnm_precision_ablation.py scripts/gnm_precision_independent_replay.py
+          python3 -m pytest -q scripts/test_gnm_spectral_sos.py scripts/test_gnm_spectral_real.py scripts/test_gnm_precision_independent_replay.py
