@@ -18,15 +18,23 @@ else:
     from real_1d3z_joint_rank import load_ca, DEFAULT_FIXTURE
 
 
-def evaluate(epsilon: Fraction=Fraction(1,20), count:int=3, *, fixed_two:bool=False):
+def evaluate(epsilon: Fraction=Fraction(1,20), count:int=3, *, fixed_two:bool=False, fixed_three:bool=False):
     coords=load_ca(DEFAULT_FIXTURE)
     certain,possible=classify_contact_boxes(coords,Fraction(8),epsilon)
+    if fixed_two and fixed_three:
+        raise ValueError('fixed_two and fixed_three cannot both be selected')
     if fixed_two:
         if count!=2:
             raise ValueError('fixed_two benchmark requires selected_count=2')
         # PDB residue pairs 43-51 and 39-42, selected by source-only
         # exact rank-coverage greedy search without observing NMR labels.
         override=((41,49),(37,40))
+    elif fixed_three:
+        if count!=3:
+            raise ValueError('fixed_three benchmark requires selected_count=3')
+        # Completed source-only depth-three greedy search: no motion labels.
+        # Zero-based indices map to PDB (43,51), (39,42), (7,13).
+        override=((41,49),(37,40),(5,11))
     else:
         override=None
     r=certify_split_cases(len(coords),certain,possible,selected_count=count,
@@ -48,8 +56,9 @@ def main():
     p.add_argument('--epsilon',default='0.05')
     p.add_argument('--selected-count',type=int,default=3)
     p.add_argument('--fixed-two',action='store_true',help='exact 4-case source-only selected baseline')
+    p.add_argument('--fixed-three',action='store_true',help='exact 8-case completed source-only greedy depth-three result')
     a=p.parse_args()
-    print(json.dumps(evaluate(Fraction(a.epsilon),a.selected_count,fixed_two=a.fixed_two),indent=2))
+    print(json.dumps(evaluate(Fraction(a.epsilon),a.selected_count,fixed_two=a.fixed_two,fixed_three=a.fixed_three),indent=2))
 
 
 if __name__=='__main__': main()
