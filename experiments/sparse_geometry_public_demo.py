@@ -8,6 +8,7 @@ from experimental_ca_packed import STRUCTURES,decode
 from foldbounds.sparse_distance_certificate import (
  make_certificate,make_signed_certificate,reconstruct_exact,reconstruct_signed_exact,
  robust_contacts,point_digest)
+from foldbounds.sparse_distance_zonotope import zonotope_contact_bounds
 
 def main():
     results=[]
@@ -18,6 +19,7 @@ def main():
         if reconstruct_exact(four)!=p or reconstruct_signed_exact(three)!=p:
             raise AssertionError("missing exact coordinate audit")
         result=robust_contacts(four,epsilon_mA=10,cutoff_mA=8000)
+        improved=zonotope_contact_bounds(four,epsilon_mA=10,cutoff_mA=8000)
         control=robust_contacts(make_certificate(p,(0,1,2,3)),epsilon_mA=10,cutoff_mA=8000)
         results.append({
             "pdb":name,"method":record["method"],"source_blob_sha":record["sha"],
@@ -31,6 +33,11 @@ def main():
             "guaranteed_contacts":result.guaranteed_contacts,
             "guaranteed_noncontacts":result.guaranteed_noncontacts,
             "undecided_pairs":result.undecided_pairs,
+            "zonotope_undecided_pairs":improved.undecided_pairs,
+            "zonotope_guaranteed_contacts":improved.guaranteed_contacts,
+            "zonotope_guaranteed_noncontacts":improved.guaranteed_noncontacts,
+            "additional_certified_contacts":improved.new_contacts,
+            "additional_certified_noncontacts":improved.new_noncontacts,
             "naive_first_four_undecided":control.undecided_pairs,
             "max_coordinate_error_A":float(result.max_coordinate_error_mA)/1000,
             "assumed_anchor_distance_error_A":0.01,
