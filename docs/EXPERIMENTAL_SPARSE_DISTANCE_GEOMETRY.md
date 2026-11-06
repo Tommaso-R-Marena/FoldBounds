@@ -222,3 +222,31 @@ the sequence-separation filter is applied to the extracted C-alpha record
 order, which may skip residues with missing coordinates. Thus even the
 C-alpha contact definition should not be conflated with raw biological
 residue-number separation in incomplete structures.
+
+
+## Negative real-data control: NMR ensemble transfer fails the tight-error premise
+
+The 1LCD PDB fixture deposits three solution-NMR conformer models with
+identical 51 chain-A C-alpha residue labels. The source-PDB model 1 provides
+the nominal coordinates in the reconstruction experiments. Models 2 and 3
+were extracted independently from the same immutable source blob and
+retained in \`data/experimental_ca_1LCD_ensembles.py\`.
+
+A **separate full-pair exact-integer contact oracle** at the same 8A cutoff
+and >=4 extracted-residue index separation observes:
+
+| Target model | Total eligible pair labels changed vs model 1 | Model-1 nominal contacts lost | Some anchor-pair distance change |
+|---|---:|---:|---|
+| 2 | 12 of 1,128 | 9 | greater than 1 A |
+| 3 | 15 of 1,128 | 11 | greater than 1 A |
+
+The lower bounds on the anchor drift use exact integer squared-distance
+comparisons, not floating-point rounding. Consequently the model-1
+**exact-anchor, +/-0.01 A** theorem does *not* apply across these
+deposited NMR conformers. The theorem is correct under its mathematical
+premise, but that premise is not empirically established in this system.
+
+These conformers come from one NMR deposition and are **not independent
+laboratory experiments** or an equilibrium kinetic ensemble. The
+comparison is a pre-specified negative stress test of model-transfer
+assumptions, not a new dynamics or structure-prediction benchmark.
