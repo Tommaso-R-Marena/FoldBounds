@@ -1,0 +1,70 @@
+name: Mutation-invariant fold reporters + exact erasure/error audit
+on:
+  pull_request:
+    paths:
+      - 'src/foldbounds/ga_gb_mutation_safe.py'
+      - 'experiments/mutation_safe_real_audit.py'
+      - 'experiments/results/mutation_safe_real_nmr_20261105.json'
+      - 'tests/test_ga_gb_mutation_safe.py'
+      - 'FoldBounds/MutationSafeCodes.lean'
+      - '.github/workflows/mutation-safe-codes.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  training-and-adversarial-oracle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install FoldBounds test environment
+        run: python3 -m pip install -e '.[test]'
+      - name: Independently audit exact matching, mutation sites and 2t+e<k corruption theorem
+        run: python3 -m pytest -q tests/test_ga_gb_mutation_safe.py
+
+  six-structure-authenticated-holdout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download exactly the six authenticated RCSB NMR files
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/foldbounds-mutation-safe
+          for pdb in 2KDL 2KDM 2LHC 2LHD 2LHG 2LHE; do
+            curl --fail --show-error --location --retry 3 --retry-delay 3 --max-time 50 \
+              "https://files.rcsb.org/download/$pdb.pdb" \
+              -o "/tmp/foldbounds-mutation-safe/$pdb.pdb"
+          done
+      - name: Require exact published NMR coordinate bytes, no silent replacements
+        run: |
+          cat >/tmp/foldbounds-mutation-safe/sha256sums.txt <<'EOF'
+          fb75cc55eb8b89e0cec5e2be69901b348e60916375b9c410a0573edfca1db591  /tmp/foldbounds-mutation-safe/2KDL.pdb
+          1c49e5faa25b443285432d935c621151294ed3b636b0106e6b1a7f7ccf2d00ec  /tmp/foldbounds-mutation-safe/2KDM.pdb
+          91ed5cf27675f68799e60951cca5df7a4ecb2e8d19fd2063c4babb300e9507ac  /tmp/foldbounds-mutation-safe/2LHC.pdb
+          73131f50fdb7fc709e0c1b3e66daf64236a19d911a4bfe5324a23007847c2e6f  /tmp/foldbounds-mutation-safe/2LHD.pdb
+          946bb4d44567de7725aeecd334d7c1cec086737d6445d157cd94976326c84cff  /tmp/foldbounds-mutation-safe/2LHG.pdb
+          cd2fa17ac762106c4f21c464bd7709cb612e3cd96d227ee18fdccd99608e83d1  /tmp/foldbounds-mutation-safe/2LHE.pdb
+          EOF
+          sha256sum --check /tmp/foldbounds-mutation-safe/sha256sums.txt
+      - name: Install FoldBounds and independent adversarial tests
+        run: |
+          python3 -m pip install -e '.[test]'
+          python3 -m pytest -q tests/test_ga_gb_mutation_safe.py
+      - name: Fit only on 2KDL/2KDM, apply to all 70 independent mutant NMR structures
+        run: |
+          python3 -m experiments.mutation_safe_real_audit \
+            --2kdl /tmp/foldbounds-mutation-safe/2KDL.pdb \
+            --2kdm /tmp/foldbounds-mutation-safe/2KDM.pdb \
+            --2lhc /tmp/foldbounds-mutation-safe/2LHC.pdb \
+            --2lhd /tmp/foldbounds-mutation-safe/2LHD.pdb \
+            --2lhg /tmp/foldbounds-mutation-safe/2LHG.pdb \
+            --2lhe /tmp/foldbounds-mutation-safe/2LHE.pdb \
+            --out /tmp/foldbounds-mutation-safe/new_safe_results.json
+      - name: Preserve full negative controls and all per-conformer outcomes
+        uses: actions/upload-artifact@v4
+        with:
+          name: mutation-safe-six-real-nmr-code-audit
+          path: /tmp/foldbounds-mutation-safe/new_safe_results.json
+          retention-days: 90
