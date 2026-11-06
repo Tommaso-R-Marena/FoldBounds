@@ -190,3 +190,35 @@ calibrated uncertainty or experimental structure validation.
 
 This is classical robust distance geometry and convex-box optimization,
 not asserted to be novel mathematics or a physical folding discovery.
+
+
+### Sensitivity to the assumed restraint-error size
+
+The 0.01 A values above are **not** physical uncertainty estimates.
+The improved method was also run without retuning anchors at eps=0.05,
+0.1 and 0.5 Angstrom. This shows the limits of the guarantees:
+
+| PDB | Assumed epsilon | Nominal 8A contacts guaranteed | Undecided eligible pairs |
+|---|---:|---:|---:|
+| 1A8O | 0.01A | 86/88 | 4 |
+| 1A8O | 0.05A | 78/88 | 19 |
+| 1A8O | 0.10A | 67/88 | 52 |
+| 1A8O | 0.50A | 5/88 | 362 |
+| 1LCD | 0.01A | 91/94 | 7 |
+| 1LCD | 0.05A | 86/94 | 23 |
+| 1LCD | 0.10A | 81/94 | 50 |
+| 1LCD | 0.50A | 8/94 | 322 |
+| 2BEG | 0.01A | 1/1 | 0 |
+| 2BEG | 0.05A | 0/1 | 1 |
+| 2BEG | 0.10A | 0/1 | 2 |
+| 2BEG | 0.50A | 0/1 | 46 |
+
+This is not a blinded predictive test: anchor positions and all tested
+distances are derived from the same experimentally deposited coordinate
+model. Actual experimental coordinate uncertainty is structure- and
+residue-dependent and is **not calibrated** by these values. Only sites
+present as C-alpha ATOM entries in the selected chain/model are evaluated;
+the sequence-separation filter is applied to the extracted C-alpha record
+order, which may skip residues with missing coordinates. Thus even the
+C-alpha contact definition should not be conflated with raw biological
+residue-number separation in incomplete structures.
