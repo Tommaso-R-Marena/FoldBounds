@@ -8,7 +8,7 @@ from math import dist
 from random import Random
 import pytest
 
-from foldbounds.noe_scaffold_dual import from_json, verify_no_go
+from foldbounds.noe_scaffold_dual import verify_no_go
 from foldbounds.noe_scaffold_branch_bound import default_val69_branch_bound
 from foldbounds.noe_moving_scaffold import (
     HeterogeneousScaffoldBudget, UniformMovingScaffoldProof,
@@ -16,7 +16,7 @@ from foldbounds.noe_moving_scaffold import (
 )
 
 RAW=json.loads((Path(__file__).resolve().parents[1]/'data'/'val69_local_noe_dual.json').read_text())
-CERT=from_json(RAW)
+CERT=RAW
 
 
 def test_uniform_continuum_and_boundary():
@@ -63,7 +63,7 @@ def test_heterogeneous_fails_closed_and_mixed_budgets():
     broken={s:dict(t) for s,t in b.items()};broken['HB'].pop('O')
     assert verify_heterogeneous_moving_scaffold(CERT,HeterogeneousScaffoldBudget(a,broken)) is None
     # A nonzero weight mutation must still reproduce the exact dual identity.
-    false_dual=replace(CERT,dual_a=(replace(CERT.dual_a[0],numerator=CERT.dual_a[0].numerator+1),)+CERT.dual_a[1:])
+    false_dual=json.loads(json.dumps(CERT));false_dual['proof']['H'][0][3]+=1
     assert verify_heterogeneous_moving_scaffold(false_dual,HeterogeneousScaffoldBudget(a,b)) is None
 
 
