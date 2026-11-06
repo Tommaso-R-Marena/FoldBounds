@@ -136,11 +136,22 @@ def heldout_transfer(codes:dict[int,CodeCertificate],ga98,gb98):
                 good+=int(clean)
                 good_votes=votes[truth]
                 min_good_votes=min(min_good_votes,good_votes)
-                if margins:
-                    for e in cert.reporters:
-                        signed=(margins[e.endpoints] if e.shorter==truth
-                                else -margins[e.endpoints])
-                        min_margin=signed if min_margin is None else min(min_margin,signed)
+                for e in cert.reporters:
+                    distance_squared=_d2(model.ca[e.a],model.ca[e.b])
+                    lower=isqrt(distance_squared)
+                    upper=_ceil_sqrt(distance_squared)
+                    threshold=Fraction(
+                        e.ga_range_milliang[1]+e.gb_range_milliang[0]
+                        if e.shorter=="GA95"
+                        else e.gb_range_milliang[1]+e.ga_range_milliang[0],
+                        2,
+                    )
+                    # Worst signed margin is based on TRUE fold,
+                    # not on whichever vote the reporter happened
+                    # to produce. Negative means an actual error.
+                    signed=(threshold-Fraction(upper) if e.shorter==truth
+                            else Fraction(lower)-threshold)
+                    min_margin=signed if min_margin is None else min(min_margin,signed)
                 model_robust=0;model_trials=0
                 reporter_by_pair={e.endpoints:e for e in cert.reporters}
                 for nwrong in range(cert.corrupted_channels+1):
