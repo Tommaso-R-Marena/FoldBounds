@@ -1,0 +1,872 @@
+{
+  "claim": "exact posthoc conformer-specific quantile noise radius, not unseen-population or measured dye uncertainty",
+  "codes": {
+    "1": {
+      "budgeted_geometric_radii": [
+        {
+          "arbitrary_bad_reporters": 0,
+          "checked_against_all_70_models": true,
+          "erased_reporters": 0,
+          "geometry_risk_channels": 0,
+          "positive_radius_certified": true,
+          "strict_each_CA_coordinate_displacement_radius": {
+            "Angstrom": 3.4805,
+            "denominator": 2,
+            "numerator": 6961
+          },
+          "strict_pair_distance_noise_radius": {
+            "Angstrom": 6.961,
+            "denominator": 1,
+            "numerator": 6961
+          },
+          "tightest_entry": "2LHG",
+          "tightest_model_index": 3,
+          "tightest_signed_margin": {
+            "Angstrom": 6.961,
+            "denominator": 1,
+            "numerator": 6961
+          }
+        }
+      ],
+      "trained_mutation_safe_pairs": [
+        [
+          11,
+          21
+        ]
+      ]
+    },
+    "3": {
+      "budgeted_geometric_radii": [
+        {
+          "arbitrary_bad_reporters": 0,
+          "checked_against_all_70_models": true,
+          "erased_reporters": 0,
+          "geometry_risk_channels": 1,
+          "positive_radius_certified": true,
+          "strict_each_CA_coordinate_displacement_radius": {
+            "Angstrom": 2.95925,
+            "denominator": 4,
+            "numerator": 11837
+          },
+          "strict_pair_distance_noise_radius": {
+            "Angstrom": 5.9185,
+            "denominator": 2,
+            "numerator": 11837
+          },
+          "tightest_entry": "2LHG",
+          "tightest_model_index": 7,
+          "tightest_signed_margin": {
+            "Angstrom": 5.9185,
+            "denominator": 2,
+            "numerator": 11837
+          }
+        },
+        {
+          "arbitrary_bad_reporters": 0,
+          "checked_against_all_70_models": true,
+          "erased_reporters": 1,
+          "geometry_risk_channels": 0,
+          "positive_radius_certified": true,
+          "strict_each_CA_coordinate_displacement_radius": {
+            "Angstrom": 2.3455,
+            "denominator": 2,
+            "numerator": 4691
+          },
+          "strict_pair_distance_noise_radius": {
+            "Angstrom": 4.691,
+            "denominator": 1,
+            "numerator": 4691
+          },
+          "tightest_entry": "2LHD",
+          "tightest_model_index": 1,
+          "tightest_signed_margin": {
+            "Angstrom": 4.691,
+            "denominator": 1,
+            "numerator": 4691
+          }
+        },
+        {
+          "arbitrary_bad_reporters": 0,
+          "checked_against_all_70_models": true,
+          "erased_reporters": 2,
+          "geometry_risk_channels": 0,
+          "positive_radius_certified": true,
+          "strict_each_CA_coordinate_displacement_radius": {
+            "Angstrom": 2.3455,
+            "denominator": 2,
+            "numerator": 4691
+          },
+          "strict_pair_distance_noise_radius": {
+            "Angstrom": 4.691,
+            "denominator": 1,
+            "numerator": 4691
+          },
+          "tightest_entry": "2LHD",
+          "tightest_model_index": 1,
+          "tightest_signed_margin": {
+            "Angstrom": 4.691,
+            "denominator": 1,
+            "numerator": 4691
+          }
+        },
+        {
+          "arbitrary_bad_reporters": 1,
+          "checked_against_all_70_models": true,
+          "erased_reporters": 0,
+          "geometry_risk_channels": 0,
+          "positive_radius_certified": true,
+          "strict_each_CA_coordinate_displacement_radius": {
+            "Angstrom": 2.3455,
+            "denominator": 2,
+            "numerator": 4691
+          },
+          "strict_pair_distance_noise_radius": {
+            "Angstrom": 4.691,
+            "denominator": 1,
+            "numerator": 4691
+          },
+          "tightest_entry": "2LHD",
+          "tightest_model_index": 1,
+          "tightest_signed_margin": {
+            "Angstrom": 4.691,
+            "denominator": 1,
+            "numerator": 4691
+          }
+        }
+      ],
+      "trained_mutation_safe_pairs": [
+        [
+          10,
+          19
+        ],
+        [
+          11,
+          22
+        ],
+        [
+          12,
+          21
+        ]
+      ]
+    },
+    "5": {
+      "budgeted_geometric_radii": [
+        {
+          "arbitrary_bad_reporters": 0,
+          "checked_against_all_70_models": true,
+          "erased_reporters": 0,
+          "geometry_risk_channels": 2,
+          "positive_radius_certified": true,
+          "strict_each_CA_coordinate_displacement_radius": {
+            "Angstrom": 2.52525,
+            "denominator": 4,
+            "numerator": 10101
+          },
+          "strict_pair_distance_noise_radius": {
+            "Angstrom": 5.0505,
+            "denominator": 2,
+            "numerator": 10101
+          },
+          "tightest_entry": "2LHD",
+          "tightest_model_index": 14,
+          "tightest_signed_margin": {
+            "Angstrom": 5.0505,
+            "denominator": 2,
+            "numerator": 10101
+          }
+        },
+        {
+          "arbitrary_bad_reporters": 0,
+          "checked_against_all_70_models": true,
+          "erased_reporters": 1,
+          "geometry_risk_channels": 1,
+          "positive_radius_certified": true,
+          "strict_each_CA_coordinate_displacement_radius": {
+            "Angstrom": 1.5645,
+            "denominator": 2,
+            "numerator": 3129
+          },
+          "strict_pair_distance_noise_radius": {
+            "Angstrom": 3.129,
+            "denominator": 1,
+            "numerator": 3129
+          },
+          "tightest_entry": "2LHG",
+          "tightest_model_index": 5,
+          "tightest_signed_margin": {
+            "Angstrom": 3.129,
+            "denominator": 1,
+            "numerator": 3129
+          }
+        },
+        {
+          "arbitrary_bad_reporters": 0,
+          "checked_against_all_70_models": true,
+          "erased_reporters": 2,
+          "geometry_risk_channels": 1,
+          "positive_radius_certified": true,
+          "strict_each_CA_coordinate_displacement_radius": {
+            "Angstrom": 1.5645,
+            "denominator": 2,
+            "numerator": 3129
+          },
+          "strict_pair_distance_noise_radius": {
+            "Angstrom": 3.129,
+            "denominator": 1,
+            "numerator": 3129
+          },
+          "tightest_entry": "2LHG",
+          "tightest_model_index": 5,
+          "tightest_signed_margin": {
+            "Angstrom": 3.129,
+            "denominator": 1,
+            "numerator": 3129
+          }
+        },
+        {
+          "arbitrary_bad_reporters": 1,
+          "checked_against_all_70_models": true,
+          "erased_reporters": 0,
+          "geometry_risk_channels": 1,
+          "positive_radius_certified": true,
+          "strict_each_CA_coordinate_displacement_radius": {
+            "Angstrom": 1.5645,
+            "denominator": 2,
+            "numerator": 3129
+          },
+          "strict_pair_distance_noise_radius": {
+            "Angstrom": 3.129,
+            "denominator": 1,
+            "numerator": 3129
+          },
+          "tightest_entry": "2LHG",
+          "tightest_model_index": 5,
+          "tightest_signed_margin": {
+            "Angstrom": 3.129,
+            "denominator": 1,
+            "numerator": 3129
+          }
+        },
+        {
+          "arbitrary_bad_reporters": 1,
+          "checked_against_all_70_models": true,
+          "erased_reporters": 1,
+          "geometry_risk_channels": 0,
+          "positive_radius_certified": true,
+          "strict_each_CA_coordinate_displacement_radius": {
+            "Angstrom": 0.86225,
+            "denominator": 4,
+            "numerator": 3449
+          },
+          "strict_pair_distance_noise_radius": {
+            "Angstrom": 1.7245,
+            "denominator": 2,
+            "numerator": 3449
+          },
+          "tightest_entry": "2LHG",
+          "tightest_model_index": 5,
+          "tightest_signed_margin": {
+            "Angstrom": 1.7245,
+            "denominator": 2,
+            "numerator": 3449
+          }
+        },
+        {
+          "arbitrary_bad_reporters": 1,
+          "checked_against_all_70_models": true,
+          "erased_reporters": 2,
+          "geometry_risk_channels": 0,
+          "positive_radius_certified": true,
+          "strict_each_CA_coordinate_displacement_radius": {
+            "Angstrom": 0.86225,
+            "denominator": 4,
+            "numerator": 3449
+          },
+          "strict_pair_distance_noise_radius": {
+            "Angstrom": 1.7245,
+            "denominator": 2,
+            "numerator": 3449
+          },
+          "tightest_entry": "2LHG",
+          "tightest_model_index": 5,
+          "tightest_signed_margin": {
+            "Angstrom": 1.7245,
+            "denominator": 2,
+            "numerator": 3449
+          }
+        },
+        {
+          "arbitrary_bad_reporters": 2,
+          "checked_against_all_70_models": true,
+          "erased_reporters": 0,
+          "geometry_risk_channels": 0,
+          "positive_radius_certified": true,
+          "strict_each_CA_coordinate_displacement_radius": {
+            "Angstrom": 0.86225,
+            "denominator": 4,
+            "numerator": 3449
+          },
+          "strict_pair_distance_noise_radius": {
+            "Angstrom": 1.7245,
+            "denominator": 2,
+            "numerator": 3449
+          },
+          "tightest_entry": "2LHG",
+          "tightest_model_index": 5,
+          "tightest_signed_margin": {
+            "Angstrom": 1.7245,
+            "denominator": 2,
+            "numerator": 3449
+          }
+        }
+      ],
+      "trained_mutation_safe_pairs": [
+        [
+          5,
+          24
+        ],
+        [
+          6,
+          26
+        ],
+        [
+          10,
+          19
+        ],
+        [
+          11,
+          22
+        ],
+        [
+          12,
+          21
+        ]
+      ]
+    },
+    "7": {
+      "budgeted_geometric_radii": [
+        {
+          "arbitrary_bad_reporters": 0,
+          "checked_against_all_70_models": true,
+          "erased_reporters": 0,
+          "geometry_risk_channels": 3,
+          "positive_radius_certified": true,
+          "strict_each_CA_coordinate_displacement_radius": {
+            "Angstrom": 1.9815,
+            "denominator": 2,
+            "numerator": 3963
+          },
+          "strict_pair_distance_noise_radius": {
+            "Angstrom": 3.963,
+            "denominator": 1,
+            "numerator": 3963
+          },
+          "tightest_entry": "2LHG",
+          "tightest_model_index": 5,
+          "tightest_signed_margin": {
+            "Angstrom": 3.963,
+            "denominator": 1,
+            "numerator": 3963
+          }
+        },
+        {
+          "arbitrary_bad_reporters": 0,
+          "checked_against_all_70_models": true,
+          "erased_reporters": 1,
+          "geometry_risk_channels": 2,
+          "positive_radius_certified": true,
+          "strict_each_CA_coordinate_displacement_radius": {
+            "Angstrom": 1.5645,
+            "denominator": 2,
+            "numerator": 3129
+          },
+          "strict_pair_distance_noise_radius": {
+            "Angstrom": 3.129,
+            "denominator": 1,
+            "numerator": 3129
+          },
+          "tightest_entry": "2LHG",
+          "tightest_model_index": 5,
+          "tightest_signed_margin": {
+            "Angstrom": 3.129,
+            "denominator": 1,
+            "numerator": 3129
+          }
+        },
+        {
+          "arbitrary_bad_reporters": 0,
+          "checked_against_all_70_models": true,
+          "erased_reporters": 2,
+          "geometry_risk_channels": 2,
+          "positive_radius_certified": true,
+          "strict_each_CA_coordinate_displacement_radius": {
+            "Angstrom": 1.5645,
+            "denominator": 2,
+            "numerator": 3129
+          },
+          "strict_pair_distance_noise_radius": {
+            "Angstrom": 3.129,
+            "denominator": 1,
+            "numerator": 3129
+          },
+          "tightest_entry": "2LHG",
+          "tightest_model_index": 5,
+          "tightest_signed_margin": {
+            "Angstrom": 3.129,
+            "denominator": 1,
+            "numerator": 3129
+          }
+        },
+        {
+          "arbitrary_bad_reporters": 1,
+          "checked_against_all_70_models": true,
+          "erased_reporters": 0,
+          "geometry_risk_channels": 2,
+          "positive_radius_certified": true,
+          "strict_each_CA_coordinate_displacement_radius": {
+            "Angstrom": 1.5645,
+            "denominator": 2,
+            "numerator": 3129
+          },
+          "strict_pair_distance_noise_radius": {
+            "Angstrom": 3.129,
+            "denominator": 1,
+            "numerator": 3129
+          },
+          "tightest_entry": "2LHG",
+          "tightest_model_index": 5,
+          "tightest_signed_margin": {
+            "Angstrom": 3.129,
+            "denominator": 1,
+            "numerator": 3129
+          }
+        },
+        {
+          "arbitrary_bad_reporters": 1,
+          "checked_against_all_70_models": true,
+          "erased_reporters": 1,
+          "geometry_risk_channels": 1,
+          "positive_radius_certified": true,
+          "strict_each_CA_coordinate_displacement_radius": {
+            "Angstrom": 1.39025,
+            "denominator": 4,
+            "numerator": 5561
+          },
+          "strict_pair_distance_noise_radius": {
+            "Angstrom": 2.7805,
+            "denominator": 2,
+            "numerator": 5561
+          },
+          "tightest_entry": "2LHG",
+          "tightest_model_index": 10,
+          "tightest_signed_margin": {
+            "Angstrom": 2.7805,
+            "denominator": 2,
+            "numerator": 5561
+          }
+        },
+        {
+          "arbitrary_bad_reporters": 1,
+          "checked_against_all_70_models": true,
+          "erased_reporters": 2,
+          "geometry_risk_channels": 1,
+          "positive_radius_certified": true,
+          "strict_each_CA_coordinate_displacement_radius": {
+            "Angstrom": 1.39025,
+            "denominator": 4,
+            "numerator": 5561
+          },
+          "strict_pair_distance_noise_radius": {
+            "Angstrom": 2.7805,
+            "denominator": 2,
+            "numerator": 5561
+          },
+          "tightest_entry": "2LHG",
+          "tightest_model_index": 10,
+          "tightest_signed_margin": {
+            "Angstrom": 2.7805,
+            "denominator": 2,
+            "numerator": 5561
+          }
+        },
+        {
+          "arbitrary_bad_reporters": 2,
+          "checked_against_all_70_models": true,
+          "erased_reporters": 0,
+          "geometry_risk_channels": 1,
+          "positive_radius_certified": true,
+          "strict_each_CA_coordinate_displacement_radius": {
+            "Angstrom": 1.39025,
+            "denominator": 4,
+            "numerator": 5561
+          },
+          "strict_pair_distance_noise_radius": {
+            "Angstrom": 2.7805,
+            "denominator": 2,
+            "numerator": 5561
+          },
+          "tightest_entry": "2LHG",
+          "tightest_model_index": 10,
+          "tightest_signed_margin": {
+            "Angstrom": 2.7805,
+            "denominator": 2,
+            "numerator": 5561
+          }
+        },
+        {
+          "arbitrary_bad_reporters": 2,
+          "checked_against_all_70_models": true,
+          "erased_reporters": 1,
+          "geometry_risk_channels": 0,
+          "positive_radius_certified": true,
+          "strict_each_CA_coordinate_displacement_radius": {
+            "Angstrom": 0.05575,
+            "denominator": 4,
+            "numerator": 223
+          },
+          "strict_pair_distance_noise_radius": {
+            "Angstrom": 0.1115,
+            "denominator": 2,
+            "numerator": 223
+          },
+          "tightest_entry": "2LHG",
+          "tightest_model_index": 2,
+          "tightest_signed_margin": {
+            "Angstrom": 0.1115,
+            "denominator": 2,
+            "numerator": 223
+          }
+        },
+        {
+          "arbitrary_bad_reporters": 2,
+          "checked_against_all_70_models": true,
+          "erased_reporters": 2,
+          "geometry_risk_channels": 0,
+          "positive_radius_certified": true,
+          "strict_each_CA_coordinate_displacement_radius": {
+            "Angstrom": 0.05575,
+            "denominator": 4,
+            "numerator": 223
+          },
+          "strict_pair_distance_noise_radius": {
+            "Angstrom": 0.1115,
+            "denominator": 2,
+            "numerator": 223
+          },
+          "tightest_entry": "2LHG",
+          "tightest_model_index": 2,
+          "tightest_signed_margin": {
+            "Angstrom": 0.1115,
+            "denominator": 2,
+            "numerator": 223
+          }
+        }
+      ],
+      "trained_mutation_safe_pairs": [
+        [
+          4,
+          28
+        ],
+        [
+          5,
+          24
+        ],
+        [
+          6,
+          26
+        ],
+        [
+          10,
+          19
+        ],
+        [
+          11,
+          21
+        ],
+        [
+          12,
+          48
+        ],
+        [
+          13,
+          22
+        ]
+      ]
+    },
+    "9": {
+      "budgeted_geometric_radii": [
+        {
+          "arbitrary_bad_reporters": 0,
+          "checked_against_all_70_models": true,
+          "erased_reporters": 0,
+          "geometry_risk_channels": 4,
+          "positive_radius_certified": true,
+          "strict_each_CA_coordinate_displacement_radius": {
+            "Angstrom": 1.9815,
+            "denominator": 2,
+            "numerator": 3963
+          },
+          "strict_pair_distance_noise_radius": {
+            "Angstrom": 3.963,
+            "denominator": 1,
+            "numerator": 3963
+          },
+          "tightest_entry": "2LHG",
+          "tightest_model_index": 5,
+          "tightest_signed_margin": {
+            "Angstrom": 3.963,
+            "denominator": 1,
+            "numerator": 3963
+          }
+        },
+        {
+          "arbitrary_bad_reporters": 0,
+          "checked_against_all_70_models": true,
+          "erased_reporters": 1,
+          "geometry_risk_channels": 3,
+          "positive_radius_certified": true,
+          "strict_each_CA_coordinate_displacement_radius": {
+            "Angstrom": 1.5645,
+            "denominator": 2,
+            "numerator": 3129
+          },
+          "strict_pair_distance_noise_radius": {
+            "Angstrom": 3.129,
+            "denominator": 1,
+            "numerator": 3129
+          },
+          "tightest_entry": "2LHG",
+          "tightest_model_index": 5,
+          "tightest_signed_margin": {
+            "Angstrom": 3.129,
+            "denominator": 1,
+            "numerator": 3129
+          }
+        },
+        {
+          "arbitrary_bad_reporters": 0,
+          "checked_against_all_70_models": true,
+          "erased_reporters": 2,
+          "geometry_risk_channels": 3,
+          "positive_radius_certified": true,
+          "strict_each_CA_coordinate_displacement_radius": {
+            "Angstrom": 1.5645,
+            "denominator": 2,
+            "numerator": 3129
+          },
+          "strict_pair_distance_noise_radius": {
+            "Angstrom": 3.129,
+            "denominator": 1,
+            "numerator": 3129
+          },
+          "tightest_entry": "2LHG",
+          "tightest_model_index": 5,
+          "tightest_signed_margin": {
+            "Angstrom": 3.129,
+            "denominator": 1,
+            "numerator": 3129
+          }
+        },
+        {
+          "arbitrary_bad_reporters": 1,
+          "checked_against_all_70_models": true,
+          "erased_reporters": 0,
+          "geometry_risk_channels": 3,
+          "positive_radius_certified": true,
+          "strict_each_CA_coordinate_displacement_radius": {
+            "Angstrom": 1.5645,
+            "denominator": 2,
+            "numerator": 3129
+          },
+          "strict_pair_distance_noise_radius": {
+            "Angstrom": 3.129,
+            "denominator": 1,
+            "numerator": 3129
+          },
+          "tightest_entry": "2LHG",
+          "tightest_model_index": 5,
+          "tightest_signed_margin": {
+            "Angstrom": 3.129,
+            "denominator": 1,
+            "numerator": 3129
+          }
+        },
+        {
+          "arbitrary_bad_reporters": 1,
+          "checked_against_all_70_models": true,
+          "erased_reporters": 1,
+          "geometry_risk_channels": 2,
+          "positive_radius_certified": true,
+          "strict_each_CA_coordinate_displacement_radius": {
+            "Angstrom": 1.39025,
+            "denominator": 4,
+            "numerator": 5561
+          },
+          "strict_pair_distance_noise_radius": {
+            "Angstrom": 2.7805,
+            "denominator": 2,
+            "numerator": 5561
+          },
+          "tightest_entry": "2LHG",
+          "tightest_model_index": 10,
+          "tightest_signed_margin": {
+            "Angstrom": 2.7805,
+            "denominator": 2,
+            "numerator": 5561
+          }
+        },
+        {
+          "arbitrary_bad_reporters": 1,
+          "checked_against_all_70_models": true,
+          "erased_reporters": 2,
+          "geometry_risk_channels": 2,
+          "positive_radius_certified": true,
+          "strict_each_CA_coordinate_displacement_radius": {
+            "Angstrom": 1.39025,
+            "denominator": 4,
+            "numerator": 5561
+          },
+          "strict_pair_distance_noise_radius": {
+            "Angstrom": 2.7805,
+            "denominator": 2,
+            "numerator": 5561
+          },
+          "tightest_entry": "2LHG",
+          "tightest_model_index": 10,
+          "tightest_signed_margin": {
+            "Angstrom": 2.7805,
+            "denominator": 2,
+            "numerator": 5561
+          }
+        },
+        {
+          "arbitrary_bad_reporters": 2,
+          "checked_against_all_70_models": true,
+          "erased_reporters": 0,
+          "geometry_risk_channels": 2,
+          "positive_radius_certified": true,
+          "strict_each_CA_coordinate_displacement_radius": {
+            "Angstrom": 1.39025,
+            "denominator": 4,
+            "numerator": 5561
+          },
+          "strict_pair_distance_noise_radius": {
+            "Angstrom": 2.7805,
+            "denominator": 2,
+            "numerator": 5561
+          },
+          "tightest_entry": "2LHG",
+          "tightest_model_index": 10,
+          "tightest_signed_margin": {
+            "Angstrom": 2.7805,
+            "denominator": 2,
+            "numerator": 5561
+          }
+        },
+        {
+          "arbitrary_bad_reporters": 2,
+          "checked_against_all_70_models": true,
+          "erased_reporters": 1,
+          "geometry_risk_channels": 1,
+          "positive_radius_certified": true,
+          "strict_each_CA_coordinate_displacement_radius": {
+            "Angstrom": 1.35475,
+            "denominator": 4,
+            "numerator": 5419
+          },
+          "strict_pair_distance_noise_radius": {
+            "Angstrom": 2.7095,
+            "denominator": 2,
+            "numerator": 5419
+          },
+          "tightest_entry": "2LHG",
+          "tightest_model_index": 10,
+          "tightest_signed_margin": {
+            "Angstrom": 2.7095,
+            "denominator": 2,
+            "numerator": 5419
+          }
+        },
+        {
+          "arbitrary_bad_reporters": 2,
+          "checked_against_all_70_models": true,
+          "erased_reporters": 2,
+          "geometry_risk_channels": 1,
+          "positive_radius_certified": true,
+          "strict_each_CA_coordinate_displacement_radius": {
+            "Angstrom": 1.35475,
+            "denominator": 4,
+            "numerator": 5419
+          },
+          "strict_pair_distance_noise_radius": {
+            "Angstrom": 2.7095,
+            "denominator": 2,
+            "numerator": 5419
+          },
+          "tightest_entry": "2LHG",
+          "tightest_model_index": 10,
+          "tightest_signed_margin": {
+            "Angstrom": 2.7095,
+            "denominator": 2,
+            "numerator": 5419
+          }
+        }
+      ],
+      "trained_mutation_safe_pairs": [
+        [
+          1,
+          27
+        ],
+        [
+          4,
+          28
+        ],
+        [
+          5,
+          24
+        ],
+        [
+          6,
+          26
+        ],
+        [
+          9,
+          21
+        ],
+        [
+          10,
+          19
+        ],
+        [
+          11,
+          47
+        ],
+        [
+          12,
+          48
+        ],
+        [
+          13,
+          22
+        ]
+      ]
+    }
+  },
+  "heldout_conformers": 70,
+  "no_test_optimizing_sites_or_thresholds": true,
+  "radius_units": "integer milliangstrom rationals; Angstrom float only presentation",
+  "source": [
+    "2KDL",
+    "2KDM",
+    "2LHC",
+    "2LHD",
+    "2LHG",
+    "2LHE"
+  ],
+  "verification_receipt": {
+    "source_run": "https://github.com/Tommaso-R-Marena/FoldBounds/actions/runs/42164834671",
+    "source_commit": "9b507c503a1ce0fd3dbc110ff6a99c46f7acfa34",
+    "scope": "Posthoc deterministic radius on 70 exact PDB NMR conformer coordinate arrays, not a training-only or measured fluorescence uncertainty guarantee",
+    "mathematical_core": "6 separately Lean-kernel-checked signed-margin and combinatorial majority theorems in FoldBounds/MutationSafeMargins.lean"
+  }
+}
