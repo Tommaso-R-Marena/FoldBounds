@@ -115,8 +115,15 @@ def main():
     args=parser.parse_args()
     ga,gb=load_real_models(args.ga.read_bytes(),args.gb.read_bytes())
     results={}
-    for channels in (5,7):
-        cert=certify_code(ga,gb,channels=channels)
+    for channels in (1,3,5,7,9):
+        try:
+            cert=certify_code(ga,gb,channels=channels)
+        except ValueError as ex:
+            results[str(channels)]={
+                "abstention":str(ex),
+                "note":"No claimed feasible structural code at this channel count"
+            }
+            continue
         if not verify_code(cert,ga,gb):
             raise AssertionError("certificate verifier rejected real input")
         observed=audit_actual_models(cert,ga,gb)
