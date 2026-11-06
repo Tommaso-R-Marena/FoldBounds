@@ -32,7 +32,8 @@ jobs:
           set -euo pipefail
           echo 'fb75cc55eb8b89e0cec5e2be69901b348e60916375b9c410a0573edfca1db591  /tmp/foldbounds-mutant-holdout/2KDL.pdb' | sha256sum --check
           echo '1c49e5faa25b443285432d935c621151294ed3b636b0106e6b1a7f7ccf2d00ec  /tmp/foldbounds-mutant-holdout/2KDM.pdb' | sha256sum --check
-          sha256sum /tmp/foldbounds-mutant-holdout/2LHC.pdb /tmp/foldbounds-mutant-holdout/2LHD.pdb
+          echo '91ed5cf27675f68799e60951cca5df7a4ecb2e8d19fd2063c4babb300e9507ac  /tmp/foldbounds-mutant-holdout/2LHC.pdb' | sha256sum --check
+          echo '73131f50fdb7fc709e0c1b3e66daf64236a19d911a4bfe5324a23007847c2e6f  /tmp/foldbounds-mutant-holdout/2LHD.pdb' | sha256sum --check
       - name: Install pinned FoldBounds Python test environment
         run: python3 -m pip install -e '.[test]'
       - name: Independent abstention and adversarial fixture tests
