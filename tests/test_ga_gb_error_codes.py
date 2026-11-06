@@ -68,11 +68,12 @@ def test_5_channel_majority_corrects_all_two_bit_errors_for_all_40_models(synthe
             clean={e.endpoints:Fraction(isqrt(_d2(m.ca[e.a],m.ca[e.b])))
                    for e in cert.reporters}
             assert classify_readouts(cert,clean)==true
+            e_by_pair={e.endpoints:e for e in cert.reporters}
             for f in range(3):
                 for corrupt in combinations(clean,f):
                     flipped=dict(clean)
                     for key in corrupt:
-                        flipped[key]=Fraction(100000 if true=="GA95" else 0)
+                        flipped[key]=Fraction(100000 if e_by_pair[key].shorter==true else 0)
                     assert classify_readouts(cert,flipped)==true
 
 def test_minimum_cover_certificate_independent_of_matching_algorithm():
