@@ -2,7 +2,7 @@
 import argparse
 import json
 from pathlib import Path
-from ga98_t25i_followup import analyze_followup
+from experiments.ga98_t25i_followup import analyze_followup
 
 
 def main():
