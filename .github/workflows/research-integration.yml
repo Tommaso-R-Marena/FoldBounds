@@ -1,0 +1,53 @@
+name: Draft FoldBounds research integration gate
+on:
+  pull_request:
+    paths:
+      - "FoldBounds/**"
+      - "src/**"
+      - "tests/**"
+      - "scripts/**"
+      - "research/integration_sources.json"
+      - ".github/workflows/research-integration.yml"
+      - "lakefile.toml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  python-integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install -e ".[test]"
+      - name: Source manifest integrity and integration capability registry
+        run: |
+          python scripts/check_integration_sources.py
+          python -m foldbounds.research_catalog --json
+      - name: Regression and adversarial Python checker suite
+        run: python -m pytest -q --maxfail=1
+      - name: Integrated HP reference and sparse/coupled CLI smoke
+        run: |
+          python -m foldbounds HHHH --q 2 --depth 4 --event-at-least 1 --exact-spectrum
+          python -m foldbounds HPHHPHHPHHHH --q 3/2 --event-at-least 2 --enhanced-lookahead 0 --matching --transfer --monotone --turn-family --sparse-leaves 5 --sparse-max-depth 7 --coupled-polytope
+  lean-integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject admitted or custom-axiom holes
+        run: python3 scripts/check_lean_sources.py
+      - name: Install Lean / Mathlib and build library
+        uses: leanprover/lean-action@v1
+      - name: Typecheck jointly imported Lean research modules
+        run: lake env lean FoldBounds/IntegrationImports.lean
+      - name: Unified Aristotle plus protein-motion axiom audit
+        run: |
+          lake env lean FoldBounds/AxiomAudit.lean | tee /tmp/foldbounds-integration-audit.log
+          python3 scripts/check_lean_sources.py /tmp/foldbounds-integration-audit.log
