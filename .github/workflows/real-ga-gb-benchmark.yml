@@ -19,6 +19,8 @@ on:
       - 'tests/test_real_aromatic_geometry.py'
       - 'tests/test_real_fold_reporters.py'
       - 'tests/test_real_advanced_frozen_reference.py'
+      - 'tests/test_ga_gb_frozen_verifier.py'
+      - 'scripts/verify_ga_gb_frozen.py'
       - 'experiments/results/ga_gb_advanced_20261020.json'
       - 'experiments/results/ga_gb_distance_reporters_20261020.json'
       - '.github/workflows/real-ga-gb-benchmark.yml'
@@ -84,19 +86,16 @@ jobs:
         run: |
           python experiments/analyze_ga_gb_advanced.py --ga /tmp/real-pdb-data/2KDL.pdb --gb /tmp/real-pdb-data/2KDM.pdb --out /tmp/real-pdb-data/advanced.json > /dev/null
           python experiments/find_fold_reporters.py --ga /tmp/real-pdb-data/2KDL.pdb --gb /tmp/real-pdb-data/2KDM.pdb --out /tmp/real-pdb-data/reporters.json > /dev/null
+          python scripts/verify_ga_gb_frozen.py /tmp/real-pdb-data/advanced.json experiments/results/ga_gb_advanced_20261020.json
+          python scripts/verify_ga_gb_frozen.py /tmp/real-pdb-data/reporters.json experiments/results/ga_gb_distance_reporters_20261020.json
           python - <<'PY'
           import json
           from pathlib import Path
-          for actual,expected in (
-            ('advanced.json','ga_gb_advanced_20261020.json'),
-            ('reporters.json','ga_gb_distance_reporters_20261020.json'),
-          ):
-              a=json.loads(Path('/tmp/real-pdb-data',actual).read_text())
-              b=json.loads(Path('experiments/results',expected).read_text())
-              assert a==b,(actual,expected)
+          a=json.loads(Path('/tmp/real-pdb-data/reporters.json').read_text())
           p=a['top_ten'][0]
+          assert a['number_of_nonmutated_pairs_with_disjoint_12_to_40_A_NMR_distance_ranges']==349
           assert (p['i'],p['j'])==(11,21) and p['worst_case_separation_A']>16
-          print('PASS: independent 20x20 contact-map contrast and 349 prospective structural-reporter candidate calculations')
+          print('PASS: authenticated NMR structure replay, contact-map and reporter statistics match frozen reference to tight floating precision')
           PY
       - name: Publish only the verified structural statistics and input hashes
         uses: actions/upload-artifact@v4
