@@ -15,7 +15,7 @@ from math import isqrt
 from pathlib import Path
 
 from foldbounds.ga_gb_error_codes import (
-    EXPECTED, _d2, certify_code, classify_readouts,
+    EXPECTED, _d2, _ceil_sqrt, certify_code, classify_readouts,
     load_real_models, verify_code
 )
 
@@ -43,6 +43,69 @@ def audit_actual_models(cert,ga,gb):
             "all_adversarial_bit_flip_trials_correct":bad,
             "not_prospective_or_equilibrium_prediction":True}
 
+
+
+def heldout_check(cert,ga_test,gb_test):
+    """Out-of-fit NMR conformers: retain negative outcomes, never hide failures."""
+    clean_hits=0
+    robust_hits=0
+    total_robust=0
+    min_margin=None
+    for truth,ensemble in (("GA95",ga_test),("GB95",gb_test)):
+        for model in ensemble:
+            clean={e.endpoints:Fraction(isqrt(_d2(model.ca[e.a],model.ca[e.b])))
+                   for e in cert.reporters}
+            clean_hits+=int(classify_readouts(cert,clean)==truth)
+            for r in range(cert.corrupted_channels+1):
+                for corrupted in combinations(clean,r):
+                    adversarial=dict(clean)
+                    for pair in corrupted:
+                        adversarial[pair]=Fraction(100000 if truth=="GA95" else 0)
+                    robust_hits+=int(classify_readouts(cert,adversarial)==truth)
+                    total_robust+=1
+            for e in cert.reporters:
+                squared=_d2(model.ca[e.a],model.ca[e.b])
+                if e.shorter=="GA95":
+                    threshold=Fraction(e.ga_range_milliang[1]+e.gb_range_milliang[0],2)
+                else:
+                    threshold=Fraction(e.gb_range_milliang[1]+e.ga_range_milliang[0],2)
+                if truth==e.shorter:
+                    margin=threshold-_ceil_sqrt(squared)
+                else:
+                    margin=isqrt(squared)-threshold
+                min_margin=margin if min_margin is None else min(min_margin,margin)
+    return {
+        "heldout_models":len(ga_test)+len(gb_test),
+        "heldout_clean_correct":clean_hits,
+        "adversarial_pattern_trials":total_robust,
+        "adversarial_pattern_correct":robust_hits,
+        "smallest_certified_signed_holdout_decision_margin_A":
+            float(min_margin/1000),
+        "evaluation_type":"retrospective within-deposition half-model holdout; not external validation",
+    }
+
+
+def alternating_split_assessment(ga,gb,channels):
+    """Fixed, predeclared alternating-model holdouts. No label reuse in fit."""
+    results={}
+    for offset in (0,1):
+        train_a,train_b=ga[offset::2],gb[offset::2]
+        test_a,test_b=ga[1-offset::2],gb[1-offset::2]
+        try:
+            fit=certify_code(train_a,train_b,channels=channels)
+            verify_code(fit,train_a,train_b)
+            results[f"fit_model_indices_{'1_3_5' if offset==0 else '2_4_6'}_etc"]={
+                "training_models_per_fold":len(train_a),
+                "fitted_bottleneck_gap_A":fit.bottleneck_milliang/1000,
+                "reporters":[list(e.endpoints) for e in fit.reporters],
+                **heldout_check(fit,test_a,test_b),
+            }
+        except ValueError as ex:
+            results[f"fit_offset_{offset}"]={
+                "no_certificate":str(ex),
+                "heldout_test_skipped":True,
+            }
+    return results
 
 def main():
     parser=argparse.ArgumentParser()
@@ -72,6 +135,7 @@ def main():
                 "size":len(cert.stronger_graph_cover_left)+len(cert.stronger_graph_cover_right),
             },
             "experiment":observed,
+            "fixed_half_model_holdout":alternating_split_assessment(ga,gb,channels),
         }
     report={
         "PDB_ensemble_sources":EXPECTED,
