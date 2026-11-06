@@ -9,7 +9,13 @@ from fractions import Fraction
 import json
 from foldbounds.gnm_joint_rank import classify_contact_boxes
 from foldbounds.gnm_joint_cases import certify_split_cases
-from experiments.real_1d3z_joint_rank import load_ca,DEFAULT_FIXTURE
+# Resolve the sibling module under both direct script and package execution.
+# Direct 'python experiments/script.py' puts experiments/ (not repo root)
+# on sys.path; 'python -m experiments.script' uses the package import.
+if __package__:
+    from .real_1d3z_joint_rank import load_ca, DEFAULT_FIXTURE
+else:
+    from real_1d3z_joint_rank import load_ca, DEFAULT_FIXTURE
 
 
 def evaluate(epsilon: Fraction=Fraction(1,20), count:int=3, *, fixed_two:bool=False):
