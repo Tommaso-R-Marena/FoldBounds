@@ -8,6 +8,10 @@ separately by the pinned CI kernel workflow.
 from itertools import product
 
 from foldbounds.cubic_tiling import OFFSETS, ROOT
+from foldbounds.local_rewire_confidence import (
+    StructuralModel, find_rewire_patches, hp_pair_weights, make_macro_target
+)
+from fractions import Fraction
 
 
 def integer_neighbor(p, q):
@@ -97,3 +101,29 @@ def test_each_positive_word_is_injective_and_a_valid_sa_witness():
             assert all(sum(a)<sum(b) for a,b in zip(walk[1:],walk[2:]))
             all_paths.add(walk)
         assert len(all_paths)==3**k
+
+
+def test_eight_site_local_rewire_splice_retains_global_occupancy_and_uniq():
+    """Separate Python witness of the premises used in CubicSplice.lean."""
+    path=make_macro_target(3,1,1)
+    n=len(path)
+    assert n==24
+    model=StructuralModel("H"*n,path,hp_pair_weights(Fraction(3)))
+    patches=find_rewire_patches(model)
+    assert patches
+    for patch in patches:
+        assert patch.choices>=2
+        original=path[patch.start:patch.start+8]
+        assert len(original)==8
+        assert len(set(original))==8
+        complete=set()
+        for variant in patch.variants:
+            assert len(variant)==8
+            assert sorted(variant)==sorted(original)
+            whole=path[:patch.start]+variant+path[patch.start+8:]
+            assert len(whole)==n
+            assert set(whole)==set(path)
+            assert len(set(whole))==n
+            assert all(integer_neighbor(a,b) for a,b in zip(whole,whole[1:]))
+            complete.add(whole)
+        assert len(complete)==patch.choices
