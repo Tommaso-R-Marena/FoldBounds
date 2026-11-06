@@ -7,6 +7,7 @@ on:
       - 'experiments/mutation_safe_radius_demo.py'
       - 'tests/test_mutation_safe_radius.py'
       - 'FoldBounds/MutationSafeMargins.lean'
+      - 'docs/MUTATION_SAFE_ERROR_ERASURE_REPORTERS.md'
       - 'experiments/results/mutation_safe_radius_20261105.json'
       - 'experiments/mutation_safe_real_audit.py'
       - 'experiments/results/mutation_safe_real_nmr_20261105.json'
@@ -91,6 +92,20 @@ jobs:
             --2lhg /tmp/foldbounds-mutation-safe/2LHG.pdb \
             --2lhe /tmp/foldbounds-mutation-safe/2LHE.pdb \
             --out /tmp/foldbounds-mutation-safe/new_margin_radii.json
+      - name: Prove exact order-statistic radius report reproduces immutable source result
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          observed=json.loads(Path('/tmp/foldbounds-mutation-safe/new_margin_radii.json').read_text())
+          reference=json.loads(Path('experiments/results/mutation_safe_radius_20261105.json').read_text())
+          receipt=reference.pop('verification_receipt')
+          if observed!=reference:
+              raise SystemExit('mutation-safe order-statistic radii changed on exact source PDB files')
+          if receipt["source_commit"]!="9b507c503a1ce0fd3dbc110ff6a99c46f7acfa34":
+              raise SystemExit('wrong source run for external margin radius')
+          print('All 30 exact quantile radius budgets reproduced against 70 external NMR models')
+          PY
       - name: Preserve full negative controls and all per-conformer outcomes
         uses: actions/upload-artifact@v4
         with:
