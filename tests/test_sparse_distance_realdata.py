@@ -109,3 +109,27 @@ def test_random_integer_geometry_oracle():
 def test_bad_coplanar_input_fails_closed():
     p=((0,0,0),(1,0,0),(2,0,0),(3,0,0))
     with pytest.raises(ValueError):select_anchors(p)
+
+
+@pytest.mark.parametrize("pdb",tuple(EXPECTED))
+def test_exact_jacobian_full_rank_and_local_constraint_minimality(pdb):
+    """Each 3-distance site map has exact Jacobian determinant 8*V != 0."""
+    p=decode(STRUCTURES[pdb]["packed"])
+    cert=make_signed_certificate(p)
+    a0,a1,a2=cert.anchors
+    def sub(x,y):return tuple(v-w for v,w in zip(x,y))
+    def dot(x,y):return sum(v*w for v,w in zip(x,y))
+    def cross(x,y):
+        return (x[1]*y[2]-x[2]*y[1],
+                x[2]*y[0]-x[0]*y[2],
+                x[0]*y[1]-x[1]*y[0])
+    u,v=sub(a1,a0),sub(a2,a0)
+    normal=cross(u,v)
+    assert dot(normal,normal)>0
+    for i,x in enumerate(p):
+        if i in cert.anchor_indices:continue
+        jacobian_rows=[tuple(2*z for z in sub(x,a)) for a in (a0,a1,a2)]
+        detj=dot(jacobian_rows[0],cross(jacobian_rows[1],jacobian_rows[2]))
+        signed_volume=dot(normal,sub(x,a0))
+        assert detj==8*signed_volume
+        assert detj!=0
