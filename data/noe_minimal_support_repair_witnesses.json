@@ -1,0 +1,38 @@
+{
+  "schema": "FoldBounds.NOESparseRepair.v1",
+  "scale_ticks_per_milliangstrom": 1000,
+  "source_github_file_blob_sha": "96daf4e88743df4e623cdf5495f28b8e2113fc32",
+  "samples": {
+    "2png": {
+      "source_count": 304,
+      "lower_restraint_id": 1701,
+      "strict_lower_radius_ticks": 27283,
+      "upper_radius_ticks": 54569,
+      "matching_ids": [373,662,1407,1701,1710],
+      "sparse_lower_restraint_id": 1701,
+      "strict_sparse_lower_radius_ticks": 54567,
+      "moves": [
+        ["47:H",-38365,-17644,-34562],
+        ["19:HB",4625,1169,15539],
+        ["49:HA",28211,17818,14789],
+        ["63:H",-7928,37029,-1745],
+        ["42:HA",-13289,28742,-26369]
+      ]
+    },
+    "6nbn": {
+      "source_count": 553,
+      "lower_restraint_id": 470,
+      "strict_lower_radius_ticks": 368720,
+      "upper_radius_ticks": 737443,
+      "matching_ids": [145,470,507,643],
+      "sparse_lower_restraint_id": 470,
+      "strict_sparse_lower_radius_ticks": 737441,
+      "moves": [
+        ["95:HA",13769,37551,30428],
+        ["69:H",502627,-72128,534776],
+        ["43:H",-5590,-14532,-36019],
+        ["67:HD22",-1879,-16519,21382]
+      ]
+    }
+  }
+}

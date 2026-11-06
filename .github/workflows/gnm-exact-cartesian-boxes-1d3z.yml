@@ -1,0 +1,32 @@
+name: Exact GNM Cartesian coordinate-box graph atlas 1D3Z
+
+on:
+  pull_request:
+    paths:
+      - 'src/foldbounds/gnm_exact_coordinate_boxes.py'
+      - 'tests/test_gnm_exact_coordinate_boxes.py'
+      - 'experiments/real_1d3z_exact_coordinate_boxes.py'
+      - 'research/GNM_EXACT_CARTESIAN_BOXES_1D3Z.md'
+      - '.github/workflows/gnm-exact-cartesian-boxes-1d3z.yml'
+  workflow_dispatch:
+
+jobs:
+  exact-box-geometry-and-worlds:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.12', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install integer witness proposer and tests
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e '.[test]' sympy
+      - name: Exact real coordinate geometry and 4096 source-only GNM network tests
+        run: python -m pytest -q tests/test_gnm_exact_coordinate_boxes.py
+      - name: Reproduce 2096 strict invariant source-model rankings
+        run: python experiments/real_1d3z_exact_coordinate_boxes.py --epsilon 0.05

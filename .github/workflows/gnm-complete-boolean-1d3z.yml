@@ -1,0 +1,34 @@
+name: Exact complete 1D3Z GNM contact-world rank certificate
+
+on:
+  pull_request:
+    paths:
+      - 'src/foldbounds/gnm_reduced_woodbury.py'
+      - 'src/foldbounds/gnm_complete_worlds.py'
+      - 'research/gnm_1d3z_complete_worlds.json'
+      - 'experiments/replay_1d3z_complete_worlds.py'
+      - 'experiments/propose_1d3z_complete_worlds.py'
+      - 'tests/test_gnm_complete_worlds.py'
+      - '.github/workflows/gnm-complete-boolean-1d3z.yml'
+  workflow_dispatch:
+
+jobs:
+  exact-graph-atlas:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.12', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install exact witness proposer and test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e '.[test]' sympy
+      - name: Verify all small synthetic, adversarial, and real 1D3Z certificates
+        run: python -m pytest -q tests/test_gnm_complete_worlds.py
+      - name: Independent exact replay of all 2346 source-only rank classifications
+        run: python experiments/replay_1d3z_complete_worlds.py
