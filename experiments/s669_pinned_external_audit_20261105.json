@@ -1,0 +1,1438 @@
+{
+  "description": "Independent JavaScript replay of exact pinned real experimental S669 table, crosschecked by a separate Python implementation on synthetic invariants; JS uses IEEE doubles, Python production script uses Decimal",
+  "source": {
+    "repository": "Gonglab-THU/GeoStab",
+    "commit": "be8e6d079ea792396f3a4343a8de54273d3d3828",
+    "path": "data/ddG/S669.csv",
+    "git_blob_sha1": "f7a19c2ac0821371a947469231eb03d728ab884f",
+    "source_bytes": 504799
+  },
+  "methodology": {
+    "wildtypes": 93,
+    "variants": 669,
+    "heldout_group_unit": "entire wildtype amino acid sequence",
+    "folds": 5,
+    "split_seed": 20261105,
+    "calibration": "group max of absolute residuals; exact integer rank in Python",
+    "assumption": "whole protein groups exchangeable; no assurance under distribution shift"
+  },
+  "base_seed": {
+    "fixed_90": {
+      "seed": 20261105,
+      "alpha": 0.1,
+      "kind": "fixed",
+      "unit": "protein",
+      "protein_groups_covered": 86,
+      "proteins_total": 93,
+      "mutations_covered": 655,
+      "mutations_total": 669,
+      "mean_width_kcal_mol": 8.29128109334082,
+      "sign_calls": 18,
+      "sign_correct": 18,
+      "folds": [
+        {
+          "fold": 0,
+          "model": "GeoDDG-3D_dir",
+          "cal_proteins": 19,
+          "test_proteins": 19,
+          "test_mutations": 167,
+          "cutoff_kcal_mol": 3.1167084836959837,
+          "covered_proteins": 18,
+          "covered_mutations": 166,
+          "sign_calls": 14,
+          "sign_correct": 14
+        },
+        {
+          "fold": 1,
+          "model": "GeoDDG-3D_dir",
+          "cal_proteins": 19,
+          "test_proteins": 19,
+          "test_mutations": 84,
+          "cutoff_kcal_mol": 4.235306140899659,
+          "covered_proteins": 18,
+          "covered_mutations": 83,
+          "sign_calls": 0,
+          "sign_correct": 0
+        },
+        {
+          "fold": 2,
+          "model": "GeoDDG-3D_dir",
+          "cal_proteins": 18,
+          "test_proteins": 19,
+          "test_mutations": 93,
+          "cutoff_kcal_mol": 5.382813301086426,
+          "covered_proteins": 18,
+          "covered_mutations": 92,
+          "sign_calls": 0,
+          "sign_correct": 0
+        },
+        {
+          "fold": 3,
+          "model": "GeoDDG-3D_dir",
+          "cal_proteins": 18,
+          "test_proteins": 18,
+          "test_mutations": 226,
+          "cutoff_kcal_mol": 4.914616267681122,
+          "covered_proteins": 17,
+          "covered_mutations": 225,
+          "sign_calls": 2,
+          "sign_correct": 2
+        },
+        {
+          "fold": 4,
+          "model": "GeoDDG-3D_dir",
+          "cal_proteins": 19,
+          "test_proteins": 18,
+          "test_mutations": 99,
+          "cutoff_kcal_mol": 2.8876018142700195,
+          "covered_proteins": 15,
+          "covered_mutations": 89,
+          "sign_calls": 2,
+          "sign_correct": 2
+        }
+      ]
+    },
+    "selected_phys_90": {
+      "seed": 20261105,
+      "alpha": 0.1,
+      "kind": "selected_phys",
+      "unit": "protein",
+      "protein_groups_covered": 86,
+      "proteins_total": 93,
+      "mutations_covered": 654,
+      "mutations_total": 669,
+      "mean_width_kcal_mol": 8.471216408733829,
+      "sign_calls": 18,
+      "sign_correct": 18,
+      "folds": [
+        {
+          "fold": 0,
+          "model": "GeoDDG-3D_sym",
+          "cal_proteins": 19,
+          "test_proteins": 19,
+          "test_mutations": 167,
+          "cutoff_kcal_mol": 3.1167084836959837,
+          "covered_proteins": 18,
+          "covered_mutations": 166,
+          "sign_calls": 14,
+          "sign_correct": 14
+        },
+        {
+          "fold": 1,
+          "model": "GeoDDG-3D_sym",
+          "cal_proteins": 19,
+          "test_proteins": 19,
+          "test_mutations": 84,
+          "cutoff_kcal_mol": 4.235306140899659,
+          "covered_proteins": 18,
+          "covered_mutations": 83,
+          "sign_calls": 0,
+          "sign_correct": 0
+        },
+        {
+          "fold": 2,
+          "model": "DDMut_sym",
+          "cal_proteins": 18,
+          "test_proteins": 19,
+          "test_mutations": 93,
+          "cutoff_kcal_mol": 6.029999999999999,
+          "covered_proteins": 18,
+          "covered_mutations": 91,
+          "sign_calls": 0,
+          "sign_correct": 0
+        },
+        {
+          "fold": 3,
+          "model": "GeoDDG-3D_sym",
+          "cal_proteins": 18,
+          "test_proteins": 18,
+          "test_mutations": 226,
+          "cutoff_kcal_mol": 4.914616267681122,
+          "covered_proteins": 17,
+          "covered_mutations": 225,
+          "sign_calls": 2,
+          "sign_correct": 2
+        },
+        {
+          "fold": 4,
+          "model": "GeoDDG-3D_sym",
+          "cal_proteins": 19,
+          "test_proteins": 18,
+          "test_mutations": 99,
+          "cutoff_kcal_mol": 2.8876018142700195,
+          "covered_proteins": 15,
+          "covered_mutations": 89,
+          "sign_calls": 2,
+          "sign_correct": 2
+        }
+      ]
+    },
+    "naive_row_90": {
+      "seed": 20261105,
+      "alpha": 0.1,
+      "kind": "fixed",
+      "unit": "mutation",
+      "protein_groups_covered": 62,
+      "proteins_total": 93,
+      "mutations_covered": 593,
+      "mutations_total": 669,
+      "mean_width_kcal_mol": 4.762206737866138,
+      "sign_calls": 79,
+      "sign_correct": 78,
+      "folds": [
+        {
+          "fold": 0,
+          "model": "GeoDDG-3D_dir",
+          "cal_proteins": 19,
+          "test_proteins": 19,
+          "test_mutations": 167,
+          "cutoff_kcal_mol": 2.3097055912017823,
+          "covered_proteins": 12,
+          "covered_mutations": 158,
+          "sign_calls": 20,
+          "sign_correct": 20
+        },
+        {
+          "fold": 1,
+          "model": "GeoDDG-3D_dir",
+          "cal_proteins": 19,
+          "test_proteins": 19,
+          "test_mutations": 84,
+          "cutoff_kcal_mol": 2.4689508962631224,
+          "covered_proteins": 15,
+          "covered_mutations": 79,
+          "sign_calls": 6,
+          "sign_correct": 6
+        },
+        {
+          "fold": 2,
+          "model": "GeoDDG-3D_dir",
+          "cal_proteins": 18,
+          "test_proteins": 19,
+          "test_mutations": 93,
+          "cutoff_kcal_mol": 1.763218379020691,
+          "covered_proteins": 10,
+          "covered_mutations": 75,
+          "sign_calls": 21,
+          "sign_correct": 20
+        },
+        {
+          "fold": 3,
+          "model": "GeoDDG-3D_dir",
+          "cal_proteins": 18,
+          "test_proteins": 18,
+          "test_mutations": 226,
+          "cutoff_kcal_mol": 2.980630725383759,
+          "covered_proteins": 14,
+          "covered_mutations": 219,
+          "sign_calls": 19,
+          "sign_correct": 19
+        },
+        {
+          "fold": 4,
+          "model": "GeoDDG-3D_dir",
+          "cal_proteins": 19,
+          "test_proteins": 18,
+          "test_mutations": 99,
+          "cutoff_kcal_mol": 1.6388241577148437,
+          "covered_proteins": 11,
+          "covered_mutations": 62,
+          "sign_calls": 13,
+          "sign_correct": 13
+        }
+      ]
+    },
+    "fixed_80": {
+      "seed": 20261105,
+      "alpha": 0.2,
+      "kind": "fixed",
+      "unit": "protein",
+      "protein_groups_covered": 75,
+      "proteins_total": 93,
+      "mutations_covered": 637,
+      "mutations_total": 669,
+      "mean_width_kcal_mol": 6.424791407292912,
+      "sign_calls": 30,
+      "sign_correct": 30,
+      "folds": [
+        {
+          "fold": 0,
+          "model": "GeoDDG-3D_dir",
+          "cal_proteins": 19,
+          "test_proteins": 19,
+          "test_mutations": 167,
+          "cutoff_kcal_mol": 2.6262751960754396,
+          "covered_proteins": 14,
+          "covered_mutations": 160,
+          "sign_calls": 17,
+          "sign_correct": 17
+        },
+        {
+          "fold": 1,
+          "model": "GeoDDG-3D_dir",
+          "cal_proteins": 19,
+          "test_proteins": 19,
+          "test_mutations": 84,
+          "cutoff_kcal_mol": 2.69377977848053,
+          "covered_proteins": 16,
+          "covered_mutations": 80,
+          "sign_calls": 4,
+          "sign_correct": 4
+        },
+        {
+          "fold": 2,
+          "model": "GeoDDG-3D_dir",
+          "cal_proteins": 18,
+          "test_proteins": 19,
+          "test_mutations": 93,
+          "cutoff_kcal_mol": 3.821783771514893,
+          "covered_proteins": 17,
+          "covered_mutations": 90,
+          "sign_calls": 0,
+          "sign_correct": 0
+        },
+        {
+          "fold": 3,
+          "model": "GeoDDG-3D_dir",
+          "cal_proteins": 18,
+          "test_proteins": 18,
+          "test_mutations": 226,
+          "cutoff_kcal_mol": 3.785785586833954,
+          "covered_proteins": 14,
+          "covered_mutations": 222,
+          "sign_calls": 6,
+          "sign_correct": 6
+        },
+        {
+          "fold": 4,
+          "model": "GeoDDG-3D_dir",
+          "cal_proteins": 19,
+          "test_proteins": 18,
+          "test_mutations": 99,
+          "cutoff_kcal_mol": 2.7597356891632083,
+          "covered_proteins": 14,
+          "covered_mutations": 85,
+          "sign_calls": 3,
+          "sign_correct": 3
+        }
+      ]
+    },
+    "selected_phys_80": {
+      "seed": 20261105,
+      "alpha": 0.2,
+      "kind": "selected_phys",
+      "unit": "protein",
+      "protein_groups_covered": 70,
+      "proteins_total": 93,
+      "mutations_covered": 631,
+      "mutations_total": 669,
+      "mean_width_kcal_mol": 6.360349282477112,
+      "sign_calls": 30,
+      "sign_correct": 30,
+      "folds": [
+        {
+          "fold": 0,
+          "model": "GeoDDG-3D_sym",
+          "cal_proteins": 19,
+          "test_proteins": 19,
+          "test_mutations": 167,
+          "cutoff_kcal_mol": 2.6262751960754396,
+          "covered_proteins": 14,
+          "covered_mutations": 160,
+          "sign_calls": 17,
+          "sign_correct": 17
+        },
+        {
+          "fold": 1,
+          "model": "GeoDDG-3D_sym",
+          "cal_proteins": 19,
+          "test_proteins": 19,
+          "test_mutations": 84,
+          "cutoff_kcal_mol": 2.69377977848053,
+          "covered_proteins": 16,
+          "covered_mutations": 80,
+          "sign_calls": 4,
+          "sign_correct": 4
+        },
+        {
+          "fold": 2,
+          "model": "DDMut_sym",
+          "cal_proteins": 18,
+          "test_proteins": 19,
+          "test_mutations": 93,
+          "cutoff_kcal_mol": 3.59,
+          "covered_proteins": 12,
+          "covered_mutations": 84,
+          "sign_calls": 0,
+          "sign_correct": 0
+        },
+        {
+          "fold": 3,
+          "model": "GeoDDG-3D_sym",
+          "cal_proteins": 18,
+          "test_proteins": 18,
+          "test_mutations": 226,
+          "cutoff_kcal_mol": 3.785785586833954,
+          "covered_proteins": 14,
+          "covered_mutations": 222,
+          "sign_calls": 6,
+          "sign_correct": 6
+        },
+        {
+          "fold": 4,
+          "model": "GeoDDG-3D_sym",
+          "cal_proteins": 19,
+          "test_proteins": 18,
+          "test_mutations": 99,
+          "cutoff_kcal_mol": 2.7597356891632083,
+          "covered_proteins": 14,
+          "covered_mutations": 85,
+          "sign_calls": 3,
+          "sign_correct": 3
+        }
+      ]
+    }
+  },
+  "seed_60_stats": {
+    "fixed": {
+      "seeds": 60,
+      "mean_groups": 85.01666666666667,
+      "min_groups": 77,
+      "max_groups": 90,
+      "mean_width_kcal_mol": 8.480927426501738,
+      "min_width": 7.517527790343458,
+      "max_width": 9.990558900027711
+    },
+    "selected_phys": {
+      "seeds": 60,
+      "mean_groups": 85.03333333333333,
+      "min_groups": 77,
+      "max_groups": 90,
+      "mean_width_kcal_mol": 8.518363485532145,
+      "min_width": 7.48491782340091,
+      "max_width": 9.990558900027711
+    }
+  },
+  "all_60_seeds": [
+    {
+      "seed": 20261105,
+      "fixed": {
+        "protein_groups_covered": 86,
+        "mutations_covered": 655,
+        "width_kcal_mol": 8.29128109334082,
+        "sign_calls": 18,
+        "sign_correct": 18
+      },
+      "selected_phys": {
+        "protein_groups_covered": 86,
+        "mutations_covered": 654,
+        "width_kcal_mol": 8.471216408733829,
+        "sign_calls": 18,
+        "sign_correct": 18
+      }
+    },
+    {
+      "seed": 20261106,
+      "fixed": {
+        "protein_groups_covered": 84,
+        "mutations_covered": 657,
+        "width_kcal_mol": 8.30820217988416,
+        "sign_calls": 3,
+        "sign_correct": 3
+      },
+      "selected_phys": {
+        "protein_groups_covered": 84,
+        "mutations_covered": 657,
+        "width_kcal_mol": 8.30820217988416,
+        "sign_calls": 3,
+        "sign_correct": 3
+      }
+    },
+    {
+      "seed": 20261107,
+      "fixed": {
+        "protein_groups_covered": 87,
+        "mutations_covered": 662,
+        "width_kcal_mol": 8.562799947785335,
+        "sign_calls": 5,
+        "sign_correct": 5
+      },
+      "selected_phys": {
+        "protein_groups_covered": 87,
+        "mutations_covered": 662,
+        "width_kcal_mol": 8.562799947785335,
+        "sign_calls": 5,
+        "sign_correct": 5
+      }
+    },
+    {
+      "seed": 20261108,
+      "fixed": {
+        "protein_groups_covered": 85,
+        "mutations_covered": 657,
+        "width_kcal_mol": 8.02749450697849,
+        "sign_calls": 29,
+        "sign_correct": 29
+      },
+      "selected_phys": {
+        "protein_groups_covered": 85,
+        "mutations_covered": 657,
+        "width_kcal_mol": 8.02749450697849,
+        "sign_calls": 29,
+        "sign_correct": 29
+      }
+    },
+    {
+      "seed": 20261109,
+      "fixed": {
+        "protein_groups_covered": 87,
+        "mutations_covered": 660,
+        "width_kcal_mol": 8.807466231072432,
+        "sign_calls": 11,
+        "sign_correct": 11
+      },
+      "selected_phys": {
+        "protein_groups_covered": 87,
+        "mutations_covered": 660,
+        "width_kcal_mol": 8.807466231072432,
+        "sign_calls": 11,
+        "sign_correct": 11
+      }
+    },
+    {
+      "seed": 20261110,
+      "fixed": {
+        "protein_groups_covered": 87,
+        "mutations_covered": 662,
+        "width_kcal_mol": 9.783908143571852,
+        "sign_calls": 7,
+        "sign_correct": 7
+      },
+      "selected_phys": {
+        "protein_groups_covered": 87,
+        "mutations_covered": 662,
+        "width_kcal_mol": 9.783908143571852,
+        "sign_calls": 7,
+        "sign_correct": 7
+      }
+    },
+    {
+      "seed": 20261111,
+      "fixed": {
+        "protein_groups_covered": 83,
+        "mutations_covered": 655,
+        "width_kcal_mol": 8.822685384819504,
+        "sign_calls": 15,
+        "sign_correct": 15
+      },
+      "selected_phys": {
+        "protein_groups_covered": 83,
+        "mutations_covered": 655,
+        "width_kcal_mol": 8.822685384819504,
+        "sign_calls": 15,
+        "sign_correct": 15
+      }
+    },
+    {
+      "seed": 20261112,
+      "fixed": {
+        "protein_groups_covered": 80,
+        "mutations_covered": 647,
+        "width_kcal_mol": 7.931490836874787,
+        "sign_calls": 8,
+        "sign_correct": 8
+      },
+      "selected_phys": {
+        "protein_groups_covered": 80,
+        "mutations_covered": 647,
+        "width_kcal_mol": 7.931490836874787,
+        "sign_calls": 8,
+        "sign_correct": 8
+      }
+    },
+    {
+      "seed": 20261113,
+      "fixed": {
+        "protein_groups_covered": 84,
+        "mutations_covered": 658,
+        "width_kcal_mol": 8.13474377578399,
+        "sign_calls": 35,
+        "sign_correct": 35
+      },
+      "selected_phys": {
+        "protein_groups_covered": 84,
+        "mutations_covered": 658,
+        "width_kcal_mol": 8.13474377578399,
+        "sign_calls": 35,
+        "sign_correct": 35
+      }
+    },
+    {
+      "seed": 20261114,
+      "fixed": {
+        "protein_groups_covered": 84,
+        "mutations_covered": 655,
+        "width_kcal_mol": 8.111048241294197,
+        "sign_calls": 12,
+        "sign_correct": 12
+      },
+      "selected_phys": {
+        "protein_groups_covered": 84,
+        "mutations_covered": 655,
+        "width_kcal_mol": 8.111048241294197,
+        "sign_calls": 12,
+        "sign_correct": 12
+      }
+    },
+    {
+      "seed": 20261115,
+      "fixed": {
+        "protein_groups_covered": 86,
+        "mutations_covered": 658,
+        "width_kcal_mol": 8.346168515252426,
+        "sign_calls": 13,
+        "sign_correct": 13
+      },
+      "selected_phys": {
+        "protein_groups_covered": 86,
+        "mutations_covered": 658,
+        "width_kcal_mol": 8.346168515252426,
+        "sign_calls": 13,
+        "sign_correct": 13
+      }
+    },
+    {
+      "seed": 20261116,
+      "fixed": {
+        "protein_groups_covered": 84,
+        "mutations_covered": 658,
+        "width_kcal_mol": 8.419450414351818,
+        "sign_calls": 10,
+        "sign_correct": 10
+      },
+      "selected_phys": {
+        "protein_groups_covered": 84,
+        "mutations_covered": 658,
+        "width_kcal_mol": 8.419450414351818,
+        "sign_calls": 10,
+        "sign_correct": 10
+      }
+    },
+    {
+      "seed": 20261117,
+      "fixed": {
+        "protein_groups_covered": 84,
+        "mutations_covered": 652,
+        "width_kcal_mol": 8.434366668040086,
+        "sign_calls": 3,
+        "sign_correct": 3
+      },
+      "selected_phys": {
+        "protein_groups_covered": 85,
+        "mutations_covered": 653,
+        "width_kcal_mol": 8.716650634249943,
+        "sign_calls": 3,
+        "sign_correct": 3
+      }
+    },
+    {
+      "seed": 20261118,
+      "fixed": {
+        "protein_groups_covered": 86,
+        "mutations_covered": 661,
+        "width_kcal_mol": 8.452033988176797,
+        "sign_calls": 6,
+        "sign_correct": 6
+      },
+      "selected_phys": {
+        "protein_groups_covered": 86,
+        "mutations_covered": 661,
+        "width_kcal_mol": 8.452033988176797,
+        "sign_calls": 6,
+        "sign_correct": 6
+      }
+    },
+    {
+      "seed": 20261119,
+      "fixed": {
+        "protein_groups_covered": 84,
+        "mutations_covered": 655,
+        "width_kcal_mol": 8.197721873162218,
+        "sign_calls": 28,
+        "sign_correct": 28
+      },
+      "selected_phys": {
+        "protein_groups_covered": 84,
+        "mutations_covered": 655,
+        "width_kcal_mol": 8.197721873162218,
+        "sign_calls": 28,
+        "sign_correct": 28
+      }
+    },
+    {
+      "seed": 20261120,
+      "fixed": {
+        "protein_groups_covered": 86,
+        "mutations_covered": 660,
+        "width_kcal_mol": 8.791947220729606,
+        "sign_calls": 4,
+        "sign_correct": 4
+      },
+      "selected_phys": {
+        "protein_groups_covered": 86,
+        "mutations_covered": 660,
+        "width_kcal_mol": 8.791947220729606,
+        "sign_calls": 4,
+        "sign_correct": 4
+      }
+    },
+    {
+      "seed": 20261121,
+      "fixed": {
+        "protein_groups_covered": 87,
+        "mutations_covered": 663,
+        "width_kcal_mol": 8.66037867346063,
+        "sign_calls": 24,
+        "sign_correct": 24
+      },
+      "selected_phys": {
+        "protein_groups_covered": 87,
+        "mutations_covered": 663,
+        "width_kcal_mol": 8.66037867346063,
+        "sign_calls": 24,
+        "sign_correct": 24
+      }
+    },
+    {
+      "seed": 20261122,
+      "fixed": {
+        "protein_groups_covered": 87,
+        "mutations_covered": 655,
+        "width_kcal_mol": 8.724860794027467,
+        "sign_calls": 19,
+        "sign_correct": 19
+      },
+      "selected_phys": {
+        "protein_groups_covered": 87,
+        "mutations_covered": 655,
+        "width_kcal_mol": 8.724860794027467,
+        "sign_calls": 19,
+        "sign_correct": 19
+      }
+    },
+    {
+      "seed": 20261123,
+      "fixed": {
+        "protein_groups_covered": 81,
+        "mutations_covered": 651,
+        "width_kcal_mol": 8.028744204468435,
+        "sign_calls": 15,
+        "sign_correct": 15
+      },
+      "selected_phys": {
+        "protein_groups_covered": 81,
+        "mutations_covered": 651,
+        "width_kcal_mol": 8.52567040912788,
+        "sign_calls": 15,
+        "sign_correct": 15
+      }
+    },
+    {
+      "seed": 20261124,
+      "fixed": {
+        "protein_groups_covered": 83,
+        "mutations_covered": 653,
+        "width_kcal_mol": 8.829435300085754,
+        "sign_calls": 5,
+        "sign_correct": 5
+      },
+      "selected_phys": {
+        "protein_groups_covered": 83,
+        "mutations_covered": 653,
+        "width_kcal_mol": 8.829435300085754,
+        "sign_calls": 5,
+        "sign_correct": 5
+      }
+    },
+    {
+      "seed": 20261125,
+      "fixed": {
+        "protein_groups_covered": 87,
+        "mutations_covered": 661,
+        "width_kcal_mol": 8.131953788339645,
+        "sign_calls": 17,
+        "sign_correct": 17
+      },
+      "selected_phys": {
+        "protein_groups_covered": 87,
+        "mutations_covered": 661,
+        "width_kcal_mol": 8.131953788339645,
+        "sign_calls": 17,
+        "sign_correct": 17
+      }
+    },
+    {
+      "seed": 20261126,
+      "fixed": {
+        "protein_groups_covered": 77,
+        "mutations_covered": 637,
+        "width_kcal_mol": 7.6883488833622735,
+        "sign_calls": 20,
+        "sign_correct": 20
+      },
+      "selected_phys": {
+        "protein_groups_covered": 77,
+        "mutations_covered": 637,
+        "width_kcal_mol": 7.6883488833622735,
+        "sign_calls": 20,
+        "sign_correct": 20
+      }
+    },
+    {
+      "seed": 20261127,
+      "fixed": {
+        "protein_groups_covered": 87,
+        "mutations_covered": 661,
+        "width_kcal_mol": 9.039726783983378,
+        "sign_calls": 6,
+        "sign_correct": 6
+      },
+      "selected_phys": {
+        "protein_groups_covered": 87,
+        "mutations_covered": 661,
+        "width_kcal_mol": 9.283430917665742,
+        "sign_calls": 6,
+        "sign_correct": 6
+      }
+    },
+    {
+      "seed": 20261128,
+      "fixed": {
+        "protein_groups_covered": 81,
+        "mutations_covered": 652,
+        "width_kcal_mol": 8.308121992856755,
+        "sign_calls": 22,
+        "sign_correct": 22
+      },
+      "selected_phys": {
+        "protein_groups_covered": 81,
+        "mutations_covered": 652,
+        "width_kcal_mol": 8.308121992856755,
+        "sign_calls": 22,
+        "sign_correct": 22
+      }
+    },
+    {
+      "seed": 20261129,
+      "fixed": {
+        "protein_groups_covered": 88,
+        "mutations_covered": 663,
+        "width_kcal_mol": 8.95640153132212,
+        "sign_calls": 13,
+        "sign_correct": 13
+      },
+      "selected_phys": {
+        "protein_groups_covered": 88,
+        "mutations_covered": 663,
+        "width_kcal_mol": 8.95640153132212,
+        "sign_calls": 13,
+        "sign_correct": 13
+      }
+    },
+    {
+      "seed": 20261130,
+      "fixed": {
+        "protein_groups_covered": 89,
+        "mutations_covered": 663,
+        "width_kcal_mol": 9.092241281700417,
+        "sign_calls": 15,
+        "sign_correct": 15
+      },
+      "selected_phys": {
+        "protein_groups_covered": 89,
+        "mutations_covered": 663,
+        "width_kcal_mol": 9.092241281700417,
+        "sign_calls": 15,
+        "sign_correct": 15
+      }
+    },
+    {
+      "seed": 20261131,
+      "fixed": {
+        "protein_groups_covered": 88,
+        "mutations_covered": 664,
+        "width_kcal_mol": 9.167911522011586,
+        "sign_calls": 4,
+        "sign_correct": 4
+      },
+      "selected_phys": {
+        "protein_groups_covered": 88,
+        "mutations_covered": 664,
+        "width_kcal_mol": 9.167911522011586,
+        "sign_calls": 4,
+        "sign_correct": 4
+      }
+    },
+    {
+      "seed": 20261132,
+      "fixed": {
+        "protein_groups_covered": 81,
+        "mutations_covered": 647,
+        "width_kcal_mol": 7.517527790343458,
+        "sign_calls": 18,
+        "sign_correct": 18
+      },
+      "selected_phys": {
+        "protein_groups_covered": 81,
+        "mutations_covered": 647,
+        "width_kcal_mol": 7.48491782340091,
+        "sign_calls": 18,
+        "sign_correct": 18
+      }
+    },
+    {
+      "seed": 20261133,
+      "fixed": {
+        "protein_groups_covered": 83,
+        "mutations_covered": 651,
+        "width_kcal_mol": 7.995649025725321,
+        "sign_calls": 16,
+        "sign_correct": 16
+      },
+      "selected_phys": {
+        "protein_groups_covered": 83,
+        "mutations_covered": 651,
+        "width_kcal_mol": 7.995649025725321,
+        "sign_calls": 16,
+        "sign_correct": 16
+      }
+    },
+    {
+      "seed": 20261134,
+      "fixed": {
+        "protein_groups_covered": 86,
+        "mutations_covered": 660,
+        "width_kcal_mol": 7.96150063636449,
+        "sign_calls": 11,
+        "sign_correct": 11
+      },
+      "selected_phys": {
+        "protein_groups_covered": 86,
+        "mutations_covered": 660,
+        "width_kcal_mol": 7.96150063636449,
+        "sign_calls": 11,
+        "sign_correct": 11
+      }
+    },
+    {
+      "seed": 20261135,
+      "fixed": {
+        "protein_groups_covered": 87,
+        "mutations_covered": 662,
+        "width_kcal_mol": 8.307046958228575,
+        "sign_calls": 6,
+        "sign_correct": 6
+      },
+      "selected_phys": {
+        "protein_groups_covered": 87,
+        "mutations_covered": 662,
+        "width_kcal_mol": 8.49769868006888,
+        "sign_calls": 7,
+        "sign_correct": 7
+      }
+    },
+    {
+      "seed": 20261136,
+      "fixed": {
+        "protein_groups_covered": 84,
+        "mutations_covered": 649,
+        "width_kcal_mol": 8.163312071786155,
+        "sign_calls": 12,
+        "sign_correct": 12
+      },
+      "selected_phys": {
+        "protein_groups_covered": 84,
+        "mutations_covered": 649,
+        "width_kcal_mol": 8.163312071786155,
+        "sign_calls": 12,
+        "sign_correct": 12
+      }
+    },
+    {
+      "seed": 20261137,
+      "fixed": {
+        "protein_groups_covered": 86,
+        "mutations_covered": 660,
+        "width_kcal_mol": 8.889426065439244,
+        "sign_calls": 3,
+        "sign_correct": 3
+      },
+      "selected_phys": {
+        "protein_groups_covered": 86,
+        "mutations_covered": 660,
+        "width_kcal_mol": 8.889426065439244,
+        "sign_calls": 3,
+        "sign_correct": 3
+      }
+    },
+    {
+      "seed": 20261138,
+      "fixed": {
+        "protein_groups_covered": 87,
+        "mutations_covered": 662,
+        "width_kcal_mol": 8.873598472419875,
+        "sign_calls": 6,
+        "sign_correct": 6
+      },
+      "selected_phys": {
+        "protein_groups_covered": 87,
+        "mutations_covered": 662,
+        "width_kcal_mol": 8.873598472419875,
+        "sign_calls": 6,
+        "sign_correct": 6
+      }
+    },
+    {
+      "seed": 20261139,
+      "fixed": {
+        "protein_groups_covered": 86,
+        "mutations_covered": 660,
+        "width_kcal_mol": 8.32450868405141,
+        "sign_calls": 26,
+        "sign_correct": 26
+      },
+      "selected_phys": {
+        "protein_groups_covered": 86,
+        "mutations_covered": 661,
+        "width_kcal_mol": 8.532636649957153,
+        "sign_calls": 18,
+        "sign_correct": 18
+      }
+    },
+    {
+      "seed": 20261140,
+      "fixed": {
+        "protein_groups_covered": 87,
+        "mutations_covered": 661,
+        "width_kcal_mol": 8.31349677192363,
+        "sign_calls": 10,
+        "sign_correct": 10
+      },
+      "selected_phys": {
+        "protein_groups_covered": 87,
+        "mutations_covered": 661,
+        "width_kcal_mol": 8.31349677192363,
+        "sign_calls": 10,
+        "sign_correct": 10
+      }
+    },
+    {
+      "seed": 20261141,
+      "fixed": {
+        "protein_groups_covered": 88,
+        "mutations_covered": 662,
+        "width_kcal_mol": 8.776391963747942,
+        "sign_calls": 5,
+        "sign_correct": 5
+      },
+      "selected_phys": {
+        "protein_groups_covered": 88,
+        "mutations_covered": 662,
+        "width_kcal_mol": 8.896984920333677,
+        "sign_calls": 5,
+        "sign_correct": 5
+      }
+    },
+    {
+      "seed": 20261142,
+      "fixed": {
+        "protein_groups_covered": 84,
+        "mutations_covered": 646,
+        "width_kcal_mol": 8.491469633953365,
+        "sign_calls": 19,
+        "sign_correct": 19
+      },
+      "selected_phys": {
+        "protein_groups_covered": 84,
+        "mutations_covered": 646,
+        "width_kcal_mol": 8.491469633953365,
+        "sign_calls": 19,
+        "sign_correct": 19
+      }
+    },
+    {
+      "seed": 20261143,
+      "fixed": {
+        "protein_groups_covered": 85,
+        "mutations_covered": 656,
+        "width_kcal_mol": 7.73700619751313,
+        "sign_calls": 16,
+        "sign_correct": 16
+      },
+      "selected_phys": {
+        "protein_groups_covered": 85,
+        "mutations_covered": 656,
+        "width_kcal_mol": 7.73700619751313,
+        "sign_calls": 16,
+        "sign_correct": 16
+      }
+    },
+    {
+      "seed": 20261144,
+      "fixed": {
+        "protein_groups_covered": 86,
+        "mutations_covered": 657,
+        "width_kcal_mol": 8.923992896418579,
+        "sign_calls": 16,
+        "sign_correct": 16
+      },
+      "selected_phys": {
+        "protein_groups_covered": 86,
+        "mutations_covered": 657,
+        "width_kcal_mol": 8.923992896418579,
+        "sign_calls": 16,
+        "sign_correct": 16
+      }
+    },
+    {
+      "seed": 20261145,
+      "fixed": {
+        "protein_groups_covered": 82,
+        "mutations_covered": 653,
+        "width_kcal_mol": 8.115614639996414,
+        "sign_calls": 13,
+        "sign_correct": 13
+      },
+      "selected_phys": {
+        "protein_groups_covered": 82,
+        "mutations_covered": 653,
+        "width_kcal_mol": 8.115614639996414,
+        "sign_calls": 13,
+        "sign_correct": 13
+      }
+    },
+    {
+      "seed": 20261146,
+      "fixed": {
+        "protein_groups_covered": 85,
+        "mutations_covered": 651,
+        "width_kcal_mol": 8.555451880028786,
+        "sign_calls": 7,
+        "sign_correct": 7
+      },
+      "selected_phys": {
+        "protein_groups_covered": 85,
+        "mutations_covered": 651,
+        "width_kcal_mol": 8.555451880028786,
+        "sign_calls": 7,
+        "sign_correct": 7
+      }
+    },
+    {
+      "seed": 20261147,
+      "fixed": {
+        "protein_groups_covered": 85,
+        "mutations_covered": 660,
+        "width_kcal_mol": 8.58510606553059,
+        "sign_calls": 8,
+        "sign_correct": 8
+      },
+      "selected_phys": {
+        "protein_groups_covered": 85,
+        "mutations_covered": 660,
+        "width_kcal_mol": 8.58510606553059,
+        "sign_calls": 8,
+        "sign_correct": 8
+      }
+    },
+    {
+      "seed": 20261148,
+      "fixed": {
+        "protein_groups_covered": 79,
+        "mutations_covered": 637,
+        "width_kcal_mol": 7.9459645657361175,
+        "sign_calls": 27,
+        "sign_correct": 27
+      },
+      "selected_phys": {
+        "protein_groups_covered": 79,
+        "mutations_covered": 637,
+        "width_kcal_mol": 7.9459645657361175,
+        "sign_calls": 27,
+        "sign_correct": 27
+      }
+    },
+    {
+      "seed": 20261149,
+      "fixed": {
+        "protein_groups_covered": 85,
+        "mutations_covered": 658,
+        "width_kcal_mol": 8.027389715810529,
+        "sign_calls": 8,
+        "sign_correct": 8
+      },
+      "selected_phys": {
+        "protein_groups_covered": 85,
+        "mutations_covered": 658,
+        "width_kcal_mol": 8.027389715810529,
+        "sign_calls": 8,
+        "sign_correct": 8
+      }
+    },
+    {
+      "seed": 20261150,
+      "fixed": {
+        "protein_groups_covered": 82,
+        "mutations_covered": 651,
+        "width_kcal_mol": 8.498198106495611,
+        "sign_calls": 11,
+        "sign_correct": 11
+      },
+      "selected_phys": {
+        "protein_groups_covered": 82,
+        "mutations_covered": 651,
+        "width_kcal_mol": 8.498198106495611,
+        "sign_calls": 11,
+        "sign_correct": 11
+      }
+    },
+    {
+      "seed": 20261151,
+      "fixed": {
+        "protein_groups_covered": 86,
+        "mutations_covered": 660,
+        "width_kcal_mol": 8.485778105919671,
+        "sign_calls": 7,
+        "sign_correct": 7
+      },
+      "selected_phys": {
+        "protein_groups_covered": 86,
+        "mutations_covered": 660,
+        "width_kcal_mol": 8.485778105919671,
+        "sign_calls": 7,
+        "sign_correct": 7
+      }
+    },
+    {
+      "seed": 20261152,
+      "fixed": {
+        "protein_groups_covered": 83,
+        "mutations_covered": 658,
+        "width_kcal_mol": 8.007390206212955,
+        "sign_calls": 19,
+        "sign_correct": 19
+      },
+      "selected_phys": {
+        "protein_groups_covered": 83,
+        "mutations_covered": 658,
+        "width_kcal_mol": 8.007390206212955,
+        "sign_calls": 19,
+        "sign_correct": 19
+      }
+    },
+    {
+      "seed": 20261153,
+      "fixed": {
+        "protein_groups_covered": 89,
+        "mutations_covered": 664,
+        "width_kcal_mol": 9.990558900027711,
+        "sign_calls": 1,
+        "sign_correct": 1
+      },
+      "selected_phys": {
+        "protein_groups_covered": 89,
+        "mutations_covered": 664,
+        "width_kcal_mol": 9.990558900027711,
+        "sign_calls": 1,
+        "sign_correct": 1
+      }
+    },
+    {
+      "seed": 20261154,
+      "fixed": {
+        "protein_groups_covered": 83,
+        "mutations_covered": 642,
+        "width_kcal_mol": 8.469085277105128,
+        "sign_calls": 33,
+        "sign_correct": 33
+      },
+      "selected_phys": {
+        "protein_groups_covered": 83,
+        "mutations_covered": 642,
+        "width_kcal_mol": 8.469085277105128,
+        "sign_calls": 33,
+        "sign_correct": 33
+      }
+    },
+    {
+      "seed": 20261155,
+      "fixed": {
+        "protein_groups_covered": 87,
+        "mutations_covered": 662,
+        "width_kcal_mol": 8.859017065809002,
+        "sign_calls": 12,
+        "sign_correct": 12
+      },
+      "selected_phys": {
+        "protein_groups_covered": 87,
+        "mutations_covered": 662,
+        "width_kcal_mol": 8.859017065809002,
+        "sign_calls": 12,
+        "sign_correct": 12
+      }
+    },
+    {
+      "seed": 20261156,
+      "fixed": {
+        "protein_groups_covered": 87,
+        "mutations_covered": 659,
+        "width_kcal_mol": 8.390375468919808,
+        "sign_calls": 11,
+        "sign_correct": 11
+      },
+      "selected_phys": {
+        "protein_groups_covered": 87,
+        "mutations_covered": 659,
+        "width_kcal_mol": 8.390375468919808,
+        "sign_calls": 11,
+        "sign_correct": 11
+      }
+    },
+    {
+      "seed": 20261157,
+      "fixed": {
+        "protein_groups_covered": 84,
+        "mutations_covered": 653,
+        "width_kcal_mol": 8.270542937394215,
+        "sign_calls": 5,
+        "sign_correct": 5
+      },
+      "selected_phys": {
+        "protein_groups_covered": 84,
+        "mutations_covered": 653,
+        "width_kcal_mol": 8.270542937394215,
+        "sign_calls": 5,
+        "sign_correct": 5
+      }
+    },
+    {
+      "seed": 20261158,
+      "fixed": {
+        "protein_groups_covered": 86,
+        "mutations_covered": 656,
+        "width_kcal_mol": 9.347314575442105,
+        "sign_calls": 7,
+        "sign_correct": 7
+      },
+      "selected_phys": {
+        "protein_groups_covered": 86,
+        "mutations_covered": 656,
+        "width_kcal_mol": 9.347314575442105,
+        "sign_calls": 7,
+        "sign_correct": 7
+      }
+    },
+    {
+      "seed": 20261159,
+      "fixed": {
+        "protein_groups_covered": 90,
+        "mutations_covered": 660,
+        "width_kcal_mol": 9.032096997589452,
+        "sign_calls": 4,
+        "sign_correct": 4
+      },
+      "selected_phys": {
+        "protein_groups_covered": 90,
+        "mutations_covered": 660,
+        "width_kcal_mol": 9.58864824207998,
+        "sign_calls": 2,
+        "sign_correct": 2
+      }
+    },
+    {
+      "seed": 20261160,
+      "fixed": {
+        "protein_groups_covered": 85,
+        "mutations_covered": 658,
+        "width_kcal_mol": 8.668206030895535,
+        "sign_calls": 8,
+        "sign_correct": 8
+      },
+      "selected_phys": {
+        "protein_groups_covered": 85,
+        "mutations_covered": 658,
+        "width_kcal_mol": 8.668206030895535,
+        "sign_calls": 8,
+        "sign_correct": 8
+      }
+    },
+    {
+      "seed": 20261161,
+      "fixed": {
+        "protein_groups_covered": 86,
+        "mutations_covered": 660,
+        "width_kcal_mol": 8.358234126347329,
+        "sign_calls": 11,
+        "sign_correct": 11
+      },
+      "selected_phys": {
+        "protein_groups_covered": 86,
+        "mutations_covered": 660,
+        "width_kcal_mol": 8.358234126347329,
+        "sign_calls": 11,
+        "sign_correct": 11
+      }
+    },
+    {
+      "seed": 20261162,
+      "fixed": {
+        "protein_groups_covered": 87,
+        "mutations_covered": 662,
+        "width_kcal_mol": 8.878875389405609,
+        "sign_calls": 10,
+        "sign_correct": 10
+      },
+      "selected_phys": {
+        "protein_groups_covered": 87,
+        "mutations_covered": 662,
+        "width_kcal_mol": 8.878875389405609,
+        "sign_calls": 10,
+        "sign_correct": 10
+      }
+    },
+    {
+      "seed": 20261163,
+      "fixed": {
+        "protein_groups_covered": 84,
+        "mutations_covered": 650,
+        "width_kcal_mol": 8.204066948747242,
+        "sign_calls": 21,
+        "sign_correct": 21
+      },
+      "selected_phys": {
+        "protein_groups_covered": 84,
+        "mutations_covered": 650,
+        "width_kcal_mol": 8.204066948747242,
+        "sign_calls": 21,
+        "sign_correct": 21
+      }
+    },
+    {
+      "seed": 20261164,
+      "fixed": {
+        "protein_groups_covered": 84,
+        "mutations_covered": 658,
+        "width_kcal_mol": 7.840517642038285,
+        "sign_calls": 17,
+        "sign_correct": 17
+      },
+      "selected_phys": {
+        "protein_groups_covered": 84,
+        "mutations_covered": 658,
+        "width_kcal_mol": 7.840517642038285,
+        "sign_calls": 17,
+        "sign_correct": 17
+      }
+    }
+  ]
+}
