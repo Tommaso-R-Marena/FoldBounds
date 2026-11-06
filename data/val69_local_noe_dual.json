@@ -1,0 +1,127 @@
+{
+  "schema": "FoldBounds.Val69NOELocalDual.v1",
+  "sample": "6nbn",
+  "processed_restraint_id": 470,
+  "processed_restraint_lower_mA": 1605,
+  "processed_restraint_upper_mA": 2841,
+  "source_pdb_repo": "NMRExchangeFormat/NEF",
+  "source_pdb_path": "data_1_1/PDBStat_developers_it3/Case_Amber/6nbn/6nbn.ambpdb.pdb",
+  "source_pdb_git_blob": "5b13f49fda78a0d98e018902fab353ae73ce9bf4",
+  "source_nef_git_blob": "da9769dde30d07a48ad973f1351be4e85e3931cd",
+  "source_pinned_aggregate_git_blob": "96daf4e88743df4e623cdf5495f28b8e2113fc32",
+  "units": "milliangstrom",
+  "fixed_heavy_atoms_val69": {
+    "N": [
+      10988,
+      -479,
+      -2192
+    ],
+    "CA": [
+      12126,
+      -171,
+      -1327
+    ],
+    "CB": [
+      13248,
+      -1253,
+      -1364
+    ],
+    "CG1": [
+      12733,
+      -2560,
+      -1933
+    ],
+    "CG2": [
+      14487,
+      -793,
+      -2117
+    ],
+    "C": [
+      12692,
+      1206,
+      -1668
+    ],
+    "O": [
+      13194,
+      1901,
+      -797
+    ]
+  },
+  "target_hydrogens_val69": {
+    "H": [
+      11095,
+      -1107,
+      -2939
+    ],
+    "HB": [
+      13534,
+      -1457,
+      -344
+    ]
+  },
+  "allowed_change_in_each_heavy_to_hydrogen_distance_mA": 103,
+  "proof": {
+    "H": [
+      [
+        -1,
+        "N",
+        "CA",
+        181699308,
+        107642687
+      ],
+      [
+        -1,
+        "N",
+        "CB",
+        70885401,
+        107642687
+      ],
+      [
+        1,
+        "CB",
+        "CG2",
+        84289189,
+        107642687
+      ]
+    ],
+    "HB": [
+      [
+        1,
+        "N",
+        "CB",
+        2810922753,
+        1620895147
+      ],
+      [
+        -1,
+        "CB",
+        "CG2",
+        1114819157,
+        1620895147
+      ],
+      [
+        1,
+        "CG2",
+        "O",
+        787363668,
+        1620895147
+      ]
+    ]
+  },
+  "constructive_feasible_at_larger_tolerance": {
+    "scale_ticks_per_milliangstrom": 1000,
+    "guaranteed_distance_deviation_cap_ticks": 211263,
+    "moves": {
+      "H": [
+        -260401,
+        -344471,
+        999736
+      ],
+      "HB": [
+        -341416,
+        -167092,
+        -21826
+      ]
+    }
+  }
+}
