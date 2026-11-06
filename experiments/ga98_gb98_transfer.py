@@ -24,6 +24,12 @@ from foldbounds.ga_gb_error_codes import (
     _ceil_sqrt, certify_code, verify_code,
 )
 
+# Hashes authenticated from the RCSB live-download CI log before model scoring.
+EXPECTED_TEST_SHA256 = {
+    "2LHC": "91ed5cf27675f68799e60951cca5df7a4ecb2e8d19fd2063c4babb300e9507ac",
+    "2LHD": "73131f50fdb7fc709e0c1b3e66daf64236a19d911a4bfe5324a23007847c2e6f",
+}
+
 GA98 = mutate(GA95, {30: ("I", "F")})
 GB98 = mutate(GB95, {20: ("A", "L")})
 assert sum(a != b for a,b in zip(GA98,GB98)) == 1
@@ -66,6 +72,9 @@ def trusted_test_structures(ga98_data:bytes,gb98_data:bytes):
     """Check PDB identity, all 56 residue identities, full NMR ensembles."""
     if not isinstance(ga98_data,bytes) or not isinstance(gb98_data,bytes):
         raise ValueError("expected raw PDB coordinate bytes")
+    for name,raw in (("2LHC",ga98_data),("2LHD",gb98_data)):
+        if sha256(raw).hexdigest()!=EXPECTED_TEST_SHA256[name]:
+            raise ValueError(f"{name}: new NMR coordinate bytes do not match frozen RCSB SHA256")
     ga=parse_pdb(ga98_data,"2LHC",GA98,expected_models=20)
     gb=parse_pdb(gb98_data,"2LHD",GB98,expected_models=20)
     if any(m.seq!=GA98 for m in ga) or any(m.seq!=GB98 for m in gb):
