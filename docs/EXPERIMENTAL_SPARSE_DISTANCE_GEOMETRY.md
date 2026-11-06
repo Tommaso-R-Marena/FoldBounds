@@ -86,8 +86,8 @@ uncertainty calibration. Very large fractions of certifiable pairs are
 noncontacts, so the contact-specific counts are provided separately.
 
 Exact 3-anchor reconstructions succeeded for all 740 CA sites; the largest
-requires 1,785 anchor-related distances plus 594 sign bits (and three
-anchor-anchor distances). Exact reference quadruple decoding also succeeded.
+requires 1,785 anchor-related distances (including the three
+anchor-anchor distances), plus 594 orientation sign bits. Exact reference quadruple decoding also succeeded.
 A separately implemented BigInt geometry checker directly consumed all
 four pinned source PDBs and reproduced every four-anchor count, exact
 coordinate reconstruction and three-anchor Gram perfect-square test.
