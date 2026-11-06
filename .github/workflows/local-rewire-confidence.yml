@@ -7,9 +7,11 @@ on:
       - 'src/foldbounds/local_rewire_confidence.py'
       - 'src/foldbounds/cubic_groundstate_no_go.py'
       - 'src/foldbounds/parity_no_go.py'
+      - 'src/foldbounds/contact_vs_fold.py'
       - 'tests/test_local_rewire_confidence.py'
       - 'tests/test_cubic_groundstate_no_go.py'
       - 'tests/test_parity_no_go.py'
+      - 'tests/test_contact_vs_fold.py'
       - '.github/workflows/local-rewire-confidence.yml'
   workflow_dispatch:
 permissions:
@@ -88,10 +90,12 @@ jobs:
       - name: Run independent cubic rewiring and adversarial oracle
         run: |
           python3 -m pip install -e '.[test]'
-          python3 -m pytest -q tests/test_local_rewire_confidence.py tests/test_cubic_groundstate_no_go.py tests/test_parity_no_go.py
+          python3 -m pytest -q tests/test_local_rewire_confidence.py tests/test_cubic_groundstate_no_go.py tests/test_parity_no_go.py tests/test_contact_vs_fold.py
       - name: Reproduce synthetic structural confidence ceilings
         run: python3 experiments/local_rewire_confidence_demo.py
       - name: Reproduce globally optimal cubic ground-state ambiguity
         run: python3 experiments/cubic_groundstate_no_go_demo.py
       - name: Reproduce all-conformation HP parity obstruction
         run: python3 experiments/parity_no_go_demo.py
+      - name: Reproduce same-model event-vs-fold confidence audit
+        run: python3 experiments/contact_vs_fold_demo.py
