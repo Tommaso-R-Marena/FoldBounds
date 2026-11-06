@@ -104,6 +104,57 @@ theorem no_hh_contact_same_index_parity
       _ = color (walk j) := (walk_index_parity walk hstart hsteps j).symm
   exact hne heq
 
+/-- Position/index parity holds even for a FINITE walk that might
+be trapped and admit no infinite self-avoiding continuation.
+The step premise is needed only within the first \`length\` sites. -/
+theorem finite_walk_index_parity
+    (walk : ℕ → Site3) (length : ℕ)
+    (hstart : walk 0 = origin)
+    (hsteps : ∀ i, i + 1 < length →
+      Adjacent (walk i) (walk (i + 1)))
+    (i : ℕ) (hi : i < length) :
+    color (walk i) = (i : ℤ) % 2 := by
+  have h : ∀ j : ℕ, j < length →
+      color (walk j) = (j : ℤ) % 2 := by
+    intro j
+    induction j with
+    | zero =>
+        intro hj
+        simp [hstart, color, height, origin]
+    | succ j ih =>
+        intro hj
+        have hprev : j < length := by omega
+        have hf := adjacent_color_flip (walk j) (walk (j + 1))
+          (hsteps j hj)
+        rw [hf, ih hprev]
+        omega
+  exact h i hi
+
+/-- A finite rooted, stepwise-adjacent cubic walk cannot have an
+H-H lattice edge when all hydrophobic sequence indices have one
+common parity. This is the form used by finite SAW ensembles. -/
+theorem finite_no_hh_contact_same_index_parity
+    (walk : ℕ → Site3) (length : ℕ)
+    (hstart : walk 0 = origin)
+    (hsteps : ∀ i, i + 1 < length →
+      Adjacent (walk i) (walk (i + 1)))
+    (isH : ℕ → Prop) (chosen : ℤ)
+    (hH : ∀ i, i < length → isH i → (i : ℤ) % 2 = chosen)
+    (i j : ℕ) (hi : i < length) (hj : j < length)
+    (hHi : isH i) (hHj : isH j) :
+    ¬ Adjacent (walk i) (walk j) := by
+  intro edge
+  have hne := adjacent_changes_color (walk i) (walk j) edge
+  have heq : color (walk i) = color (walk j) := by
+    calc
+      color (walk i) = (i : ℤ) % 2 :=
+        finite_walk_index_parity walk length hstart hsteps i hi
+      _ = chosen := hH i hi hHi
+      _ = (j : ℤ) % 2 := (hH j hj hHj).symm
+      _ = color (walk j) :=
+        (finite_walk_index_parity walk length hstart hsteps j hj).symm
+  exact hne heq
+
 /-- Three positive-axis steps, enough to generate a large explicit
 subset of globally self-avoiding cubic walks. -/
 def advancePositive (p : Site3) (d : Fin 3) : Site3 :=
@@ -255,6 +306,8 @@ example : ¬ Adjacent origin (⟨2, 0, 0⟩ : Site3) := by
 
 #print axioms FoldBounds.CubicParityGeometry.advance_color_flip
 #print axioms FoldBounds.CubicParityGeometry.walk_index_parity
+#print axioms FoldBounds.CubicParityGeometry.finite_walk_index_parity
+#print axioms FoldBounds.CubicParityGeometry.finite_no_hh_contact_same_index_parity
 #print axioms FoldBounds.CubicParityGeometry.no_hh_contact_same_index_parity
 #print axioms FoldBounds.CubicParityGeometry.walkPositive_nodup
 #print axioms FoldBounds.CubicParityGeometry.monotone_family_card
