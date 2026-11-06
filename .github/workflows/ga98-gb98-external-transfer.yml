@@ -111,6 +111,20 @@ jobs:
             --t25i_l20a /tmp/foldbounds-t25i/2LHE.pdb \
             --reference experiments/results/ga_gb_error_code_verified_20261105.json \
             --out /tmp/foldbounds-t25i/followup_results.json
+      - name: Require exact reproducibility of full reciprocal mutant NMR report
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          expected=json.loads(Path('experiments/results/ga98_t25i_followup_20261105.json').read_text())
+          actual=json.loads(Path('/tmp/foldbounds-t25i/followup_results.json').read_text())
+          receipt=expected.pop('audit_receipt')
+          if actual!=expected:
+              raise SystemExit('RCSB reciprocal-mutant results failed exact reproduction')
+          if receipt["head_sha"]!='6cb86c663dcdcf21ca7938979cc0cd4fbabefbbe':
+              raise SystemExit('original heldout receipt was altered')
+          print('All 30 second-cascade conformers and five frozen codes reproduced')
+          PY
       - name: Preserve full negative or positive outcomes without selective reporting
         uses: actions/upload-artifact@v4
         with:
