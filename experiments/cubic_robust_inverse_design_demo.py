@@ -21,6 +21,7 @@ import shutil
 import subprocess
 
 from foldbounds.cubic_cut_certificate import certify_native_gap,contact_score
+from foldbounds.cubic_contact_radius_sharpness import prove_sharp_contact_error_radius
 from foldbounds.cubic_robust_inverse_design import (
     _d2,design_robust_unique_orbit,verify_ground_map_cut
 )
@@ -97,6 +98,9 @@ def run_demo(output:Path,proofs_dir:Path|None=None)->dict:
     # Crucial contact-only no-go: among *K=11* folds, every map has at
     # least 16 geometries (i.e. at least two distinct 8-fold D4 orbits).
     assert min(count for _,count in maps.multiplicities)==16
+    sharp=prove_sharp_contact_error_radius(design,maps)
+    assert sharp.critical_error_radius==2
+    assert sharp.selected_energy_at_boundary==sharp.competitor_energy_at_boundary==86
     target=design.target_path
     other=next(path for mask,path in maps.entries
                if mask==design.designated_contact_mask
@@ -106,14 +110,19 @@ def run_demo(output:Path,proofs_dir:Path|None=None)->dict:
         _pdb(SEQUENCE,target,'SELECTED NATIVE D4 ORBIT, RESIDUE DISTANCE SQUARED 2'))
     (output/'contact_identical_competitor.pdb').write_text(
         _pdb(SEQUENCE,other,'EXCLUDED CONTACT-IDENTICAL ORBIT, DISTANCE SQUARED 4'))
+    (output/'robustness_boundary_competitor.pdb').write_text(
+        _pdb(SEQUENCE,sharp.competitor_path,
+             'AT CONTACT-ENERGY ERROR RADIUS 2 THIS ORBIT GLOBALLY TIES SELECTED NATIVE'))
     (output/'view_in_pymol.pml').write_text('''load selected_native_orbit.pdb, selected_native
 load contact_identical_competitor.pdb, excluded_orbit
+load robustness_boundary_competitor.pdb, radius2_attack
 hide everything
 show spheres, name CA
 show sticks, name CA
 color orange, resn ALA
 color cyan, resn GLY
 translate [15,0,0], excluded_orbit, camera=0
+translate [30,0,0], radius2_attack, camera=0
 zoom all
 ''')
     targets={}
@@ -143,6 +152,19 @@ zoom all
             'any contact-map-only energy selecting K=11 has at least 16 equal-energy conformations',
         'one_extra_distance_restraint_design':'selects a single D4 symmetry orbit among every 3D conformation',
         'native_contact_score':11,'native_designed_energy':90,
+        'sharp_contact_energy_uncertainty':{
+            'provably_strict_unique_for_all_real_radii_less_than':2,
+            'critical_tie_radius':str(sharp.critical_error_radius),
+            'adversarial_contact_pair_bit_perturbations':[
+                [bit,value] for bit,value in sharp.adversarial_pair_errors
+            ],
+            'boundary_competitor_mask':sharp.competitor_contact_mask,
+            'boundary_missing_favored_contacts':sharp.missing_target_pairs,
+            'selected_energy_at_boundary':sharp.selected_energy_at_boundary,
+            'attacker_energy_at_boundary':sharp.competitor_energy_at_boundary,
+            'global_high_contact_max_at_boundary':sharp.high_sector_max_checked,
+            'non_ground_lower_bound_on_gap_at_boundary':sharp.global_non_ground_energy_margin,
+        },
         'remaining_exact_high_contact_energy_class_counts':[
             {'missing_target_contacts':a,'distance_restraint_bonus':b,'conformations':cnt}
             for a,b,cnt in design.remaining_high
@@ -155,7 +177,7 @@ zoom all
                                for t,path in zip((10,11,12),cuts)},
     }
     (output/'design_manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
-    print('VERIFIED selected exact native orbit and *all correlated* contact-error robustness.')
+    print('VERIFIED selected native orbit; exact adversarial robustness radius r<2; attacker tie at r=2.')
     for key,item in targets.items():
         print(f'  {key}: q>={item["minimum_integer_q"]}, P>={item["certified_lower_at_q_decimal"]:.8%}')
     print('PyMOL witnesses and manifest:',output)
