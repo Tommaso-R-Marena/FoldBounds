@@ -31,5 +31,5 @@ jobs:
         run: python3 -m pip install --disable-pip-version-check numpy pytest
       - name: Test and compile fail-closed source-only SOS verifier
         run: |
-          python3 -m py_compile scripts/gnm_spectral_sos_producer.py scripts/gnm_spectral_sos_independent_replay.py scripts/gnm_precision_ablation.py
-          python3 -m pytest -q scripts/test_gnm_spectral_sos.py scripts/test_gnm_spectral_real.py
+          python3 -m py_compile scripts/gnm_spectral_sos_producer.py scripts/gnm_spectral_sos_independent_replay.py scripts/gnm_precision_ablation.py scripts/gnm_precision_independent_replay.py
+          python3 -m pytest -q scripts/test_gnm_spectral_sos.py scripts/test_gnm_spectral_real.py scripts/test_gnm_precision_independent_replay.py
