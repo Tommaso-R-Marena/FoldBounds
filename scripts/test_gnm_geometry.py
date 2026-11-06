@@ -1,5 +1,5 @@
 from __future__ import annotations
-import hashlib,json,random,sys
+import hashlib,json,random,sys,os
 from fractions import Fraction as F
 from pathlib import Path
 import pytest
@@ -9,12 +9,21 @@ from gnm_geometry_independent_replay import (
     optional_edge_indices)
 
 BASE=Path(__file__).resolve().parent
-SOURCE=BASE/'work/data/FoldBounds_RNaseA_STAGE1_20261104_SEND_BACK.zip'
-CERT=BASE/'geometry_nogoods.json'
+def _frozen_paths():
+    folder=Path(os.environ['FOLDBOUNDS_GEOM_RELEASE_DIR']) if os.environ.get('FOLDBOUNDS_GEOM_RELEASE_DIR') else BASE.parent/'data'
+    stage=folder/'FoldBounds_RNaseA_STAGE1_20261104_SEND_BACK.zip'
+    cert=folder/'geometry_nogoods.json'
+    if not stage.exists() or not cert.exists():
+        pytest.skip('Original frozen source and geometric witness are opt-in, not vendored in GitHub CI')
+    return stage,cert
+
 
 def test_exact_minimax_farkas_toy():
-    # Impossible constraints x <=-1/2 and -x<=-1/2 within [-.05,.05]
-    assert F(1)>F(1,10)
+    # Both contacts individually realizable: two contacts to opposite outer
+    # coordinates at ±10.08Å cannot BOTH become on within independent
+    # ±0.05Å Cartesian coordinate boxes. Exact 2-row Farkas witness.
+    xyz=[[F(0),F(0),F(0)],[F(252,25),F(0),F(0)],[-F(252,25),F(0),F(0)]]
+    assert certificate_contradiction(xyz,1,[(0,1),(0,2)],[1,1],[F(1),F(1)])>0
     # Component enumeration excludes 1 of 4 independent assignments.
     count,components=independent_count(2,[([0,1],[0,0])])
     assert count==3 and len(components)==1
@@ -31,30 +40,35 @@ def test_component_fraction_recomputed():
     assert count==good*2**103
 
 def test_bad_metadata_rejected(tmp_path):
+    SOURCE,CERT=_frozen_paths()
     c=json.loads(CERT.read_text());c['box_epsilon_A']='1/19'
     p=tmp_path/'bad.json';p.write_text(json.dumps(c))
     with pytest.raises(ValueError,match='metadata'):
         replay(SOURCE,p)
 
 def test_dropped_nogood_rejected(tmp_path):
+    SOURCE,CERT=_frozen_paths()
     c=json.loads(CERT.read_text());c['forbidden_patterns'].pop()
     p=tmp_path/'bad.json';p.write_text(json.dumps(c))
     with pytest.raises(ValueError,match='incomplete'):
         replay(SOURCE,p)
 
 def test_forged_weight_rejected(tmp_path):
+    SOURCE,CERT=_frozen_paths()
     c=json.loads(CERT.read_text());c['forbidden_patterns'][0]['lambda']=['0','0']
     p=tmp_path/'bad.json';p.write_text(json.dumps(c))
     with pytest.raises(ValueError,match='Farkas'):
         replay(SOURCE,p)
 
 def test_forged_excluded_count_rejected(tmp_path):
+    SOURCE,CERT=_frozen_paths()
     c=json.loads(CERT.read_text());c['excluded_fraction']='1'
     p=tmp_path/'bad.json';p.write_text(json.dumps(c))
     with pytest.raises(ValueError,match='forged'):
         replay(SOURCE,p)
 
 def test_real_geometry_certificate():
+    SOURCE,CERT=_frozen_paths()
     result=replay(SOURCE,CERT)
     assert result['status']=='PASS'
     assert result['at_least_excluded_fraction']=='32010617/33554432'
@@ -63,8 +77,10 @@ def test_real_geometry_certificate():
 def test_exact_random_grid_structural_sanity():
     # A non-proof sanity check: physically generated coordinate perturbations
     # cannot realize ANY of the 20 exact no-good binary contact patterns.
+    SOURCE,CERT=_frozen_paths()
     coords,den,_=checked_source(SOURCE)
     optional=optional_edge_indices(coords,den)
+    SOURCE,CERT=_frozen_paths()
     c=json.loads(CERT.read_text());rnd=random.Random(20261105)
     delta=den//20
     for _ in range(150):
