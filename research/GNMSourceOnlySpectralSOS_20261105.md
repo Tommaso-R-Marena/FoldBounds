@@ -89,4 +89,21 @@ To distinguish a merely smaller algebraic coefficient from an improvement in pra
 | \(2^{24}\) | 2,589 | 2,590 | 8.7794×10⁻⁹ → 1.9732×10⁻¹⁰ |
 | \(2^{55}\) | 2,590 | 2,590 | 3.8886×10⁻²⁷ → 8.7398×10⁻²⁹ |
 
-There are 2,613 adjacent comparisons across the 2,614 pairs; some nominal or near-tied comparisons remain uncertifiable with either coefficient. The ordering in this table is the lower-bound ordering of the corresponding exact intervals at each precision, **not an NMR-observed biological ranking**. In particular, at \(2^{16}\) the exact spectral certificate establishes 2,138 adjacent GNM score orders compared with 102 under the same old tree bound. This is a substantial source-only computational assurance gain, not improved biological prediction accuracy. Full generated data are in `research/source_only_precision_ablation.json`; rerun using `scripts/gnm_precision_ablation.py` with the sealed Stage1 archive and the pre-existing FoldBounds GNM checker modules.
+There are 2,613 adjacent comparisons across the 2,614 pairs; some nominal or near-tied comparisons remain uncertifiable with either coefficient. The ordering in this table is the lower-bound ordering of the corresponding exact intervals at each precision, **not an NMR-observed biological ranking**. In particular, at \(2^{16}\) the exact spectral certificate establishes 2,138 adjacent GNM score orders compared with 102 under the same old tree bound. This is a substantial source-only computational assurance gain, not improved biological prediction accuracy. Full generated data are in `research/GNMSourceOnlyPrecisionAblation_20261105.json`; rerun using `scripts/gnm_precision_ablation.py` with the sealed Stage1 archive and the pre-existing FoldBounds GNM checker modules.
+
+## Completed independent precision replay and CI gate
+
+The previously published ablation has now been independently reconstructed at **all 18 resolutions** (2^10 to 2^55) using `scripts/gnm_precision_independent_replay.py`. This second program does **not** import `gnm_precision_ablation.py`; it rebuilds the exact contact graph from the pinned Stage 1 coordinate archive, verifies the full original spectral SOS certificate (15,129 integer entries), builds the same untrusted floating inverse proposal, then recomputes the complete integer residual matrix and every pair's exact rational response interval. It checks **both** the adjacent-order count and maximum interval width against each committed JSON row. Every row matched in the local 18-level replay with `OPENBLAS_NUM_THREADS=1`.
+
+Reproduce this verification with:
+
+```bash
+OPENBLAS_NUM_THREADS=1 python scripts/gnm_precision_independent_replay.py \
+  /path/to/FoldBounds_RNaseA_STAGE1_20261104_SEND_BACK.zip \
+  /path/to/rnase_source_only_spectral_sos.json \
+  research/GNMSourceOnlyPrecisionAblation_20261105.json
+```
+
+The hermetic pytest regression uses a synthetic two-dimensional grounded matrix to check exact integer residuals, monotonicity of interval widths as the coercivity constant tightens, and rejection of a forged Stage 1 archive. CI runs those tests without distributing private data. With `FOLDBOUNDS_RNASE_STAGE1` and `FOLDBOUNDS_SPECTRAL_CERT` set, the same test file independently replays all 18 actual-protein rows. It passes locally; GitHub's ordinary CI checks the hermetic path only.
+
+The replay recomputes the *untrusted floating proposal*, so different numerical libraries could in principle propose different rounded integer witnesses. Agreement is therefore a **reproduction under the stated numerical configuration**, while mathematical validity of any accepted interval is entirely based on exact-integer residual checks. The raw 7RSA reference bytes and their hashes remain frozen. This is not an independent new protein blind test.
