@@ -96,3 +96,26 @@ OPENBLAS_NUM_THREADS=1 FOLDBOUNDS_RNASE_STAGE1=data/FoldBounds_RNaseA_STAGE1_202
 ```
 
 These commands access **only the reference-side source archive**. The ZIP itself is the immutable frozen-protein input; the separate scripts do not silently retrieve target PDBs or use a network connection. All source digests and model acceptance checks are fail-closed.
+
+## Frozen CspB and crambin portability — completed source-only audit
+
+The same exact integer matrix certificate was independently tested on the earlier, already revealed CspB and crambin reference structures. Input: the unchanged `FoldBounds_Prospective_SEND_BACK.zip` (SHA-256 `666a5d734fbd61be0f182c954474841bb552b71b3a1e9156d6c21b8c2f095f95`). The verifier authenticates the complete ZIP by its SHA-256 but opens **only** the two `FROZEN_BEFORE_TARGET.npz` members, never target NMR evaluation members. Each frozen reference also has its own pinned digest. The numerical inverse is proposed with SymPy; acceptance independently checks every integer entry of `A*N=D*I`.
+
+| Reference | CA residues | Exact 10 Å contacts | Frozen pairs | Exact tie comparisons | Strict order violations vs frozen float GNM | Max abs float discrepancy |
+|---|---:|---:|---:|---:|---:|---:|
+| CspB | 67 | 543 | 1,170 | **9** | **0 / 683,856** | 4.996e-16 |
+| Crambin | 46 | 334 | 547 | **0** | **0 / 149,331** | 4.441e-16 |
+
+**Important correction:** CspB has nine exact tied effective resistance pairs. Its frozen binary64 approximations can break those ties differently. Therefore a naive equality check between total sorted index arrays is not valid in CspB. The audit checks every **mathematically strict** pairwise ordering with a floating tolerance of `1e-12` and counts exact ties separately. This is not an integer-inverse failure or a new biological finding.
+
+Reproduce using the original signed prospective ZIP:
+
+```bash
+OPENBLAS_NUM_THREADS=1 python scripts/gnm_portability_audit.py /path/to/FoldBounds_Prospective_SEND_BACK.zip
+FOLDBOUNDS_PROSPECTIVE_ZIP=/path/to/FoldBounds_Prospective_SEND_BACK.zip python -m pytest -q scripts/test_gnm_portability.py
+```
+
+The hermetic GitHub CI test covers integer graph construction, exact threshold handling, and forged-source rejection without downloading or opening private experiment files. The real-reference test runs only with an explicitly supplied frozen ZIP. No NMR observations were used.
+
+### Overall trust boundary
+These tests establish mathematical correctness of the declared scalar GNM graph computation, **not** accuracy of biological motion predictions. The generic scaled-inverse acceptance theorem is checked by the Lean kernel; the complete real-protein data are checked by independent Python unbounded-integer arithmetic rather than automatically parsed by Lean. The RNase A original registered blind result remains a failure; the prospective thioredoxin target remains unopened.
