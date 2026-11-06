@@ -59,7 +59,7 @@ def test_source_pinned_minimum_support_real_data(sample,expected):
             verified.sparse_upper_radius_ticks)==expected
     assert verified.sparse_upper_radius_ticks-verified.strict_sparse_lower_radius_ticks<=2
     assert verify_sparse_repair(records,replace(cert,disjoint_violated_ids=cert.disjoint_violated_ids[:-1])) is None
-    assert verify_sparse_repair(records,replace(cert,strict_sparse_lower_radius_ticks=cert.sparse_upper_radius_ticks)) is None
+    assert verify_sparse_repair(records,replace(cert,strict_sparse_lower_radius_ticks=cert.repair.upper_radius_ticks)) is None
     assert verify_sparse_repair(records,replace(cert,repair=replace(cert.repair,moves=cert.repair.moves[:-1]))) is None
 
 
