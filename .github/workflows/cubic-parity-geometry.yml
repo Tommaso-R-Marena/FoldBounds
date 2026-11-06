@@ -1,0 +1,57 @@
+name: Concrete cubic geometry + monotone entropy (Lean 4.28)
+on:
+  pull_request:
+    paths:
+      - 'FoldBounds/CubicParityGeometry.lean'
+      - '.github/workflows/cubic-parity-geometry.yml'
+      - 'tests/test_cubic_geometry_bridge.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  cubic-parity-geometry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fail-closed Lean source scan
+        run: python3 scripts/check_lean_sources.py
+      - name: Build pinned Lean 4.28 and Mathlib
+        uses: leanprover/lean-action@v1
+      - name: Kernel-check concrete cubic geometry and entropy theorems
+        run: lake env lean FoldBounds/CubicParityGeometry.lean | tee /tmp/cubic-parity-geometry-axioms.log
+      - name: Require all six exact named theorem declarations and standard axioms
+        run: |
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+          source=Path('/tmp/cubic-parity-geometry-axioms.log').read_text()
+          expected={
+            'FoldBounds.CubicParityGeometry.advance_color_flip',
+            'FoldBounds.CubicParityGeometry.walk_index_parity',
+            'FoldBounds.CubicParityGeometry.no_hh_contact_same_index_parity',
+            'FoldBounds.CubicParityGeometry.walkPositive_nodup',
+            'FoldBounds.CubicParityGeometry.monotone_family_card',
+            'FoldBounds.CubicParityGeometry.monotone_family_valid',
+          }
+          reports={}
+          for line in source.splitlines():
+            m=re.match(r"^'(FoldBounds\.CubicParityGeometry\.[A-Za-z0-9_]+)' (.*)$",line.strip())
+            if not m: continue
+            name,result=m.groups()
+            if name in reports: raise SystemExit(f'duplicate axiom report {name}')
+            reports[name]=result
+            if result == 'does not depend on any axioms': continue
+            if not result.startswith('depends on axioms:'):
+              raise SystemExit(f'unknown Lean report: {line}')
+            axioms=set(re.findall(r'[A-Za-z_][A-Za-z0-9_.]*',result.partition('depends on axioms:')[2]))
+            unexpected=axioms-{'propext','Classical.choice','Quot.sound'}
+            if unexpected: raise SystemExit(f'nonstandard axioms for {name}: {unexpected}')
+          if set(reports)!=expected:
+            raise SystemExit(f'missing or unexpected axiom checks: {expected^set(reports)}')
+          print('Concrete 3D parity + monotone family: six exact kernel declarations audited')
+          PY
+      - name: Independently compare concrete steps and parity with Python
+        run: |
+          python3 -m pip install -e '.[test]'
+          python3 -m pytest -q tests/test_cubic_geometry_bridge.py
