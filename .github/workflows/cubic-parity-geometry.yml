@@ -21,7 +21,7 @@ jobs:
         uses: leanprover/lean-action@v1
       - name: Kernel-check concrete cubic geometry and entropy theorems
         run: lake env lean FoldBounds/CubicParityGeometry.lean | tee /tmp/cubic-parity-geometry-axioms.log
-      - name: Require all six exact named theorem declarations and standard axioms
+      - name: Require all eight exact named cubic theorem declarations and standard axioms
         run: |
           python3 - <<'PY'
           import re
@@ -30,6 +30,8 @@ jobs:
           expected={
             'FoldBounds.CubicParityGeometry.advance_color_flip',
             'FoldBounds.CubicParityGeometry.walk_index_parity',
+            'FoldBounds.CubicParityGeometry.finite_walk_index_parity',
+            'FoldBounds.CubicParityGeometry.finite_no_hh_contact_same_index_parity',
             'FoldBounds.CubicParityGeometry.no_hh_contact_same_index_parity',
             'FoldBounds.CubicParityGeometry.walkPositive_nodup',
             'FoldBounds.CubicParityGeometry.monotone_family_card',
@@ -50,7 +52,7 @@ jobs:
             if unexpected: raise SystemExit(f'nonstandard axioms for {name}: {unexpected}')
           if set(reports)!=expected:
             raise SystemExit(f'missing or unexpected axiom checks: {expected^set(reports)}')
-          print('Concrete 3D parity + monotone family: six exact kernel declarations audited')
+          print('Concrete 3D parity + monotone family: eight exact kernel declarations audited')
           PY
       - name: Kernel-check local fold splice occupancy and injection
         run: lake env lean FoldBounds/CubicSplice.lean | tee /tmp/cubic-splice-axioms.log
