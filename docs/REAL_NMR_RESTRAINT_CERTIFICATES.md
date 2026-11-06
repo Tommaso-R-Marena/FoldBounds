@@ -124,3 +124,40 @@ silently reused. The triangle inequality and shortest paths are established
 mathematics; originality or discovery priority is not claimed.
 
 Run `python -m pytest tests/test_noe_metric_closure.py -q`.
+
+
+## Sharpness theorem: complete upper-only information, not just sufficient paths
+
+The metric-closure result is actually **optimal if only source upper limits
+are admitted**. For source atom `s`, let `phi(v)` be the shortest-path
+distance from `s` in the restraint upper-bound graph (and set disconnected
+components to an arbitrary common constant). Every observed upper-bound edge
+`(u,v)` satisfies the dual Lipschitz inequality
+
+    |phi(u) - phi(v)| <= upper(u,v).
+
+Therefore the **explicit three-dimensional coordinate assignment**
+`x_v=(phi(v),0,0)` satisfies **every selected upper-distance restraint**.
+For the target atom `t`, its Euclidean distance from `s` under this
+assignment is **exactly** the shortest path sum `phi(t)`.
+
+The path witness proves **universal upper bound** `d(s,t) <= phi(t)`;
+the feasible one-dimensional embedding proves **attainment**. Both sides
+are independently checked using integers: path identities/weights (primal)
+and every edge's Lipschitz inequality plus terminal potential separation
+(dual). This is equivalent to elementary shortest-path LP duality, not
+claimed as an original mathematical theorem. It rigorously establishes
+that none of the 469 inferred upper bounds can be made tighter using
+**only the included upper-limit graph**.
+
+Critical qualification: the attaining one-dimensional embedding can
+violate lower-distance restraints, steric exclusions, chemical bonds and
+chirality. Hence the result does **not** imply optimality of the bounds
+under the full converted NEF intervals or physical molecular geometry.
+To improve them, FoldBounds must introduce genuinely additional data or
+independently verified constraints, rather than retuning the same
+upper-only graph.
+
+Reproduce using the full `tests/test_noe_metric_closure.py` suite; the
+test independently checks a primal/dual optimality pair for each of
+the **469** data-derived previously unmeasured proximity bounds.
