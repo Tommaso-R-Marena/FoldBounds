@@ -1,0 +1,49 @@
+name: Square-density tail algebra (Lean kernel)
+on:
+  pull_request:
+    paths:
+      - 'FoldBounds/SquareDensityTail.lean'
+      - 'src/foldbounds/square_density.py'
+      - 'tests/test_square_density.py'
+      - '.github/workflows/square-density-tail.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  square-density-lean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scan all Lean source for proof bypasses
+        run: python3 scripts/check_lean_sources.py
+      - name: Build pinned Lean and Mathlib
+        uses: leanprover/lean-action@v1
+      - name: Kernel-check generic infinite-tail population theorem
+        run: lake env lean FoldBounds/SquareDensityTail.lean | tee /tmp/square-density-axioms.log
+      - name: Audit printed theorem dependencies
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          log = Path('/tmp/square-density-axioms.log').read_text()
+          name = 'FoldBounds.SquareDensityTail.uniform_population_bound'
+          lines = [line.strip() for line in log.splitlines()
+                   if line.strip().startswith(f"'{name}' ")]
+          if len(lines) != 1:
+              raise SystemExit('Missing or duplicate square-density axiom report')
+          line = lines[0]
+          if 'does not depend on any axioms' not in line:
+              if 'depends on axioms:' not in line:
+                  raise SystemExit('Malformed Lean axiom report')
+              tokens = set(re.findall(r'[A-Za-z_][A-Za-z0-9_.]*',
+                                      line.split('depends on axioms:', 1)[1]))
+              bad = tokens - {'Classical.choice', 'Quot.sound', 'propext'}
+              if bad:
+                  raise SystemExit(f'Unexpected axioms: {sorted(bad)}')
+          print('Square-density theorem axioms: standard or none')
+          PY
+      - name: Run independent Python oracle tests
+        run: |
+          python3 -m pip install -e '.[test]'
+          python3 -m pytest -q tests/test_square_density.py
