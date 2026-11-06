@@ -60,3 +60,17 @@ OPENBLAS_NUM_THREADS=1 python scripts/gnm_coupled_independent_replay.py \
 ```
 
 No network access or NMR structures are required. The SHA256SUMS manifest in the release ZIP authenticates every file.
+
+
+## Source-only cross-protein portability (no new biological labels)
+
+The same exact integer cone criterion was also run **without tuning** on the reference-only frozen structures inside the previously analyzed and hash-pinned `FoldBounds_Prospective_SEND_BACK.zip` archive (outer SHA256 `666a5d734fbd61be0f182c954474841bb552b71b3a1e9156d6c21b8c2f095f95`). Its reader accesses only the `FROZEN_BEFORE_TARGET.npz` members; no NMR evaluation members are opened. Every grounded inverse is proposed with fraction-free arithmetic then checked using all entries of the integer identity \(AN=DI\).
+
+| Reference | Residues | Certain / nominal / possible contacts at ±0.05Å | Strict pair-order comparisons | Old certified | New certified | Gain |
+|---|---:|---:|---:|---:|---:|---:|
+| CspB | 67 | 509 / 543 / 561 | 683,856 (nine exact nominal ties excluded) | 502,035 | **506,691** | **4,656** |
+| Crambin | 46 | 318 / 334 / 354 | 149,331 | 100,281 | **101,924** | **1,643** |
+
+For these two smaller proteins the uncertainty is bounded by a **single two-graph envelope** (no contact-case splitting), so these improvements are not directly comparable to RNase A's 64-case numbers. The bound is a model-internal source-reference rank stability guarantee only, not held-out biological accuracy. Exact results and three illustrative newly certified pairs per protein are saved in `research/GNMCoupledCrossprotein_20261105.json`.
+
+Run `OPENBLAS_NUM_THREADS=1 python scripts/gnm_coupled_crossprotein.py data/FoldBounds_Prospective_SEND_BACK.zip research/GNMCoupledCrossprotein_20261105.json` for reproducibility.
