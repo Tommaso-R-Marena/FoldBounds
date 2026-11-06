@@ -168,7 +168,8 @@ theorem tracePositive_height_gt (p q : Site3) (ds : List (Fin 3))
       simp only [tracePositive, List.mem_cons] at hq
       rcases hq with h | h
       · rw [h]
-        omega [positive_step_height p d]
+        have hs := positive_step_height p d
+        omega
       · have hs := positive_step_height p d
         have hh := ih (advancePositive p d) h
         omega
