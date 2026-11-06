@@ -20,15 +20,16 @@ A case certificate is accepted only after an **independent exact integer verifie
 
 ## Exact real-data output (no biological label tuning)
 
-The two selected optional contacts were found by a source-only greedy search maximizing the number of **provable GNM rankings**, not observed NMR agreement. The fixed, independently replayed selections are PDB residues **43–51** and **39–42** (zero-based indices 41–49 and 37–40). They partition all 2^15 optional-edge assignments into **four** mutually exclusive and exhaustive classes.
+The first two selected optional contacts were found by a source-only greedy search maximizing the number of **provable GNM rankings**, not observed NMR agreement. The fixed, independently replayed selections are PDB residues **43–51** and **39–42** (zero-based indices 41–49 and 37–40). They partition all 2^15 optional-edge assignments into **four** mutually exclusive and exhaustive classes.
 
 | Exact method | Certified strict residue-pair orders / 2346 | Additional over prior |
 |---|---:|---:|
 | Separate diagonal endpoint intervals | 1884 | baseline |
 | Joint rank-two covariance endpoint interval | 1919 | +35 |
 | Joint rank-two with 2 selected contacts, 4 cases | **1941** | **+57** over separate / **+22** over joint |
+| **Completed depth-three greedy, 3 contacts, 8 cases** | **1947** | **+63** over separate / **+28** over joint |
 
-Every new case verifies two 69×69 inverse witnesses: eight final endpoint identities in total, plus a separately verified unsplit baseline. The final signed list is auditable; its size is exactly **1,941**, rather than a sampled estimate. Approximately **82.74%** of the 2,346 possible residue-pair rankings are certified at the specified hypothetical uncertainty.
+For the two-contact design, every case verifies two 69×69 inverse witnesses: eight final endpoint identities, plus a separately verified unsplit baseline. The final signed list contains **1,941** rankings. At depth three, the eight exhaustive cases verify **16** endpoint inverse identities and certify **1,947/2,346** rankings (approximately **83.0%**). These are exact acceptance counts, not sampled estimates.
 
 A simpler source-only trace-susceptibility selector, which ranks all uncertain contacts by the exact single-edge reduction in the trace of the certain-network covariance, takes PDB contacts (39,42), (46,67), (50,59). These three edges yield **eight** cases, **16** checked endpoint matrices, and **1,939** globally certified orders. The source-only greedy 2-edge method therefore gives more coverage at lower final-certificate cost. This is an **exploratory** optimization of model-certificate coverage on this particular reference structure, not a learned physical model nor a general runtime scaling guarantee.
 
@@ -41,7 +42,7 @@ To avoid reinverting a large exact matrix for every optional-edge set, `gnm_inte
 
 Remove the common integer GCD from `(N',d')`. **Neither producer nor cache is trusted**: accept only if the independent integer verification of the resulting edge set gives `B' N' = d' I`. The higher-level rank certificate independently rechecks each endpoint anyway, so the cached proposal cannot bypass the checker. A separate exact rational Fraction-oracle and direct SymPy inversion comparison test the proposal on dozens of seeded small connected graphs and poisoned-parent cases.
 
-A depth-three greedy search was attempted but **did not complete within the local experiment budget**; no 3-edge greedy optimum is claimed. The executable greedy search is opt-in, defaults to depth two, and may be much slower at larger depth. The eight-case *trace heuristic* is a completed alternative, not the depth-three greedy search result.
+The **previously unfinished depth-three greedy search has now completed** using the existing exactly verified integer-inverse cache. Starting from the selected contacts PDB (43,51) and (39,42), the third greedy contact was **PDB (7,13)** (0-based indices (5,11)), improving certified rankings from 1,941 to **1,947**. The independently verified eight-case result reproduces all 1,947 accepted signs over all 15 optional contacts; the source-only producer never uses NMR variability or target labels. The depth-three choice is **greedy conditional on the already selected first two contacts, not a proven globally optimal 3-contact subset**. A few next-best candidate contacts produced 1,946 rankings. The trace-heuristic eight-case method remains a separate baseline at 1,939. The optional greedy search is much slower than a fixed-certificate replay and is deliberately not run inside hosted CI; instead, CI directly verifies the frozen source-only three-contact certificate.
 
 ## Reproduction
 
@@ -52,11 +53,13 @@ python -m pip install -e '.[test]' sympy
 python -m pytest -q tests/test_gnm_integer_updates.py tests/test_gnm_joint_cases.py
 python experiments/real_1d3z_joint_cases.py --epsilon 0.05 --selected-count 2 --fixed-two
 python experiments/real_1d3z_joint_cases.py --epsilon 0.05 --selected-count 3
-# Optional slower search; no biological targets used:
-python experiments/greedy_1d3z_cases.py --depth 2
+# Completed depth-three greedy selection, exactly checked without NMR labels:
+python experiments/real_1d3z_joint_cases.py --epsilon 0.05 --selected-count 3 --fixed-three
+# Optional slower replay of the source-only greedy candidate search:
+python experiments/greedy_1d3z_cases.py --depth 3
 ```
 
-The 5 new tests pass locally. Combined with PR #76's 10 tests, **15/15** relevant tests pass. New dedicated CI checks the small exhaustive Boolean graph oracle, real pinned-coordinate four-case result, update-identity tampering, source-only heuristic result and both reproducible demos on Python 3.11, 3.12 and 3.13. The optional greedy search is not required in hosted CI due to cost.
+The 7 new tests pass locally. Combined with PR #76's 10 tests, **17/17** relevant tests pass. New dedicated CI checks the small exhaustive Boolean graph oracle, real pinned-coordinate four-case result, update-identity tampering, source-only heuristic result and both reproducible demos on Python 3.11, 3.12 and 3.13. The optional greedy search is not required in hosted CI due to cost.
 
 ## What is NOT established
 
@@ -68,3 +71,7 @@ The 5 new tests pass locally. Combined with PR #76's 10 tests, **15/15** relevan
 - The case-split method has exponential complexity in the *number of selected contacts*; it is not a general resolution of very-large-network computational complexity.
 
 The next scientifically consequential milestone is a preregistered **held-out experiment** using actual motion-related observations from more than one independent protein, including negative baselines, plus extension of certified geometry/energy bounds to more realistic physically calibrated models.
+
+## Completion and reproducibility correction
+
+The initial hosted workflow failed despite the then-15 passing unit tests, because executing `python experiments/real_1d3z_joint_cases.py` did not place the parent directory in the module search path. The direct/package import was repaired in both experiment entry points on PR #79; the CI on the fixed prior head then passed all Python and Lean workflows. An explicit subprocess regression test now compares direct CLI and `python -m` JSON outputs and exercises `greedy_1d3z_cases.py --help` in both modes. The new three-contact result is independently reproduced by the exact eight-case checker in both a unit test and a direct CLI invocation in hosted CI. The previous two-contact and trace-heuristic figures remain unchanged.
