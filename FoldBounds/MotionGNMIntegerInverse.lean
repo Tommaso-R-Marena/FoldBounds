@@ -84,9 +84,8 @@ theorem checkScaledInverse_rightInverse {n : ℕ}
     (A N : Matrix (Fin n) (Fin n) ℤ) (D : ℤ)
     (h : checkScaledInverse A N D = true) :
     checkRightInverse (castQ A) (inverseQ N D) = true := by
-  unfold checkRightInverse
-  apply decide_eq_true
-  exact checkScaledInverse_to_rational A N D h
+  simpa only [checkRightInverse, decide_eq_true_eq] using
+    (checkScaledInverse_to_rational A N D h)
 
 /-- A successful finite integer check constructs the exact response for
     *every* rational force, with no approximation or existence premise. -/
