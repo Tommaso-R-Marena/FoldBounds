@@ -10,7 +10,7 @@ from fractions import Fraction
 from typing import Mapping
 
 from .noe_scaffold_dual import (
-    ScaffoldNoGo, DirectionalRow, _ceil_sqrt, _dot, _sub, verify_no_go,
+    _ceil, _dot, _sub, verify_no_go, with_delta, _validate,
 )
 from .noe_scaffold_branch_bound import (
     BranchBoundProof, BranchBoundResult, verify_branch_bound_no_go,
@@ -68,24 +68,24 @@ class VerifiedHeterogeneousScaffoldNoGo:
 
 
 def _dual_support(endpoint,direction,anchors,rows,local,movement):
-    if type(rows) is not tuple or not 1<=len(rows)<=50:
+    if type(rows) is not list or not 1<=len(rows)<=50:
         return None
     normal=[Fraction(0)]*3
     cost=Fraction(0)
     used=set()
     for row in rows:
-        if (type(row) is not DirectionalRow or type(row.sign) is not int
-            or row.sign not in (-1,1) or type(row.anchor_a) is not str
-            or type(row.anchor_b) is not str or row.anchor_a==row.anchor_b
-            or not nat(row.numerator) or type(row.denominator) is not int
-            or row.denominator<=0):
+        if (type(row) is not list or len(row)!=5 or type(row[0]) is not int
+            or row[0] not in (-1,1) or type(row[1]) is not str
+            or type(row[2]) is not str or row[1]==row[2]
+            or not nat(row[3]) or type(row[4]) is not int
+            or row[4]<=0):
             return None
-        pa=anchors.get(row.anchor_a)
-        pb=anchors.get(row.anchor_b)
+        pa=anchors.get(row[1])
+        pb=anchors.get(row[2])
         if pa is None or pb is None:
             return None
         e=[]
-        for name,point in ((row.anchor_a,pa),(row.anchor_b,pb)):
+        for name,point in ((row[1],pa),(row[2],pb)):
             if name not in local or name not in movement:
                 return None
             if not nat(local[name]) or not nat(movement[name]):
@@ -93,21 +93,21 @@ def _dual_support(endpoint,direction,anchors,rows,local,movement):
             used.add(name)
             d=local[name]+movement[name]
             p=_sub(endpoint,point)
-            e.append(2*_ceil_sqrt(_dot(p,p))*d+d*d)
-        weight=Fraction(row.numerator,row.denominator)
+            e.append(2*_ceil(_dot(p,p))*d+d*d)
+        weight=Fraction(row[3],row[4])
         n=_sub(pa,pb)
         for j in range(3):
-            normal[j]+=weight*row.sign*n[j]
+            normal[j]+=weight*row[0]*n[j]
         cost+=weight*Fraction(e[0]+e[1],2)
     if tuple(normal)!=tuple(direction):
         return None
     return cost,used
 
 
-def verify_heterogeneous_moving_scaffold(cert: ScaffoldNoGo,
+def verify_heterogeneous_moving_scaffold(cert: dict,
                                          budget: HeterogeneousScaffoldBudget):
     try:
-        if (type(cert) is not ScaffoldNoGo or
+        if (not _validate(cert) or
             type(budget) is not HeterogeneousScaffoldBudget or
             not isinstance(budget.anchor_motion_mA,Mapping) or
             not isinstance(budget.hydrogen_anchor_change_mA,Mapping) or
@@ -115,16 +115,16 @@ def verify_heterogeneous_moving_scaffold(cert: ScaffoldNoGo,
             any(not isinstance(x,Mapping) for x in budget.hydrogen_anchor_change_mA.values())):
             return None
         # Replays all input-vector identities and the base source conflict.
-        if verify_no_go(replace(cert,delta_mA=0)) is None:
+        if verify_no_go(with_delta(cert,0)) is None:
             return None
-        v=_sub(cert.hydrogen_b,cert.hydrogen_a)
-        source=_dot(v,v)-cert.upper_mA*_ceil_sqrt(_dot(v,v))
+        v=_sub(cert['target_hydrogens_val69']['HB'],cert['target_hydrogens_val69']['H'])
+        source=_dot(v,v)-cert['processed_restraint_upper_mA']*_ceil(_dot(v,v))
         if source<=0:
             return None
-        a=_dual_support(cert.hydrogen_a,v,cert.heavy_anchors,cert.dual_a,
+        a=_dual_support(cert['target_hydrogens_val69']['H'],v,cert['fixed_heavy_atoms_val69'],cert['proof']['H'],
                         budget.hydrogen_anchor_change_mA['H'],budget.anchor_motion_mA)
-        b=_dual_support(cert.hydrogen_b,tuple(-x for x in v),
-                        cert.heavy_anchors,cert.dual_b,
+        b=_dual_support(cert['target_hydrogens_val69']['HB'],tuple(-x for x in v),
+                        cert['fixed_heavy_atoms_val69'],cert['proof']['HB'],
                         budget.hydrogen_anchor_change_mA['HB'],budget.anchor_motion_mA)
         if a is None or b is None or a[0]+b[0]>=source:
             return None
