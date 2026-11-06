@@ -110,3 +110,30 @@ have established prior art; no mathematical priority is claimed.
 
 No Lean proof of these new Python functions exists. Keep this PR draft until
 the independent source audit, full CI, and scientific review pass.
+
+
+## Local minimality of the signed metric data
+
+For n generic labeled points in 3D, configurations modulo the six
+continuous degrees of Euclidean rigid motion have dimension 3n−6.
+Any system of m smooth scalar distance measurements has Jacobian
+rank at most m. If m<3n−6, it cannot give a full-rank *local*
+coordinate chart on this configuration space. This is the ordinary
+rank/inverse-function theorem, not a new lower-bound theorem.
+
+The signed three-anchor construction uses exactly 3n−6 pair distances
+(three among the anchors plus three per nonanchor). For every site
+x with nonzero signed volume V=(u×v)·(x−a0), the Jacobian of its
+three squared distances to fixed anchors is the 3×3 matrix with
+rows 2(x−a0),2(x−a1),2(x−a2), with exact determinant **8V**.
+Hence each nonanchor block is nonsingular. The three mutual anchor
+distances fix the reference triangle modulo rigid motion, and the
+discrete orientation signs choose one of the mirror branches.
+This is locally full-rank using the minimum number of independent
+*continuous* metric scalars, conditional on the sign side-information.
+
+A new regression computes the determinant using integer operations
+on every nonanchor site in all four deposited structures: none has
+V=0 for the chosen anchors. This **does not** imply that arbitrary
+distance graphs with 3n−6 edges are globally rigid, nor that one can
+discard the orientation signs, nor that bit-level compression is optimal.
