@@ -171,3 +171,69 @@ All exact results from this follow-up must be read from the new
 \`reciprocal-mutant-nmr\` CI job, not assumed to be a success.
 The planned test reports every classified structure, wrong reporter
 bit, and adversarial stress pattern, with no reoptimization.
+
+
+## Verified reciprocal second-cascade results: 2LHG and 2LHE
+
+The independent reciprocal-mutant GitHub Actions run **successfully**
+re-downloaded, parsed and audited the official follow-up files
+and their published fold labels (He et al., Structure 2012,
+https://pmc.ncbi.nlm.nih.gov/articles/PMC3278708/):
+
+    2LHG 946bb4d44567de7725aeecd334d7c1cec086737d6445d157cd94976326c84cff
+    2LHE cd2fa17ac762106c4f21c464bd7709cb612e3cd96d227ee18fdccd99608e83d1
+
+Each hash is pinned independently in BOTH Python and GitHub Actions.
+The same 2009 GA95/GB95 reporter pairs and thresholds were used
+without any refitting for these **30 additional deposited NMR models**.
+Their experimental labels are independently established: 2LHG
+(GB98-T25I) is three-helix GA-like, while 2LHE
+(GB98-T25I,L20A) is beta-rich GB-like.
+
+| Frozen code length K | Correct independent NMR conformers | Correct exhaustive wrong-vote subset patterns | Smallest true-fold reporter threshold margin (Å) |
+|---|---:|---:|---:|
+| 1 | **30/30** | 30/30 | 6.961 |
+| 3 | **30/30** | 120/120 | 0.570 |
+| 5 | **30/30** | 480/480 | 0.570 |
+| 7 | **30/30** | 1,920/1,920 | 0.570 |
+| 9 | **30/30** | 7,680/7,680 | 0.570 |
+
+The experimental conformer whose distance approaches closest to
+its trained threshold has a margin of only **0.570 Å** in the
+three-channel (and longer) codes, substantially smaller than
+the corresponding GA98/GB98 margins. This is an important sign
+that success on the current deposited conformers does NOT validate
+the original 6.474 Å reference-model measurement tolerance on
+arbitrary related mutants. Additional drift of the reporter
+distance by more than 0.570 Å in the unfavorable direction
+could flip the closest individual channel decision.
+
+All 30 models and all **10,230** allowed adversarial wrong-vote
+patterns passed for this additional mutation cascade. The
+unfiltered per-model outcomes and individual reporter error
+diagnostics are committed at
+\`experiments/results/ga98_t25i_followup_20261105.json\`.
+The dedicated workflow requires exact regeneration of this file
+from the four authenticated RCSB sources.
+
+### Total external experimental-structure transfer evidence
+
+Taken together, the **four distinct 2012 PDB entries**
+2LHC (20 models), 2LHD (20 models), 2LHG (10 models),
+and 2LHE (20 models) provide **70 heldout deposited
+conformers**, all recognized by every one of the five
+GA95/GB95-derived code lengths with no refitting. Across them,
+all **23,870** enumerated allowed wrong-channel corruption
+subsets were correctly decoded.
+
+This is a useful, concrete generalization within a closely
+related designed-protein family. It does NOT constitute 70
+independent biological replicates, a blind structure-prediction
+challenge, or a protein-folding mechanism breakthrough.
+
+A meaningful next independent scientific gate is to measure
+real state-conditional reporter distributions on new constructs,
+verify label-site neutrality, and evaluate fully prospective
+variants. A single C-alpha geometric difference by itself is
+not a calibrated FRET observable or a thermodynamic population
+prediction.
