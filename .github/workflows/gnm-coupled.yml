@@ -1,0 +1,35 @@
+name: GNM coupled inverse-order contraction certificates
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  lean-coupled:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fail-closed proof-hole scan
+        run: python3 scripts/check_lean_sources.py
+      - name: Build pinned Lean and Mathlib
+        uses: leanprover/lean-action@v1
+      - name: Check rational coupled-cone contraction and positivity
+        run: |
+          lake env lean FoldBounds/MotionGNMCoupledRank.lean
+          lake env lean FoldBounds/MotionGNMCoupledRankTests.lean
+      - name: Audit complete theorem inventory
+        run: |
+          lake env lean FoldBounds/AxiomAudit.lean | tee /tmp/gnm-coupled-axioms.log
+          python3 scripts/check_lean_sources.py /tmp/gnm-coupled-axioms.log
+  python-coupled:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy sympy pytest
+      - name: Compile and test independent contract
+        run: |
+          python3 -m py_compile scripts/gnm_coupled_producer.py scripts/gnm_coupled_independent_replay.py
+          python3 -m pytest -q scripts/test_gnm_coupled_cone.py
