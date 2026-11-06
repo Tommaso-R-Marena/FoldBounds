@@ -1,0 +1,56 @@
+name: Frozen GA95/GB95 code transfer to independent GA98/GB98 experimental NMR
+on:
+  pull_request:
+    paths:
+      - 'experiments/ga98_gb98_transfer.py'
+      - 'experiments/run_ga98_gb98_transfer.py'
+      - 'tests/test_ga98_gb98_transfer.py'
+      - 'experiments/results/ga98_gb98_frozen_transfer_20261105.json'
+      - '.github/workflows/ga98-gb98-external-transfer.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  independent-mutant-nmr:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download four official experimental NMR coordinate files
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/foldbounds-mutant-holdout
+          for pdb in 2KDL 2KDM 2LHC 2LHD; do
+            curl --fail --show-error --location --retry 3 --retry-delay 3 --max-time 50 \
+              "https://files.rcsb.org/download/$pdb.pdb" \
+              -o "/tmp/foldbounds-mutant-holdout/$pdb.pdb"
+          done
+      - name: Verify immutable training PDB SHA-256 provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo 'fb75cc55eb8b89e0cec5e2be69901b348e60916375b9c410a0573edfca1db591  /tmp/foldbounds-mutant-holdout/2KDL.pdb' | sha256sum --check
+          echo '1c49e5faa25b443285432d935c621151294ed3b636b0106e6b1a7f7ccf2d00ec  /tmp/foldbounds-mutant-holdout/2KDM.pdb' | sha256sum --check
+          sha256sum /tmp/foldbounds-mutant-holdout/2LHC.pdb /tmp/foldbounds-mutant-holdout/2LHD.pdb
+      - name: Install pinned FoldBounds Python test environment
+        run: python3 -m pip install -e '.[test]'
+      - name: Independent abstention and adversarial fixture tests
+        run: python3 -m pytest -q tests/test_ga98_gb98_transfer.py
+      - name: Apply frozen GA95/GB95 code to unseen GA98/GB98 NMR structures
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/run_ga98_gb98_transfer.py \
+            --ga95 /tmp/foldbounds-mutant-holdout/2KDL.pdb \
+            --gb95 /tmp/foldbounds-mutant-holdout/2KDM.pdb \
+            --ga98 /tmp/foldbounds-mutant-holdout/2LHC.pdb \
+            --gb98 /tmp/foldbounds-mutant-holdout/2LHD.pdb \
+            --reference experiments/results/ga_gb_error_code_verified_20261105.json \
+            --out /tmp/foldbounds-mutant-holdout/frozen_transfer_results.json
+      - name: Preserve unfiltered outcomes including negative results
+        uses: actions/upload-artifact@v4
+        with:
+          name: ga98-gb98-independent-mutant-holdout
+          path: /tmp/foldbounds-mutant-holdout/frozen_transfer_results.json
+          retention-days: 90
