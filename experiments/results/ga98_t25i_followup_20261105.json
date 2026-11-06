@@ -1,0 +1,811 @@
+{
+  "PDB_SHA256": {
+    "2LHE": "cd2fa17ac762106c4f21c464bd7709cb612e3cd96d227ee18fdccd99608e83d1",
+    "2LHG": "946bb4d44567de7725aeecd334d7c1cec086737d6445d157cd94976326c84cff"
+  },
+  "codes": {
+    "1": {
+      "adversarial_trials_correct": 30,
+      "adversarial_trials_total": 30,
+      "correct_clean_total": 30,
+      "frozen_reference_gap_A": 16.368,
+      "per_entry": {
+        "2LHE": {
+          "adversarial_trials_correct": 20,
+          "adversarial_trials_total": 20,
+          "correct_clean": 20,
+          "deposited_models": 20,
+          "experimental_fold_class": "GB95",
+          "incorrect_model_ids": [],
+          "minimum_true_fold_signed_margin_A": 7.098,
+          "sequence": "TTYKLILNLKQAKEEAIKEAVDAGIAEKYFKLIANAKTVEGVWTYKDEIKTFTVTE",
+          "wrong_channel_diagnostics": [
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 1
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 2
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 3
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 4
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 5
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 6
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 7
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 8
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 9
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 10
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 11
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 12
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 13
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 14
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 15
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 16
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 17
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 18
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 19
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 20
+            }
+          ]
+        },
+        "2LHG": {
+          "adversarial_trials_correct": 10,
+          "adversarial_trials_total": 10,
+          "correct_clean": 10,
+          "deposited_models": 10,
+          "experimental_fold_class": "GA95",
+          "incorrect_model_ids": [],
+          "minimum_true_fold_signed_margin_A": 6.961,
+          "sequence": "TTYKLILNLKQAKEEAIKELVDAGIAEKYFKLIANAKTVEGVWTYKDEIKTFTVTE",
+          "wrong_channel_diagnostics": [
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 1
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 2
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 3
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 4
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 5
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 6
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 7
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 8
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 9
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 10
+            }
+          ]
+        }
+      },
+      "permitted_corrupted_channel_count": 0,
+      "total_deposited_models": 30
+    },
+    "3": {
+      "adversarial_trials_correct": 120,
+      "adversarial_trials_total": 120,
+      "correct_clean_total": 30,
+      "frozen_reference_gap_A": 12.948,
+      "per_entry": {
+        "2LHE": {
+          "adversarial_trials_correct": 80,
+          "adversarial_trials_total": 80,
+          "correct_clean": 20,
+          "deposited_models": 20,
+          "experimental_fold_class": "GB95",
+          "incorrect_model_ids": [],
+          "minimum_true_fold_signed_margin_A": 5.6755,
+          "sequence": "TTYKLILNLKQAKEEAIKEAVDAGIAEKYFKLIANAKTVEGVWTYKDEIKTFTVTE",
+          "wrong_channel_diagnostics": [
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 1
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 2
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 3
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 4
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 5
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 6
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 7
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 8
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 9
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 10
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 11
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 12
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 13
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 14
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 15
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 16
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 17
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 18
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 19
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 20
+            }
+          ]
+        },
+        "2LHG": {
+          "adversarial_trials_correct": 40,
+          "adversarial_trials_total": 40,
+          "correct_clean": 10,
+          "deposited_models": 10,
+          "experimental_fold_class": "GA95",
+          "incorrect_model_ids": [],
+          "minimum_true_fold_signed_margin_A": 0.57,
+          "sequence": "TTYKLILNLKQAKEEAIKELVDAGIAEKYFKLIANAKTVEGVWTYKDEIKTFTVTE",
+          "wrong_channel_diagnostics": [
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 1
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 2
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 3
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 4
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 5
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 6
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 7
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 8
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 9
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 10
+            }
+          ]
+        }
+      },
+      "permitted_corrupted_channel_count": 1,
+      "total_deposited_models": 30
+    },
+    "5": {
+      "adversarial_trials_correct": 480,
+      "adversarial_trials_total": 480,
+      "correct_clean_total": 30,
+      "frozen_reference_gap_A": 11.58,
+      "per_entry": {
+        "2LHE": {
+          "adversarial_trials_correct": 320,
+          "adversarial_trials_total": 320,
+          "correct_clean": 20,
+          "deposited_models": 20,
+          "experimental_fold_class": "GB95",
+          "incorrect_model_ids": [],
+          "minimum_true_fold_signed_margin_A": 5.878,
+          "sequence": "TTYKLILNLKQAKEEAIKEAVDAGIAEKYFKLIANAKTVEGVWTYKDEIKTFTVTE",
+          "wrong_channel_diagnostics": [
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 1
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 2
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 3
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 4
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 5
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 6
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 7
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 8
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 9
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 10
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 11
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 12
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 13
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 14
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 15
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 16
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 17
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 18
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 19
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 20
+            }
+          ]
+        },
+        "2LHG": {
+          "adversarial_trials_correct": 160,
+          "adversarial_trials_total": 160,
+          "correct_clean": 10,
+          "deposited_models": 10,
+          "experimental_fold_class": "GA95",
+          "incorrect_model_ids": [],
+          "minimum_true_fold_signed_margin_A": 0.57,
+          "sequence": "TTYKLILNLKQAKEEAIKELVDAGIAEKYFKLIANAKTVEGVWTYKDEIKTFTVTE",
+          "wrong_channel_diagnostics": [
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 1
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 2
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 3
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 4
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 5
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 6
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 7
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 8
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 9
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 10
+            }
+          ]
+        }
+      },
+      "permitted_corrupted_channel_count": 2,
+      "total_deposited_models": 30
+    },
+    "7": {
+      "adversarial_trials_correct": 1920,
+      "adversarial_trials_total": 1920,
+      "correct_clean_total": 30,
+      "frozen_reference_gap_A": 10.302,
+      "per_entry": {
+        "2LHE": {
+          "adversarial_trials_correct": 1280,
+          "adversarial_trials_total": 1280,
+          "correct_clean": 20,
+          "deposited_models": 20,
+          "experimental_fold_class": "GB95",
+          "incorrect_model_ids": [],
+          "minimum_true_fold_signed_margin_A": 4.7585,
+          "sequence": "TTYKLILNLKQAKEEAIKEAVDAGIAEKYFKLIANAKTVEGVWTYKDEIKTFTVTE",
+          "wrong_channel_diagnostics": [
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 1
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 2
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 3
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 4
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 5
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 6
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 7
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 8
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 9
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 10
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 11
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 12
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 13
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 14
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 15
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 16
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 17
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 18
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 19
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 20
+            }
+          ]
+        },
+        "2LHG": {
+          "adversarial_trials_correct": 640,
+          "adversarial_trials_total": 640,
+          "correct_clean": 10,
+          "deposited_models": 10,
+          "experimental_fold_class": "GA95",
+          "incorrect_model_ids": [],
+          "minimum_true_fold_signed_margin_A": 0.57,
+          "sequence": "TTYKLILNLKQAKEEAIKELVDAGIAEKYFKLIANAKTVEGVWTYKDEIKTFTVTE",
+          "wrong_channel_diagnostics": [
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 1
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 2
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 3
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 4
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 5
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 6
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 7
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 8
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 9
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 10
+            }
+          ]
+        }
+      },
+      "permitted_corrupted_channel_count": 3,
+      "total_deposited_models": 30
+    },
+    "9": {
+      "adversarial_trials_correct": 7680,
+      "adversarial_trials_total": 7680,
+      "correct_clean_total": 30,
+      "frozen_reference_gap_A": 9.081,
+      "per_entry": {
+        "2LHE": {
+          "adversarial_trials_correct": 5120,
+          "adversarial_trials_total": 5120,
+          "correct_clean": 20,
+          "deposited_models": 20,
+          "experimental_fold_class": "GB95",
+          "incorrect_model_ids": [],
+          "minimum_true_fold_signed_margin_A": 3.5925,
+          "sequence": "TTYKLILNLKQAKEEAIKEAVDAGIAEKYFKLIANAKTVEGVWTYKDEIKTFTVTE",
+          "wrong_channel_diagnostics": [
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 1
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 2
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 3
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 4
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 5
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 6
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 7
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 8
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 9
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 10
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 11
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 12
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 13
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 14
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 15
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 16
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 17
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 18
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 19
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 20
+            }
+          ]
+        },
+        "2LHG": {
+          "adversarial_trials_correct": 2560,
+          "adversarial_trials_total": 2560,
+          "correct_clean": 10,
+          "deposited_models": 10,
+          "experimental_fold_class": "GA95",
+          "incorrect_model_ids": [],
+          "minimum_true_fold_signed_margin_A": 0.57,
+          "sequence": "TTYKLILNLKQAKEEAIKELVDAGIAEKYFKLIANAKTVEGVWTYKDEIKTFTVTE",
+          "wrong_channel_diagnostics": [
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 1
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 2
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 3
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 4
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 5
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 6
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 7
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 8
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 9
+            },
+            {
+              "incorrect_reporter_pairs": [],
+              "model": 10
+            }
+          ]
+        }
+      },
+      "permitted_corrupted_channel_count": 4,
+      "total_deposited_models": 30
+    }
+  },
+  "experimental_depositions": [
+    "2LHG",
+    "2LHE"
+  ],
+  "experimental_fold_annotations": {
+    "2LHE": "4-beta-plus-alpha (GB-like); assigned by published 2012 NMR study",
+    "2LHG": "3-alpha (GA-like); assigned by published 2012 NMR study"
+  },
+  "external_models": 30,
+  "mutations_in_second_cascade": {
+    "2LHG_to_2LHE": [
+      {
+        "from": "L",
+        "site": 20,
+        "to": "A"
+      }
+    ],
+    "GB98_to_2LHG": [
+      {
+        "from": "T",
+        "site": 25,
+        "to": "I"
+      }
+    ]
+  },
+  "retrospective_experimental_structural_classification_not_sequence_prediction": true,
+  "training_structures_unchanged_and_never_refitted": true,
+  "audit_receipt": {
+    "source": "Official RCSB 2LHG and 2LHE SHA256-pinned CI transcript",
+    "run": "https://github.com/Tommaso-R-Marena/FoldBounds/actions/runs/42162924775",
+    "head_sha": "6cb86c663dcdcf21ca7938979cc0cd4fbabefbbe",
+    "scope": "Retrospective heldout conformer classification; outcomes frozen with no readout refitting"
+  }
+}
