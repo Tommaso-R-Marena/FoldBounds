@@ -79,3 +79,52 @@ def test_real_trace_sensitivity_selection_no_label_access():
     with pytest.raises(ValueError):
         certify_split_cases(len(coords),certain,possible,selected_count=3,
                             selected_override=((0,1),(0,3),(0,3)))
+
+
+def test_real_1d3z_command_line_import_modes_agree():
+    """Prevent pytest masking a failing direct-script experiment import."""
+    import json
+    from pathlib import Path
+    import subprocess
+    import sys
+
+    repo = Path(__file__).resolve().parents[1]
+    script = repo / 'experiments' / 'real_1d3z_joint_cases.py'
+    arguments = ('--epsilon', '0.05', '--selected-count', '2', '--fixed-two')
+    direct = subprocess.run(
+        [sys.executable, str(script), *arguments], cwd=repo,
+        capture_output=True, text=True, check=True, timeout=120,
+    )
+    module = subprocess.run(
+        [sys.executable, '-m', 'experiments.real_1d3z_joint_cases', *arguments],
+        cwd=repo, capture_output=True, text=True, check=True, timeout=120,
+    )
+    d = json.loads(direct.stdout)
+    assert d == json.loads(module.stdout)
+    assert (d['single_case_joint_certified'], d['all_case_joint_certified']) == (1919, 1941)
+    for prefix in (
+        [sys.executable, str(repo / 'experiments' / 'greedy_1d3z_cases.py')],
+        [sys.executable, '-m', 'experiments.greedy_1d3z_cases'],
+    ):
+        help_result = subprocess.run(
+            [*prefix, '--help'], cwd=repo, capture_output=True,
+            text=True, check=True, timeout=30,
+        )
+        assert '--depth' in help_result.stdout
+
+
+def test_real_1d3z_completed_greedy_three_exact():
+    """Complete the third source-only greedy step and verify all eight cases."""
+    r = evaluate(Fraction(1, 20), 3, fixed_three=True)
+    assert r['all_residue_pairs'] == 2346
+    assert r['optional_nonlocal_edges'] == 15
+    assert r['selected_source_only_optional_edges'] == [[43, 51], [39, 42], [7, 13]]
+    assert r['exhaustive_cases'] == 8
+    assert r['verified_integer_endpoint_matrices'] == 16
+    assert r['single_case_joint_certified'] == 1919
+    assert r['all_case_joint_certified'] == 1947
+    assert r['newly_certified'] == 28
+    with pytest.raises(ValueError):
+        evaluate(Fraction(1, 20), 2, fixed_three=True)
+    with pytest.raises(ValueError):
+        evaluate(Fraction(1, 20), 3, fixed_two=True, fixed_three=True)
