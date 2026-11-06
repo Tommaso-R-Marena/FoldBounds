@@ -34,3 +34,5 @@ jobs:
         run: python experiments/real_1d3z_joint_cases.py --epsilon 0.05 --selected-count 2 --fixed-two
       - name: Reproduce source-only eight-case reference heuristic
         run: python experiments/real_1d3z_joint_cases.py --epsilon 0.05 --selected-count 3
+      - name: Reproduce completed greedy depth-three exact real 1D3Z certificate
+        run: python experiments/real_1d3z_joint_cases.py --epsilon 0.05 --selected-count 3 --fixed-three
