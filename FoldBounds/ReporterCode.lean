@@ -87,10 +87,8 @@ theorem matching_card_le_cover
       · simp [pickedCovered, ha, hb] at h
         exact hLeft e he d hd h
       · simp [pickedCovered, ha, hb] at h
-        cases h
     · by_cases hb : Sum.inl d.1 ∈ cover
       · simp [pickedCovered, ha, hb] at h
-        cases h
       · simp [pickedCovered, ha, hb] at h
         exact hRight e he d hd h
   let assignment : {e // e ∈ selected} → {v // v ∈ cover} :=
