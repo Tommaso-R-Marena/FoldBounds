@@ -299,3 +299,92 @@ an actual tradeoff among mutation avoidance, missing sites,
 incorrect channels and continuous geometric drift. It is
 neither a new theorem of error-correcting codes nor a proven
 biophysical folding law.
+
+
+## Verified full finite-ensemble continuous-geometry radius certificates
+
+The dedicated GitHub Actions experiment authenticated the same
+six official PDB coordinate files, independently checked the
+source-only mutation-invariant matchings, and computed exact
+conservative signed decision margins for **every selected pair
+in every one of the 70 externally deposited NMR conformers**.
+The resulting *order-statistic* margins are machine-readable
+at \`experiments/results/mutation_safe_radius_20261105.json\`.
+For every one of **30** admitted (K,E,T) regimes, the checker
+reconstructed its exact global minimum and validated the
+symbolic certificate.
+
+Representative exact results (all numerical radii in Å):
+
+| Mutation-safe code K | Missing channels E | Additional wrong channels T | Maximum certified geometrical risk channels B | Strict conditional readout pair-distance perturbation radius δ |
+|---|---:|---:|---:|---:|
+| 3 | 0 | 0 | 1 | **<5.9185** |
+| **3** | **2** | **0** | **0** | **<4.691** |
+| 5 | 0 | 0 | 2 | <5.0505 |
+| **5** | **2** | **1** | **0** | **<1.7245** |
+| 7 | 0 | 0 | 3 | <3.963 |
+| **7** | **2** | **1** | **1** | **<2.7805** |
+| 9 | 0 | 0 | 4 | <3.963 |
+| **9** | **2** | **2** | **1** | **<2.7095** |
+
+For K=9,E=2,T=2 the source-only optimized code's **single
+weakest external reporter** has a signed margin of just
+**0.1115 Å**, yet the **second-smallest reporter margin**
+across the worst external conformer is **2.7095 Å**.
+Because K=9 tolerates one additional geometry-induced wrong
+vote beyond two erased and two adversarially wrong votes, the
+correcting radius improves by **24.30×** over the naive
+requirement that all reporter decisions remain stable.
+This is a genuine and useful application of majority-redundancy
+coding to the submitted experimental coordinate data; it
+does not mean any individual fluorophore has a measured
+2.7095 Å error tolerance.
+
+If every C-alpha atom's (unknown, hypothetical) position
+deviation is smaller than half of the pairwise distance
+threshold, the reverse triangle inequality ensures its
+pairwise distance change is smaller than the stated bound.
+Thus the K=9,E=2,T=2 certificate has a **per-site displacement**
+sufficient condition of **<1.35475 Å** *for those 70
+deposited conformers and the declared additional fault budgets*.
+Likewise the mutation-invariant K=3,E=2,T=0 code has a
+per-site displacement sufficient condition of **<2.3455 Å**.
+
+The **finite-set quantile proof** is checked by
+\`FoldBounds/MutationSafeMargins.lean\`, where the generic
+condition is
+
+    2*(B+T)+E<K,
+
+and the Python code independently verifies each numerical B,
+actual sorted signed margins and worst-case conformer.
+Each signed C-alpha pair distance is conservatively bracketed
+on the original integer milli-Å grid (no floating point
+decision thresholds).
+
+### Critical separation of assurance levels
+
+1. **Proven generally (Lean kernel):** signed margin stability
+   against bounded additive noise; a strict majority with
+   ≤B geometry-induced bad votes, ≤T additional arbitrary
+   wrong votes and E erasures under 2(B+T)+E<K; a
+   tight tie construction at equality.
+2. **Verified from the six authenticated experimental
+   deposited-coordinate files (Python + independent tests):**
+   strict 2009/2012 source separation, site conservation, the
+   optimized K-edge witnesses and stronger-gap cover
+   obstructions, all 70 exact finite-conformer
+   post-hoc order-statistic radius checks, and all
+   283,010 reported discrete mixed-fault replay patterns.
+3. **Not verified experimentally:** calibrated dye/noise
+   distribution, label accessibility, covariance/independence,
+   complete solution-state conformational support, arbitrary
+   new mutations or a physical sequence-to-fold mechanism.
+
+A positive radius here is therefore not a model-derived
+**predictive guarantee for an unseen conformation**. It is a
+correct mathematical **post-hoc robustness envelope**
+for the existing experimentally derived NMR coordinate set.
+A true prospective certificate requires physical
+observation-model calibration and an independently justified
+bound on previously unseen conformational excursions.
