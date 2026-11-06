@@ -4,6 +4,10 @@ on:
     paths:
       - 'experiments/ga98_gb98_transfer.py'
       - 'experiments/run_ga98_gb98_transfer.py'
+      - 'experiments/ga98_t25i_followup.py'
+      - 'experiments/run_ga98_t25i_followup.py'
+      - 'tests/test_ga98_t25i_followup.py'
+      - 'experiments/results/ga98_t25i_followup_20261105.json'
       - 'tests/test_ga98_gb98_transfer.py'
       - 'experiments/results/ga98_gb98_frozen_transfer_20261105.json'
       - '.github/workflows/ga98-gb98-external-transfer.yml'
@@ -68,4 +72,47 @@ jobs:
         with:
           name: ga98-gb98-independent-mutant-holdout
           path: /tmp/foldbounds-mutant-holdout/frozen_transfer_results.json
+          retention-days: 90
+
+
+  reciprocal-mutant-nmr:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Obtain reference and new published reciprocal T25I mutant NMR entries
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/foldbounds-t25i
+          for pdb in 2KDL 2KDM 2LHG 2LHE; do
+            curl --fail --show-error --location --retry 3 --retry-delay 3 --max-time 50 \
+              "https://files.rcsb.org/download/$pdb.pdb" \
+              -o "/tmp/foldbounds-t25i/$pdb.pdb"
+          done
+      - name: Require pinned original training coordinate bytes and list new SHA-256
+        run: |
+          echo 'fb75cc55eb8b89e0cec5e2be69901b348e60916375b9c410a0573edfca1db591  /tmp/foldbounds-t25i/2KDL.pdb' | sha256sum --check
+          echo '1c49e5faa25b443285432d935c621151294ed3b636b0106e6b1a7f7ccf2d00ec  /tmp/foldbounds-t25i/2KDM.pdb' | sha256sum --check
+          sha256sum /tmp/foldbounds-t25i/2LHG.pdb /tmp/foldbounds-t25i/2LHE.pdb
+      - name: Install independent exact-rational FoldBounds test environment
+        run: python3 -m pip install -e '.[test]'
+      - name: Audit mutation cascade and reject untrusted inputs
+        run: python3 -m pytest -q tests/test_ga98_t25i_followup.py
+      - name: Run unretuned GA95/GB95 codes on true additional NMR variants
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/run_ga98_t25i_followup.py \
+            --ga95 /tmp/foldbounds-t25i/2KDL.pdb \
+            --gb95 /tmp/foldbounds-t25i/2KDM.pdb \
+            --t25i /tmp/foldbounds-t25i/2LHG.pdb \
+            --t25i_l20a /tmp/foldbounds-t25i/2LHE.pdb \
+            --reference experiments/results/ga_gb_error_code_verified_20261105.json \
+            --out /tmp/foldbounds-t25i/followup_results.json
+      - name: Preserve full negative or positive outcomes without selective reporting
+        uses: actions/upload-artifact@v4
+        with:
+          name: ga98-t25i-reciprocal-mutant-nmr
+          path: /tmp/foldbounds-t25i/followup_results.json
           retention-days: 90
