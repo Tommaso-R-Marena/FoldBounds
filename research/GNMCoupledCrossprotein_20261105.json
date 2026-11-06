@@ -1,0 +1,145 @@
+{
+  "format": "GNM_COUPLED_CROSSPROTEIN_SOURCE_ONLY_V1",
+  "results": [
+    {
+      "additional_certified_strict_orders": 4656,
+      "guaranteed_strict_correct_order_fraction_coupled": "56299/75984",
+      "guaranteed_strict_correct_order_fraction_old": "167345/227952",
+      "illustrative_new_witnesses": [
+        {
+          "pair_indices": [
+            [
+              17,
+              27
+            ],
+            [
+              17,
+              45
+            ]
+          ],
+          "rank_indices": [
+            0,
+            28
+          ]
+        },
+        {
+          "pair_indices": [
+            [
+              17,
+              27
+            ],
+            [
+              8,
+              17
+            ]
+          ],
+          "rank_indices": [
+            0,
+            35
+          ]
+        },
+        {
+          "pair_indices": [
+            [
+              17,
+              62
+            ],
+            [
+              17,
+              60
+            ]
+          ],
+          "rank_indices": [
+            1,
+            55
+          ]
+        }
+      ],
+      "n_certain_contacts": 509,
+      "n_nominal_contacts": 543,
+      "n_nominal_exact_tied_comparisons": 9,
+      "n_pairs": 1170,
+      "n_possible_contacts": 561,
+      "n_residues": 67,
+      "n_strict_comparisons": 683856,
+      "n_uncertain_contacts": 52,
+      "new_coupled_certified_order_count": 506691,
+      "old_independent_certified_order_count": 502035,
+      "protein": "CspB",
+      "real_protein_integer_inverse_identities_checked": true,
+      "seconds": 0.726,
+      "source_sha256": "666a5d734fbd61be0f182c954474841bb552b71b3a1e9156d6c21b8c2f095f95",
+      "target_NMR_data_accessed": false
+    },
+    {
+      "additional_certified_strict_orders": 1643,
+      "guaranteed_strict_correct_order_fraction_coupled": "101924/149331",
+      "guaranteed_strict_correct_order_fraction_old": "33427/49777",
+      "illustrative_new_witnesses": [
+        {
+          "pair_indices": [
+            [
+              12,
+              25
+            ],
+            [
+              9,
+              25
+            ]
+          ],
+          "rank_indices": [
+            0,
+            10
+          ]
+        },
+        {
+          "pair_indices": [
+            [
+              12,
+              25
+            ],
+            [
+              25,
+              29
+            ]
+          ],
+          "rank_indices": [
+            0,
+            18
+          ]
+        },
+        {
+          "pair_indices": [
+            [
+              12,
+              25
+            ],
+            [
+              12,
+              22
+            ]
+          ],
+          "rank_indices": [
+            0,
+            20
+          ]
+        }
+      ],
+      "n_certain_contacts": 318,
+      "n_nominal_contacts": 334,
+      "n_nominal_exact_tied_comparisons": 0,
+      "n_pairs": 547,
+      "n_possible_contacts": 354,
+      "n_residues": 46,
+      "n_strict_comparisons": 149331,
+      "n_uncertain_contacts": 36,
+      "new_coupled_certified_order_count": 101924,
+      "old_independent_certified_order_count": 100281,
+      "protein": "Crambin",
+      "real_protein_integer_inverse_identities_checked": true,
+      "seconds": 0.421,
+      "source_sha256": "666a5d734fbd61be0f182c954474841bb552b71b3a1e9156d6c21b8c2f095f95",
+      "target_NMR_data_accessed": false
+    }
+  ]
+}
