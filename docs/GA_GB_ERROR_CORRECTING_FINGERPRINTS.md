@@ -65,3 +65,78 @@ Reproduce the real-data audit:
     python experiments/ga_gb_error_code_demo.py --ga /path/2KDL.pdb --gb /path/2KDM.pdb
 
 Inspect \`.github/workflows/ga-gb-error-codes.yml\` for exact download, provenance pins, independent tests, and verification report. The code remains draft pending CI, expert scrutiny, and real experimental validation.
+
+
+## Verified real-data results, including the unsuccessful holdout tests
+
+The official RCSB coordinate files downloaded by GitHub Actions passed
+the exact pinned SHA-256 checks, full 20×56-residue model completeness,
+and expected sequence/mutation checks. At the latest successful
+independent-real-NMR run, the exact conservative bipartite candidate
+graph had **170** eligible positive-gap edges. The following results
+were computed from the **actual 2KDL/2KDM C-alpha coordinates**, not
+from the synthetic unit-test fixtures:
+
+| Number of disjoint reporter pairs K | Corrupted readout decisions correctable f | Optimal minimum NMR distance-band gap (Å) | Strict pair-distance observation error allowance (Å) | Required distinct residue sites |
+|---|---:|---:|---:|---:|
+| 1 | 0 | 16.368 | <8.184 | 2 |
+| **3** | **1** | **12.948** | **<6.474** | **6** |
+| **5** | **2** | **11.580** | **<5.790** | **10** |
+| **7** | **3** | **10.302** | **<5.151** | **14** |
+| 9 | 4 | 9.081 | <4.5405 | 18 |
+
+Every full-data code correctly classified **all 40 deposited NMR
+conformers**, and passed every re-evaluated adversarial bit-flip subset
+up to its listed budget. The full-data codes are NOT prospective tests:
+these same 40 models were used to choose the reporters.
+
+The six-site, three-reporter result is the least demanding option that
+tolerates one wholly incorrect channel; the 10-site/5-reporter option
+is a useful mathematical compromise. These are *distinct amino-acid
+sites* that would require labeling, rather than simply five or seven
+readout values from one verified assay. The chemical feasibility and
+absence of fold perturbations remain untested.
+
+### Fixed within-deposition 10/10 holdout: important negative controls
+
+To evaluate transfer to unseen structures *within the same deposited
+NMR entries*, a separate protocol fitted the reporter choices on
+models 1,3,5,...,19 and tested on 2,4,6,...,20, then reversed the
+split. There was no outcome-dependent model resampling. Note that
+individual deposited models are still **not independent biological
+replicates** and can have refinement-related correlations.
+
+Every heldout half had **20/20 correct clean binary fold
+classifications**, regardless of K. When the stated f channels were
+deliberately forced to vote for the wrong fold, however, the reversed
+split sometimes failed:
+
+| K | Allowed wrong channels f | First-half-fit adversarial successes | Reversed-fit adversarial successes |
+|---|---:|---:|---:|
+| 1 | 0 | 20/20 | 20/20 |
+| 3 | 1 | 80/80 | **78/80** |
+| 5 | 2 | 320/320 | **314/320** |
+| 7 | 3 | 1,280/1,280 | **1,240/1,280** |
+| 9 | 4 | 5,120/5,120 | **4,980/5,120** |
+
+The stricter reversed-fit evaluation had one or more channels with
+**negative signed classification margins** in the omitted structural
+models, as low as -6.305 Å. A code trained on that half of the data
+therefore **does not** carry its training-derived deterministic
+worst-case guarantee over the heldout models, even though ordinary
+uncorrupted majority prediction happened to be perfect. This
+distinction is central to the scientific interpretation.
+
+An earlier exploratory run perturbed corrupted channels using the
+same numerical extremum irrespective of each reporter's fold
+orientation. That is NOT the strongest adverse binary error.
+The later data above use the corrected test that deliberately forces
+each specified channel to vote for the OPPOSITE fold, so the smaller
+reversed-split counts here supersede those early exploratory numbers.
+
+These results can support a practical future design protocol only
+after independent labeled-construct feasibility, state-specific
+dye-distance calibration, genuinely new conformers/mutants, and
+measurement-condition controls. This is a proof-carrying
+**structural-geometry benchmark**, not evidence of a novel folding
+mechanism or measured mutation-dependent populations.
