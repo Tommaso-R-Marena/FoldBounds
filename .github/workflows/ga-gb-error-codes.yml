@@ -1,0 +1,61 @@
+name: Authenticated GA95/GB95 error-correcting NMR geometry
+on:
+  pull_request:
+    paths:
+      - 'src/foldbounds/ga_gb_error_codes.py'
+      - 'tests/test_ga_gb_error_codes.py'
+      - 'experiments/ga_gb_error_code_demo.py'
+      - '.github/workflows/ga-gb-error-codes.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic-matching-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install FoldBounds tests
+        run: python3 -m pip install -e '.[test]'
+      - name: Test reporter-matching oracle and forged certificates
+        run: python3 -m pytest -q tests/test_ga_gb_error_codes.py
+
+  independent-real-nmr:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Obtain original official RCSB NMR coordinate files
+        run: |
+          mkdir -p /tmp/foldbounds-real-error-code
+          curl --fail --show-error --location --retry 3 --retry-delay 2 \
+            --max-time 45 \
+            https://files.rcsb.org/download/2KDL.pdb \
+            -o /tmp/foldbounds-real-error-code/2KDL.pdb
+          curl --fail --show-error --location --retry 3 --retry-delay 2 \
+            --max-time 45 \
+            https://files.rcsb.org/download/2KDM.pdb \
+            -o /tmp/foldbounds-real-error-code/2KDM.pdb
+      - name: Strict immutable provenance and coordinate hashes
+        run: |
+          cat >/tmp/foldbounds-real-error-code/sha256sums.txt <<'EOF'
+          fb75cc55eb8b89e0cec5e2be69901b348e60916375b9c410a0573edfca1db591  /tmp/foldbounds-real-error-code/2KDL.pdb
+          1c49e5faa25b443285432d935c621151294ed3b636b0106e6b1a7f7ccf2d00ec  /tmp/foldbounds-real-error-code/2KDM.pdb
+          EOF
+          sha256sum --check /tmp/foldbounds-real-error-code/sha256sums.txt
+      - name: Install verified NMR pipeline
+        run: python3 -m pip install -e '.[test]'
+      - name: Independently rerun synthetic differential tests
+        run: python3 -m pytest -q tests/test_ga_gb_error_codes.py
+      - name: Compute optimal 5/7-channel codes on 40 authentic NMR models
+        run: |
+          python3 experiments/ga_gb_error_code_demo.py \
+            --ga /tmp/foldbounds-real-error-code/2KDL.pdb \
+            --gb /tmp/foldbounds-real-error-code/2KDM.pdb \
+            --out /tmp/foldbounds-real-error-code/report.json
+      - name: Preserve immutable derived report as run artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ga-gb-real-error-code-report
+          path: /tmp/foldbounds-real-error-code/report.json
+          retention-days: 90
