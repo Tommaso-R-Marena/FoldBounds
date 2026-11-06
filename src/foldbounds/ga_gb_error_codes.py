@@ -80,8 +80,8 @@ def extract_reporters(a,b, *, left_end=14, min_sep=4,
     if not (type(distance_min_ang) is int and type(distance_max_ang) is int
             and 0<distance_min_ang<distance_max_ang):
         raise ValueError("assay range must be in positive exact integer Angstroms")
-    if len(a)!=20 or len(b)!=20 or any(m.seq!=GA95 for m in a) or any(m.seq!=GB95 for m in b):
-        raise ValueError("real sequence identity and 20-model constraint violated")
+    if not (1<=len(a)==len(b)<=20) or any(m.seq!=GA95 for m in a) or any(m.seq!=GB95 for m in b):
+        raise ValueError("GA95/GB95 identity and matching 1..20-model constraint violated")
     result=[]
     for i in range(1,left_end+1):
         if i in MUTATIONS:continue
@@ -184,14 +184,14 @@ def certify_code(a,b, *, channels=5,left_end=14):
     if min(e.gap_milliang for e in chosen)!=margin:
         raise AssertionError("claimed bottleneck not attained")
     return CodeCertificate(chosen,channels,(channels-1)//2,margin,left,right,
-                           len(edges),dict(EXPECTED),left_end,20,Fraction(margin,2))
+                           len(edges),dict(EXPECTED),left_end,len(a),Fraction(margin,2))
 
 def verify_code(cert:CodeCertificate,a,b):
     """Recompute every candidate and check the witness and cover, not solver output."""
     if not isinstance(cert,CodeCertificate):raise ValueError("bad certificate")
     edges=extract_reporters(a,b,left_end=cert.left_end)
     by_pair={(e.a,e.b):e for e in edges}
-    if cert.source_models_per_fold!=20 or cert.coordinate_hashes!=EXPECTED:
+    if cert.source_models_per_fold!=len(a) or len(a)!=len(b) or cert.coordinate_hashes!=EXPECTED:
         raise ValueError("untrusted structure provenance")
     if len(cert.reporters)!=cert.target_channels or cert.target_channels%2!=1:
         raise ValueError("bad correction code length")
