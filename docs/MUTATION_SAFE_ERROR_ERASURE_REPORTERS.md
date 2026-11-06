@@ -158,3 +158,118 @@ The dedicated
 \`.github/workflows/mutation-safe-codes.yml\`
 performs all steps using the previously verified exact SHA-256
 coordinates and preserves the unfiltered JSON output.
+
+
+## Actual six-PDB 2009-training / 2012-test results
+
+The first successful full-data CI run authenticated the raw PDB
+SHA-256 bytes of all six experimental NMR entries, trained only
+on the 2KDL/2KDM ensembles (40 conformers total), and
+evaluated the four independently deposited 2012 variants
+(70 heldout conformers) with no threshold or site refitting.
+Ten of the previous **170** geometrically eligible training
+distance reporters use newly banned mutation site 25, leaving
+**160** mutation-safe candidate pairs.
+
+Every odd-code-length optimum and its source-only matching/cover
+certificate was independently regenerated and accepted:
+
+| Mutation-safe disjoint reporters K | Worst-case training distance-band gap (Å) | GA98/GB98/T25I/L20A test fold decisions | Mixed adversarial wrong-bit + up to 2-erasure trials | External conformers *outside at least one original full-distance band* |
+|---|---:|---:|---:|---:|
+| 1 | 16.368 | 70/70 | 70/70 | 39/70 |
+| **3** | **12.884** | **70/70** | **700/700** | **61/70** |
+| **5** | **11.045** | **70/70** | **5,670/5,670** | **70/70** |
+| 7 | 10.213 | 70/70 | 38,780/38,780 | 70/70 |
+| 9 | 9.081 | 70/70 | 237,790/237,790 | 70/70 |
+| **All** | — | **350/350 code–conformer comparisons** | **283,010/283,010** | not independent samples |
+
+For K=3 the exact source-selected, mutation-invariant
+reporter pairs are **10–19, 11–22, 12–21**. Each pair's
+amino-acid identities are identical in all six protein sequences,
+including after the real T25I/L20A reciprocal fold switch.
+The global observed true-fold reporter threshold margin over
+all 70 external deposited models for this K=3 code was
+**4.691 Å**, computed with conservative integer sqrt bands.
+
+All outcomes, per-model errors/erasures and source-band
+out-of-distribution flags are preserved at
+\`experiments/results/mutation_safe_real_nmr_20261105.json\`,
+with SHA-256 source file hashes and the original CI run revision.
+
+### An important counterexample to overconfident coverage claims
+
+**61 of 70** heldout deposited structures for the three-channel
+code and **70 of 70** for the five-channel code have at least
+one CA reporter distance **outside** the 2009 NMR reference
+distance bands, even though the fold recognition succeeds.
+
+Therefore one CANNOT claim that the original source ensemble's
+strict readout-noise margin applies unchanged to any arbitrarily
+related external conformer, nor that all new folded states lie
+inside the source interval envelope. The discrete binary
+code is structurally successful here, but the conditional
+continuous-distance guarantees must be recalculated against
+the new conformer set or accompanied by an actual physical
+shift assumption.
+
+This is deliberately tracked as negative transfer evidence,
+not filtered from the results.
+
+## Order-statistic margin improvement: conditional post-hoc radii
+
+The next module
+\`src/foldbounds/mutation_safe_radius.py\` addresses a different
+question: for the **explicitly supplied finite external NMR
+coordinates**, what is the largest sufficient bound on
+continuous pair-distance perturbation while preserving the
+majority decision under E other erasures and T arbitrarily
+incorrect channels?
+
+Let the K conservative, true-fold signed reporter margins
+from one deposited NMR conformer be ordered
+
+    m[0] <= m[1] <= ... <= m[K-1].
+
+For any explicitly declared erasure/error budget
+\`2T+E<K\`, define
+
+    B = floor((K-E-2T-1)/2).
+
+Any pairwise distance noise with magnitude strictly less than
+\`m[B]\` can make at most B additional geometric reporters
+ambiguous or wrong; accounting for E erasures and T
+arbitrary wrong votes still gives a strictly correct majority,
+
+    2*(B+T)+E < K.
+
+The worst-case guaranteed finite-dataset radius is the
+**minimum m[B] over all 70 deposited external conformers**.
+A positive result gives a strict per-pair-distance noise
+threshold. By the Euclidean reverse triangle inequality, if
+each C-alpha coordinate is perturbed by at most r, the
+pair-distance change is at most 2r, giving sufficient
+per-site coordinate radius
+
+    r < m[B]/2.
+
+This is a **post-hoc finite-set certificate**, not a
+training-only prospective uncertainty interval, and
+certainly not an experimental fluorophore displacement
+guarantee. Its order-statistic advantage is strongest
+when K has redundant voting capacity and E,T are small.
+If a source has negative/zero margin at the selected
+quantile, the algorithm returns no positive guarantee.
+
+A second Lean module
+\`FoldBounds/MutationSafeMargins.lean\` proves the
+generic quantified inference from bounded extra margin-
+induced errors to majority, without assuming independent
+measurement noise. It does not formalize the PDB integer
+coordinate decoder or Euclidean reverse triangle inequality.
+
+**Scientific significance:** a useful certified experimental
+measurement-design and uncertainty framework that identifies
+an actual tradeoff among mutation avoidance, missing sites,
+incorrect channels and continuous geometric drift. It is
+neither a new theorem of error-correcting codes nor a proven
+biophysical folding law.
