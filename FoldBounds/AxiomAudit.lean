@@ -27,6 +27,7 @@ import FoldBounds.MotionGNMPrefixTree
 import FoldBounds.MotionGNMFlowCoercivity
 import FoldBounds.MotionGNMSpectralSOS
 import FoldBounds.MotionGNMIntegerInverse
+import FoldBounds.MotionGNMCoupledRank
 
 /-! Axiom audit: every headline theorem depends only on the standard axioms
 `propext`, `Classical.choice`, `Quot.sound`. -/
@@ -258,3 +259,9 @@ accepted score intervals now have a uniquely existing ground-truth response. -/
 #print axioms FoldBounds.MotionGNMIntegerInverse.checkScaledInverse_to_rational
 #print axioms FoldBounds.MotionGNMIntegerInverse.checkScaledInverse_rightInverse
 #print axioms FoldBounds.MotionGNMIntegerInverse.checkScaledInverse_solves
+
+/-! Shared-contact PSD cone coupling for nominal GNM ranking. -/
+#print axioms FoldBounds.MotionGNMCoupledRank.quadratic_discriminant_bound
+#print axioms FoldBounds.MotionGNMCoupledRank.psd_pair_contraction
+#print axioms FoldBounds.MotionGNMCoupledRank.positive_of_coupled_square
+#print axioms FoldBounds.MotionGNMCoupledRank.coupled_strict_rank_sound
