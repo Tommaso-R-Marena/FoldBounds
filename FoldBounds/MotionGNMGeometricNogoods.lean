@@ -103,7 +103,14 @@ theorem weighted_linear_inequalities {k m : ℕ}
   have rearrange :
       (∑ i, weight i * (∑ j, rows i j * delta j)) =
       (∑ j, (∑ i, weight i * rows i j) * delta j) := by
-    simp [Finset.mul_sum, Finset.sum_mul, Finset.sum_comm, mul_assoc]
+    calc
+      (∑ i, weight i * (∑ j, rows i j * delta j)) =
+          ∑ i, ∑ j, (weight i * rows i j) * delta j := by
+            simp_rw [Finset.mul_sum]
+            simp_rw [mul_assoc]
+      _ = ∑ j, ∑ i, (weight i * rows i j) * delta j := Finset.sum_comm
+      _ = ∑ j, (∑ i, weight i * rows i j) * delta j := by
+            simp_rw [Finset.sum_mul]
   rw [rearrange] at hsum
   exact hsum
 
