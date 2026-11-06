@@ -97,7 +97,7 @@ def test_negative_preexisting_reporter_can_still_allow_conservative_majority():
     assert not strict.holds_for_all_submitted_conformers
 
 
-@pytest.mark.parametrize("bad", ((5,2,1),(5,0,3),(3,3,0),(3,-1,0),
+@pytest.mark.parametrize("bad", ((5,2,2),(5,0,3),(3,3,0),(3,-1,0),
                                   (3,0,-1),(0,0,0),(True,0,0)))
 def test_invalid_guarantees_rejected(bad):
     with pytest.raises(ValueError):
