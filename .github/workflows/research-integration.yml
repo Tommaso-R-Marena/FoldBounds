@@ -43,6 +43,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Reject admitted or custom-axiom holes
         run: python3 scripts/check_lean_sources.py
+      - name: Fast Lean import-order preflight (before costly Mathlib compilation)
+        run: python3 scripts/check_integration_lean_imports.py
       - name: Install Lean / Mathlib and build library
         uses: leanprover/lean-action@v1
       - name: Typecheck jointly imported Lean research modules

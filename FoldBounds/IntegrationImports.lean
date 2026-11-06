@@ -1,5 +1,3 @@
-/-! Draft integration-only compile check for independent Lean research modules.
-    A successful build confirms their joint typechecking, not equivalence to Python or experimental validation. -/
 import FoldBounds.BernsteinRatio
 import FoldBounds.CounterfactualEpistasis
 import FoldBounds.CubicFamilyMass
@@ -46,3 +44,6 @@ import FoldBounds.ParityNoGo
 import FoldBounds.ReporterCode
 import FoldBounds.RobustReweighting
 import FoldBounds.SquareDensityTail
+
+/-! Draft integration-only compile check for independent Lean research modules.
+    A successful build confirms their joint typechecking, not equivalence to Python or experimental validation. -/
