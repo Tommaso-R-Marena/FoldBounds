@@ -128,3 +128,54 @@ peptide chemistry and a genuinely held-out experimental assay. In those
 conditions the current near-optimal unconstrained repair certificate is
 not a prediction; it is an honest numerical baseline and an exact conflict
 witness for a carefully delimited mathematical problem.
+
+## Additional result: EXACT sparsest simultaneous repair + sharp sparse-radius bracket
+
+Minimizing displacement size and minimizing the **number of coordinates
+changed** are fundamentally different optimization objectives. We now give
+both independent primal and dual witnesses for the second objective.
+
+Let `K*` be the smallest cardinality of the support of a correction `Y-X`
+that satisfies **all** selected intervals, regardless of motion magnitude.
+Every originally violated source restraint needs at least one changed
+endpoint. A matching of `m` original violated, disjoint atom-pair edges
+therefore proves `K* >= m`. If a complete checked correction moving exactly
+`m` atoms satisfies every restraint, it proves **K* = m**. This is exact and
+not dependent on floating optimization.
+
+For the maximum-movement objective *among repairs with exactly m changed
+atoms*, the same matching proves a sharper lower inequality. Every one of
+the m disjoint bad edges must have **exactly one** endpoint changed: otherwise
+some other matched bad edge could not be corrected within m changed atoms.
+Therefore any matched original source pair whose distance violates its
+limit by gap `g` forces `rho >= g` (not the `g/2` required when both endpoints
+may change). A strict integer witness tests:
+
+    s*S*S > (U*S + r)^2
+
+for an original upper-bound violation, or the corresponding lower-limit
+inequality with `(L*S-r)^2`. A complete sparse repair witnesses the radius
+upper bound, and the matching witnesses the *global* smallest changed-count.
+
+| Source model | EXACT minimum moved atoms | Radius of optimal minimum-support solution |
+|---|---:|---:|
+| 2PNG | **5** | **0.054567 Å < rho_5* <= 0.054569 Å** |
+| 6NBN | **4** | **0.737441 Å < rho_4* <= 0.737443 Å** |
+
+The sparse witness JSON includes an independent source-matching ID set and
+complete per-atom integer displacement vectors. A fail-closed independent
+checker recomputes all 857 intervals and proves both the counting and radius
+brackets exactly. Every sparse repair changes *fewer* atoms but requires
+almost **twice** the worst-atom displacement of the unconstrained minimax
+alternative. This establishes two genuine verified Pareto tradeoffs within
+the **unconstrained atom-coordinate / selected-restraint** model. It does
+NOT prove optimality under protein chemistry, omitted NOE ambiguity,
+interatomic steric constraints, or all raw NMR observations.
+
+Reproduce:
+
+    python -m pytest tests/test_noe_sparse_repair.py -q
+
+No new mathematical priority is claimed: the lower witness uses a standard
+graph matching/vertex-cover bound and the triangle inequality; the
+contribution is exact independent certificate composition on real data.
