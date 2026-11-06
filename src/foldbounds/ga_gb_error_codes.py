@@ -216,3 +216,33 @@ def verify_code(cert:CodeCertificate,a,b):
     if cert.all_candidate_count!=len(edges):
         raise ValueError("candidate count mismatch")
     return True
+
+
+def classify_readouts(cert:CodeCertificate, observations:Mapping[tuple[int,int],Fraction]):
+    """Deterministic majority on C-alpha pair distances in milli-Angstroms.
+
+    The mathematical guarantee holds only if at most f channels are
+    corrupted, while each remaining channel's deviation from one of
+    the corresponding deposited NMR conformer's C-alpha distances is
+    strictly below the certified bound. Other chemistry is out of scope.
+    """
+    if not isinstance(cert,CodeCertificate) or not isinstance(observations,Mapping):
+        raise ValueError("invalid reporter code or observation map")
+    wanted={e.endpoints for e in cert.reporters}
+    if set(observations)!=wanted:
+        raise ValueError("observations must match ALL verified reporter sites")
+    votes={"GA95":0,"GB95":0}
+    for e in cert.reporters:
+        v=observations[e.endpoints]
+        if not isinstance(v,Fraction) or v<0:
+            raise ValueError("readout distances must be positive exact Fractions")
+        threshold=Fraction(
+            e.ga_range_milliang[1]+e.gb_range_milliang[0],2
+        ) if e.shorter=="GA95" else Fraction(
+            e.gb_range_milliang[1]+e.ga_range_milliang[0],2
+        )
+        chosen=e.shorter if v<threshold else (
+            "GB95" if e.shorter=="GA95" else "GA95"
+        )
+        votes[chosen]+=1
+    return "GA95" if votes["GA95"]>votes["GB95"] else "GB95"
