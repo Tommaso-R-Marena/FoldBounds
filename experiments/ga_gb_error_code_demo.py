@@ -31,11 +31,16 @@ def audit_actual_models(cert,ga,gb):
             if classify_readouts(cert,clean)!=truth:
                 raise AssertionError("deposited model classified incorrectly")
             good+=1
+            reporter_by_pair={e.endpoints:e for e in cert.reporters}
             for k in range(cert.corrupted_channels+1):
                 for corrupted in combinations(clean,k):
                     adversarial=dict(clean)
                     for pair in corrupted:
-                        adversarial[pair]=Fraction(100000 if truth=="GA95" else 0)
+                        # Force the OPPOSITE vote for each individual
+                        # channel, even if its shorter fold is reversed.
+                        adversarial[pair]=Fraction(
+                            100000 if reporter_by_pair[pair].shorter==truth else 0
+                        )
                     if classify_readouts(cert,adversarial)!=truth:
                         raise AssertionError("worst-case adversarial bit error not corrected")
                     bad+=1
@@ -56,11 +61,14 @@ def heldout_check(cert,ga_test,gb_test):
             clean={e.endpoints:Fraction(isqrt(_d2(model.ca[e.a],model.ca[e.b])))
                    for e in cert.reporters}
             clean_hits+=int(classify_readouts(cert,clean)==truth)
+            reporter_by_pair={e.endpoints:e for e in cert.reporters}
             for r in range(cert.corrupted_channels+1):
                 for corrupted in combinations(clean,r):
                     adversarial=dict(clean)
                     for pair in corrupted:
-                        adversarial[pair]=Fraction(100000 if truth=="GA95" else 0)
+                        adversarial[pair]=Fraction(
+                            100000 if reporter_by_pair[pair].shorter==truth else 0
+                        )
                     robust_hits+=int(classify_readouts(cert,adversarial)==truth)
                     total_robust+=1
             for e in cert.reporters:
