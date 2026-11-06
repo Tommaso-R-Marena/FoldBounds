@@ -28,6 +28,7 @@ import FoldBounds.MotionGNMFlowCoercivity
 import FoldBounds.MotionGNMSpectralSOS
 import FoldBounds.MotionGNMIntegerInverse
 import FoldBounds.MotionGNMCoupledRank
+import FoldBounds.MotionGNMGeometricNogoods
 
 /-! Axiom audit: every headline theorem depends only on the standard axioms
 `propext`, `Classical.choice`, `Quot.sound`. -/
@@ -265,3 +266,12 @@ accepted score intervals now have a uniquely existing ground-truth response. -/
 #print axioms FoldBounds.MotionGNMCoupledRank.psd_pair_contraction
 #print axioms FoldBounds.MotionGNMCoupledRank.positive_of_coupled_square
 #print axioms FoldBounds.MotionGNMCoupledRank.coupled_strict_rank_sound
+
+/-! Rational contact-box separation, exact geometric linearization and weighted Farkas soundness. -/
+#print axioms FoldBounds.MotionGNMGeometricNogoods.box_linear_lower
+#print axioms FoldBounds.MotionGNMGeometricNogoods.checkLinearNoGood_sound
+#print axioms FoldBounds.MotionGNMGeometricNogoods.contact_distance_expansion
+#print axioms FoldBounds.MotionGNMGeometricNogoods.contact_on_necessary
+#print axioms FoldBounds.MotionGNMGeometricNogoods.contact_off_necessary
+#print axioms FoldBounds.MotionGNMGeometricNogoods.weighted_linear_inequalities
+#print axioms FoldBounds.MotionGNMGeometricNogoods.weighted_geometric_nogood_sound
