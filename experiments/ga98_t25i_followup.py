@@ -21,6 +21,11 @@ from experiments.ga98_gb98_transfer import (
     GB98, verify_frozen_reference, _geometric_class,
 )
 
+EXPECTED_FOLLOWUP_SHA256 = {
+    "2LHG": "946bb4d44567de7725aeecd334d7c1cec086737d6445d157cd94976326c84cff",
+    "2LHE": "cd2fa17ac762106c4f21c464bd7709cb612e3cd96d227ee18fdccd99608e83d1",
+}
+
 GB98_T25I=mutate(GB98,{25:("T","I")})
 GB98_T25I_L20A=mutate(GB98_T25I,{20:("L","A")})
 
@@ -28,6 +33,9 @@ GB98_T25I_L20A=mutate(GB98_T25I,{20:("L","A")})
 def analyze_followup(ga95_raw,gb95_raw,alpha_t25i_raw,beta_t25i_l20a_raw,
                      reference_json):
     original=verify_frozen_reference(ga95_raw,gb95_raw,reference_json)
+    for entry,raw in (("2LHG",alpha_t25i_raw),("2LHE",beta_t25i_l20a_raw)):
+        if sha256(raw).hexdigest()!=EXPECTED_FOLLOWUP_SHA256[entry]:
+            raise ValueError(f"{entry}: unrecognized external NMR coordinate bytes")
     alpha=parse_pdb(alpha_t25i_raw,"2LHG",GB98_T25I,expected_models=10)
     beta=parse_pdb(beta_t25i_l20a_raw,"2LHE",GB98_T25I_L20A,expected_models=20)
     if sum(a!=b for a,b in zip(GB98_T25I,GB98_T25I_L20A))!=1:
