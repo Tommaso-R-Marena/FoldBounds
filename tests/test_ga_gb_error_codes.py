@@ -131,3 +131,21 @@ def test_milliangstrom_grid_rejects_unverified_precision():
     assert _d2((0.001,-1.0,0.0),(1.0,0.0,0.0))==999**2+1000**2
     with pytest.raises(ValueError):
         _d2((0.0001,0,0),(0,0,0))
+
+
+def test_training_only_half_ensemble_and_fail_closed_holdout(synthetic):
+    ga,gb=synthetic
+    for offset in (0,1):
+        train_a,train_b=ga[offset::2],gb[offset::2]
+        test_a,test_b=ga[1-offset::2],gb[1-offset::2]
+        for k in (5,7):
+            cert=certify_code(train_a,train_b,channels=k)
+            assert cert.source_models_per_fold==10
+            assert verify_code(cert,train_a,train_b)
+            with pytest.raises(ValueError):
+                verify_code(cert,ga,gb)
+            for true,ensemble in (("GA95",test_a),("GB95",test_b)):
+                for m in ensemble:
+                    readouts={e.endpoints:Fraction(isqrt(_d2(m.ca[e.a],m.ca[e.b])))
+                              for e in cert.reporters}
+                    assert classify_readouts(cert,readouts)==true
