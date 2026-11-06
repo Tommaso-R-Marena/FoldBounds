@@ -17,7 +17,8 @@ import subprocess
 
 import pytest
 
-from foldbounds.cubic_cut_certificate import CheckedNativeGap, contact_score
+from foldbounds.cubic_cut_certificate import CheckedNativeGap, contact_score, certify_native_gap
+from foldbounds.cubic_contact_radius_sharpness import prove_sharp_contact_error_radius
 from foldbounds.cubic_robust_inverse_design import (
     _d2, _hh_mask, _transverse_orbit, cubic_candidate_pairs,
     verify_ground_map_cut, design_robust_unique_orbit,
@@ -171,6 +172,49 @@ def test_untrusted_cut_tree_and_header_tampering_fail_closed(small_proof,compile
         design_robust_unique_orbit(CheckedNativeGap('H'*8,5,24,2,5**6),forged)
 
 
+def test_sharp_uncertainty_radius_two_has_explicit_global_tie(small_proof,compilers):
+    """Even the optimal robust interval is derived, with an attacking vector."""
+    files,design=small_proof
+    excited=((0,0,0),(1,0,0),(2,0,0),(3,0,0),
+             (3,1,0),(2,1,0),(1,1,0),(0,1,0))
+    gap=certify_native_gap(files,compilers['cubic_cut_checker'],excited)
+    maps=verify_ground_map_cut(files[1],compilers['cubic_ground_map_checker'])
+    attack=prove_sharp_contact_error_radius(design,maps)
+    assert attack.critical_error_radius==Fraction(2)
+    assert attack.missing_target_pairs>=1
+    assert attack.selected_energy_at_boundary==attack.competitor_energy_at_boundary
+    assert attack.high_sector_max_checked==attack.selected_energy_at_boundary
+    assert attack.global_non_ground_energy_margin==12
+    assert sum(value==-2 for _,value in attack.adversarial_pair_errors)==attack.missing_target_pairs
+    assert sum(value==+2 for _,value in attack.adversarial_pair_errors)==attack.missing_target_pairs
+    # Independently enumerate ALL cubic n8 geometries and verify the attack
+    # creates a real GLOBAL tie but no more energetic competitor.
+    perturb=dict(attack.adversarial_pair_errors)
+    selected_mask=design.designated_contact_mask
+    def energy(mask,bonus):
+        return (8*(mask&selected_mask).bit_count()
+                +4*(mask&~selected_mask).bit_count()
+                +2*bonus+sum(eta for bit,eta in perturb.items() if mask&(1<<bit)))
+    values=Counter()
+    for walk in _all_cubic_walks(8):
+        mask=_hh_mask('H'*8,walk)
+        b=int(_d2(walk,*design.target_distance_pair)==design.target_squared_distance)
+        values[(energy(mask,b),mask,b)]+=1
+    global_energy=max(e for e,_,_ in values)
+    assert global_energy==attack.selected_energy_at_boundary
+    assert values[(global_energy,selected_mask,1)]==8
+    assert values[(global_energy,attack.competitor_contact_mask,1)]>0
+    # Radius strictly beyond 2 really invalidates the target uniqueness:
+    # increasing each extremal attack from magnitude 2 to 3 makes that
+    # competitor strictly better than the chosen orbit.
+    stronger={bit:3*(eta//2) for bit,eta in perturb.items()}
+    def perturbed(mask,b):
+        return (8*(mask&selected_mask).bit_count()
+                +4*(mask&~selected_mask).bit_count()
+                +2*b+sum(v for bit,v in stronger.items() if mask&(1<<bit)))
+    assert perturbed(attack.competitor_contact_mask,1)>perturbed(selected_mask,1)
+
+
 def test_invalid_errors_and_bad_restraints_fail_closed(small_proof):
     _,design=small_proof
     for q in (2,2.0,Fraction(0),Fraction(1,2),True):
@@ -205,3 +249,10 @@ def test_16mer_verified_unique_design_and_robust_occupancy(compilers,tmp_path):
     assert selected.minimum_integer_q(Fraction(9,10),radius=1)==6
     assert selected.minimum_integer_q(Fraction(99,100),radius=1)==11
     assert selected.lower_orbit_probability(Fraction(6),radius=1)>Fraction(96,100)
+    checked=verify_ground_map_cut(files[1],compilers['cubic_ground_map_checker'],max_seconds=600)
+    sharp=prove_sharp_contact_error_radius(selected,checked)
+    assert sharp.critical_error_radius==2
+    assert sharp.missing_target_pairs==2
+    assert sharp.selected_energy_at_boundary==sharp.competitor_energy_at_boundary==86
+    assert sharp.high_sector_max_checked==86
+    assert sharp.global_non_ground_energy_margin==12
