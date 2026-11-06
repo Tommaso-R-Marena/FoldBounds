@@ -12,6 +12,10 @@ from .matching import matching_score_cap
 from .transfer_bound import nonbacktracking_mass_upper
 from .monotone import monotone_family_mass
 from .turn_family import turn_family_mass
+from .shell_family import extremal_shell_mass
+from .shell_portfolio import PortfolioCertificate, verify_shell_portfolio
+from .coupled_polytope import tighten_coupled_masses
+from .sparse_monotone import SparseMonotoneCertificate, verify_sparse_monotone
 from .witnesses import (WitnessCertificate, propose_dfs_witnesses,
                         verify_witness_certificate)
 from .lattice import (
@@ -167,7 +171,11 @@ def verify_lookahead(cert: Certificate, *, lookahead: int = 0,
                      witness_nodes: int = 0, use_monotone: bool = False,
                      transfer_memory: int = 2,
                      use_turn_family: bool = False,
-                     terminal_box: bool = False) -> VerifiedBounds:
+                     terminal_box: bool = False,
+                     shell_core: int | None = None,
+                     shell_portfolios: tuple[PortfolioCertificate, ...] = (),
+                     use_coupled_polytope: bool = False,
+                     sparse_certificates: tuple[SparseMonotoneCertificate, ...] = ()) -> VerifiedBounds:
     """Independently check a complete frontier; return rational bounds.
 
     The frontier supplies paths, never trusted mass/energy numbers. Each
@@ -200,6 +208,14 @@ def verify_lookahead(cert: Certificate, *, lookahead: int = 0,
     if type(lookahead) is not int or lookahead < 0:
         raise ValueError('lookahead must be nonnegative integer')
     n = len(cert.sequence)
+    if shell_core is not None and (type(shell_core) is not int or not 2 <= shell_core <= n):
+        raise ValueError('shell_core must be an integer in [2, sequence length] or None')
+    if type(shell_portfolios) is not tuple:
+        raise ValueError('shell_portfolios must be a tuple of untrusted portfolio certificates')
+    if type(sparse_certificates) is not tuple:
+        raise ValueError('sparse_certificates must be a tuple')
+    if type(use_coupled_polytope) is not bool:
+        raise ValueError('use_coupled_polytope must be a boolean')
     pairs = _possible_hh_pairs(cert.sequence)
     nodes: dict[Path,str] = {}
     prefixes: set[Path] = set()
@@ -245,6 +261,36 @@ def verify_lookahead(cert: Certificate, *, lookahead: int = 0,
         raise CertificateError('shadowed nodes')
     total = add(masses)
     elo,ehi,nlo,nhi = total.e_lo,total.e_hi,total.n_lo,total.n_hi
+    for sparse in sparse_certificates:
+        if (not isinstance(sparse,SparseMonotoneCertificate) or
+            sparse.sequence!=cert.sequence or sparse.q!=q or
+            sparse.event_at_least!=cert.event_at_least or sparse.prefix!=ROOT):
+            raise CertificateError('sparse certificate parameters or root mismatch')
+        checked=verify_sparse_monotone(sparse)
+        # Independently valid lower bounds can overlap; combine via max only.
+        elo=max(elo,checked.event)
+        nlo=max(nlo,checked.complement)
+    for portfolio in shell_portfolios:
+        if (not isinstance(portfolio,PortfolioCertificate) or
+            portfolio.sequence!=cert.sequence or portfolio.q!=q or
+            portfolio.event_at_least!=cert.event_at_least or
+            portfolio.prefix!=ROOT):
+            raise CertificateError('portfolio parameters or canonical root mismatch')
+        checked = verify_shell_portfolio(portfolio)
+        # Overlapping portfolios cannot be summed in the SAME event class.
+        # Lower event/complement masses are intersected via max.
+        elo=max(elo,checked.event)
+        nlo=max(nlo,checked.complement)
+    if shell_core is not None:
+        # Every complete conformation has a unique fixed-length core.
+        # Shell families within each core are disjoint after subtracting
+        # shared cardinal rays; cores themselves are also disjoint.
+        # This independently checked global lower mass may overlap all
+        # subtree witnesses, so intersect with MAX rather than sum.
+        shell = extremal_shell_mass(cert.sequence,ROOT,q,cert.event_at_least,
+                                    core_length=shell_core)
+        elo = max(elo,shell.event)
+        nlo = max(nlo,shell.complement)
     if not (0 <= elo <= ehi and 0 <= nlo <= nhi):
         raise AssertionError('invalid mass bounds')
     # The globally straight anchored walk proves that Z > 0.
@@ -252,5 +298,15 @@ def verify_lookahead(cert: Certificate, *, lookahead: int = 0,
     p_hi = Fraction(0) if ehi == 0 else (ehi/(ehi+nlo) if nlo else Fraction(1))
     if not 0 <= p_lo <= p_hi <= 1:
         raise AssertionError('invalid probability bounds')
-    return VerifiedBounds(elo+nlo,min(ehi+nhi,total.z_hi),elo,ehi,nlo,nhi,p_lo,p_hi,
+    zlo=elo+nlo
+    zhi=min(ehi+nhi,total.z_hi)
+    if use_coupled_polytope:
+        # Z=E+C restricts feasible simultaneous event/complement extremes.
+        # This independent exact-rational optimizer changes NO source bound.
+        joint=tighten_coupled_masses(elo,ehi,nlo,nhi,zlo,zhi)
+        elo,ehi=joint.event_lower,joint.event_upper
+        nlo,nhi=joint.complement_lower,joint.complement_upper
+        zlo,zhi=joint.partition_lower,joint.partition_upper
+        p_lo,p_hi=joint.probability_lower,joint.probability_upper
+    return VerifiedBounds(zlo,zhi,elo,ehi,nlo,nhi,p_lo,p_hi,
                           exact_count,bound_count)
