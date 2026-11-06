@@ -6,7 +6,13 @@ Selected source-only pairs for depth two are PDB (43,51) and (39,42).
 """
 import argparse
 from fractions import Fraction
-from experiments.real_1d3z_joint_rank import load_ca, DEFAULT_FIXTURE
+# Resolve the sibling module under both direct script and package execution.
+# Direct 'python experiments/script.py' puts experiments/ (not repo root)
+# on sys.path; 'python -m experiments.script' uses the package import.
+if __package__:
+    from .real_1d3z_joint_rank import load_ca, DEFAULT_FIXTURE
+else:
+    from real_1d3z_joint_rank import load_ca, DEFAULT_FIXTURE
 from foldbounds.gnm_joint_rank import classify_contact_boxes
 from foldbounds.gnm_joint_cases import certify_split_cases
 from foldbounds.gnm_integer_updates import ExactEndpointCache
