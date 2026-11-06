@@ -1,0 +1,24 @@
+name: FoldBounds global concordance proof gate
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  concordance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scan forbidden Lean proof bypasses
+        run: python3 scripts/check_lean_sources.py
+      - name: Build Lean and Mathlib (pinned)
+        uses: leanprover/lean-action@v1
+      - name: Check global concordance theorem and axiom audit
+        run: |
+          lake env lean FoldBounds/MotionRobustConcordance.lean
+          lake env lean FoldBounds/MotionRobustConcordanceTests.lean
+          lake env lean FoldBounds/AxiomAudit.lean | tee /tmp/concordance-axioms.log
+          python3 scripts/check_lean_sources.py /tmp/concordance-axioms.log
+      - name: Exhaustive/adversarial exact-arithmetic differential tests
+        run: python3 scripts/test_motion_robust_concordance.py

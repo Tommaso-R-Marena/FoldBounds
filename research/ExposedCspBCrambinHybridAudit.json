@@ -1,0 +1,36 @@
+{
+  "Crambin": {
+    "best_frozen_baseline": 0.41538857211593877,
+    "frozen_gate_pass": false,
+    "n_nmr_pairs": 523,
+    "n_reference_pairs": 547,
+    "primary_margin": -0.12523489543305066,
+    "scores": {
+      "ANM_ridge": 0.2712402428534831,
+      "ANM_weighted_inverse_square": 0.41538857211593877,
+      "GANM_half_isotropic": 0.2901536766828881,
+      "GNM_ANM_rank_fusion_75_25": 0.19788430672449212,
+      "GNM_resistance": 0.11752337965561029,
+      "packing_inverse": 0.06385361390149005,
+      "reference_distance": 0.18249754094826537,
+      "sequence_distance": 0.3095532719669875
+    }
+  },
+  "CspB": {
+    "best_frozen_baseline": 0.4103933835204002,
+    "frozen_gate_pass": false,
+    "n_nmr_pairs": 1170,
+    "n_reference_pairs": 1170,
+    "primary_margin": -0.06764623360705324,
+    "scores": {
+      "ANM_ridge": 0.32645804195889333,
+      "ANM_weighted_inverse_square": 0.4103933835204002,
+      "GANM_half_isotropic": 0.342747149913347,
+      "GNM_ANM_rank_fusion_75_25": 0.260960224559635,
+      "GNM_resistance": 0.18561063638714959,
+      "packing_inverse": 0.14675086829358153,
+      "reference_distance": 0.2289989666222683,
+      "sequence_distance": 0.05094050427170428
+    }
+  }
+}

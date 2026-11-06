@@ -1,0 +1,285 @@
+{
+  "number_of_nonmutated_pairs_with_disjoint_12_to_40_A_NMR_distance_ranges": 349,
+  "recommended_followup": [
+    "Measure solvent exposure of Q11/V21 and other candidates",
+    "Model dye attachment and steric perturbation",
+    "Validate calibrated fluorescence against NMR mutant state populations",
+    "Do not infer actual state populations from NMR model frequencies"
+  ],
+  "source_hashes": {
+    "2KDL": "fb75cc55eb8b89e0cec5e2be69901b348e60916375b9c410a0573edfca1db591",
+    "2KDM": "1c49e5faa25b443285432d935c621151294ed3b636b0106e6b1a7f7ccf2d00ec"
+  },
+  "top_ten": [
+    {
+      "GA95_max_A": 15.16180744502449,
+      "GA95_min_A": 14.493361445848235,
+      "GB95_max_A": 33.325363913992,
+      "GB95_min_A": 31.53095420376618,
+      "aa_i": "Q",
+      "aa_j": "V",
+      "fret_CA_proxy_R0_25_A": {
+        "CA_distance_only_not_actual_dye_efficiency": {
+          "GA95": [
+            0.952600203336511,
+            0.9634243295303686
+          ],
+          "GB95": [
+            0.15127218609530646,
+            0.1989988288652981
+          ]
+        },
+        "forster_radius_A_assumed": 25.0,
+        "localization_bound_A_assumed": 0.0
+      },
+      "i": 11,
+      "j": 21,
+      "max_symmetric_CA_to_label_error_A": 8.184573379370844,
+      "state_with_shorter_distance": "GA95",
+      "worst_case_separation_A": 16.36914675874169
+    },
+    {
+      "GA95_max_A": 16.231155750592748,
+      "GA95_min_A": 15.8332624875608,
+      "GB95_max_A": 33.14424660480307,
+      "GB95_min_A": 31.901400376785972,
+      "aa_i": "K",
+      "aa_j": "V",
+      "fret_CA_proxy_R0_25_A": {
+        "CA_distance_only_not_actual_dye_efficiency": {
+          "GA95": [
+            0.9303228606775626,
+            0.9393789778425184
+          ],
+          "GB95": [
+            0.15551826520937112,
+            0.1880631893972625
+          ]
+        },
+        "forster_radius_A_assumed": 25.0,
+        "localization_bound_A_assumed": 0.0
+      },
+      "i": 10,
+      "j": 21,
+      "max_symmetric_CA_to_label_error_A": 7.835122313096612,
+      "state_with_shorter_distance": "GA95",
+      "worst_case_separation_A": 15.670244626193224
+    },
+    {
+      "GA95_max_A": 14.1163325973852,
+      "GA95_min_A": 13.503495399340128,
+      "GB95_max_A": 30.38233272808393,
+      "GB95_min_A": 29.20410512239675,
+      "aa_i": "A",
+      "aa_j": "V",
+      "fret_CA_proxy_R0_25_A": {
+        "CA_distance_only_not_actual_dye_efficiency": {
+          "GA95": [
+            0.9686065781503843,
+            0.9757683014054918
+          ],
+          "GB95": [
+            0.236870759809072,
+            0.28239737359476397
+          ]
+        },
+        "forster_radius_A_assumed": 25.0,
+        "localization_bound_A_assumed": 0.0
+      },
+      "i": 12,
+      "j": 21,
+      "max_symmetric_CA_to_label_error_A": 7.543886262505775,
+      "state_with_shorter_distance": "GA95",
+      "worst_case_separation_A": 15.08777252501155
+    },
+    {
+      "GA95_max_A": 16.280629871107568,
+      "GA95_min_A": 15.401856121909463,
+      "GB95_max_A": 32.39445512738252,
+      "GB95_min_A": 30.310689220141466,
+      "aa_i": "Q",
+      "aa_j": "D",
+      "fret_CA_proxy_R0_25_A": {
+        "CA_distance_only_not_actual_dye_efficiency": {
+          "GA95": [
+            0.9291298155879927,
+            0.9481583071355782
+          ],
+          "GB95": [
+            0.17441298949639303,
+            0.23944082142684134
+          ]
+        },
+        "forster_radius_A_assumed": 25.0,
+        "localization_bound_A_assumed": 0.0
+      },
+      "i": 11,
+      "j": 22,
+      "max_symmetric_CA_to_label_error_A": 7.015029674516949,
+      "state_with_shorter_distance": "GA95",
+      "worst_case_separation_A": 14.030059349033898
+    },
+    {
+      "GA95_max_A": 15.021551650878147,
+      "GA95_min_A": 14.347640537733025,
+      "GB95_max_A": 29.530724390031477,
+      "GB95_min_A": 28.22201399616973,
+      "aa_i": "A",
+      "aa_j": "D",
+      "fret_CA_proxy_R0_25_A": {
+        "CA_distance_only_not_actual_dye_efficiency": {
+          "GA95": [
+            0.9550554231900507,
+            0.9655018364527259
+          ],
+          "GB95": [
+            0.26907269828515695,
+            0.3257745615601641
+          ]
+        },
+        "forster_radius_A_assumed": 25.0,
+        "localization_bound_A_assumed": 0.0
+      },
+      "i": 12,
+      "j": 22,
+      "max_symmetric_CA_to_label_error_A": 6.600231172645791,
+      "state_with_shorter_distance": "GA95",
+      "worst_case_separation_A": 13.200462345291582
+    },
+    {
+      "GA95_max_A": 31.060529180939593,
+      "GA95_min_A": 26.094661369713155,
+      "GB95_max_A": 13.145136971519165,
+      "GB95_min_A": 12.566882588772762,
+      "aa_i": "L",
+      "aa_j": "T",
+      "fret_CA_proxy_R0_25_A": {
+        "CA_distance_only_not_actual_dye_efficiency": {
+          "GA95": [
+            0.21376605356768777,
+            0.436069461327809
+          ],
+          "GB95": [
+            0.9793048514233751,
+            0.9841227758503903
+          ]
+        },
+        "forster_radius_A_assumed": 25.0,
+        "localization_bound_A_assumed": 0.0
+      },
+      "i": 5,
+      "j": 25,
+      "max_symmetric_CA_to_label_error_A": 6.474762199096995,
+      "state_with_shorter_distance": "GB95",
+      "worst_case_separation_A": 12.94952439819399
+    },
+    {
+      "GA95_max_A": 14.046506825542071,
+      "GA95_min_A": 13.219857979569978,
+      "GB95_max_A": 28.152837334805174,
+      "GB95_min_A": 26.93125184613593,
+      "aa_i": "K",
+      "aa_j": "E",
+      "fret_CA_proxy_R0_25_A": {
+        "CA_distance_only_not_actual_dye_efficiency": {
+          "GA95": [
+            0.9694987792197844,
+            0.9786042370704244
+          ],
+          "GB95": [
+            0.3290171041593657,
+            0.3902005258521333
+          ]
+        },
+        "forster_radius_A_assumed": 25.0,
+        "localization_bound_A_assumed": 0.0
+      },
+      "i": 10,
+      "j": 19,
+      "max_symmetric_CA_to_label_error_A": 6.442372510296929,
+      "state_with_shorter_distance": "GA95",
+      "worst_case_separation_A": 12.884745020593858
+    },
+    {
+      "GA95_max_A": 13.637432529622282,
+      "GA95_min_A": 12.134485980048764,
+      "GB95_max_A": 27.110037163382867,
+      "GB95_min_A": 26.103957726750938,
+      "aa_i": "A",
+      "aa_j": "E",
+      "fret_CA_proxy_R0_25_A": {
+        "CA_distance_only_not_actual_dye_efficiency": {
+          "GA95": [
+            0.9743279356673099,
+            0.9870923834800475
+          ],
+          "GB95": [
+            0.38079640713320667,
+            0.4355439805668342
+          ]
+        },
+        "forster_radius_A_assumed": 25.0,
+        "localization_bound_A_assumed": 0.0
+      },
+      "i": 36,
+      "j": 48,
+      "max_symmetric_CA_to_label_error_A": 6.233262598564328,
+      "state_with_shorter_distance": "GA95",
+      "worst_case_separation_A": 12.466525197128655
+    },
+    {
+      "GA95_max_A": 18.007212943706755,
+      "GA95_min_A": 17.32309920308719,
+      "GB95_max_A": 31.793478262058713,
+      "GB95_min_A": 30.44656726135148,
+      "aa_i": "K",
+      "aa_j": "D",
+      "fret_CA_proxy_R0_25_A": {
+        "CA_distance_only_not_actual_dye_efficiency": {
+          "GA95": [
+            0.8774628714953063,
+            0.9003401725110529
+          ],
+          "GB95": [
+            0.19118755473363516,
+            0.23458780087856285
+          ]
+        },
+        "forster_radius_A_assumed": 25.0,
+        "localization_bound_A_assumed": 0.0
+      },
+      "i": 10,
+      "j": 22,
+      "max_symmetric_CA_to_label_error_A": 6.219677158822362,
+      "state_with_shorter_distance": "GA95",
+      "worst_case_separation_A": 12.439354317644725
+    },
+    {
+      "GA95_max_A": 14.582672080246473,
+      "GA95_min_A": 13.3961709081364,
+      "GB95_max_A": 27.747044329081252,
+      "GB95_min_A": 26.2161455786315,
+      "aa_i": "Q",
+      "aa_j": "D",
+      "fret_CA_proxy_R0_25_A": {
+        "CA_distance_only_not_actual_dye_efficiency": {
+          "GA95": [
+            0.9621030550090681,
+            0.9768749334365808
+          ],
+          "GB95": [
+            0.34852683126632833,
+            0.429228917936628
+          ]
+        },
+        "forster_radius_A_assumed": 25.0,
+        "localization_bound_A_assumed": 0.0
+      },
+      "i": 11,
+      "j": 47,
+      "max_symmetric_CA_to_label_error_A": 5.816736749192514,
+      "state_with_shorter_distance": "GA95",
+      "worst_case_separation_A": 11.633473498385028
+    }
+  ]
+}

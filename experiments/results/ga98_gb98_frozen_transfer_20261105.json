@@ -1,0 +1,1990 @@
+{
+  "codes": {
+    "1": {
+      "by_entry": {
+        "2LHC": {
+          "clean_correct": 20,
+          "experimental_structure_label": "GA95",
+          "models": 20,
+          "per_model": [
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 1,
+              "predicted_fold": "GA95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 2,
+              "predicted_fold": "GA95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 3,
+              "predicted_fold": "GA95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 4,
+              "predicted_fold": "GA95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 5,
+              "predicted_fold": "GA95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 6,
+              "predicted_fold": "GA95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 7,
+              "predicted_fold": "GA95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 8,
+              "predicted_fold": "GA95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 9,
+              "predicted_fold": "GA95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 10,
+              "predicted_fold": "GA95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 11,
+              "predicted_fold": "GA95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 12,
+              "predicted_fold": "GA95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 13,
+              "predicted_fold": "GA95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 14,
+              "predicted_fold": "GA95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 15,
+              "predicted_fold": "GA95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 16,
+              "predicted_fold": "GA95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 17,
+              "predicted_fold": "GA95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 18,
+              "predicted_fold": "GA95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 19,
+              "predicted_fold": "GA95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 20,
+              "predicted_fold": "GA95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            }
+          ],
+          "sequence": "TTYKLILNLKQAKEEAIKELVDAGTAEKYFKLIANAKTVEGVWTLKDEIKTFTVTE",
+          "strict_corrupted_trials_correct": 20,
+          "strict_corrupted_trials_total": 20
+        },
+        "2LHD": {
+          "clean_correct": 20,
+          "experimental_structure_label": "GB95",
+          "models": 20,
+          "per_model": [
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 1,
+              "predicted_fold": "GB95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 2,
+              "predicted_fold": "GB95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 3,
+              "predicted_fold": "GB95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 4,
+              "predicted_fold": "GB95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 5,
+              "predicted_fold": "GB95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 6,
+              "predicted_fold": "GB95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 7,
+              "predicted_fold": "GB95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 8,
+              "predicted_fold": "GB95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 9,
+              "predicted_fold": "GB95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 10,
+              "predicted_fold": "GB95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 11,
+              "predicted_fold": "GB95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 12,
+              "predicted_fold": "GB95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 13,
+              "predicted_fold": "GB95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 14,
+              "predicted_fold": "GB95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 15,
+              "predicted_fold": "GB95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 16,
+              "predicted_fold": "GB95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 17,
+              "predicted_fold": "GB95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 18,
+              "predicted_fold": "GB95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 19,
+              "predicted_fold": "GB95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 1,
+              "model_id": 20,
+              "predicted_fold": "GB95",
+              "total_reporters": 1,
+              "worst_case_corrupted_patterns_passed": 1,
+              "worst_case_corrupted_patterns_total": 1
+            }
+          ],
+          "sequence": "TTYKLILNLKQAKEEAIKELVDAGTAEKYFKLIANAKTVEGVWTYKDEIKTFTVTE",
+          "strict_corrupted_trials_correct": 20,
+          "strict_corrupted_trials_total": 20
+        }
+      },
+      "minimum_correct_votes_per_model": 1,
+      "minimum_signed_reporter_decision_margin_A": 7.51,
+      "original_corruption_budget": 0,
+      "source_code_minimum_reference_gap_A": 16.368,
+      "transfer_clean_correct": 40,
+      "transfer_clean_total": 40,
+      "transfer_corrupted_trials_correct": 40,
+      "transfer_corrupted_trials_total": 40
+    },
+    "3": {
+      "by_entry": {
+        "2LHC": {
+          "clean_correct": 20,
+          "experimental_structure_label": "GA95",
+          "models": 20,
+          "per_model": [
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 1,
+              "predicted_fold": "GA95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 2,
+              "predicted_fold": "GA95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 3,
+              "predicted_fold": "GA95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 4,
+              "predicted_fold": "GA95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 5,
+              "predicted_fold": "GA95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 6,
+              "predicted_fold": "GA95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 7,
+              "predicted_fold": "GA95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 8,
+              "predicted_fold": "GA95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 9,
+              "predicted_fold": "GA95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 10,
+              "predicted_fold": "GA95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 11,
+              "predicted_fold": "GA95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 12,
+              "predicted_fold": "GA95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 13,
+              "predicted_fold": "GA95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 14,
+              "predicted_fold": "GA95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 15,
+              "predicted_fold": "GA95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 16,
+              "predicted_fold": "GA95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 17,
+              "predicted_fold": "GA95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 18,
+              "predicted_fold": "GA95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 19,
+              "predicted_fold": "GA95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 20,
+              "predicted_fold": "GA95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            }
+          ],
+          "sequence": "TTYKLILNLKQAKEEAIKELVDAGTAEKYFKLIANAKTVEGVWTLKDEIKTFTVTE",
+          "strict_corrupted_trials_correct": 80,
+          "strict_corrupted_trials_total": 80
+        },
+        "2LHD": {
+          "clean_correct": 20,
+          "experimental_structure_label": "GB95",
+          "models": 20,
+          "per_model": [
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 1,
+              "predicted_fold": "GB95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 2,
+              "predicted_fold": "GB95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 3,
+              "predicted_fold": "GB95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 4,
+              "predicted_fold": "GB95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 5,
+              "predicted_fold": "GB95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 6,
+              "predicted_fold": "GB95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 7,
+              "predicted_fold": "GB95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 8,
+              "predicted_fold": "GB95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 9,
+              "predicted_fold": "GB95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 10,
+              "predicted_fold": "GB95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 11,
+              "predicted_fold": "GB95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 12,
+              "predicted_fold": "GB95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 13,
+              "predicted_fold": "GB95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 14,
+              "predicted_fold": "GB95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 15,
+              "predicted_fold": "GB95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 16,
+              "predicted_fold": "GB95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 17,
+              "predicted_fold": "GB95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 18,
+              "predicted_fold": "GB95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 19,
+              "predicted_fold": "GB95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 3,
+              "model_id": 20,
+              "predicted_fold": "GB95",
+              "total_reporters": 3,
+              "worst_case_corrupted_patterns_passed": 4,
+              "worst_case_corrupted_patterns_total": 4
+            }
+          ],
+          "sequence": "TTYKLILNLKQAKEEAIKELVDAGTAEKYFKLIANAKTVEGVWTYKDEIKTFTVTE",
+          "strict_corrupted_trials_correct": 80,
+          "strict_corrupted_trials_total": 80
+        }
+      },
+      "minimum_correct_votes_per_model": 3,
+      "minimum_signed_reporter_decision_margin_A": 4.977,
+      "original_corruption_budget": 1,
+      "source_code_minimum_reference_gap_A": 12.948,
+      "transfer_clean_correct": 40,
+      "transfer_clean_total": 40,
+      "transfer_corrupted_trials_correct": 160,
+      "transfer_corrupted_trials_total": 160
+    },
+    "5": {
+      "by_entry": {
+        "2LHC": {
+          "clean_correct": 20,
+          "experimental_structure_label": "GA95",
+          "models": 20,
+          "per_model": [
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 1,
+              "predicted_fold": "GA95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 2,
+              "predicted_fold": "GA95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 3,
+              "predicted_fold": "GA95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 4,
+              "predicted_fold": "GA95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 5,
+              "predicted_fold": "GA95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 6,
+              "predicted_fold": "GA95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 7,
+              "predicted_fold": "GA95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 8,
+              "predicted_fold": "GA95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 9,
+              "predicted_fold": "GA95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 10,
+              "predicted_fold": "GA95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 11,
+              "predicted_fold": "GA95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 12,
+              "predicted_fold": "GA95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 13,
+              "predicted_fold": "GA95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 14,
+              "predicted_fold": "GA95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 15,
+              "predicted_fold": "GA95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 16,
+              "predicted_fold": "GA95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 17,
+              "predicted_fold": "GA95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 18,
+              "predicted_fold": "GA95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 19,
+              "predicted_fold": "GA95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 20,
+              "predicted_fold": "GA95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            }
+          ],
+          "sequence": "TTYKLILNLKQAKEEAIKELVDAGTAEKYFKLIANAKTVEGVWTLKDEIKTFTVTE",
+          "strict_corrupted_trials_correct": 320,
+          "strict_corrupted_trials_total": 320
+        },
+        "2LHD": {
+          "clean_correct": 20,
+          "experimental_structure_label": "GB95",
+          "models": 20,
+          "per_model": [
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 1,
+              "predicted_fold": "GB95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 2,
+              "predicted_fold": "GB95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 3,
+              "predicted_fold": "GB95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 4,
+              "predicted_fold": "GB95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 5,
+              "predicted_fold": "GB95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 6,
+              "predicted_fold": "GB95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 7,
+              "predicted_fold": "GB95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 8,
+              "predicted_fold": "GB95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 9,
+              "predicted_fold": "GB95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 10,
+              "predicted_fold": "GB95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 11,
+              "predicted_fold": "GB95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 12,
+              "predicted_fold": "GB95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 13,
+              "predicted_fold": "GB95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 14,
+              "predicted_fold": "GB95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 15,
+              "predicted_fold": "GB95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 16,
+              "predicted_fold": "GB95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 17,
+              "predicted_fold": "GB95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 18,
+              "predicted_fold": "GB95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 19,
+              "predicted_fold": "GB95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 5,
+              "model_id": 20,
+              "predicted_fold": "GB95",
+              "total_reporters": 5,
+              "worst_case_corrupted_patterns_passed": 16,
+              "worst_case_corrupted_patterns_total": 16
+            }
+          ],
+          "sequence": "TTYKLILNLKQAKEEAIKELVDAGTAEKYFKLIANAKTVEGVWTYKDEIKTFTVTE",
+          "strict_corrupted_trials_correct": 320,
+          "strict_corrupted_trials_total": 320
+        }
+      },
+      "minimum_correct_votes_per_model": 5,
+      "minimum_signed_reporter_decision_margin_A": 4.212,
+      "original_corruption_budget": 2,
+      "source_code_minimum_reference_gap_A": 11.58,
+      "transfer_clean_correct": 40,
+      "transfer_clean_total": 40,
+      "transfer_corrupted_trials_correct": 640,
+      "transfer_corrupted_trials_total": 640
+    },
+    "7": {
+      "by_entry": {
+        "2LHC": {
+          "clean_correct": 20,
+          "experimental_structure_label": "GA95",
+          "models": 20,
+          "per_model": [
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 1,
+              "predicted_fold": "GA95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 2,
+              "predicted_fold": "GA95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 3,
+              "predicted_fold": "GA95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 4,
+              "predicted_fold": "GA95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 5,
+              "predicted_fold": "GA95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 6,
+              "predicted_fold": "GA95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 7,
+              "predicted_fold": "GA95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 8,
+              "predicted_fold": "GA95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 9,
+              "predicted_fold": "GA95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 10,
+              "predicted_fold": "GA95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 11,
+              "predicted_fold": "GA95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 12,
+              "predicted_fold": "GA95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 13,
+              "predicted_fold": "GA95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 14,
+              "predicted_fold": "GA95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 15,
+              "predicted_fold": "GA95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 16,
+              "predicted_fold": "GA95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 17,
+              "predicted_fold": "GA95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 18,
+              "predicted_fold": "GA95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 19,
+              "predicted_fold": "GA95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 20,
+              "predicted_fold": "GA95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            }
+          ],
+          "sequence": "TTYKLILNLKQAKEEAIKELVDAGTAEKYFKLIANAKTVEGVWTLKDEIKTFTVTE",
+          "strict_corrupted_trials_correct": 1280,
+          "strict_corrupted_trials_total": 1280
+        },
+        "2LHD": {
+          "clean_correct": 20,
+          "experimental_structure_label": "GB95",
+          "models": 20,
+          "per_model": [
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 1,
+              "predicted_fold": "GB95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 2,
+              "predicted_fold": "GB95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 3,
+              "predicted_fold": "GB95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 4,
+              "predicted_fold": "GB95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 5,
+              "predicted_fold": "GB95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 6,
+              "predicted_fold": "GB95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 7,
+              "predicted_fold": "GB95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 8,
+              "predicted_fold": "GB95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 9,
+              "predicted_fold": "GB95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 10,
+              "predicted_fold": "GB95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 11,
+              "predicted_fold": "GB95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 12,
+              "predicted_fold": "GB95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 13,
+              "predicted_fold": "GB95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 14,
+              "predicted_fold": "GB95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 15,
+              "predicted_fold": "GB95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 16,
+              "predicted_fold": "GB95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 17,
+              "predicted_fold": "GB95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 18,
+              "predicted_fold": "GB95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 19,
+              "predicted_fold": "GB95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 7,
+              "model_id": 20,
+              "predicted_fold": "GB95",
+              "total_reporters": 7,
+              "worst_case_corrupted_patterns_passed": 64,
+              "worst_case_corrupted_patterns_total": 64
+            }
+          ],
+          "sequence": "TTYKLILNLKQAKEEAIKELVDAGTAEKYFKLIANAKTVEGVWTYKDEIKTFTVTE",
+          "strict_corrupted_trials_correct": 1280,
+          "strict_corrupted_trials_total": 1280
+        }
+      },
+      "minimum_correct_votes_per_model": 7,
+      "minimum_signed_reporter_decision_margin_A": 1.055,
+      "original_corruption_budget": 3,
+      "source_code_minimum_reference_gap_A": 10.302,
+      "transfer_clean_correct": 40,
+      "transfer_clean_total": 40,
+      "transfer_corrupted_trials_correct": 2560,
+      "transfer_corrupted_trials_total": 2560
+    },
+    "9": {
+      "by_entry": {
+        "2LHC": {
+          "clean_correct": 20,
+          "experimental_structure_label": "GA95",
+          "models": 20,
+          "per_model": [
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 1,
+              "predicted_fold": "GA95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 2,
+              "predicted_fold": "GA95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 3,
+              "predicted_fold": "GA95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 4,
+              "predicted_fold": "GA95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 5,
+              "predicted_fold": "GA95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 6,
+              "predicted_fold": "GA95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 7,
+              "predicted_fold": "GA95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 8,
+              "predicted_fold": "GA95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 9,
+              "predicted_fold": "GA95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 10,
+              "predicted_fold": "GA95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 11,
+              "predicted_fold": "GA95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 12,
+              "predicted_fold": "GA95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 13,
+              "predicted_fold": "GA95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 14,
+              "predicted_fold": "GA95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 15,
+              "predicted_fold": "GA95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 16,
+              "predicted_fold": "GA95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 17,
+              "predicted_fold": "GA95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 18,
+              "predicted_fold": "GA95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 19,
+              "predicted_fold": "GA95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 20,
+              "predicted_fold": "GA95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            }
+          ],
+          "sequence": "TTYKLILNLKQAKEEAIKELVDAGTAEKYFKLIANAKTVEGVWTLKDEIKTFTVTE",
+          "strict_corrupted_trials_correct": 5120,
+          "strict_corrupted_trials_total": 5120
+        },
+        "2LHD": {
+          "clean_correct": 20,
+          "experimental_structure_label": "GB95",
+          "models": 20,
+          "per_model": [
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 1,
+              "predicted_fold": "GB95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 2,
+              "predicted_fold": "GB95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 3,
+              "predicted_fold": "GB95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 4,
+              "predicted_fold": "GB95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 5,
+              "predicted_fold": "GB95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 6,
+              "predicted_fold": "GB95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 7,
+              "predicted_fold": "GB95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 8,
+              "predicted_fold": "GB95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 9,
+              "predicted_fold": "GB95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 10,
+              "predicted_fold": "GB95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 11,
+              "predicted_fold": "GB95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 12,
+              "predicted_fold": "GB95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 13,
+              "predicted_fold": "GB95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 14,
+              "predicted_fold": "GB95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 15,
+              "predicted_fold": "GB95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 16,
+              "predicted_fold": "GB95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 17,
+              "predicted_fold": "GB95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 18,
+              "predicted_fold": "GB95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 19,
+              "predicted_fold": "GB95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            },
+            {
+              "correct": true,
+              "correct_reporter_votes": 9,
+              "model_id": 20,
+              "predicted_fold": "GB95",
+              "total_reporters": 9,
+              "worst_case_corrupted_patterns_passed": 256,
+              "worst_case_corrupted_patterns_total": 256
+            }
+          ],
+          "sequence": "TTYKLILNLKQAKEEAIKELVDAGTAEKYFKLIANAKTVEGVWTYKDEIKTFTVTE",
+          "strict_corrupted_trials_correct": 5120,
+          "strict_corrupted_trials_total": 5120
+        }
+      },
+      "minimum_correct_votes_per_model": 9,
+      "minimum_signed_reporter_decision_margin_A": 1.055,
+      "original_corruption_budget": 4,
+      "source_code_minimum_reference_gap_A": 9.081,
+      "transfer_clean_correct": 40,
+      "transfer_clean_total": 40,
+      "transfer_corrupted_trials_correct": 10240,
+      "transfer_corrupted_trials_total": 10240
+    }
+  },
+  "experiment": "Fully frozen GA95/GB95 2009 NMR distance codes evaluated on independently deposited GA98/GB98 2012 NMR coordinates",
+  "models_per_test_entry": 20,
+  "mutations_between_test_variants": [
+    {
+      "GA98": "L",
+      "GB98": "Y",
+      "site": 45
+    }
+  ],
+  "new_PDB_SHA256": {
+    "2LHC": "91ed5cf27675f68799e60951cca5df7a4ecb2e8d19fd2063c4babb300e9507ac",
+    "2LHD": "73131f50fdb7fc709e0c1b3e66daf64236a19d911a4bfe5324a23007847c2e6f"
+  },
+  "new_test_sequences": {
+    "GA98": "TTYKLILNLKQAKEEAIKELVDAGTAEKYFKLIANAKTVEGVWTLKDEIKTFTVTE",
+    "GB98": "TTYKLILNLKQAKEEAIKELVDAGTAEKYFKLIANAKTVEGVWTYKDEIKTFTVTE"
+  },
+  "not_a_blind_prediction_of_sequences_or_population": true,
+  "test_data_temporally_deposited_after_training_structures": true,
+  "test_structures_were_excluded_from_all_reporter_selection": true,
+  "audit_receipt": {
+    "original_run": "https://github.com/Tommaso-R-Marena/FoldBounds/actions/runs/42162353779",
+    "original_head": "951ac6449af680496ea5e9e24bd33cd4aa4db6e7",
+    "captured_from": "Original official RCSB 2LHC/2LHD independent-transfer GitHub CI logs, before added test-structure hashes or new test variants",
+    "interpretation": "Retrospective independent deposited structural fold recognition; not blind sequence-to-fold or fluorescence experimental measurement"
+  }
+}

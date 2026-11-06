@@ -1,0 +1,2 @@
+fb75cc55eb8b89e0cec5e2be69901b348e60916375b9c410a0573edfca1db591  /tmp/real-pdb-data/2KDL.pdb
+1c49e5faa25b443285432d935c621151294ed3b636b0106e6b1a7f7ccf2d00ec  /tmp/real-pdb-data/2KDM.pdb

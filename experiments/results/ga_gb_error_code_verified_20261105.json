@@ -1,0 +1,829 @@
+{
+  "PDB_ensemble_sources": {
+    "2KDL": "fb75cc55eb8b89e0cec5e2be69901b348e60916375b9c410a0573edfca1db591",
+    "2KDM": "1c49e5faa25b443285432d935c621151294ed3b636b0106e6b1a7f7ccf2d00ec"
+  },
+  "codes": {
+    "1": {
+      "arbitrarily_wrong_channels_correctable": 0,
+      "candidate_count": 170,
+      "exact_bottleneck_gap_A": 16.368,
+      "experiment": {
+        "all_40_deposited_models_correct": 40,
+        "all_adversarial_bit_flip_trials_correct": 40,
+        "not_prospective_or_equilibrium_prediction": true
+      },
+      "fixed_half_model_holdout": {
+        "fit_model_indices_1_3_5_etc": {
+          "adversarial_pattern_correct": 20,
+          "adversarial_pattern_trials": 20,
+          "evaluation_type": "retrospective within-deposition half-model holdout; not external validation",
+          "fitted_bottleneck_gap_A": 16.445,
+          "heldout_clean_correct": 20,
+          "heldout_models": 20,
+          "reporters": [
+            [
+              11,
+              21
+            ]
+          ],
+          "smallest_certified_signed_holdout_decision_margin_A": 8.1785,
+          "training_models_per_fold": 10
+        },
+        "fit_model_indices_2_4_6_etc": {
+          "adversarial_pattern_correct": 20,
+          "adversarial_pattern_trials": 20,
+          "evaluation_type": "retrospective within-deposition half-model holdout; not external validation",
+          "fitted_bottleneck_gap_A": 16.368,
+          "heldout_clean_correct": 20,
+          "heldout_models": 20,
+          "reporters": [
+            [
+              11,
+              21
+            ]
+          ],
+          "smallest_certified_signed_holdout_decision_margin_A": 8.217,
+          "training_models_per_fold": 10
+        }
+      },
+      "per_CA_site_error_A_if_both_sites_perturbed_strictly_less_than": 4.092,
+      "residue_disjoint_reporters": [
+        {
+          "a": 11,
+          "b": 21,
+          "ga_range_milliang": [
+            14493,
+            15162
+          ],
+          "gap_milliang": 16368,
+          "gb_range_milliang": [
+            31530,
+            33326
+          ],
+          "shorter": "GA95"
+        }
+      ],
+      "stronger_margin_vertex_cover": {
+        "left_sites": [],
+        "right_sites": [],
+        "size": 0
+      },
+      "worst_case_pair_distance_error_A_strictly_less_than": 8.184
+    },
+    "3": {
+      "arbitrarily_wrong_channels_correctable": 1,
+      "candidate_count": 170,
+      "exact_bottleneck_gap_A": 12.948,
+      "experiment": {
+        "all_40_deposited_models_correct": 40,
+        "all_adversarial_bit_flip_trials_correct": 160,
+        "not_prospective_or_equilibrium_prediction": true
+      },
+      "fixed_half_model_holdout": {
+        "fit_model_indices_1_3_5_etc": {
+          "adversarial_pattern_correct": 80,
+          "adversarial_pattern_trials": 80,
+          "evaluation_type": "retrospective within-deposition half-model holdout; not external validation",
+          "fitted_bottleneck_gap_A": 12.948,
+          "heldout_clean_correct": 20,
+          "heldout_models": 20,
+          "reporters": [
+            [
+              5,
+              25
+            ],
+            [
+              10,
+              21
+            ],
+            [
+              11,
+              22
+            ]
+          ],
+          "smallest_certified_signed_holdout_decision_margin_A": 6.549,
+          "training_models_per_fold": 10
+        },
+        "fit_model_indices_2_4_6_etc": {
+          "adversarial_pattern_correct": 78,
+          "adversarial_pattern_trials": 80,
+          "evaluation_type": "retrospective within-deposition half-model holdout; not external validation",
+          "fitted_bottleneck_gap_A": 14.029,
+          "heldout_clean_correct": 20,
+          "heldout_models": 20,
+          "reporters": [
+            [
+              2,
+              53
+            ],
+            [
+              10,
+              21
+            ],
+            [
+              11,
+              22
+            ]
+          ],
+          "smallest_certified_signed_holdout_decision_margin_A": -6.305,
+          "training_models_per_fold": 10
+        }
+      },
+      "per_CA_site_error_A_if_both_sites_perturbed_strictly_less_than": 3.237,
+      "residue_disjoint_reporters": [
+        {
+          "a": 5,
+          "b": 25,
+          "ga_range_milliang": [
+            26094,
+            31061
+          ],
+          "gap_milliang": 12948,
+          "gb_range_milliang": [
+            12566,
+            13146
+          ],
+          "shorter": "GB95"
+        },
+        {
+          "a": 10,
+          "b": 21,
+          "ga_range_milliang": [
+            15833,
+            16232
+          ],
+          "gap_milliang": 15669,
+          "gb_range_milliang": [
+            31901,
+            33145
+          ],
+          "shorter": "GA95"
+        },
+        {
+          "a": 11,
+          "b": 22,
+          "ga_range_milliang": [
+            15401,
+            16281
+          ],
+          "gap_milliang": 14029,
+          "gb_range_milliang": [
+            30310,
+            32395
+          ],
+          "shorter": "GA95"
+        }
+      ],
+      "stronger_margin_vertex_cover": {
+        "left_sites": [],
+        "right_sites": [
+          21,
+          22
+        ],
+        "size": 2
+      },
+      "worst_case_pair_distance_error_A_strictly_less_than": 6.474
+    },
+    "5": {
+      "arbitrarily_wrong_channels_correctable": 2,
+      "candidate_count": 170,
+      "exact_bottleneck_gap_A": 11.58,
+      "experiment": {
+        "all_40_deposited_models_correct": 40,
+        "all_adversarial_bit_flip_trials_correct": 640,
+        "not_prospective_or_equilibrium_prediction": true
+      },
+      "fixed_half_model_holdout": {
+        "fit_model_indices_1_3_5_etc": {
+          "adversarial_pattern_correct": 320,
+          "adversarial_pattern_trials": 320,
+          "evaluation_type": "retrospective within-deposition half-model holdout; not external validation",
+          "fitted_bottleneck_gap_A": 11.827,
+          "heldout_clean_correct": 20,
+          "heldout_models": 20,
+          "reporters": [
+            [
+              4,
+              24
+            ],
+            [
+              5,
+              25
+            ],
+            [
+              10,
+              19
+            ],
+            [
+              11,
+              22
+            ],
+            [
+              12,
+              21
+            ]
+          ],
+          "smallest_certified_signed_holdout_decision_margin_A": 4.5625,
+          "training_models_per_fold": 10
+        },
+        "fit_model_indices_2_4_6_etc": {
+          "adversarial_pattern_correct": 314,
+          "adversarial_pattern_trials": 320,
+          "evaluation_type": "retrospective within-deposition half-model holdout; not external validation",
+          "fitted_bottleneck_gap_A": 13.141,
+          "heldout_clean_correct": 20,
+          "heldout_models": 20,
+          "reporters": [
+            [
+              2,
+              53
+            ],
+            [
+              5,
+              25
+            ],
+            [
+              10,
+              19
+            ],
+            [
+              11,
+              22
+            ],
+            [
+              12,
+              21
+            ]
+          ],
+          "smallest_certified_signed_holdout_decision_margin_A": -6.305,
+          "training_models_per_fold": 10
+        }
+      },
+      "per_CA_site_error_A_if_both_sites_perturbed_strictly_less_than": 2.895,
+      "residue_disjoint_reporters": [
+        {
+          "a": 5,
+          "b": 25,
+          "ga_range_milliang": [
+            26094,
+            31061
+          ],
+          "gap_milliang": 12948,
+          "gb_range_milliang": [
+            12566,
+            13146
+          ],
+          "shorter": "GB95"
+        },
+        {
+          "a": 6,
+          "b": 26,
+          "ga_range_milliang": [
+            24716,
+            27614
+          ],
+          "gap_milliang": 11580,
+          "gb_range_milliang": [
+            12561,
+            13136
+          ],
+          "shorter": "GB95"
+        },
+        {
+          "a": 10,
+          "b": 19,
+          "ga_range_milliang": [
+            13219,
+            14047
+          ],
+          "gap_milliang": 12884,
+          "gb_range_milliang": [
+            26931,
+            28153
+          ],
+          "shorter": "GA95"
+        },
+        {
+          "a": 11,
+          "b": 22,
+          "ga_range_milliang": [
+            15401,
+            16281
+          ],
+          "gap_milliang": 14029,
+          "gb_range_milliang": [
+            30310,
+            32395
+          ],
+          "shorter": "GA95"
+        },
+        {
+          "a": 12,
+          "b": 21,
+          "ga_range_milliang": [
+            13503,
+            14117
+          ],
+          "gap_milliang": 15087,
+          "gb_range_milliang": [
+            29204,
+            30383
+          ],
+          "shorter": "GA95"
+        }
+      ],
+      "stronger_margin_vertex_cover": {
+        "left_sites": [
+          5,
+          10,
+          11,
+          12
+        ],
+        "right_sites": [],
+        "size": 4
+      },
+      "worst_case_pair_distance_error_A_strictly_less_than": 5.79
+    },
+    "7": {
+      "arbitrarily_wrong_channels_correctable": 3,
+      "candidate_count": 170,
+      "exact_bottleneck_gap_A": 10.302,
+      "experiment": {
+        "all_40_deposited_models_correct": 40,
+        "all_adversarial_bit_flip_trials_correct": 2560,
+        "not_prospective_or_equilibrium_prediction": true
+      },
+      "fixed_half_model_holdout": {
+        "fit_model_indices_1_3_5_etc": {
+          "adversarial_pattern_correct": 1280,
+          "adversarial_pattern_trials": 1280,
+          "evaluation_type": "retrospective within-deposition half-model holdout; not external validation",
+          "fitted_bottleneck_gap_A": 10.695,
+          "heldout_clean_correct": 20,
+          "heldout_models": 20,
+          "reporters": [
+            [
+              4,
+              24
+            ],
+            [
+              5,
+              25
+            ],
+            [
+              6,
+              26
+            ],
+            [
+              10,
+              19
+            ],
+            [
+              11,
+              21
+            ],
+            [
+              12,
+              48
+            ],
+            [
+              13,
+              22
+            ]
+          ],
+          "smallest_certified_signed_holdout_decision_margin_A": 4.5625,
+          "training_models_per_fold": 10
+        },
+        "fit_model_indices_2_4_6_etc": {
+          "adversarial_pattern_correct": 1240,
+          "adversarial_pattern_trials": 1280,
+          "evaluation_type": "retrospective within-deposition half-model holdout; not external validation",
+          "fitted_bottleneck_gap_A": 12.615,
+          "heldout_clean_correct": 20,
+          "heldout_models": 20,
+          "reporters": [
+            [
+              2,
+              53
+            ],
+            [
+              3,
+              54
+            ],
+            [
+              4,
+              55
+            ],
+            [
+              5,
+              25
+            ],
+            [
+              10,
+              19
+            ],
+            [
+              11,
+              22
+            ],
+            [
+              12,
+              21
+            ]
+          ],
+          "smallest_certified_signed_holdout_decision_margin_A": -6.305,
+          "training_models_per_fold": 10
+        }
+      },
+      "per_CA_site_error_A_if_both_sites_perturbed_strictly_less_than": 2.5755,
+      "residue_disjoint_reporters": [
+        {
+          "a": 4,
+          "b": 24,
+          "ga_range_milliang": [
+            23800,
+            32970
+          ],
+          "gap_milliang": 10302,
+          "gb_range_milliang": [
+            12677,
+            13498
+          ],
+          "shorter": "GB95"
+        },
+        {
+          "a": 5,
+          "b": 25,
+          "ga_range_milliang": [
+            26094,
+            31061
+          ],
+          "gap_milliang": 12948,
+          "gb_range_milliang": [
+            12566,
+            13146
+          ],
+          "shorter": "GB95"
+        },
+        {
+          "a": 6,
+          "b": 26,
+          "ga_range_milliang": [
+            24716,
+            27614
+          ],
+          "gap_milliang": 11580,
+          "gb_range_milliang": [
+            12561,
+            13136
+          ],
+          "shorter": "GB95"
+        },
+        {
+          "a": 10,
+          "b": 19,
+          "ga_range_milliang": [
+            13219,
+            14047
+          ],
+          "gap_milliang": 12884,
+          "gb_range_milliang": [
+            26931,
+            28153
+          ],
+          "shorter": "GA95"
+        },
+        {
+          "a": 11,
+          "b": 21,
+          "ga_range_milliang": [
+            14493,
+            15162
+          ],
+          "gap_milliang": 16368,
+          "gb_range_milliang": [
+            31530,
+            33326
+          ],
+          "shorter": "GA95"
+        },
+        {
+          "a": 12,
+          "b": 48,
+          "ga_range_milliang": [
+            12947,
+            13617
+          ],
+          "gap_milliang": 10630,
+          "gb_range_milliang": [
+            24247,
+            26870
+          ],
+          "shorter": "GA95"
+        },
+        {
+          "a": 13,
+          "b": 22,
+          "ga_range_milliang": [
+            13960,
+            14283
+          ],
+          "gap_milliang": 10663,
+          "gb_range_milliang": [
+            24946,
+            26168
+          ],
+          "shorter": "GA95"
+        }
+      ],
+      "stronger_margin_vertex_cover": {
+        "left_sites": [
+          5,
+          10,
+          11,
+          12,
+          13
+        ],
+        "right_sites": [
+          26
+        ],
+        "size": 6
+      },
+      "worst_case_pair_distance_error_A_strictly_less_than": 5.151
+    },
+    "9": {
+      "arbitrarily_wrong_channels_correctable": 4,
+      "candidate_count": 170,
+      "exact_bottleneck_gap_A": 9.081,
+      "experiment": {
+        "all_40_deposited_models_correct": 40,
+        "all_adversarial_bit_flip_trials_correct": 10240,
+        "not_prospective_or_equilibrium_prediction": true
+      },
+      "fixed_half_model_holdout": {
+        "fit_model_indices_1_3_5_etc": {
+          "adversarial_pattern_correct": 5120,
+          "adversarial_pattern_trials": 5120,
+          "evaluation_type": "retrospective within-deposition half-model holdout; not external validation",
+          "fitted_bottleneck_gap_A": 9.158,
+          "heldout_clean_correct": 20,
+          "heldout_models": 20,
+          "reporters": [
+            [
+              2,
+              28
+            ],
+            [
+              4,
+              24
+            ],
+            [
+              5,
+              25
+            ],
+            [
+              6,
+              26
+            ],
+            [
+              9,
+              21
+            ],
+            [
+              10,
+              19
+            ],
+            [
+              11,
+              47
+            ],
+            [
+              12,
+              48
+            ],
+            [
+              13,
+              22
+            ]
+          ],
+          "smallest_certified_signed_holdout_decision_margin_A": 4.435,
+          "training_models_per_fold": 10
+        },
+        "fit_model_indices_2_4_6_etc": {
+          "adversarial_pattern_correct": 4980,
+          "adversarial_pattern_trials": 5120,
+          "evaluation_type": "retrospective within-deposition half-model holdout; not external validation",
+          "fitted_bottleneck_gap_A": 11.836,
+          "heldout_clean_correct": 20,
+          "heldout_models": 20,
+          "reporters": [
+            [
+              1,
+              27
+            ],
+            [
+              2,
+              53
+            ],
+            [
+              3,
+              54
+            ],
+            [
+              4,
+              55
+            ],
+            [
+              5,
+              25
+            ],
+            [
+              10,
+              19
+            ],
+            [
+              11,
+              47
+            ],
+            [
+              12,
+              22
+            ],
+            [
+              13,
+              21
+            ]
+          ],
+          "smallest_certified_signed_holdout_decision_margin_A": -6.305,
+          "training_models_per_fold": 10
+        }
+      },
+      "per_CA_site_error_A_if_both_sites_perturbed_strictly_less_than": 2.27025,
+      "residue_disjoint_reporters": [
+        {
+          "a": 1,
+          "b": 27,
+          "ga_range_milliang": [
+            22198,
+            36120
+          ],
+          "gap_milliang": 9081,
+          "gb_range_milliang": [
+            12088,
+            13117
+          ],
+          "shorter": "GB95"
+        },
+        {
+          "a": 4,
+          "b": 24,
+          "ga_range_milliang": [
+            23800,
+            32970
+          ],
+          "gap_milliang": 10302,
+          "gb_range_milliang": [
+            12677,
+            13498
+          ],
+          "shorter": "GB95"
+        },
+        {
+          "a": 5,
+          "b": 25,
+          "ga_range_milliang": [
+            26094,
+            31061
+          ],
+          "gap_milliang": 12948,
+          "gb_range_milliang": [
+            12566,
+            13146
+          ],
+          "shorter": "GB95"
+        },
+        {
+          "a": 6,
+          "b": 26,
+          "ga_range_milliang": [
+            24716,
+            27614
+          ],
+          "gap_milliang": 11580,
+          "gb_range_milliang": [
+            12561,
+            13136
+          ],
+          "shorter": "GB95"
+        },
+        {
+          "a": 9,
+          "b": 21,
+          "ga_range_milliang": [
+            17483,
+            18045
+          ],
+          "gap_milliang": 10097,
+          "gb_range_milliang": [
+            28142,
+            29362
+          ],
+          "shorter": "GA95"
+        },
+        {
+          "a": 10,
+          "b": 19,
+          "ga_range_milliang": [
+            13219,
+            14047
+          ],
+          "gap_milliang": 12884,
+          "gb_range_milliang": [
+            26931,
+            28153
+          ],
+          "shorter": "GA95"
+        },
+        {
+          "a": 11,
+          "b": 47,
+          "ga_range_milliang": [
+            13396,
+            14583
+          ],
+          "gap_milliang": 11633,
+          "gb_range_milliang": [
+            26216,
+            27748
+          ],
+          "shorter": "GA95"
+        },
+        {
+          "a": 12,
+          "b": 48,
+          "ga_range_milliang": [
+            12947,
+            13617
+          ],
+          "gap_milliang": 10630,
+          "gb_range_milliang": [
+            24247,
+            26870
+          ],
+          "shorter": "GA95"
+        },
+        {
+          "a": 13,
+          "b": 22,
+          "ga_range_milliang": [
+            13960,
+            14283
+          ],
+          "gap_milliang": 10663,
+          "gb_range_milliang": [
+            24946,
+            26168
+          ],
+          "shorter": "GA95"
+        }
+      ],
+      "stronger_margin_vertex_cover": {
+        "left_sites": [
+          4,
+          5,
+          9,
+          10,
+          11,
+          12,
+          13
+        ],
+        "right_sites": [
+          26
+        ],
+        "size": 8
+      },
+      "worst_case_pair_distance_error_A_strictly_less_than": 4.5405
+    }
+  },
+  "distance_inputs": "exact integer milli-Angstrom coordinates from official CA PDB columns",
+  "entries": [
+    "2KDL",
+    "2KDM"
+  ],
+  "guarantee_domain": "only 40 deposited NMR models and modeled bounded pair readout errors",
+  "important_limitations": [
+    "No new amino acid variants, independent test proteins, or live experiments",
+    "Structural NMR models are not unbiased equilibrium population samples",
+    "Raw protein CA distances are not automatically experimentally measured dye distances",
+    "Independent fold-validation and dye errors require new experimental controls",
+    "Matching optimality is certified for the explicitly defined bipartite 1..14 vs 15..56, 12..40 A residue-pair domain"
+  ],
+  "models_per_fold": 20,
+  "audit_receipt": {
+    "original_CI_head": "c1cb1143f429ed2e349f2dcad2b0dcaddfd8be5f",
+    "source_GitHub_Actions_url": "https://github.com/Tommaso-R-Marena/FoldBounds/actions/runs/42154021920",
+    "real_PDB_source": "https://files.rcsb.org/download/{2KDL,2KDM}.pdb",
+    "note": "Derived verbatim from SHA256-authenticated real-NMR CI report; not novel experimental measurements or unseen mutants"
+  }
+}

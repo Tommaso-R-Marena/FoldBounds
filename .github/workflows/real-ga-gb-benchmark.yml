@@ -1,0 +1,113 @@
+name: Real GA95 GB95 NMR structural benchmark
+on:
+  pull_request:
+    paths:
+      - 'src/foldbounds/ga_gb_nmr.py'
+      - 'src/foldbounds/real_fold_odds.py'
+      - 'experiments/analyze_ga_gb_nmr.py'
+      - 'experiments/score_precommitted_fold_predictions.py'
+      - 'experiments/validate_real_ga_gb_output.py'
+      - 'tests/test_real_fold_benchmark.py'
+      - 'tests/test_precommitted_scoring.py'
+      - 'tests/test_real_output_validation.py'
+      - 'docs/REAL_GA_GB_BENCHMARK.md'
+      - 'docs/EXPERIMENTAL_DISTANCE_REPORTER.md'
+      - 'src/foldbounds/real_aromatic_geometry.py'
+      - 'src/foldbounds/real_fold_reporters.py'
+      - 'experiments/analyze_ga_gb_advanced.py'
+      - 'experiments/find_fold_reporters.py'
+      - 'tests/test_real_aromatic_geometry.py'
+      - 'tests/test_real_fold_reporters.py'
+      - 'tests/test_real_advanced_frozen_reference.py'
+      - 'experiments/results/ga_gb_advanced_20261020.json'
+      - 'experiments/results/ga_gb_distance_reporters_20261020.json'
+      - '.github/workflows/real-ga-gb-benchmark.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  fail-closed-parser-and-scoring:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    strategy:
+      matrix:
+        python-version: ['3.11','3.12','3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install test dependencies
+        run: python -m pip install -e '.[test]'
+      - name: Verify parsing, conservation, provenance, and population algebra
+        run: python -m pytest -q tests/test_real_fold_benchmark.py tests/test_precommitted_scoring.py tests/test_real_output_validation.py tests/test_real_nmr_frozen_reference.py tests/test_real_aromatic_geometry.py tests/test_real_fold_reporters.py tests/test_real_advanced_frozen_reference.py
+
+  analyze-authentic-rcsb-nmr-ensembles:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: fail-closed-parser-and-scoring
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install package
+        run: python -m pip install -e '.[test]'
+      - name: Fetch official PDB structural ensemble coordinates
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/real-pdb-data
+          for pdb in 2KDL 2KDM; do
+            if ! curl -fLsS --retry 3 --connect-timeout 15 --max-time 90 "https://files.rcsb.org/download/${pdb}.pdb" -o "/tmp/real-pdb-data/${pdb}.pdb"; then
+              echo "RCSB unavailable; trying official PDBe mirror" >&2
+              curl -fLsS --retry 3 --connect-timeout 15 --max-time 90 "https://www.ebi.ac.uk/pdbe/entry-files/download/pdb${pdb,,}.ent" -o "/tmp/real-pdb-data/${pdb}.pdb"
+            fi
+          done
+          sha256sum /tmp/real-pdb-data/2KDL.pdb /tmp/real-pdb-data/2KDM.pdb | tee /tmp/real-pdb-data/SHA256SUMS
+          echo 'Checking canonical, reviewed 2026-10-20 RCSB input-file hashes'
+          cp experiments/results/ga_gb_coordinate_SHA256SUMS_20261020.txt /tmp/real-pdb-data/PINNED_SHA256SUMS
+          sha256sum -c /tmp/real-pdb-data/PINNED_SHA256SUMS
+      - name: Analyze the full authentic 20-model NMR ensembles
+        run: |
+          python experiments/analyze_ga_gb_nmr.py --ga /tmp/real-pdb-data/2KDL.pdb --gb /tmp/real-pdb-data/2KDM.pdb --out /tmp/real-pdb-data/real_ensembles.json > /dev/null
+          python experiments/validate_real_ga_gb_output.py /tmp/real-pdb-data/real_ensembles.json | tee /tmp/real-pdb-data/geometry_summary.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          actual=json.loads(Path('/tmp/real-pdb-data/real_ensembles.json').read_text())
+          frozen=json.loads(Path('experiments/results/ga_gb_nmr_verified_20261020.json').read_text())
+          assert actual==frozen, 'real NMR report changed from independently reviewed frozen reference'
+          print('PASS: authentic PDB input hashes and complete NMR structural observations reproduce exactly')
+          PY
+      - name: Independently recompute ring planes, contact-map separation, and pairwise reporters
+        run: |
+          python experiments/analyze_ga_gb_advanced.py --ga /tmp/real-pdb-data/2KDL.pdb --gb /tmp/real-pdb-data/2KDM.pdb --out /tmp/real-pdb-data/advanced.json > /dev/null
+          python experiments/find_fold_reporters.py --ga /tmp/real-pdb-data/2KDL.pdb --gb /tmp/real-pdb-data/2KDM.pdb --out /tmp/real-pdb-data/reporters.json > /dev/null
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          for actual,expected in (
+            ('advanced.json','ga_gb_advanced_20261020.json'),
+            ('reporters.json','ga_gb_distance_reporters_20261020.json'),
+          ):
+              a=json.loads(Path('/tmp/real-pdb-data',actual).read_text())
+              b=json.loads(Path('experiments/results',expected).read_text())
+              assert a==b,(actual,expected)
+          p=a['top_ten'][0]
+          assert (p['i'],p['j'])==(11,21) and p['worst_case_separation_A']>16
+          print('PASS: independent 20x20 contact-map contrast and 349 prospective structural-reporter candidate calculations')
+          PY
+      - name: Publish only the verified structural statistics and input hashes
+        uses: actions/upload-artifact@v4
+        with:
+          name: verified-GA95-GB95-NMR-structural-statistics
+          path: |
+            /tmp/real-pdb-data/2KDL.pdb
+            /tmp/real-pdb-data/2KDM.pdb
+            /tmp/real-pdb-data/advanced.json
+            /tmp/real-pdb-data/reporters.json
+            /tmp/real-pdb-data/real_ensembles.json
+            /tmp/real-pdb-data/geometry_summary.json
+            /tmp/real-pdb-data/SHA256SUMS
+          retention-days: 30

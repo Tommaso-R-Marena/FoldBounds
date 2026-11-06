@@ -1,0 +1,138 @@
+{
+  "coercivity_old": 262,
+  "coercivity_spectral": "1000000/169821",
+  "format": "GNM_SOURCE_ONLY_PRECISION_ABLATION_V1",
+  "interpretation": "Adjacency counts are over the sorted lower-bound interval order at each resolution; all intervals are exact-rational residual certificates. No target NMR data accessed.",
+  "n_certain_on_edges": 972,
+  "n_optional_edges": 108,
+  "pairs": 2614,
+  "results": [
+    {
+      "new_adjacent_orders": 0,
+      "new_max_score_width": 0.045448361761359204,
+      "old_adjacent_orders": 0,
+      "old_max_score_width": 2.0221385955810547,
+      "q_bits": 10
+    },
+    {
+      "new_adjacent_orders": 16,
+      "new_max_score_width": 0.0030655040746919503,
+      "old_adjacent_orders": 0,
+      "old_max_score_width": 0.13639378547668457,
+      "q_bits": 12
+    },
+    {
+      "new_adjacent_orders": 362,
+      "new_max_score_width": 0.00020512886851989658,
+      "old_adjacent_orders": 5,
+      "old_max_score_width": 0.009126819670200348,
+      "q_bits": 14
+    },
+    {
+      "new_adjacent_orders": 2138,
+      "new_max_score_width": 1.1892363153282958e-05,
+      "old_adjacent_orders": 102,
+      "old_max_score_width": 0.0005291281268000603,
+      "q_bits": 16
+    },
+    {
+      "new_adjacent_orders": 2559,
+      "new_max_score_width": 7.090824957734067e-07,
+      "old_adjacent_orders": 1586,
+      "old_max_score_width": 3.154927981086075e-05,
+      "q_bits": 18
+    },
+    {
+      "new_adjacent_orders": 2586,
+      "new_max_score_width": 4.7091860916431764e-08,
+      "old_adjacent_orders": 2506,
+      "old_max_score_width": 2.095262971124612e-06,
+      "q_bits": 20
+    },
+    {
+      "new_adjacent_orders": 2590,
+      "new_max_score_width": 2.7986398919757617e-09,
+      "old_adjacent_orders": 2583,
+      "old_max_score_width": 1.2452017017494654e-07,
+      "q_bits": 22
+    },
+    {
+      "new_adjacent_orders": 2590,
+      "new_max_score_width": 1.9732068129646111e-10,
+      "old_adjacent_orders": 2589,
+      "old_max_score_width": 8.779409199632937e-09,
+      "q_bits": 24
+    },
+    {
+      "new_adjacent_orders": 2590,
+      "new_max_score_width": 1.1585947817058564e-11,
+      "old_adjacent_orders": 2590,
+      "old_max_score_width": 5.15494757991064e-10,
+      "q_bits": 26
+    },
+    {
+      "new_adjacent_orders": 2590,
+      "new_max_score_width": 8.395105090046455e-13,
+      "old_adjacent_orders": 2590,
+      "old_max_score_width": 3.7352426707215614e-11,
+      "q_bits": 28
+    },
+    {
+      "new_adjacent_orders": 2590,
+      "new_max_score_width": 4.495626581973918e-14,
+      "old_adjacent_orders": 2590,
+      "old_max_score_width": 2.000243720656769e-12,
+      "q_bits": 30
+    },
+    {
+      "new_adjacent_orders": 2590,
+      "new_max_score_width": 2.82828132216321e-15,
+      "old_adjacent_orders": 2590,
+      "old_max_score_width": 1.2583900935170256e-13,
+      "q_bits": 32
+    },
+    {
+      "new_adjacent_orders": 2590,
+      "new_max_score_width": 1.0508044715482757e-17,
+      "old_adjacent_orders": 2590,
+      "old_max_score_width": 4.675355053465353e-16,
+      "q_bits": 36
+    },
+    {
+      "new_adjacent_orders": 2590,
+      "new_max_score_width": 4.27421218527321e-20,
+      "old_adjacent_orders": 2590,
+      "old_max_score_width": 1.9017295872900383e-18,
+      "q_bits": 40
+    },
+    {
+      "new_adjacent_orders": 2590,
+      "new_max_score_width": 1.6115819626631093e-22,
+      "old_adjacent_orders": 2590,
+      "old_max_score_width": 7.170428064612992e-21,
+      "q_bits": 44
+    },
+    {
+      "new_adjacent_orders": 2590,
+      "new_max_score_width": 6.303417680667905e-25,
+      "old_adjacent_orders": 2590,
+      "old_max_score_width": 2.804586058145605e-23,
+      "q_bits": 48
+    },
+    {
+      "new_adjacent_orders": 2590,
+      "new_max_score_width": 2.755213574347181e-27,
+      "old_adjacent_orders": 2590,
+      "old_max_score_width": 1.225879985952137e-25,
+      "q_bits": 52
+    },
+    {
+      "new_adjacent_orders": 2590,
+      "new_max_score_width": 8.73978278506533e-29,
+      "old_adjacent_orders": 2590,
+      "old_max_score_width": 3.888600469137558e-27,
+      "q_bits": 55
+    }
+  ],
+  "source_sha256": "ec077437f4bd4b17f3c4527891bada306a77aab1953794ec5b08d76ca8c86cff"
+}
