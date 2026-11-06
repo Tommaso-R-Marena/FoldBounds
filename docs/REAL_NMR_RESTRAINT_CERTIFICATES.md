@@ -64,3 +64,21 @@ The replay script **fails closed** if either original Git blob digest differs, t
 ## What this does not establish
 
 No sequence-to-structure prediction, chemical structure refinement, unique 3D geometry from NOEs, protein dynamics, or folding thermodynamics. Absence of a flagged violation is not proof of validity: the stringent parser intentionally drops most groups and long-range information. Unlike artificial anchor distances, these processed NMR restraint intervals are external to the coordinate snapshot, but they are **not an unseen validation set** for the original NMR structure. No Lean kernel verification of this module is claimed.
+
+
+## Additional negative result: selected-restraint rigidity is insufficient
+
+Using one vertex per **mapped atom identifier** and one edge per included NOE atom pair, we verify these data do **not** uniquely determine three-dimensional atom positions on their own. This graph is **not the protein's full chemical geometry graph**. Treating every interval as an exact equality is already stronger than the original inequality constraints.
+
+For N vertices in 3D with M distinct distance edges, the bar-and-joint rigidity Jacobian has at most M independent rows. Thus its linearized nullspace has dimension at least 3N−M. Even after removing up to six global rigid-body motions, at least max(0,3N−M−6) **internal infinitesimal zero modes** remain. This is a *first-order* result; individual nullspace directions need not integrate to finite flexes at singular configurations.
+
+However, if the restraint graph has C connected components, the components can be independently **translated** while preserving *all* included distances exactly. Modulo one global translation, there are at least 3(C−1) continuous relative translation parameters, yielding a constructive **global non-uniqueness** witness. The separate checker constructs such an embedding and directly checks integer squared-distance invariance.
+
+| Selected data | N mapped atom vertices | M distinct measured pairs | Components C | Independent cycles | Linearized internal zero-mode lower bound | Exact component translation parameters | Long-range (≥5 residues) |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| 2PNG | 170 | 304 | 9 | 143 | **200** | **24** | 7 |
+| 6NBN | 381 | 553 | 11 | 183 | **584** | **30** | 33 |
+
+The observed subgraphs contain many cycles; they are **not** mostly trees. Crucially, the no-go concerns only the carefully selected **unambiguous atom-specific NOE subset**, not the entire protein structure determination. Chemical covalent bonds, angle constraints, chirality, excluded ambiguous NOEs, steric constraints and additional experiments can couple these components and remove the demonstrated translation freedom. No biological claim of intrinsic protein nonuniqueness follows.
+
+Reproduce with `python -m pytest tests/test_noe_identifiability.py -q`.
