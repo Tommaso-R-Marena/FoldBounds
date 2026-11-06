@@ -196,6 +196,32 @@ out-of-distribution flags are preserved at
 \`experiments/results/mutation_safe_real_nmr_20261105.json\`,
 with SHA-256 source file hashes and the original CI run revision.
 
+### Retrospective comparison with the previously frozen three-reporter code
+
+The original PR #81 3-channel geometry used one changed residue,
+pair **5–25**, along with **10–21** and **11–22**. It had an
+optimal 2009 source-band separation of **12.948 Å**. Its smallest
+true-fold signed decision margin over the 70 external conformers
+was **0.570 Å**, in the reciprocal-switch 2LHG NMR models.
+
+The NEW mutation-invariant 3-channel code **10–19, 11–22, 12–21**
+uses no residue changed in any of the six sequences. Its 2009
+source-only training separation is **12.884 Å**, a mere
+**0.49% lower** than the original, while the worst externally
+observed *individual channel* margin is **4.691 Å**,
+an approximately **8.23-fold increase**. Both results refer to
+the same six authenticated PDB data inputs and the new code
+was optimized on 2009 structures only, with the known amino-acid
+mutation-site list used as a predeclared exclusion criterion.
+
+This unexpected gain was discovered retrospectively on the 2012
+structures; it is not a prospective guarantee that excluding
+mutation positions generally improves transfer. It does,
+however, demonstrate a genuine design tradeoff of interest:
+enforcing sequence-invariant label sites can produce a more
+stable *external structural readout* even if it weakens the
+source-only optimization objective marginally.
+
 ### An important counterexample to overconfident coverage claims
 
 **61 of 70** heldout deposited structures for the three-channel
