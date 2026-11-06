@@ -68,3 +68,48 @@ jobs:
           name: mutation-safe-six-real-nmr-code-audit
           path: /tmp/foldbounds-mutation-safe/new_safe_results.json
           retention-days: 90
+
+
+  formal-error-erasure-soundness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject untrusted proof holes and custom axioms
+        run: python3 scripts/check_lean_sources.py
+      - name: Build pinned Lean and Mathlib environment
+        uses: leanprover/lean-action@v1
+      - name: Check sharp coding error-erasure theorem in kernel
+        run: lake env lean FoldBounds/MutationSafeCodes.lean | tee /tmp/mutation-code-axioms.log
+      - name: Audit six expected declarations and standard axiom dependencies
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          t=Path('/tmp/mutation-code-axioms.log').read_text()
+          expected={
+              'FoldBounds.MutationSafeCodes.majority_under_errors_and_erasures',
+              'FoldBounds.MutationSafeCodes.site_erasure_bound_implies_channel_budget',
+              'FoldBounds.MutationSafeCodes.site_loss_plus_fault_majority',
+              'FoldBounds.MutationSafeCodes.bound_is_sharp_at_tie',
+              'FoldBounds.MutationSafeCodes.exact_adversarial_budget',
+              'FoldBounds.MutationSafeCodes.preexisting_errors_consume_budget',
+          }
+          logs=re.findall(
+              r"^'(FoldBounds\.MutationSafeCodes\.[A-Za-z0-9_]+)' "
+              r"(does not depend on any axioms|depends on axioms:\s*\[[^\]]*\])",
+              t,re.MULTILINE
+          )
+          found={}
+          for name,body in logs:
+              if name in found:raise SystemExit('duplicate axiom report: '+name)
+              found[name]=body
+              if 'sorryAx' in body:raise SystemExit('proof hole in named theorem')
+              if body.startswith('depends on axioms:'):
+                  axioms=set(re.findall(r'[A-Za-z_][A-Za-z0-9_.]*',
+                      body.partition('[')[2].rsplit(']',1)[0]))
+                  if axioms-{'propext','Classical.choice','Quot.sound'}:
+                      raise SystemExit('unexpected Lean axiom '+str(axioms))
+          if set(found)!=expected:raise SystemExit('missing/extra proof declarations: '+str(expected^set(found)))
+          print('Sharp mutation reporter code bound: six kernel declarations audited')
+          PY
