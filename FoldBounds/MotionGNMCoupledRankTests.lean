@@ -23,9 +23,5 @@ example : (0:ℚ) < (3/2:ℚ) := by
   · norm_num
   · norm_num
 
-#print axioms FoldBounds.MotionGNMCoupledRank.quadratic_discriminant_bound
-#print axioms FoldBounds.MotionGNMCoupledRank.psd_pair_contraction
-#print axioms FoldBounds.MotionGNMCoupledRank.positive_of_coupled_square
-#print axioms FoldBounds.MotionGNMCoupledRank.coupled_strict_rank_sound
 
 end FoldBounds.MotionGNMCoupledRankTests
