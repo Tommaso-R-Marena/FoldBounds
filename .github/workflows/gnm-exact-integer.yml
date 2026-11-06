@@ -31,5 +31,5 @@ jobs:
         run: python3 -m pip install --disable-pip-version-check numpy sympy pytest
       - name: No target needed, hermetic integer graph tests
         run: |
-          python3 -m py_compile scripts/gnm_exact_inverse_producer.py scripts/gnm_exact_inverse_independent_replay.py scripts/gnm_exact_edge_updates.py scripts/gnm_exact_case_source.py scripts/gnm_exact_case_independent_replay.py
-          python3 -m pytest -q scripts/test_gnm_exact_inverse.py scripts/test_gnm_exact_cases.py
+          python3 -m py_compile scripts/gnm_exact_inverse_producer.py scripts/gnm_exact_inverse_independent_replay.py scripts/gnm_exact_edge_updates.py scripts/gnm_exact_case_source.py scripts/gnm_exact_case_independent_replay.py scripts/gnm_portability_audit.py
+          python3 -m pytest -q scripts/test_gnm_exact_inverse.py scripts/test_gnm_exact_cases.py scripts/test_gnm_portability.py
