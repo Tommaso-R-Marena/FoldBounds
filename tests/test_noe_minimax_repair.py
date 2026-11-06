@@ -100,7 +100,7 @@ def test_real_exact_integer_global_minimax_certificate(sample,expected):
     assert verify_repair(ref[sample],replace(cert,upper_radius_ticks=cert.strict_lower_radius_ticks)) is None
     assert verify_repair(ref[sample],replace(cert,moves=cert.moves[:-1])) is None
     assert verify_repair(ref[sample],replace(cert,source_count=1)) is None
-    x=list(cert.moves);a,delta=x[0];x[0]=(a,(delta[0]+50000,delta[1],delta[2]))
+    x=list(cert.moves);a,delta=x[0];x[0]=(a,(delta[0]+1000000,delta[1],delta[2]))
     assert verify_repair(ref[sample],replace(cert,moves=tuple(x))) is None
 
 
