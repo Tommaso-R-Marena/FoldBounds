@@ -1,0 +1,34 @@
+{
+  "schema": "FoldBounds.NOEMinimaxRepair.v1",
+  "scale_ticks_per_milliangstrom": 1000,
+  "source_github_file_blob_sha": "96daf4e88743df4e623cdf5495f28b8e2113fc32",
+  "provenance": "Only the exact one-row unambiguous 2PNG/6NBN atom-pair subset selected in PR #80; other restraints not checked.",
+  "samples": {
+    "2png": {
+      "source_count": 304,
+      "lower_restraint_id": 1701,
+      "strict_lower_radius_ticks": 27283,
+      "upper_radius_ticks": 27284,
+      "moves": [
+        ["48:H",19182,8822,17281], ["47:H",-19182,-8822,-17281],
+        ["19:H",-2313,-584,-7769], ["19:HB",2313,584,7769],
+        ["46:HA",-14105,-8909,-7394], ["49:HA",14105,8909,7394],
+        ["63:H",-3964,18515,-872], ["64:H",3964,-18515,872],
+        ["44:H",6644,-14371,13184], ["42:HA",-6644,14371,-13184]
+      ]
+    },
+    "6nbn": {
+      "source_count": 553,
+      "lower_restraint_id": 470,
+      "strict_lower_radius_ticks": 368720,
+      "upper_radius_ticks": 368722,
+      "moves": [
+        ["95:HA",6885,18775,15214], ["92:HD22",-6885,-18775,-15214],
+        ["67:HB2",940,8260,-10691],
+        ["69:HB",-251314,36064,-267388], ["69:H",251314,-36064,267388],
+        ["43:H",-3578,-7685,-17821], ["43:HG1",2680,7205,18038],
+        ["67:HD22",-940,-8260,10691], ["40:OD1",898,480,-217]
+      ]
+    }
+  }
+}
