@@ -7,7 +7,7 @@ import argparse
 import json
 from pathlib import Path
 
-from experiments.ga98_gb98_transfer import run
+from ga98_gb98_transfer import run
 
 
 def main():
