@@ -1,0 +1,876 @@
+{
+  "source": {
+    "repo": "Gonglab-THU/GeoStab",
+    "commit": "be8e6d079ea792396f3a4343a8de54273d3d3828",
+    "path": "data/ddG/S669.csv",
+    "git_blob_sha1": "f7a19c2ac0821371a947469231eb03d728ab884f",
+    "bytes": 504799
+  },
+  "scientific_scope": "Original published source values; fixed GeoDDG-3D direct predictor; data-aligned pH/temp same wildtype panels; retrospective decision regret, not physical folding prediction",
+  "math": "R_g=max over matched panels (max measured ddG among all observed variants minus max measured ddG among top ceil(b*n) model-ranked variants); group conformal rank ceil((m+1)*0.9), other four folds calibrate each heldout fold; marginal coverage if complete groups exchangeable",
+  "counts": {
+    "sourceRows": 669,
+    "distinctWildtypes": 93,
+    "eligibleWildtypes": 66,
+    "eligibleAssayPanels": 69,
+    "motif12EligibleComponents": 61
+  },
+  "budgets": {
+    "5pct": {
+      "paired": {
+        "eligibleProteins": 66,
+        "matchedPanels": 69,
+        "averageModelRegret": 0.7965833333333335,
+        "averageRandomExpectedRegret": 1.2817029187424778,
+        "pairedGain": 0.48511958540914446,
+        "pairedBootstrap95": [
+          0.18766133583328123,
+          0.8258230866554521
+        ],
+        "meanAssaysPerProtein": 1.2424242424242424,
+        "meanVariantsPerProtein": 9.666666666666666,
+        "assayedVariantsTotal": 82,
+        "eligibleVariantsTotal": 638,
+        "fractionPositiveGains": 0.6060606060606061
+      },
+      "primary_seed": {
+        "wildtype_model": {
+          "covered": 60,
+          "total": 66,
+          "meanQ": 2.5599696969696963,
+          "folds": [
+            {
+              "fold": 0,
+              "calibration": 52,
+              "test": 14,
+              "covered": 14,
+              "q": 3
+            },
+            {
+              "fold": 1,
+              "calibration": 53,
+              "test": 13,
+              "covered": 12,
+              "q": 2.558
+            },
+            {
+              "fold": 2,
+              "calibration": 53,
+              "test": 13,
+              "covered": 11,
+              "q": 2.325
+            },
+            {
+              "fold": 3,
+              "calibration": 53,
+              "test": 13,
+              "covered": 11,
+              "q": 2.325
+            },
+            {
+              "fold": 4,
+              "calibration": 53,
+              "test": 13,
+              "covered": 12,
+              "q": 2.558
+            }
+          ]
+        },
+        "wildtype_identifier_baseline": {
+          "covered": 60,
+          "total": 66,
+          "meanQ": 3.0976818181818184,
+          "folds": [
+            {
+              "fold": 0,
+              "calibration": 52,
+              "test": 14,
+              "covered": 14,
+              "q": 3.35
+            },
+            {
+              "fold": 1,
+              "calibration": 53,
+              "test": 13,
+              "covered": 13,
+              "q": 3.35
+            },
+            {
+              "fold": 2,
+              "calibration": 53,
+              "test": 13,
+              "covered": 13,
+              "q": 3.35
+            },
+            {
+              "fold": 3,
+              "calibration": 53,
+              "test": 13,
+              "covered": 12,
+              "q": 3.029
+            },
+            {
+              "fold": 4,
+              "calibration": 53,
+              "test": 13,
+              "covered": 8,
+              "q": 2.39
+            }
+          ]
+        },
+        "motif12_model": {
+          "covered": 54,
+          "total": 61,
+          "meanQ": 2.603213114754099,
+          "folds": [
+            {
+              "fold": 0,
+              "calibration": 48,
+              "test": 13,
+              "covered": 12,
+              "q": 3
+            },
+            {
+              "fold": 1,
+              "calibration": 49,
+              "test": 12,
+              "covered": 9,
+              "q": 2.1
+            },
+            {
+              "fold": 2,
+              "calibration": 49,
+              "test": 12,
+              "covered": 11,
+              "q": 2.558
+            },
+            {
+              "fold": 3,
+              "calibration": 49,
+              "test": 12,
+              "covered": 12,
+              "q": 3
+            },
+            {
+              "fold": 4,
+              "calibration": 49,
+              "test": 12,
+              "covered": 10,
+              "q": 2.325
+            }
+          ]
+        },
+        "motif12_identifier_baseline": {
+          "covered": 55,
+          "total": 61,
+          "meanQ": 2.9830819672131152,
+          "folds": [
+            {
+              "fold": 0,
+              "calibration": 48,
+              "test": 13,
+              "covered": 13,
+              "q": 3.3600000000000003
+            },
+            {
+              "fold": 1,
+              "calibration": 49,
+              "test": 12,
+              "covered": 10,
+              "q": 2.7330000000000005
+            },
+            {
+              "fold": 2,
+              "calibration": 49,
+              "test": 12,
+              "covered": 10,
+              "q": 2.7330000000000005
+            },
+            {
+              "fold": 3,
+              "calibration": 49,
+              "test": 12,
+              "covered": 11,
+              "q": 3.029
+            },
+            {
+              "fold": 4,
+              "calibration": 49,
+              "test": 12,
+              "covered": 11,
+              "q": 3.029
+            }
+          ]
+        }
+      },
+      "split_sensitivity": {
+        "wildtype_model": {
+          "meanCoverage": 0.9058080808080807,
+          "minCoverage": 55,
+          "maxCoverage": 61,
+          "meanNominal90Q": 2.5718088383838382
+        },
+        "wildtype_identifier_baseline": {
+          "meanCoverage": 0.9073232323232323,
+          "minCoverage": 58,
+          "maxCoverage": 61,
+          "meanNominal90Q": 2.9985386363636364
+        },
+        "motif12_model": {
+          "meanCoverage": 0.9,
+          "minCoverage": 52,
+          "maxCoverage": 57,
+          "meanNominal90Q": 2.629672677595628
+        },
+        "motif12_identifier_baseline": {
+          "meanCoverage": 0.9038251366120218,
+          "minCoverage": 53,
+          "maxCoverage": 57,
+          "meanNominal90Q": 3.043285519125682
+        }
+      }
+    },
+    "10pct": {
+      "paired": {
+        "eligibleProteins": 66,
+        "matchedPanels": 69,
+        "averageModelRegret": 0.7172500000000003,
+        "averageRandomExpectedRegret": 1.1894549448394194,
+        "pairedGain": 0.47220494483941905,
+        "pairedBootstrap95": [
+          0.18330890464671626,
+          0.8099484741091248
+        ],
+        "meanAssaysPerProtein": 1.5909090909090908,
+        "meanVariantsPerProtein": 9.666666666666666,
+        "assayedVariantsTotal": 105,
+        "eligibleVariantsTotal": 638,
+        "fractionPositiveGains": 0.6363636363636364
+      },
+      "primary_seed": {
+        "wildtype_model": {
+          "covered": 60,
+          "total": 66,
+          "meanQ": 2.2463939393939394,
+          "folds": [
+            {
+              "fold": 0,
+              "calibration": 52,
+              "test": 14,
+              "covered": 14,
+              "q": 2.558
+            },
+            {
+              "fold": 1,
+              "calibration": 53,
+              "test": 13,
+              "covered": 12,
+              "q": 2.325
+            },
+            {
+              "fold": 2,
+              "calibration": 53,
+              "test": 13,
+              "covered": 12,
+              "q": 2.325
+            },
+            {
+              "fold": 3,
+              "calibration": 53,
+              "test": 13,
+              "covered": 11,
+              "q": 2
+            },
+            {
+              "fold": 4,
+              "calibration": 53,
+              "test": 13,
+              "covered": 11,
+              "q": 2
+            }
+          ]
+        },
+        "wildtype_identifier_baseline": {
+          "covered": 60,
+          "total": 66,
+          "meanQ": 2.96,
+          "folds": [
+            {
+              "fold": 0,
+              "calibration": 52,
+              "test": 14,
+              "covered": 14,
+              "q": 3.35
+            },
+            {
+              "fold": 1,
+              "calibration": 53,
+              "test": 13,
+              "covered": 13,
+              "q": 3.35
+            },
+            {
+              "fold": 2,
+              "calibration": 53,
+              "test": 13,
+              "covered": 13,
+              "q": 3.35
+            },
+            {
+              "fold": 3,
+              "calibration": 53,
+              "test": 13,
+              "covered": 11,
+              "q": 2.4
+            },
+            {
+              "fold": 4,
+              "calibration": 53,
+              "test": 13,
+              "covered": 9,
+              "q": 2.3200000000000003
+            }
+          ]
+        },
+        "motif12_model": {
+          "covered": 54,
+          "total": 61,
+          "meanQ": 2.3278032786885245,
+          "folds": [
+            {
+              "fold": 0,
+              "calibration": 48,
+              "test": 13,
+              "covered": 13,
+              "q": 3
+            },
+            {
+              "fold": 1,
+              "calibration": 49,
+              "test": 12,
+              "covered": 8,
+              "q": 1.7000000000000002
+            },
+            {
+              "fold": 2,
+              "calibration": 49,
+              "test": 12,
+              "covered": 11,
+              "q": 2.325
+            },
+            {
+              "fold": 3,
+              "calibration": 49,
+              "test": 12,
+              "covered": 12,
+              "q": 2.558
+            },
+            {
+              "fold": 4,
+              "calibration": 49,
+              "test": 12,
+              "covered": 10,
+              "q": 2
+            }
+          ]
+        },
+        "motif12_identifier_baseline": {
+          "covered": 54,
+          "total": 61,
+          "meanQ": 2.6390163934426227,
+          "folds": [
+            {
+              "fold": 0,
+              "calibration": 48,
+              "test": 13,
+              "covered": 13,
+              "q": 3.3600000000000003
+            },
+            {
+              "fold": 1,
+              "calibration": 49,
+              "test": 12,
+              "covered": 8,
+              "q": 2.3200000000000003
+            },
+            {
+              "fold": 2,
+              "calibration": 49,
+              "test": 12,
+              "covered": 11,
+              "q": 2.485
+            },
+            {
+              "fold": 3,
+              "calibration": 49,
+              "test": 12,
+              "covered": 11,
+              "q": 2.485
+            },
+            {
+              "fold": 4,
+              "calibration": 49,
+              "test": 12,
+              "covered": 11,
+              "q": 2.485
+            }
+          ]
+        }
+      },
+      "split_sensitivity": {
+        "wildtype_model": {
+          "meanCoverage": 0.9063131313131314,
+          "minCoverage": 57,
+          "maxCoverage": 61,
+          "meanNominal90Q": 2.249143181818182
+        },
+        "wildtype_identifier_baseline": {
+          "meanCoverage": 0.9083333333333333,
+          "minCoverage": 58,
+          "maxCoverage": 61,
+          "meanNominal90Q": 2.7476633838383844
+        },
+        "motif12_model": {
+          "meanCoverage": 0.9040983606557377,
+          "minCoverage": 53,
+          "maxCoverage": 57,
+          "meanNominal90Q": 2.3354226775956297
+        },
+        "motif12_identifier_baseline": {
+          "meanCoverage": 0.9038251366120218,
+          "minCoverage": 53,
+          "maxCoverage": 57,
+          "meanNominal90Q": 2.8081909836065577
+        }
+      }
+    },
+    "20pct": {
+      "paired": {
+        "eligibleProteins": 66,
+        "matchedPanels": 69,
+        "averageModelRegret": 0.5364545454545453,
+        "averageRandomExpectedRegret": 1.0391303818802657,
+        "pairedGain": 0.5026758364257204,
+        "pairedBootstrap95": [
+          0.21883436779064958,
+          0.8268579845867647
+        ],
+        "meanAssaysPerProtein": 2.409090909090909,
+        "meanVariantsPerProtein": 9.666666666666666,
+        "assayedVariantsTotal": 159,
+        "eligibleVariantsTotal": 638,
+        "fractionPositiveGains": 0.6818181818181818
+      },
+      "primary_seed": {
+        "wildtype_model": {
+          "covered": 60,
+          "total": 66,
+          "meanQ": 1.6598181818181819,
+          "folds": [
+            {
+              "fold": 0,
+              "calibration": 52,
+              "test": 14,
+              "covered": 13,
+              "q": 1.7000000000000002
+            },
+            {
+              "fold": 1,
+              "calibration": 53,
+              "test": 13,
+              "covered": 12,
+              "q": 1.7000000000000002
+            },
+            {
+              "fold": 2,
+              "calibration": 53,
+              "test": 13,
+              "covered": 13,
+              "q": 1.7999999999999998
+            },
+            {
+              "fold": 3,
+              "calibration": 53,
+              "test": 13,
+              "covered": 10,
+              "q": 1.3960000000000001
+            },
+            {
+              "fold": 4,
+              "calibration": 53,
+              "test": 13,
+              "covered": 12,
+              "q": 1.7000000000000002
+            }
+          ]
+        },
+        "wildtype_identifier_baseline": {
+          "covered": 61,
+          "total": 66,
+          "meanQ": 2.4337878787878786,
+          "folds": [
+            {
+              "fold": 0,
+              "calibration": 52,
+              "test": 14,
+              "covered": 14,
+              "q": 2.485
+            },
+            {
+              "fold": 1,
+              "calibration": 53,
+              "test": 13,
+              "covered": 13,
+              "q": 2.485
+            },
+            {
+              "fold": 2,
+              "calibration": 53,
+              "test": 13,
+              "covered": 13,
+              "q": 2.485
+            },
+            {
+              "fold": 3,
+              "calibration": 53,
+              "test": 13,
+              "covered": 11,
+              "q": 2.39
+            },
+            {
+              "fold": 4,
+              "calibration": 53,
+              "test": 13,
+              "covered": 10,
+              "q": 2.3200000000000003
+            }
+          ]
+        },
+        "motif12_model": {
+          "covered": 55,
+          "total": 61,
+          "meanQ": 1.7586393442622952,
+          "folds": [
+            {
+              "fold": 0,
+              "calibration": 48,
+              "test": 13,
+              "covered": 13,
+              "q": 2.325
+            },
+            {
+              "fold": 1,
+              "calibration": 49,
+              "test": 12,
+              "covered": 8,
+              "q": 1.221
+            },
+            {
+              "fold": 2,
+              "calibration": 49,
+              "test": 12,
+              "covered": 11,
+              "q": 1.7000000000000002
+            },
+            {
+              "fold": 3,
+              "calibration": 49,
+              "test": 12,
+              "covered": 12,
+              "q": 1.7999999999999998
+            },
+            {
+              "fold": 4,
+              "calibration": 49,
+              "test": 12,
+              "covered": 11,
+              "q": 1.7000000000000002
+            }
+          ]
+        },
+        "motif12_identifier_baseline": {
+          "covered": 55,
+          "total": 61,
+          "meanQ": 2.5467868852459015,
+          "folds": [
+            {
+              "fold": 0,
+              "calibration": 48,
+              "test": 13,
+              "covered": 13,
+              "q": 3.35
+            },
+            {
+              "fold": 1,
+              "calibration": 49,
+              "test": 12,
+              "covered": 8,
+              "q": 2.032
+            },
+            {
+              "fold": 2,
+              "calibration": 49,
+              "test": 12,
+              "covered": 11,
+              "q": 2.4
+            },
+            {
+              "fold": 3,
+              "calibration": 49,
+              "test": 12,
+              "covered": 12,
+              "q": 2.485
+            },
+            {
+              "fold": 4,
+              "calibration": 49,
+              "test": 12,
+              "covered": 11,
+              "q": 2.4
+            }
+          ]
+        }
+      },
+      "split_sensitivity": {
+        "wildtype_model": {
+          "meanCoverage": 0.9022727272727272,
+          "minCoverage": 57,
+          "maxCoverage": 61,
+          "meanNominal90Q": 1.6304101010101009
+        },
+        "wildtype_identifier_baseline": {
+          "meanCoverage": 0.9083333333333333,
+          "minCoverage": 57,
+          "maxCoverage": 61,
+          "meanNominal90Q": 2.395704797979799
+        },
+        "motif12_model": {
+          "meanCoverage": 0.9016393442622951,
+          "minCoverage": 53,
+          "maxCoverage": 57,
+          "meanNominal90Q": 1.6958540983606556
+        },
+        "motif12_identifier_baseline": {
+          "meanCoverage": 0.9051912568306011,
+          "minCoverage": 54,
+          "maxCoverage": 57,
+          "meanNominal90Q": 2.4891846994535523
+        }
+      }
+    },
+    "50pct": {
+      "paired": {
+        "eligibleProteins": 66,
+        "matchedPanels": 69,
+        "averageModelRegret": 0.1924393939393939,
+        "averageRandomExpectedRegret": 0.5287398095972545,
+        "pairedGain": 0.33630041565786045,
+        "pairedBootstrap95": [
+          0.17703988701660078,
+          0.5064593375176095
+        ],
+        "meanAssaysPerProtein": 5.0606060606060606,
+        "meanVariantsPerProtein": 9.666666666666666,
+        "assayedVariantsTotal": 334,
+        "eligibleVariantsTotal": 638,
+        "fractionPositiveGains": 0.7727272727272727
+      },
+      "primary_seed": {
+        "wildtype_model": {
+          "covered": 60,
+          "total": 66,
+          "meanQ": 0.9062575757575758,
+          "folds": [
+            {
+              "fold": 0,
+              "calibration": 52,
+              "test": 14,
+              "covered": 12,
+              "q": 0.91
+            },
+            {
+              "fold": 1,
+              "calibration": 53,
+              "test": 13,
+              "covered": 13,
+              "q": 0.9500000000000001
+            },
+            {
+              "fold": 2,
+              "calibration": 53,
+              "test": 13,
+              "covered": 13,
+              "q": 0.9500000000000001
+            },
+            {
+              "fold": 3,
+              "calibration": 53,
+              "test": 13,
+              "covered": 12,
+              "q": 0.9319999999999999
+            },
+            {
+              "fold": 4,
+              "calibration": 53,
+              "test": 13,
+              "covered": 10,
+              "q": 0.7889999999999999
+            }
+          ]
+        },
+        "wildtype_identifier_baseline": {
+          "covered": 61,
+          "total": 66,
+          "meanQ": 2.1004545454545456,
+          "folds": [
+            {
+              "fold": 0,
+              "calibration": 52,
+              "test": 14,
+              "covered": 13,
+              "q": 2
+            },
+            {
+              "fold": 1,
+              "calibration": 53,
+              "test": 13,
+              "covered": 13,
+              "q": 2.39
+            },
+            {
+              "fold": 2,
+              "calibration": 53,
+              "test": 13,
+              "covered": 13,
+              "q": 2.39
+            },
+            {
+              "fold": 3,
+              "calibration": 53,
+              "test": 13,
+              "covered": 12,
+              "q": 2
+            },
+            {
+              "fold": 4,
+              "calibration": 53,
+              "test": 13,
+              "covered": 10,
+              "q": 1.73
+            }
+          ]
+        },
+        "motif12_model": {
+          "covered": 55,
+          "total": 61,
+          "meanQ": 0.9133114754098361,
+          "folds": [
+            {
+              "fold": 0,
+              "calibration": 48,
+              "test": 13,
+              "covered": 13,
+              "q": 0.98
+            },
+            {
+              "fold": 1,
+              "calibration": 49,
+              "test": 12,
+              "covered": 11,
+              "q": 0.9319999999999999
+            },
+            {
+              "fold": 2,
+              "calibration": 49,
+              "test": 12,
+              "covered": 12,
+              "q": 0.9500000000000001
+            },
+            {
+              "fold": 3,
+              "calibration": 49,
+              "test": 12,
+              "covered": 9,
+              "q": 0.7889999999999999
+            },
+            {
+              "fold": 4,
+              "calibration": 49,
+              "test": 12,
+              "covered": 10,
+              "q": 0.91
+            }
+          ]
+        },
+        "motif12_identifier_baseline": {
+          "covered": 57,
+          "total": 61,
+          "meanQ": 2.2472131147540986,
+          "folds": [
+            {
+              "fold": 0,
+              "calibration": 48,
+              "test": 13,
+              "covered": 13,
+              "q": 2.8
+            },
+            {
+              "fold": 1,
+              "calibration": 49,
+              "test": 12,
+              "covered": 10,
+              "q": 2
+            },
+            {
+              "fold": 2,
+              "calibration": 49,
+              "test": 12,
+              "covered": 11,
+              "q": 2
+            },
+            {
+              "fold": 3,
+              "calibration": 49,
+              "test": 12,
+              "covered": 12,
+              "q": 2.39
+            },
+            {
+              "fold": 4,
+              "calibration": 49,
+              "test": 12,
+              "covered": 11,
+              "q": 2
+            }
+          ]
+        }
+      },
+      "split_sensitivity": {
+        "wildtype_model": {
+          "meanCoverage": 0.9103535353535354,
+          "minCoverage": 58,
+          "maxCoverage": 61,
+          "meanNominal90Q": 0.9130901515151514
+        },
+        "wildtype_identifier_baseline": {
+          "meanCoverage": 0.9128787878787878,
+          "minCoverage": 59,
+          "maxCoverage": 61,
+          "meanNominal90Q": 2.0769909090909087
+        },
+        "motif12_model": {
+          "meanCoverage": 0.9032786885245901,
+          "minCoverage": 53,
+          "maxCoverage": 57,
+          "meanNominal90Q": 0.9193174863387978
+        },
+        "motif12_identifier_baseline": {
+          "meanCoverage": 0.9095628415300546,
+          "minCoverage": 53,
+          "maxCoverage": 57,
+          "meanNominal90Q": 2.152842622950821
+        }
+      }
+    }
+  }
+}

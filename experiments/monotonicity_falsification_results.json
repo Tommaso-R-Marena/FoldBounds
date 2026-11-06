@@ -1,0 +1,126 @@
+[
+  {
+    "demonstrably_nonmonotone_sequences_sampled_q_b": 37,
+    "dimension": 2,
+    "examples": [
+      {
+        "failed_coefficients": 3,
+        "sequence": "HHHHHPHH"
+      },
+      {
+        "failed_coefficients": 2,
+        "sequence": "HHHHHPPH"
+      },
+      {
+        "failed_coefficients": 3,
+        "sequence": "HHHHPHHH"
+      },
+      {
+        "contact_q": "3/2",
+        "counterexample_sequence": "HHHPPHHH",
+        "p_at_b_1": "891/2551",
+        "p_at_b_1_2": "1059/4021",
+        "p_at_b_1_4": "3951/24032",
+        "p_at_b_2": "4731/11692",
+        "p_at_b_4": "144972/340189",
+        "p_at_b_8": "5806896/13644049"
+      },
+      {
+        "contact_q": "2",
+        "counterexample_sequence": "HHHPPHPH",
+        "p_at_b_1": "308/727",
+        "p_at_b_1_2": "712/2197",
+        "p_at_b_1_4": "5176/25265",
+        "p_at_b_2": "6656/13745",
+        "p_at_b_4": "204032/403345",
+        "p_at_b_8": "8078336/16046561"
+      },
+      {
+        "contact_q": "3/2",
+        "counterexample_sequence": "HHHPPPHH",
+        "p_at_b_1": "102/583",
+        "p_at_b_1_2": "185/1259",
+        "p_at_b_1_4": "2229/23126",
+        "p_at_b_2": "590/3473",
+        "p_at_b_4": "40728/298057",
+        "p_at_b_8": "367520/3953771"
+      },
+      {
+        "contact_q": "3/2",
+        "counterexample_sequence": "HHHPPPHP",
+        "p_at_b_1": "24/551",
+        "p_at_b_1_2": "72/1801",
+        "p_at_b_1_4": "660/22417",
+        "p_at_b_2": "396/9869",
+        "p_at_b_4": "8880/285569",
+        "p_at_b_8": "236736/11527073"
+      },
+      {
+        "contact_q": "3/2",
+        "counterexample_sequence": "HHHPPPPH",
+        "p_at_b_1": "165/1147",
+        "p_at_b_1_2": "149/1239",
+        "p_at_b_1_4": "255/3262",
+        "p_at_b_2": "68/489",
+        "p_at_b_4": "32640/294833",
+        "p_at_b_8": "292736/3926091"
+      }
+    ],
+    "nontrivial_event_sequences": 212,
+    "sequences_total": 256,
+    "sufficient_certificate_failed": 120,
+    "sufficient_quadrant_coefficient_certificates": 92
+  },
+  {
+    "demonstrably_nonmonotone_sequences_sampled_q_b": 3,
+    "dimension": 3,
+    "examples": [
+      {
+        "failed_coefficients": 1,
+        "sequence": "HHPHPHPH"
+      },
+      {
+        "failed_coefficients": 1,
+        "sequence": "HHPHPPHH"
+      },
+      {
+        "failed_coefficients": 1,
+        "sequence": "HHPPHPHH"
+      },
+      {
+        "contact_q": "3/2",
+        "counterexample_sequence": "HHPPPPPH",
+        "p_at_b_1": "828/13841",
+        "p_at_b_1_2": "486/10885",
+        "p_at_b_1_4": "1800/63647",
+        "p_at_b_2": "29880/447193",
+        "p_at_b_4": "1311840/19522433",
+        "p_at_b_8": "66589056/1018277185"
+      },
+      {
+        "contact_q": "3/2",
+        "counterexample_sequence": "HPPPPPHH",
+        "p_at_b_1": "828/13841",
+        "p_at_b_1_2": "486/10885",
+        "p_at_b_1_4": "1800/63647",
+        "p_at_b_2": "29880/447193",
+        "p_at_b_4": "1311840/19522433",
+        "p_at_b_8": "66589056/1018277185"
+      },
+      {
+        "contact_q": "3/2",
+        "counterexample_sequence": "HPPPPPPH",
+        "p_at_b_1": "828/13841",
+        "p_at_b_1_2": "486/10885",
+        "p_at_b_1_4": "1800/63647",
+        "p_at_b_2": "29880/447193",
+        "p_at_b_4": "1311840/19522433",
+        "p_at_b_8": "66589056/1018277185"
+      }
+    ],
+    "nontrivial_event_sequences": 212,
+    "sequences_total": 256,
+    "sufficient_certificate_failed": 13,
+    "sufficient_quadrant_coefficient_certificates": 199
+  }
+]

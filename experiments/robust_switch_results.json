@@ -1,0 +1,220 @@
+{
+  "replications": [
+    {
+      "cases": [
+        {
+          "adversarial_population_box": [
+            "84529143/508499807",
+            "1108499200/1368704059"
+          ],
+          "certificate_positive_derivative_terms": 133,
+          "crossing_guaranteed_complement_until": {
+            "lower": "86583263420536542571/73786976294838206464",
+            "mid_decimal": 1.1734220287678803,
+            "upper": "43291631710268271293/36893488147419103232"
+          },
+          "crossing_guaranteed_event_from": {
+            "lower": "86583263420536542571/73786976294838206464",
+            "mid_decimal": 1.1734220287678803,
+            "upper": "43291631710268271293/36893488147419103232"
+          },
+          "nominal_crossover": {
+            "lower": "86583263420536542571/73786976294838206464",
+            "mid_decimal": 1.1734220287678803,
+            "upper": "43291631710268271293/36893488147419103232"
+          },
+          "nominal_parameter_box": [
+            "84529143/508499807",
+            "1108499200/1368704059"
+          ],
+          "per_conformation_factor_range": [
+            "1",
+            "1"
+          ],
+          "relative_odds_distortion": "1",
+          "undetermined_bend_width_decimal": 0.0
+        },
+        {
+          "adversarial_population_box": [
+            "2113228575/14938341161",
+            "1341284032/1601488891"
+          ],
+          "certificate_positive_derivative_terms": 133,
+          "crossing_guaranteed_complement_until": {
+            "lower": "35247302575406556893/36893488147419103232",
+            "mid_decimal": 0.9553800506627426,
+            "upper": "70494605150813113801/73786976294838206464"
+          },
+          "crossing_guaranteed_event_from": {
+            "lower": "54067182364128303053/36893488147419103232",
+            "mid_decimal": 1.4654939144839465,
+            "upper": "108134364728256606121/73786976294838206464"
+          },
+          "nominal_crossover": {
+            "lower": "86583263420536542571/73786976294838206464",
+            "mid_decimal": 1.1734220287678803,
+            "upper": "43291631710268271293/36893488147419103232"
+          },
+          "nominal_parameter_box": [
+            "84529143/508499807",
+            "1108499200/1368704059"
+          ],
+          "per_conformation_factor_range": [
+            "10/11",
+            "11/10"
+          ],
+          "relative_odds_distortion": "121/100",
+          "undetermined_bend_width_decimal": 0.5101138638212038
+        },
+        {
+          "adversarial_population_box": [
+            "234803175/1930685831",
+            "177359872/206271523"
+          ],
+          "certificate_positive_derivative_terms": 133,
+          "crossing_guaranteed_complement_until": {
+            "lower": "461415467495891087/576460752303423488",
+            "mid_decimal": 0.8004282436439356,
+            "upper": "59061179839474059151/73786976294838206464"
+          },
+          "crossing_guaranteed_event_from": {
+            "lower": "135142971316974111571/73786976294838206464",
+            "mid_decimal": 1.8315287887251193,
+            "upper": "67571485658487055793/36893488147419103232"
+          },
+          "nominal_crossover": {
+            "lower": "86583263420536542571/73786976294838206464",
+            "mid_decimal": 1.1734220287678803,
+            "upper": "43291631710268271293/36893488147419103232"
+          },
+          "nominal_parameter_box": [
+            "84529143/508499807",
+            "1108499200/1368704059"
+          ],
+          "per_conformation_factor_range": [
+            "5/6",
+            "6/5"
+          ],
+          "relative_odds_distortion": "36/25",
+          "undetermined_bend_width_decimal": 1.0311005450811837
+        }
+      ],
+      "critical_odds_ratio_if_prob_above_half": null,
+      "dimension": 2,
+      "event_contact_threshold": 2,
+      "histogram_bins": 52,
+      "nominal_probability_at_q1_5_b1": "23166/50005",
+      "sequence": "HPHHPHHPHHHH",
+      "states": 30073
+    },
+    {
+      "cases": [
+        {
+          "adversarial_population_box": [
+            "149019/566171",
+            "27968768/37452129"
+          ],
+          "certificate_positive_derivative_terms": 55,
+          "crossing_guaranteed_complement_until": {
+            "lower": "31623894461569121393/36893488147419103232",
+            "mid_decimal": 0.8571673769421388,
+            "upper": "63247788923138242801/73786976294838206464"
+          },
+          "crossing_guaranteed_event_from": {
+            "lower": "31623894461569121393/36893488147419103232",
+            "mid_decimal": 0.8571673769421388,
+            "upper": "63247788923138242801/73786976294838206464"
+          },
+          "nominal_crossover": {
+            "lower": "31623894461569121393/36893488147419103232",
+            "mid_decimal": 0.8571673769421388,
+            "upper": "63247788923138242801/73786976294838206464"
+          },
+          "nominal_parameter_box": [
+            "149019/566171",
+            "27968768/37452129"
+          ],
+          "per_conformation_factor_range": [
+            "1",
+            "1"
+          ],
+          "relative_odds_distortion": "1",
+          "undetermined_bend_width_decimal": 0.0
+        },
+        {
+          "adversarial_population_box": [
+            "3725475/16344323",
+            "846055232/1083139257"
+          ],
+          "certificate_positive_derivative_terms": 55,
+          "crossing_guaranteed_complement_until": {
+            "lower": "23830132650499781303/36893488147419103232",
+            "mid_decimal": 0.6459170397572404,
+            "upper": "47660265300999562621/73786976294838206464"
+          },
+          "crossing_guaranteed_event_from": {
+            "lower": "86348257062165919/72057594037927936",
+            "mid_decimal": 1.1983227890833548,
+            "upper": "88420615231657901071/73786976294838206464"
+          },
+          "nominal_crossover": {
+            "lower": "31623894461569121393/36893488147419103232",
+            "mid_decimal": 0.8571673769421388,
+            "upper": "63247788923138242801/73786976294838206464"
+          },
+          "nominal_parameter_box": [
+            "149019/566171",
+            "27968768/37452129"
+          ],
+          "per_conformation_factor_range": [
+            "10/11",
+            "11/10"
+          ],
+          "relative_odds_distortion": "121/100",
+          "undetermined_bend_width_decimal": 0.5524057493261144
+        },
+        {
+          "adversarial_population_box": [
+            "1241825/6247649",
+            "1006875648/1243959673"
+          ],
+          "certificate_positive_derivative_terms": 55,
+          "crossing_guaranteed_complement_until": {
+            "lower": "37928979474619146721/73786976294838206464",
+            "mid_decimal": 0.5140335243317523,
+            "upper": "2370561217163696671/4611686018427387904"
+          },
+          "crossing_guaranteed_event_from": {
+            "lower": "129605306607648460291/73786976294838206464",
+            "mid_decimal": 1.7564794373707795,
+            "upper": "64802653303824230153/36893488147419103232"
+          },
+          "nominal_crossover": {
+            "lower": "31623894461569121393/36893488147419103232",
+            "mid_decimal": 0.8571673769421388,
+            "upper": "63247788923138242801/73786976294838206464"
+          },
+          "nominal_parameter_box": [
+            "149019/566171",
+            "27968768/37452129"
+          ],
+          "per_conformation_factor_range": [
+            "5/6",
+            "6/5"
+          ],
+          "relative_odds_distortion": "36/25",
+          "undetermined_bend_width_decimal": 1.2424459130390273
+        }
+      ],
+      "critical_odds_ratio_if_prob_above_half": "9174/8365",
+      "dimension": 3,
+      "event_contact_threshold": 1,
+      "histogram_bins": 22,
+      "nominal_probability_at_q1_5_b1": "9174/17539",
+      "sequence": "HPHHPHHH",
+      "states": 13565
+    }
+  ],
+  "scientific_status": "Exact proofs conditional on enumerated toy Hamiltonian; NOT real-protein validated",
+  "uncertainty_model": "Every state weight times any factor in [1/r,r]; common normalization cancels"
+}

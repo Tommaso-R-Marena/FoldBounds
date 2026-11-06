@@ -1,0 +1,133 @@
+name: Frozen GA95/GB95 code transfer to independent GA98/GB98 experimental NMR
+on:
+  pull_request:
+    paths:
+      - 'experiments/ga98_gb98_transfer.py'
+      - 'experiments/run_ga98_gb98_transfer.py'
+      - 'experiments/ga98_t25i_followup.py'
+      - 'experiments/run_ga98_t25i_followup.py'
+      - 'tests/test_ga98_t25i_followup.py'
+      - 'experiments/results/ga98_t25i_followup_20261105.json'
+      - 'tests/test_ga98_gb98_transfer.py'
+      - 'experiments/results/ga98_gb98_frozen_transfer_20261105.json'
+      - '.github/workflows/ga98-gb98-external-transfer.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  independent-mutant-nmr:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download four official experimental NMR coordinate files
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/foldbounds-mutant-holdout
+          for pdb in 2KDL 2KDM 2LHC 2LHD; do
+            curl --fail --show-error --location --retry 3 --retry-delay 3 --max-time 50 \
+              "https://files.rcsb.org/download/$pdb.pdb" \
+              -o "/tmp/foldbounds-mutant-holdout/$pdb.pdb"
+          done
+      - name: Verify immutable training PDB SHA-256 provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo 'fb75cc55eb8b89e0cec5e2be69901b348e60916375b9c410a0573edfca1db591  /tmp/foldbounds-mutant-holdout/2KDL.pdb' | sha256sum --check
+          echo '1c49e5faa25b443285432d935c621151294ed3b636b0106e6b1a7f7ccf2d00ec  /tmp/foldbounds-mutant-holdout/2KDM.pdb' | sha256sum --check
+          echo '91ed5cf27675f68799e60951cca5df7a4ecb2e8d19fd2063c4babb300e9507ac  /tmp/foldbounds-mutant-holdout/2LHC.pdb' | sha256sum --check
+          echo '73131f50fdb7fc709e0c1b3e66daf64236a19d911a4bfe5324a23007847c2e6f  /tmp/foldbounds-mutant-holdout/2LHD.pdb' | sha256sum --check
+      - name: Install pinned FoldBounds Python test environment
+        run: python3 -m pip install -e '.[test]'
+      - name: Independent abstention and adversarial fixture tests
+        run: python3 -m pytest -q tests/test_ga98_gb98_transfer.py
+      - name: Apply frozen GA95/GB95 code to unseen GA98/GB98 NMR structures
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/run_ga98_gb98_transfer.py \
+            --ga95 /tmp/foldbounds-mutant-holdout/2KDL.pdb \
+            --gb95 /tmp/foldbounds-mutant-holdout/2KDM.pdb \
+            --ga98 /tmp/foldbounds-mutant-holdout/2LHC.pdb \
+            --gb98 /tmp/foldbounds-mutant-holdout/2LHD.pdb \
+            --reference experiments/results/ga_gb_error_code_verified_20261105.json \
+            --out /tmp/foldbounds-mutant-holdout/frozen_transfer_results.json
+      - name: Fail closed unless live RCSB mutation-heldout results equal pinned audit
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          expected=json.loads(Path('experiments/results/ga98_gb98_frozen_transfer_20261105.json').read_text())
+          actual=json.loads(Path('/tmp/foldbounds-mutant-holdout/frozen_transfer_results.json').read_text())
+          receipt=expected.pop('audit_receipt')
+          if actual!=expected:
+              raise SystemExit('external GA98/GB98 real-data transfer report changed')
+          if receipt['original_head']!='951ac6449af680496ea5e9e24bd33cd4aa4db6e7':
+              raise SystemExit('original unmodified method-freeze receipt changed')
+          print('Confirmed exact RCSB 2LHC/2LHD external mutant holdout results')
+          PY
+      - name: Preserve unfiltered outcomes including negative results
+        uses: actions/upload-artifact@v4
+        with:
+          name: ga98-gb98-independent-mutant-holdout
+          path: /tmp/foldbounds-mutant-holdout/frozen_transfer_results.json
+          retention-days: 90
+
+
+  reciprocal-mutant-nmr:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Obtain reference and new published reciprocal T25I mutant NMR entries
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/foldbounds-t25i
+          for pdb in 2KDL 2KDM 2LHG 2LHE; do
+            curl --fail --show-error --location --retry 3 --retry-delay 3 --max-time 50 \
+              "https://files.rcsb.org/download/$pdb.pdb" \
+              -o "/tmp/foldbounds-t25i/$pdb.pdb"
+          done
+      - name: Require pinned original training coordinate bytes and list new SHA-256
+        run: |
+          echo 'fb75cc55eb8b89e0cec5e2be69901b348e60916375b9c410a0573edfca1db591  /tmp/foldbounds-t25i/2KDL.pdb' | sha256sum --check
+          echo '1c49e5faa25b443285432d935c621151294ed3b636b0106e6b1a7f7ccf2d00ec  /tmp/foldbounds-t25i/2KDM.pdb' | sha256sum --check
+          echo '946bb4d44567de7725aeecd334d7c1cec086737d6445d157cd94976326c84cff  /tmp/foldbounds-t25i/2LHG.pdb' | sha256sum --check
+          echo 'cd2fa17ac762106c4f21c464bd7709cb612e3cd96d227ee18fdccd99608e83d1  /tmp/foldbounds-t25i/2LHE.pdb' | sha256sum --check
+      - name: Install independent exact-rational FoldBounds test environment
+        run: python3 -m pip install -e '.[test]'
+      - name: Audit mutation cascade and reject untrusted inputs
+        run: python3 -m pytest -q tests/test_ga98_t25i_followup.py
+      - name: Run unretuned GA95/GB95 codes on true additional NMR variants
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m experiments.run_ga98_t25i_followup \
+            --ga95 /tmp/foldbounds-t25i/2KDL.pdb \
+            --gb95 /tmp/foldbounds-t25i/2KDM.pdb \
+            --t25i /tmp/foldbounds-t25i/2LHG.pdb \
+            --t25i_l20a /tmp/foldbounds-t25i/2LHE.pdb \
+            --reference experiments/results/ga_gb_error_code_verified_20261105.json \
+            --out /tmp/foldbounds-t25i/followup_results.json
+      - name: Require exact reproducibility of full reciprocal mutant NMR report
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          expected=json.loads(Path('experiments/results/ga98_t25i_followup_20261105.json').read_text())
+          actual=json.loads(Path('/tmp/foldbounds-t25i/followup_results.json').read_text())
+          receipt=expected.pop('audit_receipt')
+          if actual!=expected:
+              raise SystemExit('RCSB reciprocal-mutant results failed exact reproduction')
+          if receipt["head_sha"]!='6cb86c663dcdcf21ca7938979cc0cd4fbabefbbe':
+              raise SystemExit('original heldout receipt was altered')
+          print('All 30 second-cascade conformers and five frozen codes reproduced')
+          PY
+      - name: Preserve full negative or positive outcomes without selective reporting
+        uses: actions/upload-artifact@v4
+        with:
+          name: ga98-t25i-reciprocal-mutant-nmr
+          path: /tmp/foldbounds-t25i/followup_results.json
+          retention-days: 90

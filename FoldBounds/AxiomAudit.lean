@@ -1,4 +1,36 @@
 import FoldBounds
+import FoldBounds.FrontierTests
+import FoldBounds.FrontierNextTests
+import FoldBounds.MotionCoordinates
+import FoldBounds.MotionVariableDirections
+import FoldBounds.MotionInverseFourth
+import FoldBounds.MotionProteinHessian
+import FoldBounds.MotionResidual
+import FoldBounds.MotionProteinResponse
+import FoldBounds.MotionPairOrdering
+import FoldBounds.MotionVerifiedInverse
+import FoldBounds.MotionExactSolvability
+import FoldBounds.MotionRealPairSamples
+import FoldBounds.MotionScaledCertificates
+import FoldBounds.MotionRoundedOps
+import FoldBounds.MotionScaledOrdering
+import FoldBounds.MotionBulkChain
+import FoldBounds.MotionBulkRealSmoke
+import FoldBounds.MotionDyadicDivision
+import FoldBounds.MotionSparseResponse
+import FoldBounds.MotionContactCompleteness
+import FoldBounds.MotionRobustResponse
+import FoldBounds.MotionRobustOrdering
+import FoldBounds.MotionRobustConcordance
+import FoldBounds.MotionGNMExact
+import FoldBounds.MotionGNMTopologyRobust
+import FoldBounds.MotionGNMAdaptiveCases
+import FoldBounds.MotionGNMPrefixTree
+import FoldBounds.MotionGNMFlowCoercivity
+import FoldBounds.MotionGNMSpectralSOS
+import FoldBounds.MotionGNMIntegerInverse
+import FoldBounds.MotionGNMCoupledRank
+import FoldBounds.MotionGNMGeometricNogoods
 
 /-! Axiom audit: every headline theorem depends only on the standard axioms
 `propext`, `Classical.choice`, `Quot.sound`. -/
@@ -53,3 +85,256 @@ import FoldBounds
 #print axioms FoldBounds.LatticeModel.advance_injective
 #print axioms FoldBounds.LatticeModel.trace_injective
 #print axioms FoldBounds.LatticeModel.walkFrom_injective
+
+-- Lattice representation, contact semantics and compact frontier certificates
+#print axioms FoldBounds.LatticeModel.walkFrom_prefix
+#print axioms FoldBounds.LatticeModel.conformationEquivSAW_apply
+#print axioms FoldBounds.LatticeModel.toSAW_injective
+#print axioms FoldBounds.LatticeModel.toSAW_surjective
+#print axioms FoldBounds.LatticeModel.sum_conformation_eq_sum_saw
+#print axioms FoldBounds.LatticeModel.card_conformation_eq_card_saw
+#print axioms FoldBounds.LatticeModel.massQ_weightQ_eq_sum_saw
+#print axioms FoldBounds.LatticeModel.walkFrom_straight_nodup
+#print axioms FoldBounds.LatticeModel.checkHP_coupled_sound_unconditional
+#print axioms FoldBounds.LatticeModel.adjacent_eq_manhattan1
+#print axioms FoldBounds.LatticeModel.colour_walkFrom
+#print axioms FoldBounds.LatticeModel.index_parity_of_adjacent
+#print axioms FoldBounds.LatticeModel.not_adjacent_of_even_gap
+#print axioms FoldBounds.LatticeModel.not_adjacent_of_gap_two
+#print axioms FoldBounds.LatticeModel.contactCount_eq_parityContactCount
+#print axioms FoldBounds.LatticeModel.saw_contactCount_eq_parity
+#print axioms FoldBounds.LatticeModel.weightQ_eq_of_contacts_eq
+#print axioms FoldBounds.LatticeModel.weightQ_eq_parity
+#print axioms FoldBounds.LatticeModel.qpow_mono
+#print axioms FoldBounds.LatticeModel.weightQ_mono
+#print axioms FoldBounds.Frontier.mem_validWords
+#print axioms FoldBounds.Frontier.sum_conformation_eq_sum_validWords
+#print axioms FoldBounds.Frontier.ext_nil
+#print axioms FoldBounds.Frontier.ext_eq_empty_of_not_nodup
+#print axioms FoldBounds.Frontier.ext_eq_singleton
+#print axioms FoldBounds.Frontier.ext_eq_biUnion
+#print axioms FoldBounds.Frontier.ext_pairwiseDisjoint
+#print axioms FoldBounds.Frontier.sum_ext_split
+#print axioms FoldBounds.Frontier.not_nodup_reverse
+#print axioms FoldBounds.Frontier.card_ext_le_pow_three
+#print axioms FoldBounds.Frontier.contacts_decompose
+#print axioms FoldBounds.Frontier.contacts_le_kmax
+#print axioms FoldBounds.Frontier.contacts_le_cross_bound
+#print axioms FoldBounds.Frontier.wordContacts_eq_parity
+#print axioms FoldBounds.Frontier.contactsAt_le_slots
+#print axioms FoldBounds.Frontier.contacts_le_degree_caps
+#print axioms FoldBounds.Frontier.futureCap_le_futurePairs
+#print axioms FoldBounds.Transfer.wsum_dp
+#print axioms FoldBounds.Transfer.spec_nonneg
+#print axioms FoldBounds.Transfer.crossContacts_snoc
+#print axioms FoldBounds.Transfer.relaxed_sound
+#print axioms FoldBounds.Transfer.sum_ext_le_dp
+#print axioms FoldBounds.FrontierCheck.envelope_bound
+#print axioms FoldBounds.FrontierCheck.boundEnc_sound
+#print axioms FoldBounds.FrontierCheck.exactEnc_sound
+#print axioms FoldBounds.FrontierCheck.deadOK_ext_empty
+#print axioms FoldBounds.FrontierCheck.checkNode_sound
+#print axioms FoldBounds.FrontierCheck.massZ_root_pos
+#print axioms FoldBounds.FrontierCheck.check_sound
+#print axioms FoldBounds.FrontierCheck.check_coupled_probability_sound
+#print axioms FoldBounds.FrontierCheck.check_root_bound_accepted
+#print axioms FoldBounds.FrontierCheck.Z_le_basic_root
+#print axioms FoldBounds.FrontierCheck.sum_ext_eq_sum_leaves
+#print axioms FoldBounds.FrontierCheck.leaf_cover_unique
+#print axioms FoldBounds.FrontierCheck.relaxed_le_basic
+#print axioms FoldBounds.FrontierCheck.basicZ_degree_le_basic
+#print axioms FoldBounds.FrontierCheck.transfer_total_le_basic
+#print axioms FoldBounds.FrontierCheck.checkFlat_sound
+#print axioms FoldBounds.FrontierTests.hhhh_probability_exact
+#print axioms FoldBounds.Frontier.trace_diag
+#print axioms FoldBounds.Frontier.nodup_family
+#print axioms FoldBounds.Frontier.card_family
+#print axioms FoldBounds.Frontier.family_subset_ext
+#print axioms FoldBounds.Frontier.family_lower
+#print axioms FoldBounds.FrontierCheck.famLow_le
+#print axioms FoldBounds.FrontierCheck.famRaise_sound
+#print axioms FoldBounds.FrontierTests.accept_root_transfer_thr3
+
+-- Version-2 additions (geometry, finite-memory transfer, partially directed
+-- families, version-2 checker, refinement, tests).
+#print axioms FoldBounds.Geometry.card_shift_add_image_le
+#print axioms FoldBounds.Geometry.contacts_le_rows_cols
+#print axioms FoldBounds.Geometry.discrete_ivt
+#print axioms FoldBounds.Geometry.rows_ge_span
+#print axioms FoldBounds.Geometry.cols_ge_span
+#print axioms FoldBounds.Geometry.length_le_rows_mul_cols
+#print axioms FoldBounds.Geometry.minPerim_le
+#print axioms FoldBounds.Geometry.contactPairs_le_geomCap
+#print axioms FoldBounds.Geometry.parityContactCount_le_contactPairs
+#print axioms FoldBounds.Geometry.parityContacts_le_geomCap
+#print axioms FoldBounds.MemTransfer.ffContacts_eq_ffPart
+#print axioms FoldBounds.MemTransfer.ffj_le_slots
+#print axioms FoldBounds.MemTransfer.loAt_le_ffj
+#print axioms FoldBounds.MemTransfer.ffj_le_lo_add_out
+#print axioms FoldBounds.MemTransfer.memState_inv
+#print axioms FoldBounds.MemTransfer.memCover_spec
+#print axioms FoldBounds.MemTransfer.memCover
+#print axioms FoldBounds.MemTransfer.memContacts_bounds
+#print axioms FoldBounds.Families.length_pdWords
+#print axioms FoldBounds.Families.nodup_pdWords
+#print axioms FoldBounds.Families.trace_pd
+#print axioms FoldBounds.Families.card_pdFamily
+#print axioms FoldBounds.Families.pdFamily_subset_ext
+#print axioms FoldBounds.Families.mem_pdFamily_test
+#print axioms FoldBounds.Families.two_pow_le_pdCount
+#print axioms FoldBounds.FrontierNext.enumEnc_sound
+#print axioms FoldBounds.FrontierNext.famChoose_spec
+#print axioms FoldBounds.FrontierNext.fam_wit_lower
+#print axioms FoldBounds.FrontierNext.mem_facts
+#print axioms FoldBounds.FrontierNext.memEnc_upper_sound
+#print axioms FoldBounds.FrontierNext.memEnc_lower_sound
+#print axioms FoldBounds.FrontierNext.memEnc_sound
+#print axioms FoldBounds.FrontierNext.checkNode_sound
+#print axioms FoldBounds.FrontierNext.check_sound
+#print axioms FoldBounds.FrontierNext.check_coupled_probability_sound
+#print axioms FoldBounds.FrontierNext.checkFlat2_sound
+#print axioms FoldBounds.Refinement.step_rel
+#print axioms FoldBounds.Refinement.spec_mono
+#print axioms FoldBounds.Refinement.minPerim_mono
+#print axioms FoldBounds.Refinement.geomCap_anti
+#print axioms FoldBounds.Refinement.memUppers_mono
+#print axioms FoldBounds.Refinement.memUppers_le_basic
+#print axioms FoldBounds.FrontierNextTests.h6_probability_exact
+#print axioms FoldBounds.FrontierNextTests.accept_root_mem3_witness
+#print axioms FoldBounds.FrontierNextTests.legacy_agrees_with_v1
+#print axioms FoldBounds.FrontierNextTests.reject_flat_missing_branch
+
+/-! Integration audit: verified model-relative protein-motion theorems from the GNM branch. -/
+#print axioms FoldBounds.MotionContactChecker.accepts_valid
+#print axioms FoldBounds.MotionContactChecker.weight_interval_sound
+#print axioms FoldBounds.MotionContactChecker.check_valid
+#print axioms FoldBounds.MotionContactChecker.check_energy_sound
+#print axioms FoldBounds.MotionContactChecker.all_admissible_energy_sound
+#print axioms FoldBounds.MotionCoordinates.difference_sound
+#print axioms FoldBounds.MotionCoordinates.squared_sound
+#print axioms FoldBounds.MotionCoordinates.squaredDistance_sound
+#print axioms FoldBounds.MotionCoordinates.contactBoxes_admissible
+#print axioms FoldBounds.MotionCoordinates.coordinate_contact_energy_sound
+#print axioms FoldBounds.MotionVariableDirections.addBox_sound
+#print axioms FoldBounds.MotionVariableDirections.scaleBox_sound
+#print axioms FoldBounds.MotionVariableDirections.stretchBox_sound
+#print axioms FoldBounds.MotionVariableDirections.energyTerm_sound
+#print axioms FoldBounds.MotionVariableDirections.variable_direction_energy_sound
+#print axioms FoldBounds.MotionInverseFourth.squared_lower_nonneg
+#print axioms FoldBounds.MotionInverseFourth.squared_ratio_enclosure
+#print axioms FoldBounds.MotionInverseFourth.safeNetwork_valid
+#print axioms FoldBounds.MotionInverseFourth.weightedEnergyTerm_sound
+#print axioms FoldBounds.MotionInverseFourth.safeNetwork_energy_sound
+#print axioms FoldBounds.MotionInverseFourth.weightedEnergyTerm_nonneg
+#print axioms FoldBounds.MotionInverseFourth.weightedNetworkEnergy_nonneg
+#print axioms FoldBounds.MotionInverseFourth.weightedRidgeEnergy_coercive
+#print axioms FoldBounds.MotionInverseFourth.weightedNetworkEnergy_interval
+#print axioms FoldBounds.MotionInverseFourth.checkNetworkEnergy_sound
+#print axioms FoldBounds.MotionHessian.hessianQ_symmetric
+#print axioms FoldBounds.MotionHessian.matVecQ_hessian
+#print axioms FoldBounds.MotionHessian.dot_matVec_hessian
+#print axioms FoldBounds.MotionHessian.hessianQ_coercive
+#print axioms FoldBounds.MotionProteinHessian.incidence_dot
+#print axioms FoldBounds.MotionProteinHessian.contactWeight_nonneg
+#print axioms FoldBounds.MotionProteinHessian.weight_stretch_energy
+#print axioms FoldBounds.MotionProteinHessian.flat_dot
+#print axioms FoldBounds.MotionProteinHessian.proteinHessian_energy
+#print axioms FoldBounds.MotionProteinHessian.proteinHessian_symm
+#print axioms FoldBounds.MotionProteinHessian.proteinHessian_coercive
+#print axioms FoldBounds.MotionResidual.dotQ_comm
+#print axioms FoldBounds.MotionResidual.dotQ_vsub_left
+#print axioms FoldBounds.MotionResidual.dotQ_vsub_right
+#print axioms FoldBounds.MotionResidual.matVecQ_vsub
+#print axioms FoldBounds.MotionResidual.dotQ_self_nonneg
+#print axioms FoldBounds.MotionResidual.dotQ_matVec_symmetric
+#print axioms FoldBounds.MotionResidual.dual_gap_identity
+#print axioms FoldBounds.MotionResidual.residual_square_ineq
+#print axioms FoldBounds.MotionResidual.symmetric_residual_enclosure
+#print axioms FoldBounds.MotionResidual.rankOne_residual_enclosure
+#print axioms FoldBounds.MotionResidual.checkResponse_sound
+#print axioms FoldBounds.MotionProteinResponse.checkPairScore_sound
+#print axioms FoldBounds.MotionPairOrdering.strictlyOrdered_sound
+#print axioms FoldBounds.MotionPairOrdering.checkPairOrder_sound
+#print axioms FoldBounds.MotionVerifiedInverse.checkRightInverse_valid
+#print axioms FoldBounds.MotionVerifiedInverse.checked_inverse_solves
+#print axioms FoldBounds.MotionVerifiedInverse.checkPairScoreWithInverse_sound
+#print axioms FoldBounds.MotionExactSolvability.dotQ_self_eq_zero_iff
+#print axioms FoldBounds.MotionExactSolvability.coercive_matrix_injective
+#print axioms FoldBounds.MotionExactSolvability.coercive_matrix_solvable
+#print axioms FoldBounds.MotionExactSolvability.rankOne_solvable
+#print axioms FoldBounds.MotionExactSolvability.checkResponse_exists_unique_sound
+#print axioms FoldBounds.MotionExactSolvability.checkPairScore_exists_unique_sound
+#print axioms FoldBounds.MotionRealPairSamples.cspb_frozen_sq_distance
+#print axioms FoldBounds.MotionRealPairSamples.crambin_frozen_sq_distance
+#print axioms FoldBounds.MotionRealPairSamples.cspb_reference_pair_eligible
+#print axioms FoldBounds.MotionRealPairSamples.crambin_reference_pair_eligible
+#print axioms FoldBounds.MotionScaledCertificates.binaryScale_pos
+#print axioms FoldBounds.MotionScaledCertificates.checkValue_sound
+#print axioms FoldBounds.MotionScaledCertificates.checkEnclosure_sound
+#print axioms FoldBounds.MotionScaledCertificates.checkScaledPairScore_exists_unique_sound
+#print axioms FoldBounds.MotionRoundedOps.scaleInt_cast
+#print axioms FoldBounds.MotionRoundedOps.scaleInt_pos
+#print axioms FoldBounds.MotionRoundedOps.addBox_sound
+#print axioms FoldBounds.MotionRoundedOps.negBox_sound
+#print axioms FoldBounds.MotionRoundedOps.checkMul_sound
+#print axioms FoldBounds.MotionScaledOrdering.checkScaledOrder_sound
+#print axioms FoldBounds.MotionBulkChain.separated_sound
+#print axioms FoldBounds.MotionBulkChain.checkAdjacent_sound
+#print axioms FoldBounds.MotionBulkChain.separated_scaled_sound
+#print axioms FoldBounds.MotionBulkChain.scores_ordered_of_certificates
+#print axioms FoldBounds.MotionBulkRealSmoke.cspb_frozen_rank_arithmetic
+#print axioms FoldBounds.MotionBulkRealSmoke.crambin_frozen_rank_arithmetic
+#print axioms FoldBounds.MotionBulkRealSmoke.cspb_frozen_strict
+#print axioms FoldBounds.MotionBulkRealSmoke.crambin_frozen_strict
+#print axioms FoldBounds.MotionDyadicDivision.checkQuotient_sound
+#print axioms FoldBounds.MotionSparseResponse.sparseRowTerm_eq
+#print axioms FoldBounds.MotionSparseResponse.sparseMatVec_eq
+#print axioms FoldBounds.MotionSparseResponse.checkSparseScaledPair_sound
+#print axioms FoldBounds.MotionContactCompleteness.checkContactNetwork_sound
+#print axioms FoldBounds.MotionContactCompleteness.checked_contact_present
+#print axioms FoldBounds.MotionContactCompleteness.checked_contact_active
+#print axioms FoldBounds.MotionContactCompleteness.checkCompleteSparseScore_sound
+#print axioms FoldBounds.MotionRobustResponse.uniform_score_sound
+#print axioms FoldBounds.MotionRobustOrdering.uniform_strict_pair_order
+#print axioms FoldBounds.MotionRobustConcordance.alignedSign_bounds
+#print axioms FoldBounds.MotionRobustConcordance.alignedSign_interval
+#print axioms FoldBounds.MotionRobustConcordance.sum_alignedSign_interval
+#print axioms FoldBounds.MotionGNMExact.checkExactGNM_sound
+#print axioms FoldBounds.MotionGNMExact.gnm_residual_enclosure
+#print axioms FoldBounds.MotionGNMTopologyRobust.scalarNetworkEnergy_mono
+#print axioms FoldBounds.MotionGNMTopologyRobust.scalarResponse_antitone
+#print axioms FoldBounds.MotionGNMTopologyRobust.scalarResponse_extremes
+#print axioms FoldBounds.MotionGNMAdaptiveCases.case_contact_sandwich
+#print axioms FoldBounds.MotionGNMAdaptiveCases.case_response_sandwich
+#print axioms FoldBounds.MotionGNMAdaptiveCases.all_contact_worlds_concordance
+#print axioms FoldBounds.MotionGNMPrefixTree.pickLeaf_sound
+#print axioms FoldBounds.MotionGNMPrefixTree.leafCount_eq_splitCount_add_one
+#print axioms FoldBounds.MotionGNMPrefixTree.lowerVote_mono
+#print axioms FoldBounds.MotionGNMPrefixTree.leafLower_mono
+#print axioms FoldBounds.MotionGNMPrefixTree.intersect_valid
+#print axioms FoldBounds.MotionGNMPrefixTree.prefixTree_concordance_sound
+#print axioms FoldBounds.MotionGNMFlowCoercivity.checkFlowIdentity_sound
+#print axioms FoldBounds.MotionGNMFlowCoercivity.checkFlowCertificate_sound
+#print axioms FoldBounds.MotionGNMFlowCoercivity.flow_reconstruct
+#print axioms FoldBounds.MotionGNMFlowCoercivity.flow_coercivity
+#print axioms FoldBounds.MotionGNMFlowCoercivity.flow_response_exists_unique
+#print axioms FoldBounds.MotionGNMFlowCoercivity.checkFlowResponse_sound
+#print axioms FoldBounds.MotionGNMSpectralSOS.checkSpectralSOS_sound
+#print axioms FoldBounds.MotionGNMSpectralSOS.checkSpectralSOS_coercive
+#print axioms FoldBounds.MotionGNMSpectralSOS.checkSpectralSOS_solvable
+#print axioms FoldBounds.MotionGNMSpectralSOS.checkSpectralResponse_sound
+#print axioms FoldBounds.MotionGNMIntegerInverse.checkScaledInverse_valid
+#print axioms FoldBounds.MotionGNMIntegerInverse.checkScaledInverse_to_rational
+#print axioms FoldBounds.MotionGNMIntegerInverse.checkScaledInverse_rightInverse
+#print axioms FoldBounds.MotionGNMIntegerInverse.checkScaledInverse_solves
+#print axioms FoldBounds.MotionGNMCoupledRank.quadratic_discriminant_bound
+#print axioms FoldBounds.MotionGNMCoupledRank.psd_pair_contraction
+#print axioms FoldBounds.MotionGNMCoupledRank.positive_of_coupled_square
+#print axioms FoldBounds.MotionGNMCoupledRank.coupled_strict_rank_sound
+#print axioms FoldBounds.MotionGNMGeometricNogoods.box_linear_lower
+#print axioms FoldBounds.MotionGNMGeometricNogoods.checkLinearNoGood_sound
+#print axioms FoldBounds.MotionGNMGeometricNogoods.contact_distance_expansion
+#print axioms FoldBounds.MotionGNMGeometricNogoods.contact_on_necessary
+#print axioms FoldBounds.MotionGNMGeometricNogoods.contact_off_necessary
+#print axioms FoldBounds.MotionGNMGeometricNogoods.weighted_linear_inequalities
+#print axioms FoldBounds.MotionGNMGeometricNogoods.weighted_geometric_nogood_sound

@@ -1,0 +1,302 @@
+{
+  "schema_version": 1,
+  "repository": "Tommaso-R-Marena/FoldBounds",
+  "base": "main",
+  "integration_branch": "integration/selected-foldbounds-research-20261106",
+  "source_snapshot_utc": "2026-11-06",
+  "excluded_obsolete_prs": [
+    9
+  ],
+  "selection_policy": "Aristotle v2 foundation + one latest selected tip per live research line; import non-conflicting blobs; resolve shared files explicitly; preserve unmerged PRs and original negative results.",
+  "notes": "File-level synthesis is not the same as merging all Git histories or validating the entire combined system.",
+  "selected_tips": [
+    {
+      "tip_pr": 28,
+      "head": "research/disjoint-quadrant-shells-20261019",
+      "head_sha": "f320c439670017b92f13e428f13fd7da43146647",
+      "dependency_chain": [
+        28
+      ],
+      "anchor": "src/foldbounds/sparse_monotone.py"
+    },
+    {
+      "tip_pr": 32,
+      "head": "integration/aristotle-frontier-v2-20261020",
+      "head_sha": "fc3de052d67f54e0316d56ef7577c272d4afd02d",
+      "dependency_chain": [
+        26,
+        32
+      ],
+      "anchor": "FoldBounds/FrontierNext.lean"
+    },
+    {
+      "tip_pr": 36,
+      "head": "research/counterfactual-ensemble-covariance-20261020",
+      "head_sha": "d66de3e48815d9be88a9b4db1f947b2405e132df",
+      "dependency_chain": [
+        33,
+        34,
+        35,
+        36
+      ],
+      "anchor": "src/foldbounds/counterfactual_reweighting.py"
+    },
+    {
+      "tip_pr": 37,
+      "head": "research/composition-parity-preserving-swaps-20261020",
+      "head_sha": "415fe71c0df7121fa8438f07d9821ba53df2d838",
+      "dependency_chain": [
+        33,
+        34,
+        35,
+        37
+      ],
+      "anchor": "src/foldbounds/composition_swap.py"
+    },
+    {
+      "tip_pr": 40,
+      "head": "experiment/crambin-complete-contact-20261104",
+      "head_sha": "7dcb952af02cc07fdc2645e98cddeb76aa7c6a91",
+      "dependency_chain": [
+        39,
+        40
+      ],
+      "anchor": "FoldBounds/MotionContactCompletenessTests.lean"
+    },
+    {
+      "tip_pr": 42,
+      "head": "research/temperature-transport-20261105",
+      "head_sha": "13bdb7d1a8632eb6d034d7654217abb023df034b",
+      "dependency_chain": [
+        42
+      ],
+      "anchor": "src/foldbounds/temperature_transport.py"
+    },
+    {
+      "tip_pr": 45,
+      "head": "research/strong-coupling-witness-certificates-20261105",
+      "head_sha": "5898a41bec95334e465a5b1ae34ad7ca33d8e54b",
+      "dependency_chain": [
+        45
+      ],
+      "anchor": "src/foldbounds/strong_coupling.py"
+    },
+    {
+      "tip_pr": 49,
+      "head": "research/infinite-square-density-20261105",
+      "head_sha": "1e7b38f2e648307810c30a2d9890411c46319793",
+      "dependency_chain": [
+        49
+      ],
+      "anchor": "src/foldbounds/square_density.py"
+    },
+    {
+      "tip_pr": 68,
+      "head": "research/exact-64-ground-state-entropy-and-robust-majority-20261105",
+      "head_sha": "9270834fd7f01e4126a6397ef6e80a3b98a6c51f",
+      "dependency_chain": [
+        46,
+        51,
+        56,
+        59,
+        63,
+        65,
+        68
+      ],
+      "anchor": "src/foldbounds/ground_state_transfer.py"
+    },
+    {
+      "tip_pr": 69,
+      "head": "research/lean-3d-parity-and-monotone-injection-20261105",
+      "head_sha": "7a315a663d7e2e7b31043b1acb46813b72fcd077",
+      "dependency_chain": [
+        53,
+        60,
+        69
+      ],
+      "anchor": "FoldBounds/CubicParityGeometry.lean"
+    },
+    {
+      "tip_pr": 70,
+      "head": "research/nonenumerative-pivot-kinetic-plateau-20261105",
+      "head_sha": "5b6c1d0e16fcedf43f9d82aca867a630aaa9eaad",
+      "dependency_chain": [
+        67,
+        70
+      ],
+      "anchor": "src/foldbounds/pivot_plateau_verifier.py"
+    },
+    {
+      "tip_pr": 71,
+      "head": "research/cubic-robust-contact-geometry-inverse-design-20261105",
+      "head_sha": "0d27c9bbd4b1dd0670d6912dd28fbd950aa52626",
+      "dependency_chain": [
+        44,
+        47,
+        48,
+        52,
+        54,
+        57,
+        61,
+        64,
+        66,
+        71
+      ],
+      "anchor": "src/foldbounds/cubic_robust_inverse_design.py"
+    },
+    {
+      "tip_pr": 73,
+      "head": "research/filled-cube-contact-rigidity-20261105",
+      "head_sha": "64fc0cb99c1c7422983a962fac70b24f9857ede0",
+      "dependency_chain": [
+        73
+      ],
+      "anchor": "src/foldbounds/filled_box_contact_rigidity.py"
+    },
+    {
+      "tip_pr": 75,
+      "head": "research/experimental-proteinwise-conformal-20261105",
+      "head_sha": "304c7a041fa844b5cbda9e71c29065e3278fb6cf",
+      "dependency_chain": [
+        75
+      ],
+      "anchor": "src/foldbounds/experimental_reciprocal_conformal.py"
+    },
+    {
+      "tip_pr": 77,
+      "head": "research/experimental-sparse-distance-certificates-20261105",
+      "head_sha": "d713797e03223a0b150a9994b7f3717b27524fba",
+      "dependency_chain": [
+        77
+      ],
+      "anchor": "src/foldbounds/sparse_distance_certificate.py"
+    },
+    {
+      "tip_pr": 84,
+      "head": "research/gnm-geometric-contact-feasibility-20261105",
+      "head_sha": "fd6cc69fb1242335f25e4856d987aa2981dfa86b",
+      "dependency_chain": [
+        39,
+        41,
+        43,
+        50,
+        55,
+        58,
+        62,
+        72,
+        78,
+        84
+      ],
+      "anchor": "FoldBounds/MotionGNMGeometricNogoods.lean"
+    },
+    {
+      "tip_pr": 85,
+      "head": "research/mutation-safe-erasure-codes-20261105",
+      "head_sha": "e4509904a08e53974748f06bcc5d7638d21005a6",
+      "dependency_chain": [
+        38,
+        74,
+        81,
+        85
+      ],
+      "anchor": "src/foldbounds/ga_gb_mutation_safe.py"
+    },
+    {
+      "tip_pr": 87,
+      "head": "research/gnm-exact-cartesian-box-1d3z-20261105",
+      "head_sha": "a8d6b09cd68842c1b97d1d8386dc66180b27a321",
+      "dependency_chain": [
+        76,
+        79,
+        86,
+        87
+      ],
+      "anchor": "src/foldbounds/gnm_exact_coordinate_boxes.py"
+    },
+    {
+      "tip_pr": 89,
+      "head": "research/anytime-assay-regret-certificates-20261105",
+      "head_sha": "e5e289e1fcc32a9f7ba85caa268fd6a62ba0f58d",
+      "dependency_chain": [
+        83,
+        89
+      ],
+      "anchor": "src/foldbounds/anytime_assay_regret.py"
+    },
+    {
+      "tip_pr": 90,
+      "head": "research/val69-moving-scaffold-budgets-20261106",
+      "head_sha": "6923267f50a13ab5ef5a8f64d5e6626396fff18d",
+      "dependency_chain": [
+        80,
+        82,
+        88,
+        90
+      ],
+      "anchor": "src/foldbounds/noe_moving_scaffold.py"
+    }
+  ],
+  "covered_prs": [
+    26,
+    28,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90
+  ]
+}

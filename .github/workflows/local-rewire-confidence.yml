@@ -1,0 +1,101 @@
+name: Local 3D rewiring structural-confidence audit
+on:
+  pull_request:
+    paths:
+      - 'FoldBounds/LocalRewireConfidence.lean'
+      - 'FoldBounds/ParityNoGo.lean'
+      - 'src/foldbounds/local_rewire_confidence.py'
+      - 'src/foldbounds/cubic_groundstate_no_go.py'
+      - 'src/foldbounds/parity_no_go.py'
+      - 'src/foldbounds/contact_vs_fold.py'
+      - 'tests/test_local_rewire_confidence.py'
+      - 'tests/test_cubic_groundstate_no_go.py'
+      - 'tests/test_parity_no_go.py'
+      - 'tests/test_contact_vs_fold.py'
+      - '.github/workflows/local-rewire-confidence.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  local-rewire-confidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Source-level Lean assurance scan
+        run: python3 scripts/check_lean_sources.py
+      - name: Build pinned Lean and Mathlib
+        uses: leanprover/lean-action@v1
+      - name: Kernel-check generic microstate confidence theorem
+        run: lake env lean FoldBounds/LocalRewireConfidence.lean | tee /tmp/local-rewire-axioms.log
+      - name: Fail-closed axiom dependency audit
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          log=Path('/tmp/local-rewire-axioms.log').read_text()
+          declarations={
+            'FoldBounds.LocalRewireConfidence.confidence_ceiling',
+            'FoldBounds.LocalRewireConfidence.isoenergetic_ceiling',
+            'FoldBounds.LocalRewireConfidence.excludes_majority',
+          }
+          observed={}
+          for line in log.splitlines():
+            match=re.match(r"^'(FoldBounds\.LocalRewireConfidence\.[A-Za-z0-9_]+)' (.*)$",line.strip())
+            if not match: continue
+            name,report=match.groups()
+            if name in observed: raise SystemExit('duplicate report: '+name)
+            observed[name]=report
+            if report.startswith('depends on axioms:'):
+              actual=set(re.findall(r'[A-Za-z_][A-Za-z0-9_.]*',
+                                    report.split('depends on axioms:',1)[1]))
+              forbidden=actual-{'Classical.choice','Quot.sound','propext'}
+              if forbidden: raise SystemExit('forbidden axioms '+str(sorted(forbidden)))
+            elif report != 'does not depend on any axioms':
+              raise SystemExit('invalid axiom output: '+report)
+          if set(observed)!=declarations:
+            raise SystemExit('missing or unexpected reports: '+str(set(observed)^declarations))
+          print('Local confidence: three Lean theorems, only standard axioms')
+          PY
+      - name: Kernel-check bipartite contact obstruction
+        run: lake env lean FoldBounds/ParityNoGo.lean | tee /tmp/parity-nogo-axioms.log
+      - name: Audit bipartite theorem dependencies
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          log=Path('/tmp/parity-nogo-axioms.log').read_text()
+          names={
+            'FoldBounds.ParityNoGo.same_color_hydrophobes_cannot_contact',
+            'FoldBounds.ParityNoGo.fixed_color_class_has_no_internal_edges',
+          }
+          reports={}
+          for line in log.splitlines():
+            match=re.match(r"^'(FoldBounds\.ParityNoGo\.[A-Za-z0-9_]+)' (.*)$",line.strip())
+            if not match: continue
+            name,message=match.groups()
+            if name in reports: raise SystemExit('duplicate parity axiom report')
+            reports[name]=message
+            if message.startswith('depends on axioms:'):
+              actual=set(re.findall(r'[A-Za-z_][A-Za-z0-9_.]*',
+                                    message.partition('depends on axioms:')[2]))
+              bad=actual-{'Classical.choice','Quot.sound','propext'}
+              if bad: raise SystemExit(f'forbidden axioms: {sorted(bad)}')
+            elif message != 'does not depend on any axioms':
+              raise SystemExit('malformed parity axiom report '+message)
+          if set(reports)!=names:
+            raise SystemExit(f'missing parity axiom reports: {names-set(reports)}')
+          print('Parity obstruction: kernel-checked, standard axioms only')
+          PY
+      - name: Run independent cubic rewiring and adversarial oracle
+        run: |
+          python3 -m pip install -e '.[test]'
+          python3 -m pytest -q tests/test_local_rewire_confidence.py tests/test_cubic_groundstate_no_go.py tests/test_parity_no_go.py tests/test_contact_vs_fold.py
+      - name: Reproduce synthetic structural confidence ceilings
+        run: python3 experiments/local_rewire_confidence_demo.py
+      - name: Reproduce globally optimal cubic ground-state ambiguity
+        run: python3 experiments/cubic_groundstate_no_go_demo.py
+      - name: Reproduce all-conformation HP parity obstruction
+        run: python3 experiments/parity_no_go_demo.py
+      - name: Reproduce same-model event-vs-fold confidence audit
+        run: python3 experiments/contact_vs_fold_demo.py

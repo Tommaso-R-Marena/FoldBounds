@@ -1,0 +1,73 @@
+name: Robust ensemble energy-uncertainty certificate audit
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  uncertainty-python:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        python-version: ['3.11', '3.12', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install package and test dependencies
+        run: python -m pip install -e '.[test]'
+      - name: Re-run both dimensions, exact adversarial extrema, and root proofs
+        run: python -m pytest -q tests/test_ensemble_crossover.py tests/test_ensemble_crossover_3d.py tests/test_ensemble_uncertainty.py tests/test_bernstein_population.py
+      - name: Reproduce exact rational robustness data without trusting saved JSON
+        run: |
+          python experiments/robust_switch_benchmark.py > /tmp/robust-switch-recomputed.json
+          python -c "import json; a=json.load(open('/tmp/robust-switch-recomputed.json')); b=json.load(open('experiments/robust_switch_results.json')); assert a==b; assert [x['states'] for x in a['replications']]==[30073,13565]"
+      - name: Recheck nonmonotone Bernstein certificate results
+        if: matrix.python-version == '3.11'
+        run: |
+          python experiments/bernstein_robust_benchmark.py > /tmp/bernstein-recomputed.json
+          python -c "import json; a=json.load(open('/tmp/bernstein-recomputed.json')); b=json.load(open('experiments/bernstein_robust_results.json')); assert a==b; assert len(a['cases'])==2 and a['cases'][1]['interval_bounds'][-1]['robust_contact_event_minority']"
+      - name: Falsify universal bending monotonicity across all 256 eight-residue sequences
+        if: matrix.python-version == '3.11'
+        run: |
+          python experiments/monotonicity_falsification.py > /tmp/nonmono-recomputed.json
+          python -c "import json; a=json.load(open('/tmp/nonmono-recomputed.json')); b=json.load(open('experiments/monotonicity_falsification_results.json')); assert a==b; assert [x['demonstrably_nonmonotone_sequences_sampled_q_b'] for x in a]==[37,3]"
+  uncertainty-lean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject Lean holes and custom axioms
+        run: python3 scripts/check_lean_sources.py
+      - name: Build using pinned Lean and Mathlib
+        uses: leanprover/lean-action@v1
+      - name: Kernel-check rational interval uncertainty theorem
+        run: lake env lean FoldBounds/RobustReweighting.lean
+      - name: Audit the theorem's axiom dependencies
+        run: |
+          set -o pipefail
+          lake env lean FoldBounds/RobustReweightingAudit.lean | tee /tmp/robust-uncertainty-axioms.log
+          # The repository-wide audit script expects every global theorem;
+          # this intentionally checks the independent new theorem instead.
+          grep -F "'FoldBounds.RobustReweighting.robust_population_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]" /tmp/robust-uncertainty-axioms.log
+      - name: Kernel-check Bernstein weighted ratio convex hull theorem
+        run: lake env lean FoldBounds/BernsteinRatio.lean
+      - name: Audit Bernstein weighted ratio theorem axioms
+        run: |
+          set -o pipefail
+          lake env lean FoldBounds/BernsteinRatioAudit.lean | tee /tmp/bernstein-ratio-axioms.log
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('/tmp/bernstein-ratio-axioms.log').read_text()
+          name="FoldBounds.BernsteinRatio.weighted_ratio_enclosure"
+          lines=[x for x in s.splitlines() if x.startswith("'"+name+"'")]
+          assert len(lines)==1, (name,lines)
+          if "does not depend on any axioms" not in lines[0]:
+              match=re.search(r"depends on axioms: \[([^]]*)\]",lines[0])
+              assert match,lines[0]
+              ax={x.strip() for x in match.group(1).split(",")}
+              assert ax <= {'propext','Classical.choice','Quot.sound'},ax
+          PY

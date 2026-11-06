@@ -1,0 +1,36 @@
+name: GNM variable-depth prefix certificate proof gate
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  math:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject Lean proof holes and local axioms
+        run: python3 scripts/check_lean_sources.py
+      - name: Build pinned Lean and Mathlib
+        uses: leanprover/lean-action@v1
+      - name: Compile prefix-tree theorem and reported-rational tests
+        run: |
+          lake env lean FoldBounds/MotionGNMPrefixTree.lean
+          lake env lean FoldBounds/MotionGNMPrefixTreeTests.lean
+      - name: Audit entire repository theorem inventory
+        run: |
+          lake env lean FoldBounds/AxiomAudit.lean | tee /tmp/prefix-all-axioms.log
+          python3 scripts/check_lean_sources.py /tmp/prefix-all-axioms.log
+  hermetic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install test requirements
+        run: python3 -m pip install --disable-pip-version-check numpy pytest
+      - name: Compile producer and independent verifier
+        run: |
+          python3 -m py_compile scripts/gnm_prefix_tree_producer.py scripts/gnm_prefix_tree_independent_replay.py
+      - name: Adversarial and exhaustive synthetic prefix-cover tests
+        run: python3 -m pytest -q scripts/test_gnm_prefix_tree.py scripts/test_gnm_prefix_tree_real.py

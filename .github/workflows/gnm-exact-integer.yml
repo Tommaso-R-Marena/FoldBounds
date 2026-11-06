@@ -1,0 +1,35 @@
+name: GNM exact integer inverse and contact update proof gate
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  lean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Disallow custom axioms and proof holes
+        run: python3 scripts/check_lean_sources.py
+      - name: Build pinned Lean and Mathlib
+        uses: leanprover/lean-action@v1
+      - name: Check exact integer inverse and soundness
+        run: |
+          lake env lean FoldBounds/MotionGNMIntegerInverse.lean
+          lake env lean FoldBounds/MotionGNMIntegerInverseTests.lean
+      - name: Full repository theorem inventory
+        run: |
+          lake env lean FoldBounds/AxiomAudit.lean | tee /tmp/gnm-exact-inverse-audit.log
+          python3 scripts/check_lean_sources.py /tmp/gnm-exact-inverse-audit.log
+  independent:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install producer/test dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy sympy pytest
+      - name: No target needed, hermetic integer graph tests
+        run: |
+          python3 -m py_compile scripts/gnm_exact_inverse_producer.py scripts/gnm_exact_inverse_independent_replay.py scripts/gnm_exact_edge_updates.py scripts/gnm_exact_case_source.py scripts/gnm_exact_case_independent_replay.py scripts/gnm_portability_audit.py
+          python3 -m pytest -q scripts/test_gnm_exact_inverse.py scripts/test_gnm_exact_cases.py scripts/test_gnm_portability.py

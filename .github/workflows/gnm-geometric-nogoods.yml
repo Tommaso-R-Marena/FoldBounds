@@ -1,0 +1,37 @@
+name: GNM geometric contact realizability certificates
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  lean-nogood:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check all Lean sources for unauthorized axioms and holes
+        run: python3 scripts/check_lean_sources.py
+      - name: Build pinned Lean 4.28 and Mathlib
+        uses: leanprover/lean-action@v1
+      - name: Kernel-check geometric separation, contacts, and tests
+        run: |
+          lake env lean FoldBounds/MotionGNMGeometricNogoods.lean
+          lake env lean FoldBounds/MotionGNMGeometricNogoodsTests.lean
+      - name: Audit complete theorem inventory
+        run: |
+          lake env lean FoldBounds/AxiomAudit.lean | tee /tmp/geometric-axioms.log
+          python3 scripts/check_lean_sources.py /tmp/geometric-axioms.log
+  python-source-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install numerical proposal and exact replay dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy scipy sympy pytest
+      - name: Compile source-only producer and independent verifier
+        run: |
+          python3 -m py_compile scripts/gnm_geometry_producer.py scripts/gnm_geometry_independent_replay.py scripts/gnm_geometry_crossprotein.py scripts/gnm_geometry_crossprotein_independent_replay.py scripts/gnm_geometry_rank_independent_replay.py
+      - name: Run hermetic adversarial and exhaustive component tests
+        run: |
+          python3 -m pytest -q scripts/test_gnm_geometry.py scripts/test_gnm_geometry_crossprotein.py scripts/test_gnm_geometry_rank.py

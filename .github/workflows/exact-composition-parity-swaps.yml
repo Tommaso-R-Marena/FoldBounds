@@ -1,0 +1,38 @@
+name: Exact parity-preserving HP mutation controls
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  fixed-composition:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      matrix:
+        python-version: ['3.11','3.12','3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install package and test extras
+        run: python -m pip install -e '.[test]'
+      - name: Challenge exact robust HP isocompositional switches with independent full-state DFS
+        run: python -m pytest -q tests/test_composition_swap.py
+      - name: Verify entire 768/5120-edge mutation graph and rational robustness limits
+        env:
+          PYTHONPATH: src
+        run: |
+          python experiments/composition_swap_benchmark.py > /tmp/complete-swap-landscape.json
+          python - <<'PY'
+          import json
+          from fractions import Fraction as F
+          a=json.load(open('/tmp/complete-swap-landscape.json'))['cases']
+          assert [(x['n'],x['full_conformations'],x['same_parity_H_P_swap_edges'],
+                   x['robust_switches'],x['chain_reversal_orbits']) for x in a] == [
+                      (8,13565,768,12,6),(10,308981,5120,4,2)]
+          assert F(a[0]['maximum_certificate_error_factor_squared'])==F(19420473,11376575)
+          assert F(a[1]['maximum_certificate_error_factor_squared'])==F(2983192704,2031712291)
+          assert all(F(x['original_robust_upper'])<F(1,2)<F(x['mutant_robust_lower']) for x in a)
+          PY

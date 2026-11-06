@@ -1,0 +1,36 @@
+{
+  "at_q8_b1": [
+    "40932/308981",
+    "1264000/1997213"
+  ],
+  "b_range": [
+    "3/4",
+    "5/4"
+  ],
+  "complete_SAW_conformations": 308981,
+  "independent_per_state_multiplier_range": [
+    "5/6",
+    "6/5"
+  ],
+  "lossless_contact_graph_fingerprints": 1852,
+  "minimum_population_separation": "27965026026403587572/92456381277673691007",
+  "model": "3D cubic HP length-10, >=3 nonconsecutive geometric contacts",
+  "mutant": "HHPHPHPHPH",
+  "mutant_nominal_range": [
+    "2983192704/5014904995",
+    "295886625000/375469692019"
+  ],
+  "mutant_robust_lower": "2071661600/4103373891",
+  "mutation": "P1H",
+  "original": "PHPHPHPHPH",
+  "original_nominal_range": [
+    "96869817/882992602",
+    "3166978825/21138324794"
+  ],
+  "original_robust_upper": "4560449508/22531795477",
+  "q_range": [
+    "8",
+    "12"
+  ],
+  "qualification": "exact finite-model result, not a real protein folding probability"
+}

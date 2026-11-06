@@ -1,0 +1,24 @@
+{
+  "GA95_beta_like": 0.11415094339622642,
+  "GA95_helix_like": 0.6556603773584906,
+  "GB95_beta_like": 0.5113207547169811,
+  "GB95_helix_like": 0.3018867924528302,
+  "contact_overlap": 0.08383233532934131,
+  "verified_3_substitutions": [
+    {
+      "GA95": "L",
+      "GB95": "A",
+      "position": 20
+    },
+    {
+      "GA95": "I",
+      "GB95": "F",
+      "position": 30
+    },
+    {
+      "GA95": "L",
+      "GB95": "Y",
+      "position": 45
+    }
+  ]
+}

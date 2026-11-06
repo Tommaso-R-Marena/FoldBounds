@@ -40,6 +40,23 @@ universe is currently enumerated during upper-cap verification; this is
 **not** an efficient, proved lattice-folding algorithm or a Lean verification
 of the Python code.
 
+### Compact verified frontier certificates (2026-10)
+
+`FoldBounds.FrontierCheck.check` is a kernel-proved, non-enumerative
+prefix-tree checker for exact-rational HP partition-function, event-mass,
+complement-mass, and event-probability intervals. Its acceptance soundness
+applies to the Lean HP model, not to the independently developed Python
+relaxations. The earlier finite-universe certificate kernel is retained.
+
+See [the certificate specification](docs/FORMALLY_VERIFIED_FRONTIER_CERTIFICATE.md),
+[the verification report](docs/ARISTOTLE_LATTICE_VERIFICATION_REPORT.md),
+[the research report](docs/NONENUMERATIVE_BOUNDS_RESEARCH_REPORT.md) and
+[the Aristotle run report](docs/ARISTOTLE_VERIFICATION_RUN_REPORT.md).
+
+    lake build foldcheck
+    .lake/build/bin/foldcheck check CERT.txt   # parser/I/O remain unverified
+    python3 experiments/lean_differential.py --lake-root . --runner scripts/foldcheck.lean
+
 ## Reproduce
 
 Requires Python 3.11+:
@@ -62,6 +79,38 @@ Requires Python 3.11+:
     python -m foldbounds HHHHHHHH --q 2 --adaptive-steps 12 --adaptive-policy probability --matching
     python -m foldbounds HHHHHHHH --q 2 --depth 2 --enhanced-lookahead 2 --matching
     python -m foldbounds HHHHHHHH --q 3/2 --depth 4 --event-at-least 1
+
+An experimental [sparse monotone antichain certificate](docs/SPARSE_MONOTONE_ANTICHAINS.md)
+uses an exact rational SKIP/STOP/EXPAND tree-knapsack to select only
+promising SAW prefixes. Unlike an upper-bound covering certificate, a
+lower-bound certificate need not cover every walk: the independently
+checked selected families are real self-avoiding completions with pairwise
+disjoint prefix paths. The optional `--sparse-leaves 25 --sparse-max-depth 9`
+mode improves event lower mass at equal leaf entry budgets, but searches
+far more candidate prefixes than its final certificate contains.
+The optional `--sparse-turn-union` adds nonmonotone at-most-two-turn
+completions with explicit self-avoidance checks and exact overlap subtraction.
+The optimizer and checker are **Python-tested research**, not Lean-verified.
+
+An optional [sharp coupled mass probability envelope](docs/COUPLED_MASS_POLYTOPE.md)
+uses the mathematical equality `Z=Z(event)+Z(complement)` to exactly
+optimize the event probability over the jointly certified event,
+complement, and partition mass intervals. Use `--coupled-polytope`
+with enhanced lookahead or adaptive refinement. This is an algebraic
+postprocessor which cannot widen sound existing intervals; it neither
+changes the physical model nor verifies the separate Python search
+algorithms. It is currently tested Python mathematics, not a Lean theorem.
+
+An optional [exactly optimized, certificate-budgeted shell portfolio](docs/OPTIMAL_SHELL_PORTFOLIO.md)
+uses a tree-knapsack over bounded-length self-avoiding prefixes to select a
+**prefix-free antichain** of nonoverlapping extremal-quadrant continuation
+families. An independent checker revalidates complete prefix-tree coverage
+and recomputes exact rational event and complement masses. Use
+`--enhanced-lookahead 0 --portfolio-leaves 25 --portfolio-max-depth 9`.
+The planner maximizes lower mass subject to a leaf-count budget, **not**
+the full folding partition function; its search can cost much more than
+building a fixed-depth certificate. This is tested Python research and
+has not been proved equivalent to the separate Lean frontier checker.
 
 The optional [monotone-family lower-mass DP](docs/MONOTONE_FAMILY_LOWER_BOUNDS.md)
 counts four classes of guaranteed self-avoiding completions and subtracts
@@ -157,3 +206,7 @@ convergence criteria, symmetry, and free-energy bounds.
   molecular physical model, or practical runtime performance.
 - The imported original Lean sources receive no algorithmic edits; only
   the obsolete RequestProject Lake template entry is removed.
+
+## Draft cross-branch research integration
+
+This integration branch combines formally checked model results, independent Python certificate checkers, and experimental analyses from multiple draft PRs. See [research integration status](docs/RESEARCH_INTEGRATION_STATUS.md) for branches, trust boundaries and verification gates. The mathematical HP core is **not** an experimentally validated end-to-end protein-folding predictor. Some research modules are intentionally separate CLI and reproducibility scripts rather than being automatically invoked by the HP runner.

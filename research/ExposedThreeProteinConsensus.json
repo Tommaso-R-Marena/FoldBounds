@@ -1,0 +1,41 @@
+{
+  "Crambin": {
+    "anm_nominal_accuracy": 0.6413924968682007,
+    "anm_signed_concordance": 0.2827849937364014,
+    "consensus_accuracy": 0.6188149288187764,
+    "consensus_coverage": 0.7615949832604412,
+    "consensus_signed_concordance": 0.2376298576375529,
+    "gnm_nominal_accuracy": 0.5395852105814524,
+    "gnm_signed_concordance": 0.07917042116290485,
+    "model_disagreement": 0.23840501673955883,
+    "n_consensus_pairs": 103960,
+    "n_predictions": 523,
+    "n_target_distinct_pairs": 136503
+  },
+  "CspB": {
+    "anm_nominal_accuracy": 0.6397271391283368,
+    "anm_signed_concordance": 0.27945427825667346,
+    "consensus_accuracy": 0.6458840414281638,
+    "consensus_coverage": 0.6968977795325101,
+    "consensus_signed_concordance": 0.29176808285632755,
+    "gnm_nominal_accuracy": 0.5636053899526954,
+    "gnm_signed_concordance": 0.12721224218230207,
+    "model_disagreement": 0.3031007581905785,
+    "n_consensus_pairs": 476584,
+    "n_predictions": 1170,
+    "n_target_distinct_pairs": 683865
+  },
+  "RNase A": {
+    "anm_nominal_accuracy": 0.6449410882143927,
+    "anm_signed_concordance": 0.2898821764287854,
+    "consensus_accuracy": 0.7188101054896662,
+    "consensus_coverage": 0.7369804499953297,
+    "consensus_signed_concordance": 0.43762021097933235,
+    "gnm_nominal_accuracy": 0.6775764518002068,
+    "gnm_signed_concordance": 0.35515290360041357,
+    "model_disagreement": 0.2630195500046703,
+    "n_consensus_pairs": 2516929,
+    "n_predictions": 2614,
+    "n_target_distinct_pairs": 3415191
+  }
+}

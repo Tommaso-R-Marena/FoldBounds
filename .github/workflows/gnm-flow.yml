@@ -1,0 +1,35 @@
+name: GNM source-only flow and coercivity proof gate
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  lean-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Source hygiene
+        run: python3 scripts/check_lean_sources.py
+      - name: Build pinned Lean 4.28 and Mathlib
+        uses: leanprover/lean-action@v1
+      - name: Compile checked flow, coercivity and exact GNM solution theorems
+        run: |
+          lake env lean FoldBounds/MotionGNMFlowCoercivity.lean
+          lake env lean FoldBounds/MotionGNMFlowCoercivityTests.lean
+      - name: Complete axiom inventory gate
+        run: |
+          lake env lean FoldBounds/AxiomAudit.lean | tee /tmp/gnm-flow-axioms.log
+          python3 scripts/check_lean_sources.py /tmp/gnm-flow-axioms.log
+  python-flow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Python runtime
+        run: python3 -m pip install --disable-pip-version-check numpy pytest
+      - name: Compile and test exact flow algorithms
+        run: |
+          python3 -m py_compile scripts/gnm_flow_cert_producer.py scripts/gnm_flow_independent_replay.py
+          python3 -m pytest -q scripts/test_gnm_flow_cert.py scripts/test_gnm_flow_real.py
