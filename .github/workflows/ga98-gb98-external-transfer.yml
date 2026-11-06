@@ -94,7 +94,8 @@ jobs:
         run: |
           echo 'fb75cc55eb8b89e0cec5e2be69901b348e60916375b9c410a0573edfca1db591  /tmp/foldbounds-t25i/2KDL.pdb' | sha256sum --check
           echo '1c49e5faa25b443285432d935c621151294ed3b636b0106e6b1a7f7ccf2d00ec  /tmp/foldbounds-t25i/2KDM.pdb' | sha256sum --check
-          sha256sum /tmp/foldbounds-t25i/2LHG.pdb /tmp/foldbounds-t25i/2LHE.pdb
+          echo '946bb4d44567de7725aeecd334d7c1cec086737d6445d157cd94976326c84cff  /tmp/foldbounds-t25i/2LHG.pdb' | sha256sum --check
+          echo 'cd2fa17ac762106c4f21c464bd7709cb612e3cd96d227ee18fdccd99608e83d1  /tmp/foldbounds-t25i/2LHE.pdb' | sha256sum --check
       - name: Install independent exact-rational FoldBounds test environment
         run: python3 -m pip install -e '.[test]'
       - name: Audit mutation cascade and reject untrusted inputs
@@ -103,7 +104,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python3 experiments/run_ga98_t25i_followup.py \
+          python3 -m experiments.run_ga98_t25i_followup \
             --ga95 /tmp/foldbounds-t25i/2KDL.pdb \
             --gb95 /tmp/foldbounds-t25i/2KDM.pdb \
             --t25i /tmp/foldbounds-t25i/2LHG.pdb \
