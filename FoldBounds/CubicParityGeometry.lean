@@ -189,7 +189,7 @@ theorem tracePositive_nodup (p : Site3) (ds : List (Fin 3)) :
         simp only [List.mem_cons] at h
         rcases h with h | h
         · have hs := positive_step_height p d
-          rw [h] at hs
+          have hheight := congrArg height h
           omega
         · have hs := positive_step_height p d
           have hh := tracePositive_height_gt (advancePositive p d) p ds h
@@ -234,7 +234,7 @@ theorem monotone_family_card (k : ℕ) :
     ((Finset.univ : Finset (Fin k → Fin 3)).image
       (fun w => walkPositive (List.ofFn w))).card = 3 ^ k := by
   rw [Finset.card_image_of_injective _ (monotone_word_injective k)]
-  simp [Fintype.card_fun]
+  simp
 
 theorem monotone_family_valid (k : ℕ) (w : Fin k → Fin 3) :
     (walkPositive (List.ofFn w)).Nodup ∧
@@ -249,7 +249,9 @@ example : Adjacent origin first := by
   decide
 
 example : ¬ Adjacent origin (⟨2, 0, 0⟩ : Site3) := by
-  decide
+  intro h
+  rcases h with ⟨d, hd⟩
+  fin_cases d <;> simp [advance, origin] at hd
 
 #print axioms FoldBounds.CubicParityGeometry.advance_color_flip
 #print axioms FoldBounds.CubicParityGeometry.walk_index_parity
