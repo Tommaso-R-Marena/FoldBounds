@@ -49,6 +49,20 @@ jobs:
             --gb98 /tmp/foldbounds-mutant-holdout/2LHD.pdb \
             --reference experiments/results/ga_gb_error_code_verified_20261105.json \
             --out /tmp/foldbounds-mutant-holdout/frozen_transfer_results.json
+      - name: Fail closed unless live RCSB mutation-heldout results equal pinned audit
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          expected=json.loads(Path('experiments/results/ga98_gb98_frozen_transfer_20261105.json').read_text())
+          actual=json.loads(Path('/tmp/foldbounds-mutant-holdout/frozen_transfer_results.json').read_text())
+          receipt=expected.pop('audit_receipt')
+          if actual!=expected:
+              raise SystemExit('external GA98/GB98 real-data transfer report changed')
+          if receipt['original_head']!='951ac6449af680496ea5e9e24bd33cd4aa4db6e7':
+              raise SystemExit('original unmodified method-freeze receipt changed')
+          print('Confirmed exact RCSB 2LHC/2LHD external mutant holdout results')
+          PY
       - name: Preserve unfiltered outcomes including negative results
         uses: actions/upload-artifact@v4
         with:
