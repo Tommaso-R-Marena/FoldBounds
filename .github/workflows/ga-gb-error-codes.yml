@@ -102,21 +102,26 @@ jobs:
             'FoldBounds.ReporterCode.matching_card_le_cover',
             'FoldBounds.ReporterCode.no_k_matching_if_small_cover',
           }
+          if 'sorryAx' in log:
+            raise SystemExit('Lean proof hole detected in named axiom reports')
+          matches=re.findall(
+            r"^'(FoldBounds\.ReporterCode\.[A-Za-z0-9_]+)' "
+            r"(does not depend on any axioms|depends on axioms:\s*\[[^\]]*\])",
+            log,re.MULTILINE
+          )
           found={}
-          for line in log.splitlines():
-            m=re.match(r"^'(FoldBounds\.ReporterCode\.[A-Za-z0-9_]+)' (.*)$",line.strip())
-            if not m: continue
-            name,report=m.groups()
-            if name in found: raise SystemExit('duplicate theorem axiom output: '+name)
+          for name,report in matches:
+            if name in found:
+              raise SystemExit('duplicate theorem axiom report: '+name)
             found[name]=report
-            if report=='does not depend on any axioms':continue
-            if not report.startswith('depends on axioms:'):
-              raise SystemExit('unknown Lean declaration report '+line)
-            toks=set(re.findall(r'[A-Za-z_][A-Za-z0-9_.]*',
-                                report.partition('depends on axioms:')[2]))
-            bad=toks-{'Classical.choice','Quot.sound','propext'}
-            if bad:raise SystemExit('unexpected axioms: '+str(sorted(bad)))
+            if report=='does not depend on any axioms':
+              continue
+            axiom_body=report.partition('[')[2].rsplit(']',1)[0]
+            tokens=set(re.findall(r'[A-Za-z_][A-Za-z0-9_.]*',axiom_body))
+            invalid=tokens-{'Classical.choice','Quot.sound','propext'}
+            if invalid:
+              raise SystemExit('unexpected Lean axioms: '+str(sorted(invalid)))
           if set(found)!=names:
-            raise SystemExit('missing/extra reports: '+str(names^set(found)))
+            raise SystemExit('missing/extra Lean axiom reports: '+str(names^set(found)))
           print('Six reporter-code Lean theorems kernel checked with only standard axioms')
           PY
