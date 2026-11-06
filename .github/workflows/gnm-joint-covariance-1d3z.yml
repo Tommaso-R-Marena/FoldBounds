@@ -1,0 +1,38 @@
+name: Exact joint GNM 1D3Z independent certificate
+
+on:
+  pull_request:
+    paths:
+      - 'src/foldbounds/gnm_joint_rank.py'
+      - 'tests/test_gnm_joint_rank*.py'
+      - 'tests/fixtures/1d3z_model1_ca_milli.csv'
+      - 'experiments/real_1d3z_joint_rank.py'
+      - 'experiments/verify_1d3z_source.py'
+      - '.github/workflows/gnm-joint-covariance-1d3z.yml'
+  push:
+    branches:
+      - 'research/exact-joint-gnm-rank-1d3z-20261105'
+  workflow_dispatch:
+
+jobs:
+  exact-evidence:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.12', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install exact arithmetic producer and tests
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e '.[test]' sympy
+      - name: Independent graph subset and real structure exact tests
+        run: python -m pytest -q tests/test_gnm_joint_rank.py tests/test_gnm_joint_rank_real.py
+      - name: Verify public PDB source hash and every deposited CA coordinate
+        run: python experiments/verify_1d3z_source.py
+      - name: Reproduce exact rank-two comparison table
+        run: python experiments/real_1d3z_joint_rank.py --eps 0.025 0.05 0.1 0.2 0.3
