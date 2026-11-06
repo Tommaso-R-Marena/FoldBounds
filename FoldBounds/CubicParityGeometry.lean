@@ -105,7 +105,7 @@ theorem no_hh_contact_same_index_parity
   exact hne heq
 
 /-- Position/index parity holds even for a FINITE walk that might
-be trapped and admit no infinite self-avoiding continuation.
+be trapped and have no infinite self-avoiding continuation.
 The step premise is needed only within the first \`length\` sites. -/
 theorem finite_walk_index_parity
     (walk : ℕ → Site3) (length : ℕ)
