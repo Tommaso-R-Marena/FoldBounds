@@ -11,7 +11,6 @@ import json
 from decimal import Decimal
 from fractions import Fraction
 from pathlib import Path
-from random import Random
 from urllib.request import urlopen
 
 from foldbounds.assay_regret_certificates import (
@@ -21,7 +20,7 @@ from foldbounds.assay_regret_certificates import (
 )
 
 
-def paired_assay_gain(rows, budget:Fraction, bootstrap_draws=4000):
+def paired_assay_gain(rows, budget:Fraction, bootstrap_draws=10000):
     """Protein-macro regret improvement against uniform random subset.
 
     E[random K-subset] is enumerated ANALYTICALLY by exact combinatorics,
@@ -45,13 +44,22 @@ def paired_assay_gain(rows, budget:Fraction, bootstrap_draws=4000):
     if not differences:
         raise ValueError('no eligible proteins')
     mean_gain=sum(differences,Fraction(0))/len(differences)
-    rng=Random(20261105)
+    # Fixed xorshift32 resampling, matching the independently computed
+    # JavaScript pinned-source audit and its exact group ordering.
+    state=20261105
+    def draw_index(n):
+        nonlocal state
+        state^=(state<<13)&0xffffffff
+        state^=state>>17
+        state^=(state<<5)&0xffffffff
+        state&=0xffffffff
+        return (state*n)//2**32
     draws=[]
     for _ in range(bootstrap_draws):
-        draws.append(sum((differences[rng.randrange(len(differences))]
+        draws.append(sum((differences[draw_index(len(differences))]
                           for _ in differences),Fraction(0))/len(differences))
     draws.sort()
-    alpha_idx=int(.025*bootstrap_draws)
+    alpha_idx=int(.025*bootstrap_draws)-1
     return {
         'proteins_eligible':len(differences),
         'measured_mutations_budget':measured,
