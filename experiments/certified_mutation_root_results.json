@@ -1,0 +1,46 @@
+{
+  "qualification": "contact/bend toy Hamiltonians, not experimental folding transitions",
+  "results": [
+    {
+      "approx_critical_q": 6.081425862666988,
+      "bend_weight": "3/4",
+      "descartes_positive_root_sign_changes": 1,
+      "exact_high_bracket": "427942300765443/70368744177664",
+      "exact_low_bracket": "1711769203061771/281474976710656",
+      "isolation_rounds": 48,
+      "length": 8,
+      "robust_majority_polynomial_coefficients": [
+        "-31027419/10240",
+        "-62079/512",
+        "35325/512",
+        "5535/1024"
+      ],
+      "sequence": "HHPHPHPH",
+      "statewise_factor_range": [
+        "5/6",
+        "6/5"
+      ]
+    },
+    {
+      "approx_critical_q": 7.906706032101662,
+      "bend_weight": "3/4",
+      "descartes_positive_root_sign_changes": 1,
+      "exact_high_bracket": "2225539896243819/281474976710656",
+      "exact_low_bracket": "1112769948121909/140737488355328",
+      "isolation_rounds": 48,
+      "length": 10,
+      "robust_majority_polynomial_coefficients": [
+        "-1942488657/40960",
+        "-223922901/40960",
+        "18129087/163840",
+        "2035665/16384",
+        "93555/16384"
+      ],
+      "sequence": "HHPHPHPHPH",
+      "statewise_factor_range": [
+        "5/6",
+        "6/5"
+      ]
+    }
+  ]
+}

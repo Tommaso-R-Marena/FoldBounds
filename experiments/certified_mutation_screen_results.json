@@ -1,0 +1,240 @@
+{
+  "all_robust_switch_edges": [
+    {
+      "from_sequence": "HPHHPPPP",
+      "residue": 6,
+      "to_sequence": "HPHHPHPP"
+    },
+    {
+      "from_sequence": "HPHHPPPP",
+      "residue": 8,
+      "to_sequence": "HPHHPPPH"
+    },
+    {
+      "from_sequence": "HHHHPPPP",
+      "residue": 6,
+      "to_sequence": "HHHHPHPP"
+    },
+    {
+      "from_sequence": "HHHHPPPP",
+      "residue": 8,
+      "to_sequence": "HHHHPPPH"
+    },
+    {
+      "from_sequence": "HHPPHPPP",
+      "residue": 8,
+      "to_sequence": "HHPPHPPH"
+    },
+    {
+      "from_sequence": "HPHPHPPP",
+      "residue": 8,
+      "to_sequence": "HPHPHPPH"
+    },
+    {
+      "from_sequence": "PHHPHPPP",
+      "residue": 8,
+      "to_sequence": "PHHPHPPH"
+    },
+    {
+      "from_sequence": "HHHPHPPP",
+      "residue": 6,
+      "to_sequence": "HHHPHHPP"
+    },
+    {
+      "from_sequence": "HHHPHPPP",
+      "residue": 8,
+      "to_sequence": "HHHPHPPH"
+    },
+    {
+      "from_sequence": "HPPHHPPP",
+      "residue": 8,
+      "to_sequence": "HPPHHPPH"
+    },
+    {
+      "from_sequence": "PHPHHPPP",
+      "residue": 7,
+      "to_sequence": "PHPHHPHP"
+    },
+    {
+      "from_sequence": "HPHHHPPP",
+      "residue": 6,
+      "to_sequence": "HPHHHHPP"
+    },
+    {
+      "from_sequence": "HPHHHPPP",
+      "residue": 8,
+      "to_sequence": "HPHHHPPH"
+    },
+    {
+      "from_sequence": "PHHHHPPP",
+      "residue": 7,
+      "to_sequence": "PHHHHPHP"
+    },
+    {
+      "from_sequence": "PHHHHPPP",
+      "residue": 8,
+      "to_sequence": "PHHHHPPH"
+    },
+    {
+      "from_sequence": "PHPHHHPP",
+      "residue": 1,
+      "to_sequence": "HHPHHHPP"
+    },
+    {
+      "from_sequence": "PHPHHHPP",
+      "residue": 7,
+      "to_sequence": "PHPHHHHP"
+    },
+    {
+      "from_sequence": "HPHPHPHP",
+      "residue": 8,
+      "to_sequence": "HPHPHPHH"
+    },
+    {
+      "from_sequence": "PPPHHPHP",
+      "residue": 2,
+      "to_sequence": "PHPHHPHP"
+    },
+    {
+      "from_sequence": "PPHHHPHP",
+      "residue": 2,
+      "to_sequence": "PHHHHPHP"
+    },
+    {
+      "from_sequence": "PPHHHPHP",
+      "residue": 8,
+      "to_sequence": "PPHHHPHH"
+    },
+    {
+      "from_sequence": "PPPHPHHP",
+      "residue": 1,
+      "to_sequence": "HPPHPHHP"
+    },
+    {
+      "from_sequence": "PPPHHHHP",
+      "residue": 1,
+      "to_sequence": "HPPHHHHP"
+    },
+    {
+      "from_sequence": "PPPHHHHP",
+      "residue": 2,
+      "to_sequence": "PHPHHHHP"
+    },
+    {
+      "from_sequence": "PPPHHPPH",
+      "residue": 1,
+      "to_sequence": "HPPHHPPH"
+    },
+    {
+      "from_sequence": "PPPHPHPH",
+      "residue": 1,
+      "to_sequence": "HPPHPHPH"
+    },
+    {
+      "from_sequence": "PHPHPHPH",
+      "residue": 1,
+      "to_sequence": "HHPHPHPH"
+    },
+    {
+      "from_sequence": "PPPPHHPH",
+      "residue": 1,
+      "to_sequence": "HPPPHHPH"
+    },
+    {
+      "from_sequence": "PPPPHHPH",
+      "residue": 3,
+      "to_sequence": "PPHPHHPH"
+    },
+    {
+      "from_sequence": "PPPHHHPH",
+      "residue": 1,
+      "to_sequence": "HPPHHHPH"
+    },
+    {
+      "from_sequence": "PPPHHHPH",
+      "residue": 3,
+      "to_sequence": "PPHHHHPH"
+    },
+    {
+      "from_sequence": "PPPHPPHH",
+      "residue": 1,
+      "to_sequence": "HPPHPPHH"
+    },
+    {
+      "from_sequence": "PPPHPHHH",
+      "residue": 1,
+      "to_sequence": "HPPHPHHH"
+    },
+    {
+      "from_sequence": "PPPHPHHH",
+      "residue": 3,
+      "to_sequence": "PPHHPHHH"
+    },
+    {
+      "from_sequence": "PPPPHHHH",
+      "residue": 1,
+      "to_sequence": "HPPPHHHH"
+    },
+    {
+      "from_sequence": "PPPPHHHH",
+      "residue": 3,
+      "to_sequence": "PPHPHHHH"
+    }
+  ],
+  "anchor_oriented_conformations": 13565,
+  "assurance_boundary": "Exact within enumerated toy model; Bernstein/weight proofs are mathematical but histogram construction Python-tested rather than Lean kernel verified; no physical prediction.",
+  "bounds": {
+    "bend_weight": [
+      "3/4",
+      "5/4"
+    ],
+    "contact_weight": [
+      "8",
+      "12"
+    ],
+    "per_state_correction": [
+      "5/6",
+      "6/5"
+    ]
+  },
+  "double_mutation_epistasis": {
+    "example_parent_single_single_double": [
+      "HPPPPPPP",
+      "HPPHPPPP",
+      "HPPPPHPP",
+      "HPPHPHPP",
+      "552/2713",
+      "8640/26333",
+      "7660/19081",
+      "24908/43217"
+    ],
+    "nominal_double_only_majority_crossings_in_same_parity_squares_at_q8_b1": 64,
+    "nonzero_exact_odds_epistasis_despite_no_direct_contact": 504,
+    "same_crossings_robust_to_statewise_factors_10_over_11_to_11_over_10_at_fixed_q8_b1": 30,
+    "same_parity_site_squares_no_possible_direct_contact": 768,
+    "total_2_site_mutational_squares": 1792
+  },
+  "event": "at least two nonconsecutive geometric lattice-neighbor contacts; event invariant under mutations",
+  "example": {
+    "absolute_population_separation_lower_bound": "120489737357131/389665846920441",
+    "mutant": "HHPHPHPH",
+    "mutated_residue": 1,
+    "nominal_mutant_probability": [
+      "11359539/16531846",
+      "20250625/23950326"
+    ],
+    "nominal_parent_probability": [
+      "652185/3730687",
+      "9160825/40721119"
+    ],
+    "parent": "PHPHPHPH",
+    "robust_mutant_lower": "31554275/52243503",
+    "robust_parent_upper": "2198598/7458647"
+  },
+  "lossless_geometric_fingerprints": 171,
+  "model": "anchored 3D cubic-lattice 8-site binary HP chain (not atomistic)",
+  "robust_one_site_switches_parameter_rectangle": 36,
+  "robust_switch_reversal_orbits": 18,
+  "sequences": 256,
+  "undirected_one_site_edges_checked": 1024
+}

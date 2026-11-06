@@ -1,0 +1,105 @@
+{
+  "cases": [
+    {
+      "conformations": 543,
+      "dimension": 2,
+      "event_threshold": 1,
+      "genuine_decrease_at_q_1_5": {
+        "b4": "144972/340189",
+        "b8": "5806896/13644049",
+        "difference": "2562928284/4641555385261"
+      },
+      "interval_bounds": [
+        {
+          "adversarial_lower": "10975/91299",
+          "adversarial_upper": "223007616/352098841",
+          "depth": 0,
+          "nominal_lower": "3951/24032",
+          "nominal_upper": "6194656/11358305",
+          "robust_contact_event_minority": false,
+          "subboxes": 1
+        },
+        {
+          "adversarial_lower": "10975/91299",
+          "adversarial_upper": "268851304656/437612493881",
+          "depth": 1,
+          "nominal_lower": "3951/24032",
+          "nominal_upper": "7468091796/14218539365",
+          "robust_contact_event_minority": false,
+          "subboxes": 4
+        },
+        {
+          "adversarial_lower": "10975/91299",
+          "adversarial_upper": "1114547857632/1814174673107",
+          "depth": 2,
+          "nominal_lower": "3951/24032",
+          "nominal_upper": "30959662712/58944735331",
+          "robust_contact_event_minority": false,
+          "subboxes": 16
+        },
+        {
+          "adversarial_lower": "10975/91299",
+          "adversarial_upper": "5729309844192/9325772155867",
+          "depth": 3,
+          "nominal_lower": "3951/24032",
+          "nominal_upper": "159147495672/303005988139",
+          "robust_contact_event_minority": false,
+          "subboxes": 64
+        }
+      ],
+      "sequence": "HHHPPHHH",
+      "sufficient_positive_derivative_certificate_available": false
+    },
+    {
+      "conformations": 13565,
+      "dimension": 3,
+      "event_threshold": 1,
+      "genuine_decrease_at_q_1_5": {
+        "b4": "1311840/19522433",
+        "b8": "66589056/1018277185",
+        "difference": "35836358077152/19879248119591105"
+      },
+      "interval_bounds": [
+        {
+          "adversarial_lower": "1250/63097",
+          "adversarial_upper": "345116448/2651296423",
+          "depth": 0,
+          "nominal_lower": "1800/63647",
+          "nominal_upper": "9586568/101833767",
+          "robust_contact_event_minority": true,
+          "subboxes": 1
+        },
+        {
+          "adversarial_lower": "1250/63097",
+          "adversarial_upper": "308947491072/2455615799147",
+          "depth": 1,
+          "nominal_lower": "1800/63647",
+          "nominal_upper": "8581874752/94448607075",
+          "robust_contact_event_minority": true,
+          "subboxes": 4
+        },
+        {
+          "adversarial_lower": "1250/63097",
+          "adversarial_upper": "34766932900608/284490187663033",
+          "depth": 2,
+          "nominal_lower": "1800/63647",
+          "nominal_upper": "965748136128/10954678326625",
+          "robust_contact_event_minority": true,
+          "subboxes": 16
+        },
+        {
+          "adversarial_lower": "1250/63097",
+          "adversarial_upper": "4910800509759744/40217492154383419",
+          "depth": 3,
+          "nominal_lower": "1800/63647",
+          "nominal_upper": "136411125271104/1548678791056051",
+          "robust_contact_event_minority": true,
+          "subboxes": 64
+        }
+      ],
+      "sequence": "HHPPPPPH",
+      "sufficient_positive_derivative_certificate_available": false
+    }
+  ],
+  "model": "toy lattices; exact mass histogram, factor errors [5/6,6/5]"
+}
