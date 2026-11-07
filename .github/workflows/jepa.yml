@@ -4,7 +4,7 @@ on:
     paths:
       - 'src/foldbounds/jepa_*.py'
       - 'tests/test_jepa_*.py'
-      - 'experiments/benchmark_jepa.py'
+      - 'experiments/benchmark_jepa*.py'
       - '.github/workflows/jepa.yml'
   workflow_dispatch:
 permissions:
@@ -24,6 +24,10 @@ jobs:
       - name: Install CPU PyTorch (optional ML experiment)
         run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
       - name: Train on actual checked small-model transitions
-        run: python -m pytest -q tests/test_jepa_guidance.py tests/test_jepa_trajectory.py tests/test_jepa_md_export.py
+        run: python -m pytest -q tests/test_jepa_guidance.py tests/test_jepa_trajectory.py tests/test_jepa_md_export.py tests/test_jepa_reversible_kinetics.py tests/test_jepa_kinetic_teacher.py
       - name: Whole-sequence holdout pilot (NO gain claim)
         run: python experiments/benchmark_jepa.py --train --rl --seed 7 --steps 3 --epochs 3
+      - name: Independently verify exact reversible transition chains and optimized flux
+        run: python experiments/benchmark_jepa_flux.py
+      - name: Hold out whole HP sequences while training kinetic JEPA
+        run: python experiments/benchmark_jepa_kinetic_teacher.py --seed 11 --epochs 4 --train-states 12
