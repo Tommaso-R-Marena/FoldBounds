@@ -26,8 +26,6 @@ def export_md(
     stride: int = 1, timestep_ps: float | None = None,
     first_time_ps: float = 0.0,
 ) -> dict:
-    import mdtraj as md
-    import numpy as np
     if type(stride) is not int or stride < 1 or not source_id:
         raise ValueError("stride must be positive and source ID nonempty")
     if timestep_ps is not None and (
@@ -45,6 +43,9 @@ def export_md(
         raise ValueError("supply original frame timestep_ps explicitly for DCD")
     if output.exists() or output.with_suffix(output.suffix + ".json").exists():
         raise FileExistsError("output and provenance metadata must be new")
+    # Validate refusal cases before requiring either optional dependency.
+    import mdtraj as md
+    import numpy as np
     trajectory = md.load(str(source), top=str(topology), stride=stride)
     atom_ids = trajectory.topology.select(selection)
     if len(atom_ids) < 5:
