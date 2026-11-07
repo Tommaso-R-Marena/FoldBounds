@@ -11,6 +11,7 @@ from foldbounds.jepa_reversible_kinetics import build_kernel,event_flux
 from foldbounds.jepa_flux_maxflow import (
     propose_maxflow_certificate,verify_maxflow_certificate,
     construct_reversible_kernel,event_flux_reversible,
+    stationary_event_lag1,stationary_event_lag1_reversible,
 )
 
 CASES = (
@@ -37,6 +38,10 @@ def main():
         optimal=cert.total_mass/base.partition
         assert optimal>=blended>=baseline
         assert blended==(baseline+optimal)/2
+        rho_before=stationary_event_lag1(base,threshold)
+        rho_after=stationary_event_lag1_reversible(witness,threshold)
+        if rho_before is not None:
+            assert rho_after is not None and rho_after<=rho_before
         print(json.dumps({
             "sequence":sequence,
             "threshold":threshold,
@@ -54,6 +59,9 @@ def main():
             "model":"finite canonical HP reversible MC; not molecular folding",
             "time_unit":"one algorithmic pivot attempt",
             "full_enumeration_used":True,
+            "uniform_stationary_event_lag1":str(rho_before) if rho_before is not None else None,
+            "mixed_stationary_event_lag1":str(rho_after) if rho_after is not None else None,
+            "interpretation":"one-step stationary event covariance only; not integrated mixing",
             "elapsed_seconds":round(time.perf_counter()-started,3),
         },sort_keys=True))
 
