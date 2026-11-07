@@ -33,8 +33,8 @@ def _matrix(kernel, rows):
         [p for _,_,p in ijk],
         ([i for i,_,_ in ijk],[j for _,j,_ in ijk]),
     ),shape=(n,n))
-    if abs(float(pi @ P.sum(axis=0).A1)-1)>1e-8:
-        raise AssertionError("numerical equilibrium mass normalization suspect")
+    if abs(float(pi.sum())-1)>1e-10:
+        raise AssertionError("equilibrium distribution not normalized")
     if max(abs(P.sum(axis=1).A1-1))>1e-10:
         raise AssertionError("numerical transition row not normalized")
     if max(abs(pi @ P - pi))>1e-10:
