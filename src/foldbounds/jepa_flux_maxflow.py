@@ -250,3 +250,32 @@ def event_flux_reversible(candidate: ReversibleKernel,threshold: int) -> Fractio
         for j,p in row
         if kernel.scores[j]<threshold
     ),Fraction())/kernel.partition
+
+
+
+def stationary_event_lag1(kernel: Kernel, threshold: int) -> Fraction | None:
+    """Exact stationary lag-one correlation of the binary event indicator.
+
+    For a stationary chain with event probability p and one-step outward
+    event flux Phi, Cov(1_A(X_t),1_A(X_{t+1})) = p(1-p)-Phi.
+    Hence rho_1 = 1-Phi/[p(1-p)]. Returns None for constant events.
+    It does NOT bound integrated autocorrelation, asymptotic variance,
+    mixing time, physical kinetics or sample efficiency after burn-in.
+    """
+    verify_kernel(kernel)
+    p,flux,_=event_flux(kernel,threshold)
+    if p==0 or p==1:
+        return None
+    return 1-flux/(p*(1-p))
+
+
+def stationary_event_lag1_reversible(
+    candidate: ReversibleKernel, threshold: int,
+) -> Fraction | None:
+    """Exact stationary lag-one event autocorrelation for a checked mixture."""
+    verify_reversible_kernel(candidate)
+    p,_,_=event_flux(candidate.source,threshold)
+    if p==0 or p==1:
+        return None
+    flux=event_flux_reversible(candidate,threshold)
+    return 1-flux/(p*(1-p))
