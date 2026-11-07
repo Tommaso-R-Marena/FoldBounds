@@ -20,7 +20,7 @@ jobs:
           python-version: '3.11'
           cache: pip
       - name: Install reference checker and numpy
-        run: python -m pip install -e '.[test]' numpy mdtraj
+        run: python -m pip install -e '.[test]' numpy mdtraj scipy
       - name: Install CPU PyTorch (optional ML experiment)
         run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
       - name: Train on actual checked small-model transitions
@@ -35,3 +35,5 @@ jobs:
         run: python experiments/benchmark_jepa_maxflow.py
       - name: Verify locally checked state-dependent Hastings and frozen JEPA policy
         run: python experiments/benchmark_jepa_local_mh.py --steps 4 --train
+      - name: Numerical Poisson-vs-correlation-series mixing and falsification benchmark
+        run: python experiments/benchmark_jepa_mixing.py
