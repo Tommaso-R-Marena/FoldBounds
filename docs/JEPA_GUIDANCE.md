@@ -120,3 +120,29 @@ seed, source hashes, frame spacing, protein/PDB IDs, and leakage checks.
    outside the trust boundary.
 
 **No scientific breakthrough or empirical neural advantage is claimed.**
+
+## Export actual MD simulations (optional MDTraj)
+
+The dedicated exporter accepts time-ordered XTC and DCD molecular-dynamics
+trajectories and an explicit PDB topology. It records SHA-256 provenance,
+replica ID, selection, coordinate/time units and frame counts, and rejects
+unordered PDB/NMR ensembles as fake time series. MDTraj coordinates in nm
+are multiplied by 10 to obtain the advertised Å array.
+
+```bash
+python -m pip install mdtraj numpy
+python scripts/export_jepa_md.py \
+  --trajectory replica_01.xtc \
+  --topology topology.pdb \
+  --output replica_01.npz \
+  --source-id proteinA-replica01 \
+  --selection 'protein and name CA' \
+  --stride 10
+```
+
+For DCD, pass `--timestep-ps` specifying the **original frame spacing**
+in ps. The exporter refuses DCD without this value, rather than inventing
+simulation times. Run against *actual independently equilibrated dynamics*,
+with replica-level isolation, force-field/protonation details and separate
+equilibrium/nonequilibrium validation. The exporter and its synthetic format
+test prove only that units and time stamps are transmitted as intended.
