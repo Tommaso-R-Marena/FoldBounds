@@ -152,3 +152,29 @@ References: Madras and Sokal (1988), *The pivot algorithm: a highly
 efficient Monte Carlo method for the self-avoiding walk*,
 [DOI:10.1007/BF01022990](https://doi.org/10.1007/BF01022990);
 classical max-flow/min-cut duality and Metropolis–Hastings.
+
+
+## Exact additional guarantee: lower stationary lag-one event correlation
+
+Let `I_t=1_{X_t in A}` under a chain already in the common stationary
+Boltzmann distribution, with `p=Pr(I_t=1)`. The joint probability that
+both adjacent steps are in the event equals `p-Phi(A)`. Thus
+
+```text
+Cov(I_t, I_{t+1}) = p*(1-p) - Phi(A)
+rho_1 = 1 - Phi(A)/(p*(1-p)),  for 0 < p < 1
+```
+
+A higher *checked* stationary event flux therefore gives a *lower*
+**lag-one autocorrelation of that same binary event** at stationarity.
+`stationary_event_lag1` and `stationary_event_lag1_reversible`
+calculate this exactly from rational masses. Independent tests recompute
+the correlation from `Pr(I_t=1,I_{t+1}=1)-p²` using the entire verified
+transition matrix rather than reusing the flux identity.
+
+This is a genuine additional model-relative performance identity,
+but does **not** imply faster asymptotic decorrelation, lower integrated
+autocorrelation, lower long-run statistical error, improved global
+mixing, or faster experimental folding. The event's correlation can
+become negative under an aggressive alternating policy, which is
+not evidence of physically realistic kinetics.
