@@ -241,6 +241,49 @@ diagnostic and is not needed for soundness.
   linear-fractional program over a polyhedral cone. Apply T1′ with LP dual
   certificates.
 
+### 2.4 Soft separators: weakly coupled exteriors (T2.7)
+
+Setting: boundary variables v ∈ ∂ with finite domains D_v, and known local
+functions `Φ_A, Φ_B : T = Π_v D_v → ℝ_{>0}`. **Exterior class E_s.** The
+exterior interacts with the boundary only through factors that each touch at
+most ONE boundary variable; factors among exterior variables are arbitrary.
+Equivalently, `Ψ(τ) = Σ_o g(o) Π_v f_v(τ_v, o)` with `g ≥ 0` and
+`f_v(·,o) > 0`. For every exterior state o,
+`max_a f_v(a,o) / min_a f_v(a,o) ≤ e^{s_v}`. For pairwise couplings `ψ_{vu}`
+to exterior variables u, one valid choice is
+`s_v = Σ_u max_b [log max_a ψ_{vu}(a,b) − log min_a ψ_{vu}(a,b)]`, which is
+computable from the factors touching v.
+
+For a field `F = (F_v)_v` with `F_v : D_v → ℝ_{>0}`, let
+`Z_X(F) = Σ_τ Φ_X(τ) Π_v F_v(τ_v)` and `R(F) = Z_B(F)/Z_A(F)`. A **vertex
+field** has `F_v(a) ∈ {1, e^{s_v}}` for all v and a.
+
+**Theorem 2.7 (soft-separator enclosure, sharp).** For every exterior in E_s,
+
+    min_{F vertex} R(F)  ≤  Z_B/Z_A  ≤  max_{F vertex} R(F),
+
+and both endpoints are attained by exteriors in E_s: a single exterior state
+whose couplings realise the optimal vertex field.
+
+*Proof.* (1) `Q = Σ_o w_o R(f(·,o))` with convex weights
+`w_o ∝ g(o) Z_A(f(·,o))`, so Q lies between the extreme R(f(·,o)). (2) R is
+invariant under rescaling each F_v, so normalise each `f_v(·,o)` to
+`[1, e^{s_v}]`; this gives a point of the box `B = Π_{v,a} [1, e^{s_v}]`.
+(3) In each single coordinate F_v(a), with the others fixed, `Z_X = c_X +
+d_X F_v(a)` with c_X, d_X ≥ 0. So R is linear-fractional in that coordinate,
+hence monotone, and its extremes over the interval are at endpoints. Moving
+coordinates one at a time gives a vertex at least as extreme as any box
+point. (4) Sharpness: the optimal vertex field is a member of E_s. ∎
+
+Remarks. With s = 0 the exterior is irrelevant and Q = Z_B(1)/Z_A(1) is exact.
+As s_v → ∞ for all v, the enclosure tends to `[min ρ, max ρ]` (Theorem 2.1).
+For binary boundary variables only the effective fields ±s_v matter, giving
+2^{|∂|} candidates. The class E_s matters: if exterior factors may touch
+several boundary variables, Ψ need only be log-Lipschitz. That cone strictly
+contains the mixtures of bounded products, and the sharp bound becomes the
+LP of §2.3. (Numerical check by the coordinator: 0 violations in 90,000
+random mixture-exterior trials, file /tmp/claude-0/pi/cex_soft.py.)
+
 ---
 
 ## 3. Binding and selectivity (T4)
