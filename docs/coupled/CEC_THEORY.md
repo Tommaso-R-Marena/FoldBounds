@@ -284,6 +284,41 @@ contains the mixtures of bounded products, and the sharp bound becomes the
 LP of §2.3. (Numerical check by the coordinator: 0 violations in 90,000
 random mixture-exterior trials, file /tmp/claude-0/pi/cex_soft.py.)
 
+### 2.5 When do local certificates converge? (T2.8)
+
+Let `V_s = s·1{σ_v = a}` be a local field at site v, and let
+`W_R(s) = osc_τ ρ_R(τ)` be the hard-separator width at radius R. Since
+`ρ_R(τ) = E^τ_{B_R}[e^{−V_s}] = 1 − (1 − e^{−s}) μ^τ_{B_R}(σ_v = a)`,
+
+    W_R(s) = (1 − e^{−s}) · osc_τ μ^τ_{B_R}(σ_v = a).
+
+**Theorem 2.8 (local certifiability ⇔ weak spatial mixing).** The local
+enclosures for every field perturbation at v shrink to zero as R → ∞
+iff the marginal at v becomes asymptotically independent of the boundary
+condition (weak spatial mixing at v). By Theorem 2.2 this is also a statement
+about *every* sound local method. The exact identity above is elementary; the
+content is the interpretation.
+
+Consequences, as hypotheses to test numerically:
+* 2D Ising, zero field: below T_c the width plateaus at about
+  (1 − e^{−s})·m* (phase coexistence). Above T_c it decays exponentially.
+  At T_c it decays as a power law.
+* Fixed-backbone side-chain or protonation models conditional on the folded
+  state: expect fast decay. Global two-state folding is a finite-size analogue
+  of phase coexistence. This is why mutational *stability* ΔΔG (folded vs
+  unfolded) is not a local quantity, while the folded-state term is.
+
+**Structural fact (proton binding is antiferromagnetic).** With protonation
+variables σ ∈ {0,1}, `q_acid = σ − 1`, `q_base = σ`, and Coulomb
+`W_ij > 0`, the σ_iσ_j coefficient of `W_ij q_i q_j` is `+W_ij` for every
+site-type pair. Multi-site titration is therefore an antiferromagnetic 2-spin
+system with arbitrary fields. Consequences: (i) self-avoiding-walk-tree
+(Weitz) recursions are monotone with alternating direction, so depth-R
+truncation with all-protonated or all-deprotonated free leaves gives rigorous
+two-evaluation bounds; (ii) worst-case hardness of approximating
+antiferromagnetic 2-spin partition functions beyond uniqueness (Sly–Sun)
+applies to the model *class*. (Prior-art status: pending, PRIOR_ART.md.)
+
 ---
 
 ## 3. Binding and selectivity (T4)
