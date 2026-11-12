@@ -75,3 +75,28 @@ Rejected or deferred alternatives:
 | F: literature | docs/coupled/PRIOR_ART.md | Novelty risk per theorem |
 | E-audit | docs/audit/ASSURANCE_AUDIT_20261112.md | Deliverable A |
 | E: adversary | after the above | Independent attempts to break the results |
+
+### 2026-11-12: Coordinator prior-building experiments (independent of agents)
+- T1 counterexample search: `/tmp/claude-0/pi/cex_t1.py`. 39,749 random exact
+  instances, 0 failures. Covers T1.1 (exact test, including g₋(λ₋) = 0
+  exactly), T1.3 (threshold = vertex brute force), T1.4, and T1.5 (both
+  directions).
+- T2.7 soft-separator check: `cex_soft.py`. 90,000 mixture-exterior trials,
+  0 violations.
+- T2.1 / T2.4 enclosure and nesting on random pairwise MRFs (n ≤ 8, exact
+  rationals, ball separators): `cex_nest.py`. 688 checks, 0 failures.
+- **H5 prior (HP, partially negative):** `hp_ratio_floor.py`, n = 12, q = 2,
+  random sequences, H→P at i ∈ {1, n/2, n−2}. For prefix-order regions,
+  even with *exact* region masses (no cap looseness), the coupled width from
+  ratio uncertainty alone stays near the trivial log q² ≈ 1.386 until the
+  prefix depth m ≈ n−2 for interior residues. The width collapses earlier
+  only for residues near the chain start. Interpretation: a residue's contact
+  environment in a lattice polymer is fixed only by the global fold, so there
+  is no local separator. This is consistent with the polymer-vs-MRF dichotomy
+  (spec §4). Prefix-frontier T1 gains for HP are expected to be modest.
+- Internal prior art: the integration branch (PR #36,
+  `docs/COUNTERFACTUAL_FOLDING_REWEIGHTING.md`) already uses
+  `Z_mut/Z_parent = E_parent[R]` and conditional-odds identities, with full
+  enumeration of 8–10-residue cubic HP models. CEC differs in seeking
+  *non-enumerative* enclosures. It must cite that work and not claim the
+  identities.
