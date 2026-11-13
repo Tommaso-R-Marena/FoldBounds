@@ -8,6 +8,27 @@ statement here is a *candidate theorem with a proof sketch*. Novelty is **not**
 claimed for any identity in this file; see the prior-art review
 (`docs/coupled/PRIOR_ART.md`, pending) before quoting any originality.
 
+## Formalization status (2026-11-13)
+
+Spec §1, §2.1–2.2 and §3 are machine-checked in Lean 4.28 / Mathlib. There
+are 93 audited declarations, using only the standard axioms (`propext`,
+`Classical.choice`, `Quot.sound`), with no `sorry` or `native_decide`. They
+live on branch `research/cec-lean-20261112`. The theorem-by-theorem map,
+including exact hypotheses, is in `docs/coupled/LEAN_FORMALIZATION.md`.
+
+The formalization corrected two statements below (Theorems 2.4 and 4.2) and
+made several hypotheses precise:
+- Theorems 1.1 and 1.2 do not need Adm ≠ ∅.
+- `λ₊ ≤ S₊` needs ΣL > 0.
+- Theorem 1.6 needs some U_k > 0.
+- Theorem 1.5 needs S₋ > 0. Counterexample: regions (L,U,r) = (0,1,1) and
+  (1,1,0).
+- Theorem 2.2 needs only a nonempty support T⁺.
+
+Not formalized: T2.7, T2.8, §2.3, Theorem 4.4, T1′ completeness, and the
+sorted-threshold form of Theorem 1.3. (Theorem 1.3 is formalized as
+attainment plus g₋(λ₋) = 0.)
+
 ## 0. The question
 
 For two related ensembles A and B (wild type and mutant; ligand 1 and
@@ -204,8 +225,13 @@ bounds yield only the vacuous ratio interval `[0, +∞]`. The coupled bound is
 finite.
 *Proof.* Scale the exterior of Theorem 2.2 by z. ∎
 
-**Theorem 2.4 (nested hierarchy, monotone).** Suppose a larger separator
-satisfies, for X ∈ {A, B},
+**Theorem 2.4 (nested hierarchy, monotone).** *[Corrected 2026-11-13 after
+Lean formalization. The inner support condition is required; see
+`CoupledSeparator.hierarchy_needs_support`. Counterexample: Φ_A = (1, 0),
+Φ_B = (1, 1), K ≡ 1, which gives ρ = 1 on T⁺ but ρ′ = 2.]* Assume the inner
+support condition `Φ_A(τ) = 0 ⇒ Φ_B(τ) = 0` for all τ; it then propagates to
+the outer separator (`push_supp`). Suppose a larger separator satisfies, for
+X ∈ {A, B},
 
     Φ'_X(τ') = Σ_τ Φ_X(τ) K(τ, τ')
 
@@ -344,7 +370,10 @@ This is the conformational-selection identity, which is classical.
 ensembles. The absolute binding constant is itself a ratio, so it *is* locally
 certifiable. The receptor's own free energy is not (Theorem 2.3).
 
-**Theorem 4.2 (certified selectivity).**
+**Theorem 4.2 (certified selectivity).** *[Corrected 2026-11-13: this
+requires `k₁(τ) > 0` for every pocket state τ. Counterexample
+`CoupledBinding.selectivity_needs_positive_k1`: k₁ = (1, 0), k₂ = (1, 1) with
+a uniform receptor gives S = 2, although k₂/k₁ ≤ 1 wherever k₁ > 0.]*
 `S = K_{L2}/K_{L1} ∈ [min_τ k₂/k₁, max_τ k₂/k₁]`, and this is sharp. If
 `min_τ k₂(τ)/k₁(τ) > 1`, then L2 binds more tightly than L1 for **every**
 receptor ensemble.

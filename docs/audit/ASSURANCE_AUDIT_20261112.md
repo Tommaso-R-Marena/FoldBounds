@@ -39,7 +39,10 @@ was reproduced by the coordinator with the commands shown.
      compiler-checked, not kernel-checked.
    - About 25 integration *test* files also use `native_decide`. That is
      acceptable for tests, but those files must not be cited as proofs.
-4. **The proof-hygiene gate has blind spots.** `scripts/check_lean_sources.py`:
+4. **The proof-hygiene gate has blind spots, one of which is a soundness bug
+   in the gate.** Its axiom-report parser reads only the first line of a
+   wrapped `#print axioms` report, so a forged log hiding `sorryAx` on a
+   continuation line passes (F3e). `scripts/check_lean_sources.py`:
    - (a) globs `FoldBounds/*.lean` non-recursively;
    - (b) does not forbid `native_decide`, so `Lean.ofReduceBool` is caught only
      for declarations that happen to be listed in `AxiomAudit.lean`;
@@ -175,6 +178,29 @@ and the reported number, the number is (2) or (3), not (1).
 - This changes a CI gate, so it requires owner approval. It has not been
   implemented. The new CEC Lean modules ship with their own stricter checker,
   `scripts/check_coupled_lean.py`.
+
+**F3(e). The axiom-gate parser ignores continuation lines of wrapped reports.**
+- *Discovered by:* the CEC Lean agent. *Reproduced by:* the coordinator,
+  2026-11-13.
+- Lean wraps long `#print axioms` reports across several lines.
+  `check_lean_sources.py` matches only the first line of each report. Axioms
+  on continuation lines are never examined.
+- *Reproduction:* write an otherwise-valid log for main's 50 audited names,
+  where the first report is
+  `'X' depends on axioms: [propext,` / ` sorryAx,` / ` Classical.choice,` /
+  ` Quot.sound]`. Then `python3 scripts/check_lean_sources.py forged.log`
+  exits **0** with "Axiom audit: 50 declarations, standard axioms only".
+- *Practical exposure today:* limited. The source scan rejects literal
+  `sorry` in `FoldBounds/*.lean`, and a full-text grep of the real main and
+  #91 logs finds no non-standard axiom names; #91 has 27 wrapped reports
+  among 296. But the gate is not sound as written, and a non-standard axiom
+  could arrive through a module the source scan cannot see (F3a, F3d).
+- *Proposed fix (strengthening; not applied without owner approval):* before
+  matching, join each report's continuation lines up to the closing `]`, and
+  reject any report whose bracket never closes. The new CEC checker
+  `scripts/check_coupled_lean.py` (branch `research/cec-lean-20261112`)
+  already parses wrapped reports this way, and it is tested against planted
+  `native_decide`, a planted `Lean.ofReduceBool`, and truncated reports.
 
 **F4. Python-to-Lean refinement (unchanged gap).** After Aristotle v2 the
 remaining obligations are:

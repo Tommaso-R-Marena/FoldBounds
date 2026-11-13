@@ -142,3 +142,29 @@ Rejected or deferred alternatives:
   - The Dobrushin coefficient is nearly vacuous (0.99) at and below T_c.
   - Exhaustive enclosures are limited to 2^18 boundary states, i.e. R ≤ 4 in
     2D.
+
+### Lean results (agent B; branch research/cec-lean-20261112 @ d8af789; not yet merged)
+- Coordinator re-verification:
+  - `lake build` OK.
+  - `CoupledTests.lean` OK (kernel evaluation via `decide +kernel`).
+  - Existing gate: 18 modules / 143 declarations, standard axioms.
+  - New gate: 93 Coupled declarations, standard axioms.
+  - No sorry, admit, or native_decide.
+- Formalized:
+  - All of §1: T1.1/1.2 iff, T1.3 attainment with g(λ) = 0, T1.4,
+    T1.5 iff, T1.6, T1.7(a,b), T1′ soundness.
+  - The exact rational checker, with exactness theorems.
+  - All of §2.1–2.2: separation (the achievable set is exactly
+    (0,∞) × [min ρ, max ρ]), instance optimality, hierarchy, termination,
+    contraction, and the exact separator checker.
+  - §3: T4.1–4.3.
+- **Spec errors found, now corrected in CEC_THEORY.md:**
+  - Theorem 2.4 needs the inner support condition (formal counterexample).
+  - Theorem 4.2 needs k₁ > 0 everywhere (formal counterexample).
+  - Lesson: cex_nest.py used strictly positive weights and could not hit the
+    support case. Counterexample searches must include degenerate (zero)
+    weights.
+- **New audit finding (F3e):** the existing axiom gate ignores continuation
+  lines of wrapped `#print axioms` reports. The coordinator reproduced it: a
+  forged log hiding `sorryAx` passes. A fix is proposed in the audit, not
+  applied, pending owner approval.
