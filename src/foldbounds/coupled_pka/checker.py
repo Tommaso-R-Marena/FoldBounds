@@ -37,7 +37,22 @@ def spec_hash(spec: dict) -> str:
 
 
 def check(spec: dict, cert: dict) -> bool:
-    """Return True iff the certificate is valid; raise CertificateError otherwise."""
+    """Return True iff the certificate is valid; raise CertificateError otherwise.
+
+    Malformed input (missing keys, wrong types, non-finite numbers such as "nan") is reported
+    as CertificateError instead of leaking ValueError/KeyError/TypeError (adversarial review
+    P2-m2), so that callers counting rejections never crash. Either way the checker fails
+    closed."""
+    try:
+        return _check(spec, cert)
+    except CertificateError:
+        raise
+    except (KeyError, TypeError, ValueError, ZeroDivisionError, OverflowError,
+            AttributeError, IndexError) as exc:
+        raise CertificateError(f"malformed certificate or spec: {type(exc).__name__}: {exc}") from exc
+
+
+def _check(spec: dict, cert: dict) -> bool:
     if cert["spec_hash"] != spec_hash(spec):
         raise CertificateError("spec hash mismatch")
     sites = spec["sites"]

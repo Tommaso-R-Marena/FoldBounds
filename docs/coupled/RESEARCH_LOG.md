@@ -226,3 +226,17 @@ Rejected or deferred alternatives:
 - Assumption corrected: per-site titration can be non-monotone in pH (16/100
   sites). The coordinator's earlier instruction to rely on monotonicity was
   wrong; the agent checked and flagged it.
+
+## 2026-11-13: Adversarial review phase 2 (HP, pKa); final integration
+- Phase 2 found 0 CRITICAL, 1 MAJOR and 2 MINOR issues. Independent
+  reproductions: 40 HP rows and 1,200 BPTI exact records. Every crafted
+  checker attack was rejected.
+- P2-M1: the MC agreement claim relied on an unregistered slack. The
+  registered figure (55–65% inside) is now primary; the deviation is
+  disclosed.
+- All four research branches are now merged into the dev branch:
+  - Lean and MRF after phase 1;
+  - HP and pKa after phase 2.
+- Final assessment, recorded in DISCOVERY_REPORT §8–9: Level 1 achieved;
+  Level 2 partially achieved; Levels 3 and 4 not achieved; not
+  publication-ready.

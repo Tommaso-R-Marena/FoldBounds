@@ -45,8 +45,13 @@ checked exactly, 0 rejected.
 ## 4. Results
 ### 4.1 Non-monotone titration (negative for a simplification)
 The total protonation is monotone in pH, but single sites are not: float scans of the exact systems (pH 0-14, step 0.25)
-find increasing theta_i in 16 of 100 sites (BPTI: GLU7, TYR10, ARG20, TYR35; largest increase 0.013). The bracket procedure therefore
+find increasing theta_i in 16 of 100 sites, using an increase threshold of 1e-12. The bracket procedure therefore
 does not assume monotonicity and flags several crossings (`multi`).
+*Correction after adversarial review (P2-m1).* The BPTI increases are physically negligible. The independently
+reproduced maximum increases are GLU7 9.7e-11, TYR10 2.9e-5, ARG20 3.9e-6 and TYR35 2.4e-6. The largest increase,
+0.013, occurs in the 3RN3/2RN2 subsets, not in BPTI. Non-monotonicity is real in the model, but "16 of 100" counts
+negligible increases. Non-monotone single-site titration in coupled systems is a known phenomenon in the titration
+literature (e.g. Onufriev, Case and Ullmann 2001; citation not re-verified here).
 
 ### 4.2 Large system: GroEL 1OEL (7 chains, 1064 sites, 4035 couplings)
 Greedy min-fill treewidth bound 31: tables of 2^32 doubles (32 GB) exceed the 4 GB budget; exact inference not run.
@@ -69,9 +74,16 @@ width keeps shrinking with R and budget in all tests, which is consistent with e
 pKa brackets at R=8: single bracket 364, none-above 392 (theta>1/2 certified across pH 1-13, mostly Lys/Arg), none-below
 308; widths of single brackets: mean 3.9 pH units, only 9.6% <= 1 (bisection stops at the first undecided midpoint).
 Monte Carlo (Gibbs, 3 seeds x 64 chains, 1000 burn-in + 4000 sweeps, pH 3,5,7,9,11): the MC mean lies inside the certified
-interval for 53-59% of (site, pH) pairs, and inside it widened by 3 standard errors (+1e-3) for 100% (0 outside, all five pH);
-the strict misses are sampling noise on very narrow intervals (largest overshoot 0.003). MC agreement is a consistency
-check, not a proof.
+interval for 53-59% of (site, pH) pairs.
+**Pre-registered criterion (MC mean inside the interval widened by 3 standard errors): 55.8 / 56.5 / 58.4 / 65.3 / 54.9 %
+inside at pH 3 / 5 / 7 / 9 / 11, with 369-480 of 1064 sites outside at each pH.** This figure was reproduced by the
+adversarial review (P2-M1).
+An earlier version of this document reported "100% (0 outside)". That figure used an additional absolute slack of +1e-3
+which the protocol did not register. It is a **post-hoc deviation** (§6) and must not be quoted as the registered result.
+Likely benign cause, not proven: many sites are frozen (fully protonated or deprotonated) in every MC sample, so their MC
+standard error is exactly 0, while their certified interval is a tiny interval that excludes exactly 0 or 1. Under the
+post-hoc +1e-3 slack, 100% of MC means are inside, and the largest strict overshoot is 0.003. MC agreement is a consistency
+check, not a proof, and it does not affect certificate soundness.
 
 ### 4.3 Pre-registered comparison with experiment (PKAD-2, 9 proteins)
 134 sites matched (16 non-numeric records and 3 unmatched sites excluded). Model midpoint available only for sites with a
@@ -105,6 +117,9 @@ Raw PDB/PKAD files are not committed (hashes only); `build_specs.py` fetches PDB
 ## 6. Deviations from the protocol
 Addendum 1 (large protein 1OEL instead of 4HHB, because 4HHB has treewidth 17). Large-system pH 3,5,9,11 certificates use budget
 256 and R=8 only (pH 7 uses 1024). Exact validation used 20-site subsets with budget list as stated. Nothing was changed after seeing experimental comparisons.
+**Post-hoc deviation (disclosed after adversarial review P2-M1):** the MC-agreement analysis in `analyze_large.py` added an
+absolute slack of +1e-3 to the registered "3 standard errors" criterion. §4 now reports both numbers, with the registered one
+as primary. The experimental (PKAD) comparison is unaffected and matches the registered analysis.
 
 ## 7. Limitations
 Hard cutoff and eps=4r are modelling choices, not validated physics; no desolvation, screening, tautomers, ligands, or temperature;

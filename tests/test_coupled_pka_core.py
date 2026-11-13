@@ -82,3 +82,15 @@ def test_checker_rejects_wrong_spec_hash():
         assert False
     except C.CertificateError:
         pass
+
+
+def test_checker_reports_malformed_numbers_as_certificate_error():
+    """Adversarial review P2-m2: a 'nan' lambda must raise CertificateError, not ValueError."""
+    import pytest
+    from foldbounds.coupled_pka import checker
+    spec = {"sites": []}
+    cert = {"spec_hash": checker.spec_hash(spec), "ph": "7", "lambda": "nan", "side": "lower"}
+    with pytest.raises(checker.CertificateError):
+        checker.check(spec, cert)
+    with pytest.raises(checker.CertificateError):
+        checker.check(spec, {"ph": "7"})  # missing keys

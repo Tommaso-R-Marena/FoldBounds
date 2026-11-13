@@ -236,3 +236,106 @@ Every finding was accepted. Dispositions:
 | m: formalization status incomplete (T2.2 pairwise realisability, T2.6 multi-layer) | Fixed | CEC_THEORY.md |
 | m: overclaims (MRF "still sharp"; ΔΔG "This is why"; "Allostery is the obstruction") | Softened to "informative", "we conjecture", and "untested hypothesis" | MRF_SCALING.md; CEC_THEORY.md |
 | m: Dobrushin coefficient for a single annulus only | Fixed wording | MRF_SCALING.md |
+
+## Phase 2: HP algorithms and pKa application (2026-11-13)
+
+**Scope.**
+- HP: `/home/user/wt-algo` @ 5303e02.
+- pKa: `/home/user/wt-pka` @ f0bb318.
+
+Read-only throughout. The pKa re-analysis ran in a `git archive` copy (`pkacopy/`).
+
+### Reproduction (independent; paths relative to `/tmp/claude-0/adversary`)
+
+| What | Command | Result |
+|---|---|---|
+| Own exact HP enumerator against oracle rows | `python3 -B hp/hp_indep.py` | Walk counts match A001411. 40 random rows (n = 10, 12): exact ΔΔF matches to 2e-6, lies inside every reported coupled interval, and the reported trivial bound always contains the true local range. Whole files (42,069 rows with n ≤ 12): 0 rows with a failed soundness flag; coupled width ≤ trivial width in every row; checker 2,877 accepted, 0 rejected |
+| HP checker attacks | `python3 -B hp/hp_attacks.py` | 13 attacks. Tightened claims (by 10⁻⁴⁰), coverage gaps, overlaps, duplicates, q < 1, double mutation, non-contiguous order, float claim, first step not R, and wrong index are all rejected. One "bogus" witness was accepted, but it is a valid self-avoiding completion (`_place` rejects self-intersection), so the acceptance is sound |
+| `ratio.py` threshold rule (my m2) | inspection of `_threshold` | Thresholds with Σα = 0 are skipped (`if den > 0`). Handled correctly |
+| Own BPTI (4PTI, 20 sites) brute force | `python3 -B pka/pka_indep.py` | Exact integer milli-exponents and long-double sums over 2²⁰ states. All 1,200 4PTI records at pH 3, 7 and 11 in `validate_exact.json` agree to 1e-9, and every value lies inside its certified θ interval |
+| pKa checker attacks | same script | Claims beyond the exact Q by 1e-6 relative, a dropped boundary site, a duplicate interior site, a flipped side and a wrong spec hash are all rejected. A tree truncated to the root accepted a true lower bound and rejected an upper bound it could not prove. Both outcomes are sound |
+| MC criterion as registered | `pkacopy`: `analyze_large.py` with the `+1e-3` removed | see P2-M1 |
+
+### Findings
+
+**CRITICAL: none.** Neither checker accepted an unsound certificate, and the HP and BPTI values
+reproduce independently. Both checkers re-derive every quantity:
+- HP: frontier coverage, caps, witnesses and the c_i range. The cap charges each contact to
+  whichever endpoint is placed later in the growth order, so it is valid for any order.
+- pKa: the weights from the spec, the boundary as the set of all coupled outside sites, a
+  static binary tree that partitions completely by construction, and the exact T1 test at each
+  leaf.
+
+**P2-M1 (MAJOR): the reported "MC agrees within noise" result relies on an unregistered
+criterion.**
+- `PROTOCOL.md` (fbaf401) registers the fraction of (site, pH) pairs whose MC mean lies "inside
+  the interval widened by 3 standard errors".
+- `analyze_large.py` instead tests `lo − 3·se − 1e-3 ≤ m ≤ hi + 3·se + 1e-3`.
+- Under the registered criterion, the fraction inside at pH 3/5/7/9/11 is
+  **55.8 / 56.5 / 58.4 / 65.3 / 54.9 %**. Between 369 and 480 of the 1,064 sites fall outside
+  at each pH.
+- `PKA_APPLICATION.md` §4.2 reports "100% (0 outside, all five pH)". The extra margin is not
+  listed among the §6 deviations.
+- The likely cause is benign: sites frozen at θ ≈ 0 or 1 have MC SE = 0, while the certified
+  interval excludes the endpoint. The fix is still to report the registered number and to
+  disclose the +1e-3 as a post-hoc deviation.
+- This does not affect certificate soundness or the experimental comparison.
+
+**P2-m1 (MINOR): non-monotone titration is real in the model, but its size is overstated for
+BPTI.**
+- I reproduced the four BPTI sites and their increases: GLU7 9.7e-11, TYR10 2.93e-5 (matches
+  the agents' `max_increase` to 1e-16), ARG20 3.9e-6, TYR35 2.4e-6.
+- "Largest increase 0.013" comes from the 3RN3 and 2RN2 subsets, not from BPTI.
+- The count "16 of 100" uses a 1e-12 threshold, so it includes increases that are physically
+  negligible.
+- Non-monotone single-site titration is a known phenomenon (Onufriev, Case & Ullmann,
+  Biochemistry 2001, from memory: unverified).
+
+**P2-m2 (MINOR): malformed input escapes the pKa checker's error type.** A malformed `lambda`
+such as `"nan"` raises `ValueError` rather than `CertificateError`. `validate_exact.py` catches
+only `CertificateError`, so such input crashes the run instead of being counted as a rejection.
+This fails closed and is not unsound. `check` never returns False, so callers that ignore its
+return value are safe.
+
+**P2-n1 (NOTE): pre-registration chronology** (from git):
+- the protocol was frozen at 02:42:46;
+- addendum 1 at 02:47:09;
+- model and specs at 02:47:17, unchanged since;
+- run and comparison code at 08:08:54;
+- results at 08:30:01 (experiment.json at 08:18).
+
+The final commit changes no code. The registered analysis (primary and secondary sets, null,
+bootstrap seed 7) matches the reported table, and the protocol anticipated a loss. Not
+verifiable: when the PKAD page was first viewed.
+
+**P2-n2 (NOTE): the HP documentation is honest.** `ALGORITHMS_HP.md` leads with a
+negative/modest headline and claims no novelty. `RESEARCH_LOG` concedes that the roughly 10×
+coupled-versus-separate gap is an artifact of the baseline. This is consistent with phase-1
+finding M2. I did not independently check GroEL (1OEL): the width statistics rest on 19,482
+certificates accepted by the checker.
+
+### Phase-2 verdict table
+
+| Claim | Correct | Original | Scalable | Significant |
+|---|---|---|---|---|
+| HP T1 certificates sound (71,859 rows) | supported (40 rows independent; whole-file flags) | unsupported | partially (exactly trivial at n = 30, 50) | unsupported as a capability |
+| HP negative result: coupled ≈ trivial for n ≥ 12 | supported | — | — | partially (useful negative) |
+| HP and pKa checkers sound | supported | — | partially | partially |
+| pKa certificates sound (10,000 exact pairs) | supported (1,200 BPTI records reproduced) | unsupported (standard model) | partially (1OEL ran; 19% not converged) | partially (model-relative) |
+| Non-monotone titration, 16/100 sites | supported (in the model); magnitude overstated for BPTI | unsupported | — | partially |
+| MC agrees within noise (100%) | **refuted under the registered criterion** (55–65%) | — | — | — |
+| Model loses to the null (pre-registered) | supported | — | — | supported (honest negative) |
+
+---
+
+## Coordinator response to phase 2 (2026-11-13)
+
+| Finding | Disposition | Where |
+|---|---|---|
+| P2-M1: the MC "100% within noise" figure used an unregistered +1e-3 slack | **Accepted.** The registered criterion (55.8–65.3% inside) is now the primary result. The slack is disclosed as a post-hoc deviation in §6, together with the likely benign cause. The discovery report is corrected. | PKA_APPLICATION.md §4, §6; DISCOVERY_REPORT.md §6 |
+| P2-m1: non-monotone titration overstated for BPTI | **Accepted.** The doc now states the 1e-12 threshold, the BPTI magnitudes (≤ 3e-5), and that the 0.013 maximum comes from an RNase subset | PKA_APPLICATION.md §4.1; DISCOVERY_REPORT.md |
+| P2-m2: "nan" input raised ValueError, not CertificateError | **Fixed.** `check` now maps every malformed-input exception to CertificateError. Regression test added; 18 pKa tests pass. | `coupled_pka/checker.py`; `tests/test_coupled_pka_core.py` |
+| P2-n1, P2-n2 | Noted. The pre-registration order and the honesty of the HP write-up were confirmed independently. | — |
+
+The HP and pKa branches were merged into the dev branch after phase 2, with
+these fixes applied on top.

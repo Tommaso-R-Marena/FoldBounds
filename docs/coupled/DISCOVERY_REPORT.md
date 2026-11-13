@@ -1,7 +1,7 @@
 # Coupled Ensemble Certificates: mathematical discovery report (Deliverable B)
 
-**Status (2026-11-13):** draft. Sections marked *[pending]* await the pKa
-application and the adversarial review. Nothing here is claimed as novel
+**Status (2026-11-13):** complete for this session; independently reviewed in two
+phases (ADVERSARIAL_REVIEW.md). Nothing here is claimed as novel
 beyond what `PRIOR_ART.md` supports.
 
 ## 1. Question and answer in one paragraph
@@ -127,8 +127,12 @@ proposer builds them; an exact Fraction checker verifies them.
   sit in 57 small clusters (largest 7 sites). This is consistent with, but
   not proven to be, the strong-coupling / non-uniqueness signature; budget
   and interior-cap limits were not ruled out.
-- *Monte Carlo* means fall inside the certified intervals within sampling
-  noise (100% once 3 SE are allowed).
+- *Monte Carlo*, under the pre-registered criterion (mean inside the
+  interval ± 3 SE): only **55–65%** of (site, pH) pairs are inside. An earlier
+  "100%" figure used an unregistered +1e-3 slack, which review P2-M1 flagged
+  as a post-hoc deviation; it is now disclosed. The likely benign cause is
+  frozen sites with zero MC standard error against tiny certified intervals.
+  Certificate soundness is unaffected.
 - **Model vs experiment (pre-registered): negative.** On PKAD-2 (9 proteins,
   134 matched sites), the certified-midpoint RMSE is 1.59 vs 0.74 for the
   null (model-pKa-only) predictor on the 75 sites with a single bracket
@@ -136,7 +140,9 @@ proposer builds them; an exact Fraction checker verifies them.
   experimental *shifts* is 0.02. The Coulomb-only model has no skill. The
   certificates are about the model, and the model is poor.
 - **An assumption corrected.** 16/100 exactly analysed sites titrate
-  *non-monotonically* in pH. Coupled multi-site titration is known to produce
+  *non-monotonically* in pH, at a 1e-12 threshold. The BPTI increases are
+  physically negligible (≤ 3e-5); the largest increase, 0.013, is in an RNase
+  subset. Coupled multi-site titration is known to produce
   irregular titration curves. A certified crossing of 1/2 therefore asserts
   that a crossing exists, not that it is unique; multiple crossings are
   flagged.
@@ -165,13 +171,66 @@ are in `ADVERSARIAL_REVIEW.md`. **0 CRITICAL, 3 MAJOR, 8 MINOR.**
   - M3: the unformalized §2.3 and Theorem 4.4 reductions were false without
     support conditions. Corrected.
 
-*[Phase 2 (HP, pKa): pending]*
+**Phase 2 (HP, pKa): 0 CRITICAL, 1 MAJOR, 2 MINOR.**
+- Independent reproductions:
+  - 40 HP oracle rows: exact ΔΔF matches to 2e-6 and lies inside every
+    interval.
+  - All 42,069 n ≤ 12 rows are sound, and the coupled width never exceeds
+    trivial.
+  - 1,200 BPTI exact records match to 1e-9 and lie inside the certified
+    intervals.
+- Both checkers rejected every crafted attack.
+- The pre-registration order is confirmed in git.
+- MAJOR P2-M1: the MC "100%" claim relied on an unregistered slack.
+  Corrected and disclosed.
+- Minor: the non-monotonicity magnitudes were overstated for BPTI
+  (corrected), and malformed numeric input raised the wrong exception type.
+  It already failed closed; it is now a CertificateError, with a regression
+  test.
 
 ## 8. Assessment against the program's success levels
 
-*[to be finalised after §6–7]*. Provisional: **Level 1** (foundational
-consolidation, audit, gate flaws found) **plus a partial Level 2**. The Level 2
-part is a machine-checked, sharp, local relative-free-energy certificate
-theory with a verified executable kernel, and a demonstrated size-independent
-capability on MRF models. The mathematics is largely classical, and the
-polymer case is negative. There is no evidence of Level 3 or 4.
+**Level 1 (foundational consolidation): achieved.**
+- An evidence-based audit of `main`, #91 and #92–#95.
+- Integration-level Lean is unverified in CI (all jobs time out).
+- A `native_decide` result is mislabelled as kernel-checked.
+- **Two soundness bugs in the existing axiom gate**, both reproduced, with
+  fixes proposed.
+
+**Level 2 (strong contribution in a restricted setting): partially
+achieved.**
+- A sharp theory of local relative-free-energy certificates, machine-checked
+  in Lean (93 declarations, standard axioms only, verified by CI on GitHub),
+  with executable checkers proved sound and exact.
+- A demonstrated capability *within explicit models*: rigorous, independently
+  checked equilibrium bounds for a 1,064-site protonation model (GroEL)
+  beyond exact inference, with non-convergence localised to small clusters.
+- Limits:
+  - The underlying mathematics is largely classical (PRIOR_ART.md).
+  - The MRF size-independence is a construction-level corollary.
+  - The polymer (HP) case is a clear negative.
+  - The real-structure model has no predictive skill against experiment.
+
+**Levels 3 and 4: not achieved.** There is no evidence of a generalisable new
+capability on independently evaluated scientific problems. The physically
+meaningful applications are bounded by model realism, and the theory says
+precisely why local certification fails in the regimes that matter most:
+phase coexistence, global folding, and strongly coupled clusters.
+
+## 9. Manuscript readiness (Deliverable G)
+
+**Not publication-ready, and no manuscript is claimed.** A defensible
+short methods paper could be built on "machine-checked separator certificates
+for multi-site titration", but only after:
+1. a realistic electrostatic model (e.g. continuum-electrostatics pairwise
+   energies, desolvation, conformational flexibility as in MCCE) and a
+   head-to-head comparison with an established pKa engine;
+2. resolution or characterisation of the 19% non-converging sites (true
+   non-uniqueness vs. budget limits);
+3. full-text verification of the prior-art items left [unverified]: OSPREY
+   BBK*/MARK* ratio handling, Leisink–Kappen sharpness statements, and
+   Onufriev et al. on irregular titration;
+4. landing the fixes for the existing axiom gate (owner approval).
+
+A paper based on the current evidence would overstate both novelty and
+relevance.
