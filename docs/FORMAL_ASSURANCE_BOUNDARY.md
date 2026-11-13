@@ -87,6 +87,27 @@ The scanner rejects sorry, admit, new explicit axioms and implemented_by
 in the FoldBounds Lean modules. This is a focused audit, not a universal
 guarantee about every dependency or third-party machine/runtime layer.
 
+**Gate hardening (2026-11).** `scripts/check_lean_sources.py` now handles two
+cases it previously missed:
+- *Wrapped reports.* It parses `#print axioms` reports across Lean's wrapped
+  continuation lines. Truncated, trailing-text and unrecognised reports fail
+  closed.
+- *Look-alike axiom names.* It requires every axiom name to equal one of the
+  three authorised names exactly. Previously, an axiom on a continuation line,
+  or a forged `axiom «Classical.choice» : False`, passed as "standard axioms
+  only".
+
+Regression tests, including real Lean output of both exploits, are in
+`tests/test_check_lean_sources.py`.
+
+Remaining documented limits, each to be strengthened only by a separately
+reviewed change:
+1. the source scan is non-recursive and skips `scripts/*.lean`;
+2. `native_decide` is caught only through audited declarations;
+3. only declarations listed in `AxiomAudit.lean` are audited;
+4. the name check relies on Lean's printer rendering non-standard names
+   distinctly.
+
 ## Reproduction
 
     lake build
