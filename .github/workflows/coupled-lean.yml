@@ -1,0 +1,26 @@
+name: Coupled ensemble certificates (Lean)
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  coupled-lean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Source audit of the CEC Lean files (fail closed, before building)
+        run: python3 scripts/check_coupled_lean.py
+      - name: Build Lean and Mathlib with pinned toolchain
+        uses: leanprover/lean-action@v1
+      - name: Check CEC accept/reject tests (kernel evaluation)
+        run: lake env lean FoldBounds/CoupledTests.lean
+      - name: Audit headline theorem axioms
+        run: |
+          lake env lean FoldBounds/AxiomAudit.lean > coupled-axioms.log 2>&1
+          cat coupled-axioms.log
+          python3 scripts/check_lean_sources.py coupled-axioms.log
+          python3 scripts/check_coupled_lean.py coupled-axioms.log
