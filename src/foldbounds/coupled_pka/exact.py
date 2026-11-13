@@ -73,3 +73,53 @@ def float_marginals_all_ph(spec: dict, phs):
         z = w.sum()
         out.append((states * w[:, None]).sum(0) / z)
     return np.array(out)  # (n_ph, n)
+
+
+def ve_theta(spec: dict, ph: float, sites=None, order=None):
+    """Float64 variable-elimination reference theta_i (NOT trusted; used as ground truth for mid-size systems)."""
+    import numpy as np
+    from .treewidth import min_fill_width
+    n = len(spec["sites"])
+    acid = [s["acid"] for s in spec["sites"]]
+    pka = [float(s["pka"]) for s in spec["sites"]]
+    LN10 = math.log(10.0)
+    base = []
+    for i in range(n):
+        base.append(((i,), np.array([1.0, 10.0 ** (pka[i] - ph)])))
+    edges = []
+    for key, k in spec["pairs_milli"].items():
+        i, j = map(int, key.split(","))
+        edges.append((i, j))
+        t = np.zeros((2, 2))
+        for a in (0, 1):
+            for b in (0, 1):
+                t[a, b] = 10.0 ** (-(k / 1000.0) * (a - acid[i]) * (b - acid[j]))
+        base.append(((i, j), t))
+    if order is None:
+        _, order = min_fill_width(n, edges)
+    out = {}
+    for q in (range(n) if sites is None else sites):
+        factors = list(base)
+        for v in [x for x in order if x != q]:
+            inv = [f for f in factors if v in f[0]]
+            rest = [f for f in factors if v not in f[0]]
+            U = sorted({x for f in inv for x in f[0]} - {v})
+            lab = {x: idx for idx, x in enumerate([v] + U)}
+            args = []
+            for vs, t in inv:
+                args += [t, [lab[x] for x in vs]]
+            tab = np.einsum(*args, [lab[x] for x in U]) if U else np.einsum(*args, [])
+            tab = np.asarray(tab, float)
+            m = tab.max()
+            rest.append((tuple(U), tab / m))
+            factors = rest
+        tab = np.ones(2)
+        for vs, t in factors:
+            if vs == (q,):
+                tab = tab * t
+            elif len(vs) == 0:
+                pass
+            else:
+                raise RuntimeError("leftover factor")
+        out[q] = float(tab[1] / (tab[0] + tab[1]))
+    return out

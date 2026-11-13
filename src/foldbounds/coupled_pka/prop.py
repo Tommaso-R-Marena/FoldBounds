@@ -30,10 +30,9 @@ class Prepared:
         R = 1 << m
         X = ((np.arange(R)[:, None] >> np.arange(m)[None, :]) & 1) if m else np.zeros((1, 0), int)
         cfg = {x: np.concatenate([np.full((R, 1), x), X], axis=1) for x in (0, 1)}
-        php = float(self.ph)
 
         def lu(s):
-            return (float(Fraction(sites[s]["pka"])) - php) * LN10
+            return float(Fraction(sites[s]["pka"])) * LN10  # pH part added in set_ph
 
         def lphi(a, b, sa, sb):  # arrays sa, sb
             k = nbr[a].get(b, 0)
@@ -42,6 +41,7 @@ class Prepared:
             return -(k / 1000.0) * LN10 * (sa - acid[a]) * (sb - acid[b])
 
         lpsi = {}
+        self.ncharged = {x: cfg[x].sum(axis=1).astype(float) for x in (0, 1)}
         for x in (0, 1):
             c = cfg[x]
             tot = np.zeros(R)
@@ -66,7 +66,8 @@ class Prepared:
         self.order = [bd[p] for p in perm]
         self.H0 = H[0][:, perm, :]
         self.H1 = H[1][:, perm, :]
-        self.lpsi0, self.lpsi1 = lpsi[0], lpsi[1]
+        self._lpsi = lpsi
+        self.set_ph(self.ph)
         self.R, self.B = R, B
         rat = self.H1 - self.H0
         def suf(a, fn):
@@ -79,16 +80,23 @@ class Prepared:
         self.sRlo = suf(rat, np.minimum)
         self.sRhi = suf(rat, np.maximum)
 
+    def set_ph(self, ph):
+        """pH enters only through the unary terms of the interior (boundary tables are pH-independent)."""
+        self.ph = Fraction(ph)
+        php = float(self.ph)
+        self.lpsi0 = self._lpsi[0] - php * LN10 * self.ncharged[0]
+        self.lpsi1 = self._lpsi[1] - php * LN10 * self.ncharged[1]
+
     # T1 bound at a cube
     def bound(self, k, LD, LN, side):
         ld = self.lpsi0 + LD
         lr = (self.lpsi1 + LN) - ld
         lU = ld + self.sHi[:, k]
         s = lU.max()
-        Lm = np.exp(ld + self.sLo[:, k] - s)
-        Um = np.exp(lU - s)
+        Lm = np.maximum(np.exp(ld + self.sLo[:, k] - s), 1e-290)
+        Um = np.maximum(np.exp(lU - s), 1e-290)
         if side == "lower":
-            r = np.exp(lr + self.sRlo[:, k])
+            r = np.exp(np.clip(lr + self.sRlo[:, k], -700, 700))
             idx = np.argsort(r, kind="stable")
             r, Lm, Um = r[idx], Lm[idx], Um[idx]
             cu_n = np.concatenate([[0.0], np.cumsum(r * Um)])
@@ -96,7 +104,7 @@ class Prepared:
             tl_n = np.concatenate([np.cumsum((r * Lm)[::-1])[::-1], [0.0]])
             tl_d = np.concatenate([np.cumsum(Lm[::-1])[::-1], [0.0]])
             return float(np.min((cu_n + tl_n) / (cu_d + tl_d)))
-        r = np.exp(lr + self.sRhi[:, k])
+        r = np.exp(np.clip(lr + self.sRhi[:, k], -700, 700))
         idx = np.argsort(-r, kind="stable")
         r, Lm, Um = r[idx], Lm[idx], Um[idx]
         cu_n = np.concatenate([[0.0], np.cumsum(r * Um)])
@@ -210,3 +218,54 @@ def decide(prep: Prepared, budget: int):
 
 def theta_of(q):
     return q / (1.0 + q)
+
+
+GRID = list(range(1, 14))
+
+
+def pka_interval(spec, prep: Prepared, budget: int = 256, bisect: int = 3, grid=GRID):
+    """Certified bracket procedure of PROTOCOL section 4. Returns (result dict, list of decision certificates)."""
+    labels = {}
+    certs = {}
+    def run(ph):
+        prep.set_ph(ph)
+        lab, side = decide(prep, budget)
+        labels[ph] = lab
+        if side is not None:
+            certs[ph] = side.certificate(spec, Fraction(1), prep.i, ph)
+        return lab
+    for g in grid:
+        run(Fraction(g))
+    dec = [(g, labels[Fraction(g)]) for g in grid if labels[Fraction(g)] != "U"]
+    brackets = []
+    for (g1, l1), (g2, l2) in zip(dec, dec[1:]):
+        if l1 != l2:
+            lo, hi, ll, lh = Fraction(g1), Fraction(g2), l1, l2
+            for _ in range(bisect):
+                mid = (lo + hi) / 2
+                lm = run(mid)
+                if lm == "U":
+                    break
+                if lm == ll:
+                    lo = mid
+                else:
+                    hi = mid
+            brackets.append((lo, hi, ll, lh))
+    nlab = {labels[Fraction(g)] for g in grid}
+    if len(brackets) >= 1:
+        lo = min(b[0] for b in brackets)
+        hi = max(b[1] for b in brackets)
+        kind = "single" if len(brackets) == 1 else "multi"
+    else:
+        lo = hi = None
+        kind = {"A": "none-above", "B": "none-below"}.get(next(iter(nlab - {"U"})), "undecided") if len(nlab - {"U"}) == 1 else "undecided"
+    keep = {}
+    for (a, b, la, lb) in brackets:
+        for ph in (a, b):
+            keep[ph] = certs[ph]
+    if kind.startswith("none") and len(nlab - {"U"}) == 1:
+        for ph, c in certs.items():
+            keep[ph] = c
+    return ({"kind": kind, "lo": None if lo is None else float(lo), "hi": None if hi is None else float(hi),
+             "nbr": len(brackets), "labels": {str(float(k)): v for k, v in labels.items() if k.denominator == 1}},
+            list(keep.values()))
