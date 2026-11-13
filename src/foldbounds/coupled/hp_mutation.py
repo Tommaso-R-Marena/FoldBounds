@@ -217,25 +217,33 @@ class HPMutation:
             stack.extend(kids)
         return out
 
-    def score(self, nd: Node) -> float:
-        """Width contribution proxy: span of the region's B-mass range, U*R - L*r."""
-        return float(nd.U * nd.R - nd.L * nd.r) if not (nd.complete or nd.dead) else -1.0
+    def score(self, nd: Node, kind: str = "span") -> float:
+        """Width contribution proxies for splitting (negative = never split).
+        span : U*R - L*r, the width of the region's B-mass range (neutral; suits separate bounds)
+        ratio: U*(R - r), the mass-weighted ratio uncertainty (what T1 cannot remove)"""
+        if nd.complete or nd.dead:
+            return -1.0
+        if kind == "span":
+            return float(nd.U * nd.R - nd.L * nd.r)
+        return float(nd.U * (nd.R - nd.r)) if nd.R > nd.r else 0.0
 
-    def refine(self, start: list[str] | None = None):
+    def refine(self, start: list[str] | None = None, kind: str = "span"):
         """Generator: yields the current frontier (list of words) after each split of the
         highest-scoring region. First yield is the start frontier."""
         words = set(start or self.root())
-        heap = [(-self.score(self.node(w)), w) for w in words]
+        heap = [(-self.score(self.node(w), kind), w) for w in words]
         heapq.heapify(heap)
         yield words
         while heap:
             s, w = heapq.heappop(heap)
             if -s < 0:
                 return
+            if -s == 0:      # nothing left that can narrow the ratio: finish remaining with span
+                return
             words.discard(w)
             for c in self.children(w):
                 words.add(c)
-                heapq.heappush(heap, (-self.score(self.node(c)), c))
+                heapq.heappush(heap, (-self.score(self.node(c), kind), c))
             yield words
 
     # --- bounds on ln(Z_B/Z_A) (kT units: ddF = -ln ratio, so width is the same)

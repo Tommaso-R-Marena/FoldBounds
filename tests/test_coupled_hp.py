@@ -139,3 +139,17 @@ class CorruptionTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class LargeNTests(unittest.TestCase):
+    def test_n30_certificate_checks_and_nested(self):
+        seq = "HPPHPHHPHPPHHPHPHPPHHPHPHHPPHP"
+        for order in ("linear", "centred"):
+            P = HPMutation(seq, 12, F(2), order)
+            for k, words in enumerate(P.refine()):
+                if k == 150:
+                    break
+            lo, hi = P.coupled(words)
+            tl, th = P.trivial()
+            self.assertTrue(tl <= lo <= hi <= th)
+            self.assertTrue(check(P.certificate(words))[0])
