@@ -504,3 +504,28 @@ energy" without "model-relative". Always say: "model-relative certificate",
 consistent with the local data", and cite Zwanzig, Georgii (DLR),
 Leisink–Kappen, Charnes–Cooper/Dinkelbach, Dobrushin, and Weitz where the
 corresponding step is used.
+
+## Coordinator addendum (2026-11-13): OSPREY ratio question, abstract-level check
+
+Source: PubMed, PMID 31855059. Jou JD, Holt GT, Lowegard AU, Donald BR,
+"Minimization-Aware Recursive K* (MARK*): A Novel, Provable Algorithm that
+Accelerates Ensemble-Based Protein Design and Provably Approximates the
+Energy Landscape", J Comput Biol 27(4):550–564 (2020),
+https://doi.org/10.1089/cmb.2019.0315.
+
+The abstract states that the prior state of the art "computes provable
+ε-approximations to partition functions of protein states (e.g., bound vs.
+unbound)". MARK* exploits "the correlation between protein conformation and
+energy" *within* a state's conformation tree. BBK* "provably returns
+sequences in order of decreasing K* score, using either iMinDEE-A*-K* or MARK*
+to approximate partition functions".
+
+Reading (abstract level only; the full text was not read): OSPREY's
+guarantees are per-state partition-function approximations, combined into
+K*. The abstract describes no shared A/B decomposition. The claim "OSPREY does
+not bound Z_B/Z_A via a shared decomposition" therefore stays **provisional**
+until the BBK* and MARK* full texts are checked.
+
+Even if it holds, the CEC distinction is a *combination rule*. It is not a new
+search algorithm, and a fair comparison would need an OSPREY-equivalent
+model.
