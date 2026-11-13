@@ -168,3 +168,24 @@ Rejected or deferred alternatives:
   lines of wrapped `#print axioms` reports. The coordinator reproduced it: a
   forged log hiding `sorryAx` passes. A fix is proposed in the audit, not
   applied, pending owner approval.
+
+### HP results (agent C; branch research/cec-algo-20261112 @ 5303e02; not yet merged)
+- Coordinator check: 14 tests pass (14 s). The summary was regenerated from
+  the CSVs by summarize.py.
+- **H5 is CONFIRMED: a negative or modest result.** T1 is sound (0 failures
+  over 71,859 oracle rows; the independent checker accepted 4,785 + 2,160
+  certificates and rejected none). On 2D HP, however, the coupled ΔΔF interval
+  ≈ the trivial ‖V‖∞ bound at matched frontiers for n ≥ 12 with ≤ 3000
+  regions (median coupled/trivial = 0.96–1.00). At n = 30 and 50 it is
+  *exactly* trivial in every row.
+- Gains over trivial appear only when a large share of the tree is explored:
+  n = 10 at ≤ 3000 regions (74% of leaves) gives median width 0.14 kT vs
+  trivial 1.10. The coupled bound reaches 0.1 kT at a median 51–59% of the
+  tree; the separate bound never does.
+- The ~10× coupled/separate advantage is mostly an artifact of the separate
+  baseline paying loose 3^r·q^Ucap caps twice. It must NOT be presented as the
+  headline. The meaningful baseline is the trivial bound.
+- Interpretation: consistent with the polymer no-separator prior. A residue's
+  contact environment is fixed only by the global fold. CEC adds a
+  machine-checkable combination rule for HP, not a new capability. The
+  centred growth order gave inconsistent differences, and no claim is made.
