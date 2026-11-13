@@ -855,5 +855,258 @@ theorem lamHi_refine (hwf : WellFormed s L U r R) (hne' : (QSet s' L' U' r' R').
 
 end Splitting
 
+/-! ### §1.4 (T1′): LP dual certificates over a polytope of A-masses -/
+
+section Polytope
+
+variable {κ : Type*} (c : Finset κ) (G : κ → ι → ℝ) (b : κ → ℝ)
+
+/-- Admissible configurations when the A-masses range over the polytope
+`P = {α ≥ 0 : G α ≤ b}` (constraints `j ∈ c`; `b` is the spec's `h`) and the ratio bounds are
+as in §1.1. -/
+def IsAdmPoly (s : Finset ι) (r R α β : ι → ℝ) : Prop :=
+  (∀ k ∈ s, 0 ≤ α k ∧ 0 ≤ β k ∧ r k * α k ≤ β k ∧ β k ≤ R k * α k) ∧
+    (∀ j ∈ c, ∑ k ∈ s, G j k * α k ≤ b j) ∧ 0 < ∑ k ∈ s, α k
+
+/-- Lower dual certificate for `t ≤ Q`: `y ≥ 0`, `(r - t·1) + Gᵀ y ≥ 0`, `bᵀ y ≤ 0`. -/
+def IsLowerDualCert (s : Finset ι) (r : ι → ℝ) (t : ℝ) (y : κ → ℝ) : Prop :=
+  (∀ j ∈ c, 0 ≤ y j) ∧ (∀ k ∈ s, 0 ≤ r k - t + ∑ j ∈ c, G j k * y j) ∧
+    ∑ j ∈ c, b j * y j ≤ 0
+
+/-- Upper dual certificate for `Q ≤ t`: `y ≥ 0`, `(t·1 - R) + Gᵀ y ≥ 0`, `bᵀ y ≤ 0`. -/
+def IsUpperDualCert (s : Finset ι) (R : ι → ℝ) (t : ℝ) (y : κ → ℝ) : Prop :=
+  (∀ j ∈ c, 0 ≤ y j) ∧ (∀ k ∈ s, 0 ≤ t - R k + ∑ j ∈ c, G j k * y j) ∧
+    ∑ j ∈ c, b j * y j ≤ 0
+
+variable {c G b}
+
+/-- `Σ_k (Gᵀ y)_k α_k = Σ_j y_j (G α)_j` and `yᵀ (G α) ≤ bᵀ y` on the polytope. -/
+theorem dual_pairing_le {α : ι → ℝ} {y : κ → ℝ} (hy : ∀ j ∈ c, 0 ≤ y j)
+    (hP : ∀ j ∈ c, ∑ k ∈ s, G j k * α k ≤ b j) :
+    ∑ k ∈ s, (∑ j ∈ c, G j k * y j) * α k ≤ ∑ j ∈ c, b j * y j := by
+  calc ∑ k ∈ s, (∑ j ∈ c, G j k * y j) * α k = ∑ k ∈ s, ∑ j ∈ c, G j k * y j * α k :=
+        sum_congr rfl fun k _ => sum_mul _ _ _
+    _ = ∑ j ∈ c, ∑ k ∈ s, G j k * y j * α k := sum_comm
+    _ = ∑ j ∈ c, y j * ∑ k ∈ s, G j k * α k := sum_congr rfl fun j _ => by
+        rw [mul_sum]; exact sum_congr rfl fun k _ => by ring
+    _ ≤ ∑ j ∈ c, b j * y j := sum_le_sum fun j hj => by
+        rw [mul_comm (b j)]; exact mul_le_mul_of_nonneg_left (hP j hj) (hy j hj)
+
+/-- **T1′, lower soundness.** A lower dual certificate proves `t ≤ Q` on every admissible
+configuration over the polytope. -/
+theorem le_Q_of_lowerDualCert {t : ℝ} {y : κ → ℝ} (hy : IsLowerDualCert c G b s r t y)
+    {α β : ι → ℝ} (hα : IsAdmPoly c G b s r R α β) : t ≤ Q s α β := by
+  obtain ⟨hy0, hcert, hby⟩ := hy
+  obtain ⟨hk, hP, hpos⟩ := hα
+  rw [Q, le_div_iff₀ hpos]
+  have h1 : -∑ k ∈ s, (∑ j ∈ c, G j k * y j) * α k ≤ ∑ k ∈ s, (r k - t) * α k := by
+    rw [← sum_neg_distrib]
+    refine sum_le_sum fun k hks => ?_
+    have := mul_nonneg (hcert k hks) (hk k hks).1
+    rw [add_mul] at this
+    linarith
+  have h2 := dual_pairing_le (s := s) (α := α) hy0 hP
+  have hrb : ∑ k ∈ s, r k * α k ≤ ∑ k ∈ s, β k := sum_le_sum fun k hks => (hk k hks).2.2.1
+  rw [sum_sub_mul_eq] at h1
+  linarith
+
+/-- **T1′, upper soundness.** An upper dual certificate proves `Q ≤ t`. -/
+theorem Q_le_of_upperDualCert {t : ℝ} {y : κ → ℝ} (hy : IsUpperDualCert c G b s R t y)
+    {α β : ι → ℝ} (hα : IsAdmPoly c G b s r R α β) : Q s α β ≤ t := by
+  obtain ⟨hy0, hcert, hby⟩ := hy
+  obtain ⟨hk, hP, hpos⟩ := hα
+  rw [Q, div_le_iff₀ hpos]
+  have h1 : -∑ k ∈ s, (∑ j ∈ c, G j k * y j) * α k ≤ ∑ k ∈ s, (t - R k) * α k := by
+    rw [← sum_neg_distrib]
+    refine sum_le_sum fun k hks => ?_
+    have := mul_nonneg (hcert k hks) (hk k hks).1
+    rw [add_mul] at this
+    linarith
+  have h2 := dual_pairing_le (s := s) (α := α) hy0 hP
+  have hRb : ∑ k ∈ s, β k ≤ ∑ k ∈ s, R k * α k := sum_le_sum fun k hks => (hk k hks).2.2.2
+  have h3 : ∑ k ∈ s, (t - R k) * α k = t * ∑ k ∈ s, α k - ∑ k ∈ s, R k * α k := by
+    rw [mul_sum, ← sum_sub_distrib]; exact sum_congr rfl fun k _ => by ring
+  linarith
+
+end Polytope
+
+/-! ### Executable rational checker -/
+
+section Executable
+
+/-- Well-formedness of one region record `(L, U, r, R)`: `0 ≤ L ≤ U`, `0 ≤ r ≤ R`. -/
+def regionWF (x : ℚ × ℚ × ℚ × ℚ) : Bool :=
+  decide (0 ≤ x.1 ∧ x.1 ≤ x.2.1 ∧ 0 ≤ x.2.2.1 ∧ x.2.2.1 ≤ x.2.2.2)
+
+/-- One summand of `g₋`. -/
+def termLoQ (t : ℚ) (x : ℚ × ℚ × ℚ × ℚ) : ℚ :=
+  min ((x.2.2.1 - t) * x.1) ((x.2.2.1 - t) * x.2.1)
+
+/-- One summand of `g₊`. -/
+def termHiQ (t : ℚ) (x : ℚ × ℚ × ℚ × ℚ) : ℚ :=
+  max ((x.2.2.2 - t) * x.1) ((x.2.2.2 - t) * x.2.1)
+
+/-- Exact rational `g₋(t)` of a list of regions `(L, U, r, R)`. -/
+def gLoQ (regions : List (ℚ × ℚ × ℚ × ℚ)) (t : ℚ) : ℚ := (regions.map (termLoQ t)).sum
+
+/-- Exact rational `g₊(t)`. -/
+def gHiQ (regions : List (ℚ × ℚ × ℚ × ℚ)) (t : ℚ) : ℚ := (regions.map (termHiQ t)).sum
+
+/-- **Executable lower checker**: every region well formed and `g₋(t) ≥ 0`. -/
+def checkLower (regions : List (ℚ × ℚ × ℚ × ℚ)) (t : ℚ) : Bool :=
+  regions.all regionWF && decide (0 ≤ gLoQ regions t)
+
+/-- **Executable upper checker**: every region well formed and `g₊(t) ≤ 0`. -/
+def checkUpper (regions : List (ℚ × ℚ × ℚ × ℚ)) (t : ℚ) : Bool :=
+  regions.all regionWF && decide (gHiQ regions t ≤ 0)
+
+/-- **Executable enclosure checker.** Returns the claimed endpoints only if both tests pass and
+some region has `U > 0` (so the admissible set is nonempty and the enclosure is not vacuous);
+fails closed otherwise. -/
+def checkEnclosure (regions : List (ℚ × ℚ × ℚ × ℚ)) (lo hi : ℚ) : Option (ℚ × ℚ) :=
+  if checkLower regions lo && checkUpper regions hi && regions.any (fun x => decide (0 < x.2.1))
+  then some (lo, hi) else none
+
+variable (regions : List (ℚ × ℚ × ℚ × ℚ))
+
+/-- Real mass lower bounds read off the list positions. -/
+noncomputable def dataL (i : Fin regions.length) : ℝ := (regions[i].1 : ℝ)
+/-- Real mass upper bounds read off the list positions. -/
+noncomputable def dataU (i : Fin regions.length) : ℝ := (regions[i].2.1 : ℝ)
+/-- Real lower ratio bounds read off the list positions. -/
+noncomputable def datar (i : Fin regions.length) : ℝ := (regions[i].2.2.1 : ℝ)
+/-- Real upper ratio bounds read off the list positions. -/
+noncomputable def dataR (i : Fin regions.length) : ℝ := (regions[i].2.2.2 : ℝ)
+
+/-- Admissibility of real `(α, β)` indexed by the list positions. -/
+def ListAdm (α β : Fin regions.length → ℝ) : Prop :=
+  IsAdm univ (dataL regions) (dataU regions) (datar regions) (dataR regions) α β
+
+/-- The rational `g₋` is exactly the real `g₋` of the cast data. -/
+theorem cast_gLoQ (t : ℚ) :
+    ((gLoQ regions t : ℚ) : ℝ) =
+      gLo univ (dataL regions) (dataU regions) (datar regions) (t : ℝ) := by
+  rw [gLoQ, Rat.cast_list_sum, List.map_map, gLo, ← Fin.sum_univ_fun_getElem]
+  refine sum_congr rfl fun i _ => ?_
+  simp [termLoQ, dataL, dataU, datar]
+
+/-- The rational `g₊` is exactly the real `g₊` of the cast data. -/
+theorem cast_gHiQ (t : ℚ) :
+    ((gHiQ regions t : ℚ) : ℝ) =
+      gHi univ (dataL regions) (dataU regions) (dataR regions) (t : ℝ) := by
+  rw [gHiQ, Rat.cast_list_sum, List.map_map, gHi, ← Fin.sum_univ_fun_getElem]
+  refine sum_congr rfl fun i _ => ?_
+  simp [termHiQ, dataL, dataU, dataR]
+
+variable {regions}
+
+/-- The executable well-formedness gate implies the §1.1 data conditions for the cast data. -/
+theorem wellFormed_of_all (h : regions.all regionWF = true) :
+    WellFormed univ (dataL regions) (dataU regions) (datar regions) (dataR regions) := by
+  intro i _
+  have hi := List.all_eq_true.mp h regions[i] (List.getElem_mem i.isLt)
+  simp only [regionWF, decide_eq_true_eq] at hi
+  obtain ⟨h1, h2, h3, h4⟩ := hi
+  simp only [dataL, dataU, datar, dataR]
+  exact ⟨by exact_mod_cast h1, by exact_mod_cast h2, by exact_mod_cast h3, by exact_mod_cast h4⟩
+
+/-- **Soundness of `checkLower`.** If the checker accepts `t`, then `t ≤ Σβ/Σα` for every
+admissible real configuration indexed by the list positions. -/
+theorem checkLower_sound {t : ℚ} (h : checkLower regions t = true) {α β : Fin regions.length → ℝ}
+    (hadm : ListAdm regions α β) : (t : ℝ) ≤ Q univ α β := by
+  simp only [checkLower, Bool.and_eq_true, decide_eq_true_eq] at h
+  refine le_Q_of_gLo_nonneg ?_ hadm
+  rw [← cast_gLoQ]
+  exact_mod_cast h.2
+
+/-- **Soundness of `checkUpper`.** -/
+theorem checkUpper_sound {t : ℚ} (h : checkUpper regions t = true) {α β : Fin regions.length → ℝ}
+    (hadm : ListAdm regions α β) : Q univ α β ≤ (t : ℝ) := by
+  simp only [checkUpper, Bool.and_eq_true, decide_eq_true_eq] at h
+  refine Q_le_of_gHi_nonpos ?_ hadm
+  rw [← cast_gHiQ]
+  exact_mod_cast h.2
+
+/-- **Exactness of `checkLower`** (Theorem 1.1 for the checker): it accepts `t` iff the input
+is well formed and `t` is a valid lower bound for every admissible configuration. -/
+theorem checkLower_iff (t : ℚ) :
+    checkLower regions t = true ↔
+      regions.all regionWF = true ∧
+        ∀ α β : Fin regions.length → ℝ, ListAdm regions α β → (t : ℝ) ≤ Q univ α β := by
+  constructor
+  · intro h
+    refine ⟨?_, fun α β hadm => checkLower_sound h hadm⟩
+    simp only [checkLower, Bool.and_eq_true] at h
+    exact h.1
+  · rintro ⟨hwf, hall⟩
+    have hg := gLo_nonneg_of_forall_le_Q (wellFormed_of_all hwf) hall
+    rw [← cast_gLoQ] at hg
+    simp only [checkLower, hwf, Bool.true_and, decide_eq_true_eq]
+    exact_mod_cast hg
+
+/-- **Exactness of `checkUpper`** (Theorem 1.2 for the checker). -/
+theorem checkUpper_iff (t : ℚ) :
+    checkUpper regions t = true ↔
+      regions.all regionWF = true ∧
+        ∀ α β : Fin regions.length → ℝ, ListAdm regions α β → Q univ α β ≤ (t : ℝ) := by
+  constructor
+  · intro h
+    refine ⟨?_, fun α β hadm => checkUpper_sound h hadm⟩
+    simp only [checkUpper, Bool.and_eq_true] at h
+    exact h.1
+  · rintro ⟨hwf, hall⟩
+    have hg := gHi_nonpos_of_forall_Q_le (wellFormed_of_all hwf) hall
+    rw [← cast_gHiQ] at hg
+    simp only [checkUpper, hwf, Bool.true_and, decide_eq_true_eq]
+    exact_mod_cast hg
+
+/-- **End-to-end soundness of `checkEnclosure`.** If the checker returns `some bounds`, then
+`bounds = (lo, hi)`, the admissible set is nonempty, and for every admissible real
+configuration `(α, β)` indexed by the list positions, `Σβ/Σα ∈ [lo, hi]`. -/
+theorem checkEnclosure_sound {lo hi : ℚ} {bounds : ℚ × ℚ}
+    (h : checkEnclosure regions lo hi = some bounds) :
+    bounds = (lo, hi) ∧ (∃ α β : Fin regions.length → ℝ, ListAdm regions α β) ∧
+      ∀ α β : Fin regions.length → ℝ, ListAdm regions α β →
+        Q univ α β ∈ Set.Icc (bounds.1 : ℝ) (bounds.2 : ℝ) := by
+  unfold checkEnclosure at h
+  split_ifs at h with hc
+  simp only [Bool.and_eq_true] at hc
+  obtain ⟨⟨hlo, hhi⟩, hany⟩ := hc
+  obtain rfl := (Option.some.inj h).symm
+  refine ⟨rfl, ?_, fun α β hadm => ⟨checkLower_sound hlo hadm, checkUpper_sound hhi hadm⟩⟩
+  have hwf : regions.all regionWF = true := by
+    simp only [checkLower, Bool.and_eq_true] at hlo
+    exact hlo.1
+  obtain ⟨x, hx, hpos⟩ := List.any_eq_true.mp hany
+  obtain ⟨n, hn, rfl⟩ := List.mem_iff_getElem.mp hx
+  refine (adm_nonempty_iff (wellFormed_of_all hwf)).mpr ⟨⟨n, hn⟩, mem_univ _, ?_⟩
+  simp only [decide_eq_true_eq] at hpos
+  simp only [dataU]
+  exact_mod_cast hpos
+
+/-- `checkEnclosure` returns `none` on malformed input (fail closed). -/
+theorem checkEnclosure_eq_none_of_not_wf {lo hi : ℚ} (h : regions.all regionWF = false) :
+    checkEnclosure regions lo hi = none := by
+  simp [checkEnclosure, checkLower, h]
+
+/-- Accepted endpoints also bracket the sharp endpoints: `lo ≤ λ₋` and `λ₊ ≤ hi`. -/
+theorem checkEnclosure_sharp_bounds {lo hi : ℚ} {bounds : ℚ × ℚ}
+    (h : checkEnclosure regions lo hi = some bounds) :
+    (bounds.1 : ℝ) ≤ lamLo univ (dataL regions) (dataU regions) (datar regions) (dataR regions) ∧
+      lamHi univ (dataL regions) (dataU regions) (datar regions) (dataR regions) ≤
+        (bounds.2 : ℝ) := by
+  obtain ⟨-, ⟨α, β, hadm⟩, hall⟩ := checkEnclosure_sound h
+  have hwf : regions.all regionWF = true := by
+    unfold checkEnclosure at h
+    split_ifs at h with hc
+    simp only [Bool.and_eq_true, checkLower] at hc
+    exact hc.1.1.1
+  have hne := (adm_nonempty_iff (wellFormed_of_all hwf)).mp ⟨α, β, hadm⟩
+  obtain ⟨⟨α₀, β₀, h₀, hq₀⟩, -⟩ := isLeast_lamLo (wellFormed_of_all hwf) hne
+  obtain ⟨⟨α₁, β₁, h₁, hq₁⟩, -⟩ := isGreatest_lamHi (wellFormed_of_all hwf) hne
+  exact ⟨hq₀ ▸ (hall α₀ β₀ h₀).1, hq₁ ▸ (hall α₁ β₁ h₁).2⟩
+
+end Executable
+
 end CoupledRatio
 end FoldBounds
