@@ -240,3 +240,24 @@ Rejected or deferred alternatives:
 - Final assessment, recorded in DISCOVERY_REPORT §8–9: Level 1 achieved;
   Level 2 partially achieved; Levels 3 and 4 not achieved; not
   publication-ready.
+
+## 2026-11-13: Owner decisions implemented
+- **Decision 1 (approved): harden the existing axiom gate.** Done in a separate draft
+  PR #97, based on main:
+  - F3e (wrapped reports) and F3f (look-alike names, including the
+    `axiom «Classical.choice»` source form) are fixed.
+  - There are 36 regression tests, including real Lean output of both
+    exploits. The old gate fails 17 of them; the new gate passes all 36.
+  - The full suite passes (1296 tests), and the Lean CI steps pass.
+  - The remaining coverage limits are documented, not changed.
+- **Decision 2 (approved): reduce the raw-data footprint of PR #96.**
+  - The six HP CSVs (about 9 MB, 71,859 + 4,581 + 2,160 rows) are archived on
+    branch `archive/cec-hp-benchmarks-20261113` (commit 5303e02). A tag was
+    attempted first, but the session's git proxy refused tag refs.
+  - The SHA-256 manifest is `experiments/coupled/results/DATA_MANIFEST.json`.
+  - A full regeneration matched the archive: 0 of 78,600 rows differ outside
+    `t_sec`, and `SUMMARY.md` is reproduced byte-for-byte.
+  - The CSVs were removed only after that check. A 1,290-row regression slice
+    remains, and it is re-derived exactly in CI.
+- **Decision 3: PR #96 stays in draft.** `REVIEW_PACKAGE.md` was added as a
+  concise independent-review brief.

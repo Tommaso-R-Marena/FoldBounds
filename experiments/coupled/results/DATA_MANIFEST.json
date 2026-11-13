@@ -1,5 +1,5 @@
 {
- "description": "Raw HP lattice coupled-certificate benchmark CSVs, preserved byte-for-byte in versioned git storage so they can be removed from PR #96's tracked tree (owner decision 2026-11-13) after a full regeneration is verified against this archive.",
+ "description": "Raw HP lattice coupled-certificate benchmark CSVs. Removed from PR #96's tracked tree (owner decision 2026-11-13) after a full regeneration was verified against this archive; preserved byte-for-byte in versioned git storage.",
  "archive": {
   "remote": "https://github.com/Tommaso-R-Marena/FoldBounds",
   "ref": "refs/heads/archive/cec-hp-benchmarks-20261113",
@@ -204,5 +204,27 @@
     "t_sec"
    ]
   }
- ]
+ ],
+ "regeneration_verification": {
+  "date": "2026-11-13",
+  "method": "All six files regenerated from the recorded generator commands (code unchanged since 5303e02), compared with the archive by experiments/coupled/verify_hp_archive.py, ignoring only the wall-clock column t_sec.",
+  "result": "VERIFIED: archive SHA-256/size/rows match for 6/6 files; regenerated rows differing from archive (excluding t_sec): 0 of 78,600 across all six files.",
+  "per_file_differing_rows": {
+   "oracle_n10.csv": 0,
+   "oracle_n12.csv": 0,
+   "oracle_n14.csv": 0,
+   "deep_n12.csv": 0,
+   "large_n30.csv": 0,
+   "large_n50.csv": 0
+  },
+  "summary_reproduction": "experiments/coupled/summarize.py on the regenerated data reproduces results/SUMMARY.md byte-for-byte (0 diff lines).",
+  "regeneration_wall_seconds_on_shared_4_core_container": {
+   "oracle_n10": 221,
+   "oracle_n12": 603,
+   "oracle_n14": 883,
+   "deep_n12": 345,
+   "large_n30": 213,
+   "large_n50": 391
+  }
+ }
 }
