@@ -1,0 +1,20 @@
+{
+ "system": "4HHB",
+ "frac_checks": 3480,
+ "frac_violations": 0,
+ "worst_overshoot": 0.0,
+ "mean_theta_width_by_R": {
+  "0": 0.46581884297280657,
+  "4": 0.3607323867624618,
+  "6": 0.2240668842621094,
+  "8": 0.15558756445245117
+ },
+ "bracket_checks": 338,
+ "bracket_endpoint_violations": 0,
+ "sites_with_multiple_exact_crossings_0.5grid": [],
+ "cert_check": {
+  "ok": 2913,
+  "bad": 0,
+  "n": 2913
+ }
+}
