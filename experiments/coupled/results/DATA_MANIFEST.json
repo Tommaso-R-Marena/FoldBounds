@@ -1,0 +1,230 @@
+{
+ "description": "Raw HP lattice coupled-certificate benchmark CSVs. Removed from PR #96's tracked tree (owner decision 2026-11-13) after a full regeneration was verified against this archive; preserved byte-for-byte in versioned git storage.",
+ "archive": {
+  "remote": "https://github.com/Tommaso-R-Marena/FoldBounds",
+  "ref": "refs/heads/archive/cec-hp-benchmarks-20261113",
+  "commit": "5303e02cef49a04cd2098234497b1402fb3d10f2",
+  "note": "A git tag was attempted first, but this session's git proxy refused tag refs; the archive is therefore a dedicated branch pointing at the original data commit. The owner may convert it to a tag. The commit is also an ancestor of the PR #96 branch."
+ },
+ "retrieve": [
+  "git fetch origin archive/cec-hp-benchmarks-20261113",
+  "git show FETCH_HEAD:experiments/coupled/results/<file>.csv > <file>.csv",
+  "sha256sum <file>.csv   # compare with files[].sha256"
+ ],
+ "environment": {
+  "python": "3.13.18",
+  "platform": "Linux x86_64 (4-core container)",
+  "dependencies": "standard library only",
+  "code_commit": "5303e02 (src/foldbounds/coupled/, experiments/coupled/ unchanged since)"
+ },
+ "files": [
+  {
+   "path": "experiments/coupled/results/oracle_n10.csv",
+   "bytes": 2114548,
+   "sha256": "f73f10f74fbf8a9977bae13a48eb0357a9ab6457bee0e5f5435eada274e24e6e",
+   "git_blob": "b488c8e7b3838dca66aa3b297b35793938799839",
+   "data_rows": 17769,
+   "columns": [
+    "n",
+    "seq",
+    "i",
+    "q",
+    "mut",
+    "config",
+    "regions",
+    "trie_frac",
+    "exact_lo_ddF",
+    "exact_hi_ddF",
+    "triv_w",
+    "sep_w",
+    "coup_w",
+    "exact_ddF",
+    "sound_triv",
+    "sound_sep",
+    "sound_coup",
+    "checker",
+    "cert_bytes",
+    "t_sec"
+   ],
+   "generator": "PYTHONPATH=src python3 experiments/coupled/run_oracle.py 10 experiments/coupled/results/oracle_n10.csv 3000 8",
+   "nondeterministic_columns": [
+    "t_sec"
+   ]
+  },
+  {
+   "path": "experiments/coupled/results/oracle_n12.csv",
+   "bytes": 2954241,
+   "sha256": "f4e4e59b846a35e3a379e5e8c0e00b8003fb5f391447e466cd33602cb4755b5c",
+   "git_blob": "e4118731705bdf41d26bdafa228a86c7b6344d8a",
+   "data_rows": 24300,
+   "columns": [
+    "n",
+    "seq",
+    "i",
+    "q",
+    "mut",
+    "config",
+    "regions",
+    "trie_frac",
+    "exact_lo_ddF",
+    "exact_hi_ddF",
+    "triv_w",
+    "sep_w",
+    "coup_w",
+    "exact_ddF",
+    "sound_triv",
+    "sound_sep",
+    "sound_coup",
+    "checker",
+    "cert_bytes",
+    "t_sec"
+   ],
+   "generator": "PYTHONPATH=src python3 experiments/coupled/run_oracle.py 12 experiments/coupled/results/oracle_n12.csv 4000 8",
+   "nondeterministic_columns": [
+    "t_sec"
+   ]
+  },
+  {
+   "path": "experiments/coupled/results/oracle_n14.csv",
+   "bytes": 3691372,
+   "sha256": "d3bc86aa1af692362dbd5296788660abd191c999485e5b430322abb947f3d0a2",
+   "git_blob": "d5c3e41ec03a706dc94e8aa02ca30bd519b09c7d",
+   "data_rows": 29790,
+   "columns": [
+    "n",
+    "seq",
+    "i",
+    "q",
+    "mut",
+    "config",
+    "regions",
+    "trie_frac",
+    "exact_lo_ddF",
+    "exact_hi_ddF",
+    "triv_w",
+    "sep_w",
+    "coup_w",
+    "exact_ddF",
+    "sound_triv",
+    "sound_sep",
+    "sound_coup",
+    "checker",
+    "cert_bytes",
+    "t_sec"
+   ],
+   "generator": "PYTHONPATH=src python3 experiments/coupled/run_oracle.py 14 experiments/coupled/results/oracle_n14.csv 4000 8",
+   "nondeterministic_columns": [
+    "t_sec"
+   ]
+  },
+  {
+   "path": "experiments/coupled/results/deep_n12.csv",
+   "bytes": 560206,
+   "sha256": "5a6e74d051806ae6b99883bb9de34c3a9a088fac9c9f54aaf4b71928dc08f35d",
+   "git_blob": "e63b282cb9f12ad2aa4d9fd85d6f59c68c41b4cb",
+   "data_rows": 4581,
+   "columns": [
+    "n",
+    "seq",
+    "i",
+    "q",
+    "mut",
+    "config",
+    "regions",
+    "trie_frac",
+    "exact_lo_ddF",
+    "exact_hi_ddF",
+    "triv_w",
+    "sep_w",
+    "coup_w",
+    "exact_ddF",
+    "sound_triv",
+    "sound_sep",
+    "sound_coup",
+    "checker",
+    "cert_bytes",
+    "t_sec"
+   ],
+   "generator": "PYTHONPATH=src python3 experiments/coupled/run_oracle.py 12 experiments/coupled/results/deep_n12.csv 20000 2 linear-span,centred-ratio",
+   "nondeterministic_columns": [
+    "t_sec"
+   ]
+  },
+  {
+   "path": "experiments/coupled/results/large_n30.csv",
+   "bytes": 112740,
+   "sha256": "412ea9fb3295e49533674bfb781c81034162d574e6ef15dce1dd51a6b6e552ed",
+   "git_blob": "5fa36395003edfd91036c5a058cc9dda065f6de1",
+   "data_rows": 1080,
+   "columns": [
+    "n",
+    "seq",
+    "i",
+    "q",
+    "mut",
+    "config",
+    "regions",
+    "triv_w",
+    "sep_w",
+    "coup_w",
+    "coup_in_triv",
+    "checker",
+    "cert_bytes",
+    "t_sec"
+   ],
+   "generator": "PYTHONPATH=src python3 experiments/coupled/run_large.py 30 experiments/coupled/results/large_n30.csv",
+   "nondeterministic_columns": [
+    "t_sec"
+   ]
+  },
+  {
+   "path": "experiments/coupled/results/large_n50.csv",
+   "bytes": 135952,
+   "sha256": "b4cc714210c1f629ba6fdd5a5a60ad7be8e43207492a5666c9b672566b7ead3b",
+   "git_blob": "0f07f0e970612cef9d9ae97157fce864dc8eae0f",
+   "data_rows": 1080,
+   "columns": [
+    "n",
+    "seq",
+    "i",
+    "q",
+    "mut",
+    "config",
+    "regions",
+    "triv_w",
+    "sep_w",
+    "coup_w",
+    "coup_in_triv",
+    "checker",
+    "cert_bytes",
+    "t_sec"
+   ],
+   "generator": "PYTHONPATH=src python3 experiments/coupled/run_large.py 50 experiments/coupled/results/large_n50.csv",
+   "nondeterministic_columns": [
+    "t_sec"
+   ]
+  }
+ ],
+ "regeneration_verification": {
+  "date": "2026-11-13",
+  "method": "All six files regenerated from the recorded generator commands (code unchanged since 5303e02), compared with the archive by experiments/coupled/verify_hp_archive.py, ignoring only the wall-clock column t_sec.",
+  "result": "VERIFIED: archive SHA-256/size/rows match for 6/6 files; regenerated rows differing from archive (excluding t_sec): 0 of 78,600 across all six files.",
+  "per_file_differing_rows": {
+   "oracle_n10.csv": 0,
+   "oracle_n12.csv": 0,
+   "oracle_n14.csv": 0,
+   "deep_n12.csv": 0,
+   "large_n30.csv": 0,
+   "large_n50.csv": 0
+  },
+  "summary_reproduction": "experiments/coupled/summarize.py on the regenerated data reproduces results/SUMMARY.md byte-for-byte (0 diff lines).",
+  "regeneration_wall_seconds_on_shared_4_core_container": {
+   "oracle_n10": 221,
+   "oracle_n12": 603,
+   "oracle_n14": 883,
+   "deep_n12": 345,
+   "large_n30": 213,
+   "large_n50": 391
+  }
+ }
+}
