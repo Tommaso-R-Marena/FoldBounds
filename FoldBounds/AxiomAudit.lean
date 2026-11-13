@@ -144,5 +144,5 @@ import FoldBounds
 #print axioms FoldBounds.CoupledBinding.selectivity_needs_positive_k1
 #print axioms FoldBounds.CoupledBinding.Kbind_point
 #print axioms FoldBounds.CoupledBinding.nonidentifiable
-#print axioms FoldBounds.CoupledBinding.nonidentifiable_of_min_lt_one_lt_max
+#print axioms FoldBounds.CoupledBinding.nonidentifiable_minmax
 #print axioms FoldBounds.CoupledBinding.nonidentifiable_pos

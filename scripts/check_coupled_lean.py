@@ -100,20 +100,22 @@ def axiom_audit(log_path: str, names: list[str]) -> None:
     log = Path(log_path).read_text(encoding="utf-8")
     if re.search(r"\berror\b", log):
         fail("the axiom-audit log contains an error")
+    # Reports for long names are wrapped over several lines by Lean's pretty printer, so the
+    # bracketed axiom list is matched across newlines.  Every report header must parse.
+    report = re.compile(
+        r"^'(FoldBounds\.Coupled[A-Za-z0-9_]*\.[A-Za-z0-9_.]+)' "
+        r"(?:does not depend on any axioms|depends on axioms:\s*\[([^\]]*)\])",
+        re.MULTILINE,
+    )
+    headers = re.findall(r"^'FoldBounds\.Coupled", log, re.MULTILINE)
     reports: dict[str, set[str]] = {}
-    for raw in log.splitlines():
-        line = raw.strip()
-        match = re.match(
-            r"^'(FoldBounds\.Coupled[A-Za-z0-9_]*\.[A-Za-z0-9_.]+)' "
-            r"(does not depend on any axioms|depends on axioms:?\s*(.*))$",
-            line,
-        )
-        if not match:
-            continue
+    for match in report.finditer(log):
         name = match.group(1)
         if name in reports:
             fail(f"duplicate axiom report for {name}")
-        reports[name] = set(re.findall(r"[A-Za-z_][A-Za-z0-9_.]*", match.group(3) or ""))
+        reports[name] = set(re.findall(r"[A-Za-z_][A-Za-z0-9_.]*", match.group(2) or ""))
+    if len(headers) != sum(1 for _ in report.finditer(log)):
+        fail("an axiom report for a Coupled declaration could not be parsed completely")
     for name in names:
         if name not in reports:
             fail(f"no axiom report for {name}")

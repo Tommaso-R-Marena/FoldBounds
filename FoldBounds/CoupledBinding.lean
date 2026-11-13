@@ -18,7 +18,7 @@ factorised model through Lemma 2.0.
   (requires `k₁(τ) > 0` for every `τ`, which the spec leaves implicit;
   `selectivity_needs_positive_k1` is a counterexample without it);
 * Theorem 4.3 `nonidentifiable` (two explicit point-mass receptor ensembles),
-  `nonidentifiable_of_min_lt_one_lt_max`, `nonidentifiable_pos` (strictly positive
+  `nonidentifiable_minmax`, `nonidentifiable_pos` (strictly positive
   ensembles).
 -/
 
@@ -205,7 +205,7 @@ theorem nonidentifiable [DecidableEq T] {τm τp : T} (hm1 : 0 < kloc Φ1 Z1 τm
 
 /-- **Theorem 4.3 (min/max form).** If `min_τ k₂/k₁ < 1 < max_τ k₂/k₁` (and `k₁ > 0`), some
 receptor ensemble makes L2 the tighter binder and another makes L1 the tighter binder. -/
-theorem nonidentifiable_of_min_lt_one_lt_max [Nonempty T] [DecidableEq T]
+theorem nonidentifiable_minmax [Nonempty T] [DecidableEq T]
     (hk1 : ∀ τ, 0 < kloc Φ1 Z1 τ)
     (hlo : (univ.inf' univ_nonempty fun τ => kloc Φ2 Z2 τ / kloc Φ1 Z1 τ) < 1)
     (hhi : 1 < univ.sup' univ_nonempty fun τ => kloc Φ2 Z2 τ / kloc Φ1 Z1 τ) :
