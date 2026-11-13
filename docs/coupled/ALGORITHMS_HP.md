@@ -75,7 +75,7 @@ Claims are strings/ints only, floats are rejected.
 (14 tests: 2500 random exact instances vs vertex enumeration, edge cases, T1′ dual certificates, oracle counts
 vs A001411(n−1)/4 and vs `foldbounds.lattice.exact_spectrum`, soundness along refinement paths for both orders,
 checker/producer tightness agreement, 25 corrupted-certificate checks, an n=30 check);
-`experiments/coupled/{run_oracle,run_large,summarize}.py`, `experiments/coupled/results/*.csv`, `SUMMARY.md`.
+`experiments/coupled/{run_oracle,run_large,summarize}.py`, `SUMMARY.md`. The raw result CSVs (71,859 oracle rows plus deep and large runs, about 9 MB) are archived byte-for-byte in versioned git storage, with SHA-256 checksums, retrieval commands and generation parameters, in `experiments/coupled/results/DATA_MANIFEST.json`. Per the owner's 2026-11-13 decision, they are removed from the tracked tree once a full regeneration has been verified against the archive. A 1,290-row regression slice is kept in `tests/fixtures/coupled_hp/` and is re-derived exactly by `tests/test_coupled_hp_regression.py`.
 
 `ratio.py` review: the previously uncommitted file was reviewed and found correct (tie handling at group level,
 `g±`, dual certificate identities); its tests passed unchanged apart from two over-strict assertions in my own
@@ -144,5 +144,11 @@ PYTHONPATH=src python3 experiments/coupled/run_oracle.py 12 experiments/coupled/
 PYTHONPATH=src python3 experiments/coupled/run_large.py 30 experiments/coupled/results/large_n30.csv
 PYTHONPATH=src python3 experiments/coupled/run_large.py 50 experiments/coupled/results/large_n50.csv
 PYTHONPATH=src python3 experiments/coupled/summarize.py
+```
+To check the archived data or a fresh regeneration against the archive, ignoring only the wall-clock column `t_sec`:
+```
+git fetch origin archive/cec-hp-benchmarks-20261113
+for f in oracle_n10 oracle_n12 oracle_n14 deep_n12 large_n30 large_n50; do git show FETCH_HEAD:experiments/coupled/results/$f.csv > ARCHIVE/$f.csv; done
+python3 experiments/coupled/verify_hp_archive.py ARCHIVE [REGEN_DIR]
 ```
 Runtimes: n=10 ≈ 5 min, n=12 ≈ 14 min, n=14 ≈ 17 min, deep ≈ 12 min, large ≈ 4 and 9 min (single process each).
