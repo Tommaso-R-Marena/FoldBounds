@@ -100,3 +100,45 @@ Rejected or deferred alternatives:
   enumeration of 8–10-residue cubic HP models. CEC differs in seeking
   *non-enumerative* enclosures. It must cite that work and not claim the
   identities.
+
+## 2026-11-13: Session resumed after a usage-limit stop
+- At about 22:00 UTC all six agents stopped on the account's 5-hour usage
+  limit. Partial work was saved on disk. The limit reset at 02:10 UTC.
+- Resource decision: run at most four concurrent agents. The Lean agent was
+  resumed at the strongest configuration, as the brief asks for difficult
+  proofs. The implementation, experiment, and literature agents were
+  relaunched on a lower-cost model, per the brief's guidance on routine work.
+- The local integration `lake build` was killed by my 90-minute timeout
+  (exit 124) while still compiling MotionRealCrambinGraph. GitHub CI on #91
+  shows every Lean job cancelled at about 45 minutes. See the audit.
+- Deliverable A (the audit) and the prior-art review are committed. Prior-art
+  verdict: most CEC mathematics is classical (high novelty risk). The
+  defensible parts are the sharpness/separation framing, T2.7, the
+  machine-checked kernel, and certified model titration. OSPREY combines
+  per-state approximations into K*, per the MARK* abstract (provisional).
+
+### MRF results (agent C2; branch research/cec-mrf-20261112 @ 11228b1; not yet merged)
+- H4 (size independence) is SUPPORTED. Ising grid, q = 3/2, centre-field
+  perturbation [1, 1/2]:
+  - The coupled width is identical to 16 digits for every L ≥ 7 at each
+    radius R: 0.5, 0.3351, 0.2052, and 0.1059 for R = 0..3.
+  - The separate spanning-tree bound grows like L²: log10(UB/LB) goes from
+    5.6 at L = 5 to 5680 at L = 128.
+  - The exact value lies inside all 44 checked enclosures for L ≤ 18.
+  - Coordinator hand check: R = 1 width = ½·(q⁴−1)/(q⁴+1) = 0.33505. ✓
+- T2.8 prediction is SUPPORTED. Width at R = 10 for β/β_c =
+  0.5 / 0.8 / 1.0 / 1.25 / 2.0 is 0.0007 / 0.099 / 0.384 / 0.477 / 0.499.
+  It decays above T_c and plateaus below. R > 4 uses the FKG all-0/all-1
+  extremes, which are valid only for ferromagnetic Ising and are not
+  verified by the minimal checker.
+- Sharpness (T2.2): constructed exteriors realise the endpoints exactly
+  (12/12).
+- T2.7 soft separator: 0 violations in 48 exact cases. The hypothesis is
+  shown NECESSARY: an exterior factor touching two boundary variables gives an
+  exact ratio of 2/3, outside the soft enclosure [4/9, 5/9].
+- Negative findings:
+  - The soft separator with the true sensitivities adds nothing over the hard
+    separator at R+1 for ferromagnetic Ising.
+  - The Dobrushin coefficient is nearly vacuous (0.99) at and below T_c.
+  - Exhaustive enclosures are limited to 2^18 boundary states, i.e. R ≤ 4 in
+    2D.
