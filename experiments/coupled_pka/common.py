@@ -4,6 +4,7 @@ sys.path.insert(0, os.path.join(ROOT, "src"))
 RAW = os.path.join(ROOT, "data", "coupled_pka", "raw")
 DATA = os.path.join(ROOT, "data", "coupled_pka")
 PROTEINS = ["4PTI", "2LZT", "3RN3", "1UBQ", "1PGA", "1STN", "1A2P", "2RN2", "4HHB"]
+SPEC_PROTEINS = PROTEINS + ["1OEL"]
 
 
 def sha256(path):
@@ -18,6 +19,8 @@ def pkad_wild():
 def chains_for(pdb, wild):
     if pdb == "4HHB":
         return list("ABCD")
+    if pdb == "1OEL":
+        return sorted({l[21] for l in open(os.path.join(RAW, "pdb", "1OEL.pdb")) if l.startswith("ATOM")})
     return sorted({r[3] for r in wild if r[1] == pdb})
 
 

@@ -11,7 +11,7 @@ man["files"].append({"what": "PKAD-2 page (wildData array embedded)", "url": "ht
                      "sha256": sha256(os.path.join(RAW, "pkad2", "pkad2_index.html"))})
 man["files"].append({"what": "PROPKA 3.5.1 sdist (propka/propka.cfg model_pkas)", "url": "PyPI propka==3.5.1 sdist (pip download --no-binary :all:)",
                      "sha256": sha256(os.path.join(RAW, "propka", "propka-3.5.1.tar.gz"))})
-for p in PROTEINS:
+for p in SPEC_PROTEINS:
     f = os.path.join(RAW, "pdb", p + ".pdb")
     if not os.path.exists(f):
         subprocess.check_call(["curl", "-sS", "-f", "-o", f, f"https://files.rcsb.org/download/{p}.pdb"])

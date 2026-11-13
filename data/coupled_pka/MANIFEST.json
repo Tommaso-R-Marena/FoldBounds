@@ -1,0 +1,66 @@
+{
+ "retrieved": "2026-11-13",
+ "files": [
+  {
+   "what": "PKAD-2 page (wildData array embedded)",
+   "url": "https://compbio.clemson.edu/pkad-2/",
+   "sha256": "a71dfa05dc7d8122c72de730c66d412432f5a3db6d30b9ef0862e06e045f8123"
+  },
+  {
+   "what": "PROPKA 3.5.1 sdist (propka/propka.cfg model_pkas)",
+   "url": "PyPI propka==3.5.1 sdist (pip download --no-binary :all:)",
+   "sha256": "d8083b58d8c4c553ff8704c706190fe37ff82253adcd6e53b31d8ad7d6d52257"
+  },
+  {
+   "what": "PDB 4PTI",
+   "url": "https://files.rcsb.org/download/4PTI.pdb",
+   "sha256": "cd9b0faf2e66c0e031f30d1c84cb359691b8f5819f1b0f784be15f6005d58e08"
+  },
+  {
+   "what": "PDB 2LZT",
+   "url": "https://files.rcsb.org/download/2LZT.pdb",
+   "sha256": "4491224d82755feca7b44dae3d7b1c34fda3feb1a7cc26b7c971343109332f4a"
+  },
+  {
+   "what": "PDB 3RN3",
+   "url": "https://files.rcsb.org/download/3RN3.pdb",
+   "sha256": "ecae5b50a36daf9d76b61c7e784c399b591fe84ceb067c3cd61e4bfad9c06ff9"
+  },
+  {
+   "what": "PDB 1UBQ",
+   "url": "https://files.rcsb.org/download/1UBQ.pdb",
+   "sha256": "d4a6812d8951cf6594e6a0763f089e35f5a80b62acb3c117b2c5565228a7b161"
+  },
+  {
+   "what": "PDB 1PGA",
+   "url": "https://files.rcsb.org/download/1PGA.pdb",
+   "sha256": "908f8dbf3bb7567f36eec4683eb8cfab5ac0c011dfee1b9c940cab7f482bc841"
+  },
+  {
+   "what": "PDB 1STN",
+   "url": "https://files.rcsb.org/download/1STN.pdb",
+   "sha256": "ef725bf74ca724b4698a4acd4bea5cbe3a6729c25235bc452f5dbf51ea1fa9e5"
+  },
+  {
+   "what": "PDB 1A2P",
+   "url": "https://files.rcsb.org/download/1A2P.pdb",
+   "sha256": "f666c1dc491d6994a859f647953c7c8bc9546fdaa4a9be6dfb520955ffbbf903"
+  },
+  {
+   "what": "PDB 2RN2",
+   "url": "https://files.rcsb.org/download/2RN2.pdb",
+   "sha256": "fedbb7b497414a2af2864cd7a06330b6f06e3bdec5fae9ccdb647ffb63bdb451"
+  },
+  {
+   "what": "PDB 4HHB",
+   "url": "https://files.rcsb.org/download/4HHB.pdb",
+   "sha256": "abf382e0fd84b53bd4c08b373d37c0d7fe9fbe1a9a9c3851b2f5f2fbbe627101"
+  },
+  {
+   "what": "PDB 1OEL",
+   "url": "https://files.rcsb.org/download/1OEL.pdb",
+   "sha256": "1a14f70d8423680e39648304fbb5683f03973722bf79698e3cd8acb4c3e1d8bf"
+  }
+ ],
+ "spec_hashes": {}
+}
