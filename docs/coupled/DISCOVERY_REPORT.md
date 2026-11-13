@@ -104,7 +104,49 @@ failures. The independent checker accepted 6,945 certificates.
 
 ## 6. Real-structure application: certified model titration
 
-*[pending: pKa agent]*
+Branch `research/cec-pka-20261112` @ f0bb318. Full details are in
+`PKA_APPLICATION.md`. The protocol was frozen (fbaf401, 02:42 UTC) before any
+experimental comparison, which was computed at 08:18 UTC.
+
+**Model.** A rational antiferromagnetic protonation MRF: PROPKA 3.5.1 model
+pKa values, Coulomb with ε = 4r, a 12 Å cutoff, and 15-digit rational
+weights. Certificates are boundary-cube decision trees with T1 tests. A float
+proposer builds them; an exact Fraction checker verifies them.
+
+**Results.**
+- *Soundness.* 10,000 certificate pairs on BPTI and four 20-site subsets,
+  against brute-force exact marginals: **0 violations, 0 rejections.** On
+  4HHB, 3,480 certificates against a variable-elimination reference: 0
+  violations.
+- *Capability within the model.* GroEL 1OEL has 1,064 sites and a min-fill
+  treewidth bound of 31, so exact inference is infeasible. At pH 7 the mean
+  protonation-fraction width is 0.434 / 0.305 / 0.165 / 0.099 for
+  R = 0 / 4 / 6 / 8 Å, and the median at R = 8 is 1e-4. The independent
+  checker accepted 19,482 certificates.
+- **19% of sites (205/1064) do not converge** (width > 0.1 at R = 8). They
+  sit in 57 small clusters (largest 7 sites). This is consistent with, but
+  not proven to be, the strong-coupling / non-uniqueness signature; budget
+  and interior-cap limits were not ruled out.
+- *Monte Carlo* means fall inside the certified intervals within sampling
+  noise (100% once 3 SE are allowed).
+- **Model vs experiment (pre-registered): negative.** On PKAD-2 (9 proteins,
+  134 matched sites), the certified-midpoint RMSE is 1.59 vs 0.74 for the
+  null (model-pKa-only) predictor on the 75 sites with a single bracket
+  (Δ = +0.84, CI [+0.34, +1.34]). The correlation of predicted vs
+  experimental *shifts* is 0.02. The Coulomb-only model has no skill. The
+  certificates are about the model, and the model is poor.
+- **An assumption corrected.** 16/100 exactly analysed sites titrate
+  *non-monotonically* in pH. Coupled multi-site titration is known to produce
+  irregular titration curves. A certified crossing of 1/2 therefore asserts
+  that a crossing exists, not that it is unique; multiple crossings are
+  flagged.
+
+**Interpretation.** This is the clearest demonstration of what CEC adds:
+rigorous, independently checked bounds on equilibrium quantities of a
+real-structure-derived model far beyond the reach of exact inference, with
+non-convergence localized to identifiable clusters. It is a capability for
+*model computation*, not a pKa predictor, and the model's predictive value is
+negative.
 
 ## 7. Independent adversarial review
 

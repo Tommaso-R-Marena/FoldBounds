@@ -429,7 +429,11 @@ local certification of selectivity. Nothing in this program tests this.
   with pairwise electrostatic couplings, a cutoff, and model intrinsic pKa
   values. The perturbation "site i protonated vs deprotonated" is local, so
   `P(σ_i=1)/P(σ_i=0)` is a separator ratio. This gives certified *model* pKa
-  intervals for proteins too large for exact inference. It is **not** a claim
+  intervals for proteins too large for exact inference. *[Corrected 2026-11-13 by the pKa agent's
+  exact analysis: a site's protonation fraction need NOT be monotone in pH
+  (16/100 exactly analysed sites were not). A certified crossing of 1/2 proves
+  that a crossing exists, not that it is unique. Total proton binding is
+  monotone; individual sites need not be.]* It is **not** a claim
   of experimental pKa accuracy.
 
 ## 5. What these results do not establish

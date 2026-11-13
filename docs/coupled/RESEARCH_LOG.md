@@ -207,3 +207,22 @@ Rejected or deferred alternatives:
   the per-radius widths and the T2.8 phase dependence.
 - The Lean and MRF branches were merged into the dev branch after phase 1,
   with the fixes applied on top.
+
+### pKa results (agent D; branch research/cec-pka-20261112 @ f0bb318; awaiting review phase 2)
+- Pre-registration integrity, checked by the coordinator: PROTOCOL.md was
+  committed at 02:42:46 UTC and the addendum (large protein 4HHB → 1OEL,
+  because 4HHB has treewidth 17) at 02:47. compare_experiment.py was written
+  at 02:54; results/experiment.json was computed at 08:18 UTC. The ordering
+  is consistent with the protocol being frozen before the comparison.
+- Soundness: 0 violations in 10,000 exact-validated certificate pairs, and
+  0 violations in 3,480 certificates against a variable-elimination
+  reference on 4HHB.
+- Capability (H6, partially supported): GroEL 1OEL, 1064 sites, treewidth
+  bound 31. The median width at R = 8 Å is 1e-4, and 81% of sites converge to
+  width ≤ 0.1. 19% do not converge; they cluster in 57 small groups. Whether
+  this reflects non-uniqueness or budget limits was not separated.
+- Model vs experiment: negative. RMSE 1.59 vs the null's 0.74; shift
+  correlation 0.02.
+- Assumption corrected: per-site titration can be non-monotone in pH (16/100
+  sites). The coordinator's earlier instruction to rely on monotonicity was
+  wrong; the agent checked and flagged it.
