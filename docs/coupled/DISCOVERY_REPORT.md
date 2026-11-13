@@ -41,6 +41,7 @@ separator, and the method gives essentially nothing beyond the trivial
 | T2.3 | absolute vs relative separation; achievable set = (0,∞) × [min ρ, max ρ] | Lean: `separation`, `achievable_eq`, `freeEnergy_unbounded` | medium |
 | T2.4 | nested hierarchy. **Corrected:** needs the inner support condition | Lean: `hierarchy_nested`; counterexample `hierarchy_needs_support` | high |
 | T2.5/2.6 | finite termination; TV contraction | Lean | high |
+| §2.3 / T4.4 | interval- and soft-exterior reductions; partial ensemble knowledge | **refuted as originally stated** (review M3); corrected with support conditions; unformalized | high |
 | T2.7 | soft separator for the exterior class E_s (single-boundary-variable couplings), sharp | **hand proof only**; numerically sound; hypothesis shown necessary by an explicit counterexample (MRF agent) | medium |
 | T2.8 | local certifiability ⟺ weak spatial mixing | hand proof (an elementary identity); numerically illustrated | high |
 | T4.1–4.3 | certified affinity and selectivity; non-identifiability. **Corrected:** T4.2 needs k₁ > 0 | Lean: `affinity_mem_Icc`, `selectivity_mem_Icc`, `nonidentifiable*`; counterexample `selectivity_needs_positive_k1` | high (identity) / medium (certification form) |
@@ -69,10 +70,17 @@ kernel-evaluated checker tests (`decide +kernel`). Details are in
 
 Branch `research/cec-mrf-20261112`; independent minimal checker; exact oracles
 (brute force, variable elimination, row DP up to L = 18).
-- **Size independence (H4).** On an Ising grid, the coupled width is identical
-  to 16 digits for all L ≥ 7 at fixed radius (0.5, 0.335, 0.205, 0.106 for
-  R = 0..3). The separate spanning-tree bound degrades like L²: log10 UB/LB
-  ≈ 5680 at L = 128. The exact value lies inside all 44 checked enclosures.
+- **Size independence (H4) holds by construction, so it is not an empirical
+  finding.** This was corrected after adversarial review M2. For L ≥ 2R+1 the
+  radius-R local data are identical, so the enclosure cannot depend on L
+  (widths 0.5, 0.335, 0.205, 0.106 for R = 0..3).
+  - The original instance had Z_B/Z_A = 3/4 for all L by symmetry.
+  - The spanning-tree "separate" baseline is a strawman for zero-field planar
+    Ising, which is exactly solvable.
+  - A follow-up with a bulk field (exact ratio varying with L) gives 0
+    violations in 36 enclosures.
+  - What the experiment does establish is the informativeness of local
+    certificates at a given radius, together with checked soundness.
 - **Phase-transition obstruction (T2.8).** Width at R = 10 is 0.0007 at
   β/β_c = 0.5. It is 0.38 at β_c, and plateaus at about 0.48–0.50 below T_c.
 - **Sharpness** is realised exactly (12/12).
@@ -100,7 +108,22 @@ failures. The independent checker accepted 6,945 certificates.
 
 ## 7. Independent adversarial review
 
-*[pending]*
+Phase 1 covered the Lean, MRF, spec, prior-art and audit material. Details
+are in `ADVERSARIAL_REVIEW.md`. **0 CRITICAL, 3 MAJOR, 8 MINOR.**
+- **No checker accepted an unsound certificate.** This held across 716 Lean
+  `#eval` cross-checks, 50 crafted MRF attacks, and 6,241 degenerate random
+  certificates.
+- All recomputed MRF numbers match to at least 12 digits.
+- The headline Lean statements quantify as their docs claim.
+- **MAJOR findings:**
+  - M1: a forged axiom named `«Classical.choice»` passed both axiom gates.
+    Fixed in the new gate; recorded for the old one.
+  - M2: the MRF size-independence headline was tautological and its baseline
+    a strawman. Reframed.
+  - M3: the unformalized §2.3 and Theorem 4.4 reductions were false without
+    support conditions. Corrected.
+
+*[Phase 2 (HP, pKa): pending]*
 
 ## 8. Assessment against the program's success levels
 

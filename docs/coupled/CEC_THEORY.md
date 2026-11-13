@@ -25,8 +25,12 @@ made several hypotheses precise:
   (1,1,0).
 - Theorem 2.2 needs only a nonempty support T⁺.
 
-Not formalized: T2.7, T2.8, §2.3, Theorem 4.4, T1′ completeness, and the
-sorted-threshold form of Theorem 1.3. (Theorem 1.3 is formalized as
+Not formalized: T2.7, T2.8, §2.3, Theorem 4.4, T1′ completeness, the
+sorted-threshold form of Theorem 1.3, realisability of Theorem 2.2 by
+pairwise hidden-variable exteriors, and products of Theorem 2.6 contraction
+coefficients across several layers. The adversarial review (2026-11-13)
+refuted the §2.3 and Theorem 4.4 reductions as originally stated (missing
+support conditions, now corrected below), and found a sign error in T2.8. (Theorem 1.3 is formalized as
 attainment plus g₋(λ₋) = 0.)
 
 ## 0. The question
@@ -102,7 +106,9 @@ term would vanish, so `Σα > 0`. Thus (α,β) is admissible and `Q < λ`. ∎
 `λ₊ = max_Adm Q` exist and are attained with `α_k ∈ {L_k, U_k}`. Sort the
 regions by `r_k` ascending. Then `λ₋` is the minimum, over the `|K|+1`
 thresholds t, of the ratio obtained by giving `U` to the t smallest-r regions
-and `L` to the others. Symmetrically, `λ₊` gives `U` to the largest-R
+and `L` to the others. *[Corrected after adversarial review m2: thresholds whose
+vertex has Σα = 0 must be skipped, not counted as ratio 0. Otherwise λ₋ is
+still sound but not sharp; this happened in 1,990 of 38,886 random cases.]* Symmetrically, `λ₊` gives `U` to the largest-R
 regions. At the optimum `g₋(λ₋) = 0` and `g₊(λ₊) = 0`. A certificate for a
 claimed `λ₋` is therefore the single exact check `g₋(λ₋) ≥ 0`, which is linear
 time. No sorting is needed to *check*; only the proposer sorts.
@@ -259,13 +265,17 @@ diagnostic and is not needed for soundness.
 
 * *Interval exterior.* Suppose `Ψ(τ) ∈ [ℓ(τ), u(τ)]`, for example from bounds
   on the exterior's conditional partition functions. Apply T1 with regions τ,
-  `α_τ ∈ [Φ_A ℓ, Φ_A u]`, and exact ratio ρ(τ).
+  `α_τ ∈ [Φ_A ℓ, Φ_A u]`, and exact ratio ρ(τ). *[Corrected after adversarial
+  review M3: this reduction requires the support condition
+  Φ_A(τ) = 0 ⇒ Φ_B(τ) = 0. Without it, a state with Φ_A = 0 < Φ_B carries
+  B-mass that T1 cannot represent. Counterexample: Φ_A = (1, 0), Φ_B = (1, 1),
+  where the reduction certifies [1, 1] but the true ratio can be 2.]*
 * *Bounded exterior coupling (soft separator).* Suppose
   `Ψ(τ)/Ψ(τ') ≤ c(τ,τ')`, for example
   `c = exp(Σ_{v: τ_v ≠ τ'_v} s_v)` when the exterior couples to boundary
   variable v with log-sensitivity at most s_v. The sharp enclosure is then a
   linear-fractional program over a polyhedral cone. Apply T1′ with LP dual
-  certificates.
+  certificates. *[Same support condition required (review M3).]*
 
 ### 2.4 Soft separators: weakly coupled exteriors (T2.7)
 
@@ -316,7 +326,9 @@ Let `V_s = s·1{σ_v = a}` be a local field at site v, and let
 `W_R(s) = osc_τ ρ_R(τ)` be the hard-separator width at radius R. Since
 `ρ_R(τ) = E^τ_{B_R}[e^{−V_s}] = 1 − (1 − e^{−s}) μ^τ_{B_R}(σ_v = a)`,
 
-    W_R(s) = (1 − e^{−s}) · osc_τ μ^τ_{B_R}(σ_v = a).
+    W_R(s) = |1 − e^{−s}| · osc_τ μ^τ_{B_R}(σ_v = a).
+
+*[Corrected after adversarial review: the absolute value is needed for s < 0.]*
 
 **Theorem 2.8 (local certifiability ⇔ weak spatial mixing).** The local
 enclosures for every field perturbation at v shrink to zero as R → ∞
@@ -331,8 +343,9 @@ Consequences, as hypotheses to test numerically:
   At T_c it decays as a power law.
 * Fixed-backbone side-chain or protonation models conditional on the folded
   state: expect fast decay. Global two-state folding is a finite-size analogue
-  of phase coexistence. This is why mutational *stability* ΔΔG (folded vs
-  unfolded) is not a local quantity, while the folded-state term is.
+  of phase coexistence. We *conjecture* that this is one reason mutational
+  *stability* ΔΔG (folded vs unfolded) is not a local quantity, while the
+  folded-state term may be. This is untested here.
 
 **Structural fact (proton binding is antiferromagnetic).** With protonation
 variables σ ∈ {0,1}, `q_acid = σ − 1`, `q_base = σ`, and Coulomb
@@ -386,12 +399,15 @@ structural information alone then cannot certify the selectivity ordering.
 **Theorem 4.4 (partial ensemble knowledge).** Suppose experimental or
 computed bounds on apo pocket populations are available:
 `p_apo ∈ Π = { p ≥ 0, Σp = 1, A p ≤ c }`. The sharp selectivity interval is
-then a linear-fractional program over Π, certified by T1′ duals.
+then a linear-fractional program over Π, certified by T1′ duals. *[Corrected
+after adversarial review M3: the reduction requires k₁(τ) > 0 for every τ
+that Π allows to carry weight, the same condition as the corrected
+Theorem 4.2. Counterexample: k₁ = (1, 0), k₂ = (1, 1).]*
 
-Interpretation (a hypothesis to test, not a theorem). Long-range allosteric
-coupling of the pocket is exactly what widens `[min ρ, max ρ]` across larger
-separators. Allostery is the obstruction to local certification of
-selectivity.
+Interpretation (an untested hypothesis, not a theorem). Long-range
+allosteric coupling of the pocket may be what keeps `[min ρ, max ρ]` wide
+across larger separators. If so, allostery would act as an obstruction to
+local certification of selectivity. Nothing in this program tests this.
 
 ---
 

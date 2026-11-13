@@ -45,6 +45,9 @@ rationals (floats are rejected on input). Code: `src/foldbounds/coupled_mrf/`.
   correlation-decay methods (Weitz 2006) give much better separate bounds in uniqueness regimes
   at poly(n) cost. This baseline is the cheap tree bound only; the claim tested is
   equal-cost size-independence of the coupled bound, not that separate methods are hopeless.
+  (Review note M2: zero-field planar Ising is exactly solvable in polynomial time, so the tree
+  baseline is a strawman for that instance; size independence of the coupled bound holds by
+  construction.)
 * **Soft separator** (`constructions.py`, Thm 2.7): `soft_enclosure_from_tables` computes
   `min/max R(F)` over vertex fields `F_v(a) in {1, c_v}` exactly (integers, progressive
   contraction, 3^n candidates for n binary boundary variables). `soft_sensitivities` derives
@@ -103,7 +106,27 @@ Python overhead of linear scans of the model, whereas the *enclosure and its wid
 on L. The exact value lay inside every coupled and separate enclosure for all L <= 18 (4 radii
 x 11 sizes = 44 checks) and the independent checker accepted every certificate for L <= 24 (0
 soundness failures, 0 checker rejections). Separate width grows like L^2 (log10 width ~ 0.35 L^2):
-the spanning-tree bounds are vacuous at the sizes where the coupled bound is still sharp.
+the spanning-tree bounds are vacuous at the sizes where the coupled bound is still informative.
+
+**Correction after adversarial review (finding M2, 2026-11-13).** This experiment is weaker than
+it first looked:
+- *Exact values.* With no bulk field, Z_B/Z_A = 3/4 exactly for every L, by spin-flip symmetry.
+  All 44 "exact inside" checks therefore tested a single number, against enclosures symmetric
+  about 3/4.
+- *Size independence.* "Width independent of L" is a **consequence of the construction**, not
+  an empirical finding. For L >= 2R+1 the radius-R local data (interior, boundary, factors) are
+  identical, so the enclosure cannot depend on L.
+- *Baseline.* Zero-field planar Ising with one ghost spin is exactly solvable in polynomial time
+  (Pfaffian methods), and our own row-DP oracle gave the exact ratio for every L <= 18. The
+  spanning-tree baseline is a strawman, and the L^2 growth of its width must not be read as an
+  advantage of the coupled method.
+
+The meaningful content is (a) the *width at a given radius*, i.e. how informative local
+certificates are, (b) the phase dependence of experiment (ii), and (c) the soundness and
+independent checking of every certificate. Follow-up run `run_scaling_field.py` (bulk field
+W = 6/5, so the exact ratio varies with L: 0.686572 at L = 10, 0.686335 at L = 16) shows the
+exact value inside all 36 enclosures for L = 4..16 and R = 0..3, 0 violations
+(`results/scaling_ising_bulkfield.csv`).
 
 ### (ii) Phase-transition obstruction (zero-field 2D Ising, J=1)
 
@@ -175,8 +198,8 @@ contains both. `soft_sensitivities` raises `SoftHypothesisError` on this model.
   factors (O(n)); only the interior elimination and the enclosure are L-independent.
 * The tree baseline is weak by design; a Weitz-type or TRW separate bound would be far tighter
   in the high-temperature regime and is not compared. The TRW two-tree bound was not implemented.
-* Theorem 2.6: the Dobrushin coefficient was computed only for inner R = 1, 2 (kernel size
-  limit); observed oscillation ratios: 0.66 (R 1->2, beta/beta_c = 0.5) with delta = 0.804; at
+* Theorem 2.6: the Dobrushin coefficient was computed for a single annulus only (inner radius 1
+  to outer radius 2; kernel size limit), not for several layers; observed oscillation ratios: 0.66 (R 1->2, beta/beta_c = 0.5) with delta = 0.804; at
   beta/beta_c = 1 and 2, delta = 0.990 and 0.99999, i.e. nearly vacuous, matching the lack of
   decay there. The bound held in every computed case; the identity `Phi' = Phi K` held exactly.
 * Contraction/diagnostic and soft-separator enumeration cost are exponential in the boundary

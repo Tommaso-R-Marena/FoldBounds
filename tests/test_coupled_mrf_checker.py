@@ -219,3 +219,34 @@ def test_checker_agrees_with_producer_on_loose_valid_claim(good):
     cert["claim"]["upper"] = "inf"
     ok, why = checker.check_certificate(md, cert)
     assert ok, why
+
+
+# --- Regression tests for adversarial review findings (2026-11-13) -------------------------
+
+def test_checker_rejects_unknown_model_key():
+    import json, copy
+    from foldbounds.coupled_mrf import checker
+    md = {"format": "foldbounds.coupled_mrf", "version": 1,
+          "variables": [{"name": "a", "domain": 2}],
+          "shared": [], "only_A": [], "only_b": [{"scope": ["a"], "table": ["1", "2"]}]}
+    ok = None
+    try:
+        checker._parse_model(md)
+        ok = True
+    except Exception:
+        ok = False
+    assert ok is False, "a misspelt factor list must be rejected, not ignored"
+
+
+def test_checker_rejects_unknown_factor_key():
+    from foldbounds.coupled_mrf import checker
+    md = {"format": "foldbounds.coupled_mrf", "version": 1,
+          "variables": [{"name": "a", "domain": 2}],
+          "shared": [{"scope": ["a"], "table": ["1", "2"], "tabel": ["3", "4"]}],
+          "only_A": [], "only_B": []}
+    try:
+        checker._parse_model(md)
+        raised = False
+    except Exception:
+        raised = True
+    assert raised

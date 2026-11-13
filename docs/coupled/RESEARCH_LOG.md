@@ -189,3 +189,21 @@ Rejected or deferred alternatives:
   contact environment is fixed only by the global fold. CEC adds a
   machine-checkable combination rule for HP, not a new capability. The
   centred growth order gave inconsistent differences, and no claim is made.
+
+## 2026-11-13: Second usage-limit stop; adversarial review phase 1
+- The account limit was hit again at about 03:30 UTC (reset 07:20). The
+  max-effort adversarial agent was the main consumer. On resumption its scope
+  was narrowed to conclusion-changing checks.
+- **Review phase 1: 0 CRITICAL, 3 MAJOR, 8 MINOR. All accepted:**
+  - M1, gate forgery: fixed in the new gate; recorded as audit F3f for the
+    old gate.
+  - M2, MRF scaling: reframed. H4 is a construction-level corollary, not
+    evidence. A bulk-field soundness rerun gave 0 violations in 36 cases.
+  - M3, §2.3 / Theorem 4.4 support conditions: corrected.
+  - The minor findings are fixed; see the ADVERSARIAL_REVIEW.md coordinator
+    response.
+- **H4 status revised:** from "SUPPORTED" to "holds by construction; not
+  evidence of a capability". The scientifically meaningful MRF results are
+  the per-radius widths and the T2.8 phase dependence.
+- The Lean and MRF branches were merged into the dev branch after phase 1,
+  with the fixes applied on top.

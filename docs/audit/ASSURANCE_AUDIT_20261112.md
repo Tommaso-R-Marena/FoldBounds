@@ -39,10 +39,12 @@ was reproduced by the coordinator with the commands shown.
      compiler-checked, not kernel-checked.
    - About 25 integration *test* files also use `native_decide`. That is
      acceptable for tests, but those files must not be cited as proofs.
-4. **The proof-hygiene gate has blind spots, one of which is a soundness bug
-   in the gate.** Its axiom-report parser reads only the first line of a
+4. **The proof-hygiene gate has blind spots, two of which are soundness bugs
+   in the gate.** (i) Its axiom-report parser reads only the first line of a
    wrapped `#print axioms` report, so a forged log hiding `sorryAx` on a
-   continuation line passes (F3e). `scripts/check_lean_sources.py`:
+   continuation line passes (F3e). (ii) A forged axiom declared as
+   `axiom «Classical.choice» : False` passes both the source scan and the
+   axiom audit (F3f). Neither is exploited in the real tree. `scripts/check_lean_sources.py`:
    - (a) globs `FoldBounds/*.lean` non-recursively;
    - (b) does not forbid `native_decide`, so `Lean.ofReduceBool` is caught only
      for declarations that happen to be listed in `AxiomAudit.lean`;
@@ -201,6 +203,28 @@ and the reported number, the number is (2) or (3), not (1).
   `scripts/check_coupled_lean.py` (branch `research/cec-lean-20261112`)
   already parses wrapped reports this way, and it is tested against planted
   `native_decide`, a planted `Lean.ofReduceBool`, and truncated reports.
+
+**F3(f). A forged axiom named like a standard axiom passes both checks of the
+existing gate.**
+- *Discovered by:* the adversarial review (M1). *Reproduced by:* the
+  coordinator, 2026-11-13.
+- A module containing `axiom «Classical.choice» : False` (a single name
+  component that contains a dot) defeats the gate twice:
+  - it passes the source scan, because the regex `\baxiom\s+\w+` does not match
+    `axiom «`;
+  - a theorem proving `(0:ℝ) = 1` from it passes the axiom audit, because the
+    parser extracts identifier-like substrings and reads `«Classical.choice»`
+    as the standard `Classical.choice`.
+- *Reproduction:* `cd /tmp/claude-0/adversary/gatecopy && python3
+  scripts/check_lean_sources.py ../gate/evil_ax.log` prints "Axiom audit: 144
+  declarations, standard axioms only" and exits 0.
+- *Not exploited* in main or #91. A full-text search of both real logs finds
+  no `«`.
+- *Fix (proposed for the existing gate; owner approval needed):* match axiom
+  names exactly against the allowed set, rejecting any entry containing `«`,
+  and widen the source regex to `\baxiom\b`.
+- The new CEC gate had the same parser flaw. It is **fixed** in this branch,
+  and the forged log is now rejected.
 
 **F4. Python-to-Lean refinement (unchanged gap).** After Aristotle v2 the
 remaining obligations are:

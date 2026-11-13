@@ -113,7 +113,17 @@ def axiom_audit(log_path: str, names: list[str]) -> None:
         name = match.group(1)
         if name in reports:
             fail(f"duplicate axiom report for {name}")
-        reports[name] = set(re.findall(r"[A-Za-z_][A-Za-z0-9_.]*", match.group(2) or ""))
+        # Strict parsing (adversarial review M1): split the bracket on commas and require every
+        # entry to be a plain dotted identifier. Extracting identifier-like substrings would turn
+        # a forged axiom printed as «Classical.choice» (one name component containing a dot)
+        # into the standard Classical.choice. Guillemets or any other character fail closed.
+        raw = match.group(2)
+        entries = [] if raw is None else [e.strip() for e in raw.split(",")]
+        plain = re.compile(r"[A-Za-z_][A-Za-z0-9_']*(?:\.[A-Za-z_][A-Za-z0-9_']*)*")
+        for entry in entries:
+            if not plain.fullmatch(entry):
+                fail(f"non-plain axiom name {entry!r} in the report for {name}")
+        reports[name] = set(entries)
     if len(headers) != sum(1 for _ in report.finditer(log)):
         fail("an axiom report for a Coupled declaration could not be parsed completely")
     for name in names:

@@ -112,6 +112,14 @@ def _fstr(x):
 def _parse_model(md):
     _need(isinstance(md, dict), "model not an object")
     _need(md.get("format") == _MFMT and md.get("version") == 1, "bad model format")
+    # Fail closed on unknown keys (adversarial review m3). A misspelt factor list such as
+    # "only_b" would otherwise be ignored silently, while the hash, computed only over the
+    # canonical known fields, stayed unchanged.
+    _need(set(md) <= {"format", "version", "variables", "shared", "only_A", "only_B", "metadata"},
+          "unknown model keys")
+    _need(isinstance(md.get("variables"), list), "missing variables list")
+    for key in ("shared", "only_A", "only_B"):
+        _need(isinstance(md.get(key, []), list), "factor list is not a list")
     names, da, db = [], {}, {}
     for e in md.get("variables", []):
         _need(isinstance(e, dict) and isinstance(e.get("name"), str), "bad variable")
@@ -132,6 +140,7 @@ def _parse_model(md):
         fl = []
         for f in md.get(key, []):
             _need(isinstance(f, dict), "bad factor")
+            _need(set(f) <= {"scope", "table", "name"}, "unknown factor keys")
             sc, tb = f.get("scope"), f.get("table")
             _need(isinstance(sc, list) and isinstance(tb, list), "bad factor")
             _need(all(isinstance(v, str) and v in da for v in sc) and len(set(sc)) == len(sc),
@@ -321,7 +330,10 @@ def _check(md, cert, max_states, expected):
     tight = claim.get("tight", False)
     _need(isinstance(tight, bool), "bad tight flag")
     if lo is None:
-        _need(claim.get("lower") is None, "claims a bound but the support is empty")
+        # Z_A = 0 for every exterior: the ratio is undefined. No lower or upper claim may be made
+        # (adversarial review m3: previously any upper claim was accepted here).
+        _need(claim.get("lower") is None and claim.get("upper") is None,
+              "claims a bound but the support is empty")
         return True, ["support empty (Z_A = 0 for every exterior); no ratio claim made"]
     cl = _num(claim.get("lower"))
     _need(cl <= lo, "claimed lower bound exceeds min rho")

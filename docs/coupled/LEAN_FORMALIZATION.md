@@ -12,7 +12,7 @@ Independent review is still pending, as the spec requires.
 | `FoldBounds/CoupledSeparator.lean` | §2: Lemma 2.0, Theorems 2.1–2.6, Corollary 2.2′, separator checker |
 | `FoldBounds/CoupledBinding.lean` | §3: Theorems 4.1–4.3 |
 | `FoldBounds/CoupledTests.lean` | kernel-evaluated accept/reject tests (not imported by the library) |
-| `scripts/check_coupled_lean.py` | fail-closed source and axiom audit for `FoldBounds/Coupled*.lean` |
+| `scripts/check_coupled_lean.py` | source and axiom audit for `FoldBounds/Coupled*.lean`. *Review M1 (2026-11-13): the original parser accepted a forged axiom printed as `«Classical.choice»`. Axiom names are now parsed strictly and the forged log is rejected. The source scan still covers only `Coupled*.lean`; axioms introduced elsewhere are caught only through the strict log parse.* |
 | `.github/workflows/coupled-lean.yml` | CI: source audit, build, tests, both axiom checkers |
 
 ## Conventions
@@ -103,7 +103,7 @@ Status: **P** = proved as stated, or with weaker hypotheses (see Deviations);
 | Spec | Lean name(s) | Exact hypotheses | Status |
 |---|---|---|---|
 | `K_L = Σ p_apo k_L` | `Kbind_eq_sum`; derived from a microscopic A-loc model in `Kbind_of_sys` | none | P |
-| Thm 4.1 enclosure | `affinity_mem_Icc` | `[Nonempty T]`, `ΨR ≥ 0`, `0 < Σ ΨR` | P |
+| Thm 4.1 enclosure | `affinity_mem_Icc` | `[Nonempty T]`, `ΨR ≥ 0`, `0 < Σ ΨR` | P. *Review note: when Z_L = 0 the statement holds only through Lean's x/0 = 0 convention (K_L = 0, where the physical value is +∞). Use it with Z_L > 0.* |
 | Thm 4.1 sharpness | `affinity_sharp` | `[Nonempty T]` | P |
 | Thm 4.2 enclosure | `selectivity_mem_Icc` (`selectivity_eq_ratio`: `Z_R` cancels) | `ΨR ≥ 0`, `0 < Σ ΨR`, **`∀ τ, 0 < k₁ τ`** | P (corrected) |
 | Thm 4.2 sharpness | `selectivity_sharp` | `∀ τ, 0 < k₁ τ` | P |
