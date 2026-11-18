@@ -22,3 +22,10 @@ root = "foldcheck"
 name = "foldcheck2"
 srcDir = "scripts"
 root = "foldcheck2"
+
+# Compiled runner for the Mathlib-free verified kernel (unverified I/O shell).
+# Its only Lean dependency is FoldBounds/FrontierKernel.lean (core library only).
+[[lean_exe]]
+name = "foldkernel"
+srcDir = "scripts"
+root = "foldkernel"
