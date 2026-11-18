@@ -113,26 +113,32 @@ def scanCount (s : Site) (hNew : Bool) : ℕ → List (Site × Bool) → ℕ
       (if hNew && e.2 && decide (3 ≤ g) && decide (g % 2 = 1) && Kernel.manhattan1 e.1 s
         then 1 else 0) + scanCount s hNew (g + 1) rest
 
-theorem scan_none_iff (s : Site) (hNew : Bool) (g : ℕ) (R : List (Site × Bool)) (acc : ℕ) :
-    scan s hNew g R acc = none ↔ ∃ e ∈ R, e.1 = s := by
+theorem scan_none_iff (sx sy : ℤ) (hNew : Bool) (g : ℕ) (R : List (Site × Bool)) (acc : ℕ) :
+    scan sx sy hNew g R acc = none ↔ ∃ e ∈ R, e.1 = (sx, sy) := by
   induction R generalizing g acc with
   | nil => simp [scan]
   | cons e rest ih =>
-      by_cases he : e.1 = s
-      · simp [scan, he]
-      · simp only [scan, he, if_false, List.mem_cons, exists_eq_or_imp, false_or]
+      by_cases he : e.1.1 = sx ∧ e.1.2 = sy
+      · have he' : e.1 = (sx, sy) := Prod.ext he.1 he.2
+        simp [scan, he']
+      · have he' : ¬ e.1 = (sx, sy) := fun h => he ⟨congrArg Prod.fst h, congrArg Prod.snd h⟩
+        rw [scan, if_neg he]
+        simp only [List.mem_cons, exists_eq_or_imp, he', false_or]
         exact ih _ _
 
-theorem scan_some (s : Site) (hNew : Bool) (g : ℕ) (R : List (Site × Bool)) (acc c : ℕ)
-    (h : scan s hNew g R acc = some c) : c = acc + scanCount s hNew g R := by
+theorem scan_some (sx sy : ℤ) (hNew : Bool) (g : ℕ) (R : List (Site × Bool)) (acc c : ℕ)
+    (h : scan sx sy hNew g R acc = some c) : c = acc + scanCount (sx, sy) hNew g R := by
   induction R generalizing g acc with
   | nil => simp [scan] at h; simp [scanCount, h]
   | cons e rest ih =>
-      by_cases he : e.1 = s
+      by_cases he : e.1.1 = sx ∧ e.1.2 = sy
       · simp [scan, he] at h
-      · simp only [scan, he, if_false] at h
+      · rw [scan, if_neg he] at h
         have := ih _ _ h
         rw [this, scanCount]
+        have hm : Kernel.manhattan1 e.1 (sx, sy) =
+            decide ((e.1.1 - sx).natAbs + (e.1.2 - sy).natAbs = 1) := rfl
+        rw [hm]
         split_ifs <;> omega
 
 /-- Appending a site to the placed walk adds its own cross term. -/
@@ -261,8 +267,12 @@ theorem stepState_none {S : List Bool} {p : List (Fin 4)} {st : State} (hrep : R
   unfold stepState
   simp only
   rw [← mem_revOf S (walkFrom p), ← hrep.rev, ← hrep.cur, ← step_eq_advance,
-    ← scan_none_iff (step st.cur d) (S.toArray.getD st.placed false) 1 st.rev 0]
-  cases scan (step st.cur d) (S.toArray.getD st.placed false) 1 st.rev 0 <;> simp
+    show (∃ e ∈ st.rev, e.1 = step st.cur d) ↔
+      (∃ e ∈ st.rev, e.1 = ((step st.cur d).1, (step st.cur d).2)) from Iff.rfl,
+    ← scan_none_iff (step st.cur d).1 (step st.cur d).2 (S.toArray.getD st.placed false) 1
+      st.rev 0]
+  cases scan (step st.cur d).1 (step st.cur d).2 (S.toArray.getD st.placed false) 1 st.rev 0 <;>
+    simp
 
 /-- An accepted step yields the state of the extended prefix. -/
 theorem stepState_some {S : List Bool} {p : List (Fin 4)} {st st' : State} (hrep : Rep S p st)
@@ -275,15 +285,18 @@ theorem stepState_some {S : List Bool} {p : List (Fin 4)} {st st' : State} (hrep
   refine ⟨?_, hnot⟩
   unfold stepState at h
   simp only at h
-  cases hs : scan (step st.cur d) (S.toArray.getD st.placed false) 1 st.rev 0 with
+  cases hs : scan (step st.cur d).1 (step st.cur d).2 (S.toArray.getD st.placed false) 1
+      st.rev 0 with
   | none => rw [hs] at h; exact absurd h (by simp)
   | some c =>
       rw [hs] at h
       simp only [Option.some.injEq] at h
       subst h
-      have hc := scan_some _ _ _ _ _ _ hs
+      have hc := scan_some _ _ _ _ _ _ _ hs
       have hlen : (walkFrom p).length = p.length + 2 := walkFrom_length p
-      rw [zero_add, hrep.rev, hrep.placed, getD_toArray, hrep.cur, step_eq_advance] at hc
+      rw [zero_add, hrep.rev, hrep.placed, getD_toArray, hrep.cur, step_eq_advance,
+        show ((advance (endFrom first p) d).1, (advance (endFrom first p) d).2) =
+          advance (endFrom first p) d from rfl] at hc
       have hcount := scanCount_revOf S (advance (endFrom first p) d) (p.length + 2) (walkFrom p)
         (by omega) (by omega)
       rw [hlen] at hcount

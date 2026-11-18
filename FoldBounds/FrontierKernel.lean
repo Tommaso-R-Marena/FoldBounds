@@ -65,24 +65,29 @@ structure State where
   placed : Nat
   known : Nat
 
-/-- Scan the placed sites (most recent first) for the candidate new site `s`.
-`gap` is the chain distance from the new residue to the head entry.  Returns
-`none` when `s` is occupied, and otherwise the accumulated number of H–H
-contacts the new residue makes. -/
-def scan (s : Site) (hNew : Bool) : Nat → List (Site × Bool) → Nat → Option Nat
-  | _, [], acc => some acc
-  | gap, e :: rest, acc =>
-      if e.1 = s then none
+/-- Scan the placed sites (most recent first) for the candidate new site
+`(sx, sy)`.  `gap` is the chain distance from the new residue to the head
+entry.  Returns `none` when the site is occupied, and otherwise the
+accumulated number of H–H contacts the new residue makes.  The list and the
+coordinates are only borrowed, so the loop performs no reference counting
+and no allocation. -/
+def scan (sx sy : @& Int) (hNew : Bool) (gap : Nat) (R : @& List (Site × Bool)) (acc : Nat) :
+    Option Nat :=
+  match R with
+  | [] => some acc
+  | e :: rest =>
+      if e.1.1 = sx ∧ e.1.2 = sy then none
       else
-        scan s hNew (gap + 1) rest
-          (if hNew && e.2 && decide (3 ≤ gap) && decide (gap % 2 = 1) && manhattan1 e.1 s
+        scan sx sy hNew (gap + 1) rest
+          (if hNew && e.2 && decide (3 ≤ gap) && decide (gap % 2 = 1) &&
+              decide ((e.1.1 - sx).natAbs + (e.1.2 - sy).natAbs = 1)
            then acc + 1 else acc)
 
 /-- Extend the walk by direction `d`; `none` when the target site is occupied. -/
 def stepState (seq : Array Bool) (st : State) (d : Fin 4) : Option State :=
   let s := step st.cur d
   let hNew := seq.getD st.placed false
-  match scan s hNew 1 st.rev 0 with
+  match scan s.1 s.2 hNew 1 st.rev 0 with
   | none => none
   | some c =>
       some { cur := s, rev := (s, hNew) :: st.rev, placed := st.placed + 1, known := st.known + c }
