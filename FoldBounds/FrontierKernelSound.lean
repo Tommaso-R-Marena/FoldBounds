@@ -1287,5 +1287,85 @@ theorem encEntry_le_basic {steps : ℕ} {S : List Bool} (hS : S.length = steps +
         · exact mul_nonneg (Nat.cast_nonneg _) (hpos _)
         · exact le_refl _
 
+/-! ### Boolean entry points: one decidable check yields a theorem about the model -/
+
+/-- A sound report, specialised to a known sequence function. -/
+theorem ReportSound.of_seq {rep : Report} (h : ReportSound rep) {steps : ℕ}
+    (seq : Fin (steps + 2) → Bool) (hseq : rep.seq = List.ofFn seq) :
+    ∀ r ∈ rep.results, ResultSound steps seq r := by
+  obtain ⟨steps', seq', hs', hall⟩ := h
+  have he : List.ofFn seq' = List.ofFn seq := hs'.symm.trans hseq
+  have hlen : steps' = steps := by
+    have := congrArg List.length he
+    simp only [List.length_ofFn] at this
+    omega
+  subst hlen
+  have : seq' = seq := List.ofFn_injective he
+  subst this
+  exact hall
+
+/-- Boolean test: the bytes are accepted for the sequence `S` and some
+reported result for `(q, t)` has its probability interval inside `[lo, hi]`. -/
+def certifiesInterval (b : ByteArray) (S : List Bool) (q : ℚ) (t : ℕ) (lo hi : ℚ) : Bool :=
+  match verifyBytes b with
+  | .ok rep =>
+      rep.seq == S &&
+        rep.results.any (fun r => r.q == q && r.t == t && decide (lo ≤ r.pLo) && decide (r.pHi ≤ hi))
+  | .error _ => false
+
+/-- **One Boolean check gives a probability enclosure for the Lean model.**
+If `certifiesInterval` evaluates to `true` (for instance by `decide +kernel`
+on a small certificate, or by running the compiled checker), then the exact
+equilibrium probability `P(k ≥ t)` of the HP model of `seq` at Boltzmann
+factor `q` lies in `[lo, hi]`. -/
+theorem certifiesInterval_sound {steps : ℕ} (seq : Fin (steps + 2) → Bool) (b : ByteArray)
+    (q : ℚ) (t : ℕ) (lo hi : ℚ) (h : certifiesInterval b (List.ofFn seq) q t lo hi = true) :
+    Executable.massQ (weightQ steps q seq) (contactEvent steps seq t) /
+      Executable.massQ (weightQ steps q seq) univ ∈ Set.Icc lo hi := by
+  unfold certifiesInterval at h
+  cases hv : verifyBytes b with
+  | error e => rw [hv] at h; exact absurd h (by simp)
+  | ok rep =>
+      rw [hv] at h
+      simp only [Bool.and_eq_true, beq_iff_eq, List.any_eq_true, decide_eq_true_eq] at h
+      obtain ⟨hseq, r, hr, ⟨⟨⟨hq, ht⟩, hlo⟩, hhi⟩⟩ := h
+      obtain ⟨_, _, _, _, hp⟩ := (verifyBytes_sound b rep hv).of_seq seq hseq r hr
+      rw [hq, ht] at hp
+      exact ⟨hlo.trans hp.1, hp.2.trans hhi⟩
+
+/-- Boolean test: the bytes are accepted for the sequence `S` without any
+bound entry and some reported result for `(q, t)` has probability `p`. -/
+def certifiesExact (b : ByteArray) (S : List Bool) (q : ℚ) (t : ℕ) (p : ℚ) : Bool :=
+  match verifyBytes b with
+  | .ok rep =>
+      rep.entries == 0 && rep.seq == S &&
+        rep.results.any (fun r => r.q == q && r.t == t && r.pLo == p)
+  | .error _ => false
+
+/-- **One Boolean check gives the exact probability of the Lean model.** -/
+theorem certifiesExact_sound {steps : ℕ} (seq : Fin (steps + 2) → Bool) (b : ByteArray)
+    (q : ℚ) (t : ℕ) (p : ℚ) (h : certifiesExact b (List.ofFn seq) q t p = true) :
+    Executable.massQ (weightQ steps q seq) (contactEvent steps seq t) /
+      Executable.massQ (weightQ steps q seq) univ = p := by
+  unfold certifiesExact at h
+  cases hv : verifyBytes b with
+  | error e => rw [hv] at h; exact absurd h (by simp)
+  | ok rep =>
+      rw [hv] at h
+      simp only [Bool.and_eq_true, beq_iff_eq, List.any_eq_true] at h
+      obtain ⟨⟨h0, hseq⟩, r, hr, ⟨⟨hq, ht⟩, hp⟩⟩ := h
+      obtain ⟨steps', seq', hs', hall⟩ := verifyBytes_exact b rep hv h0
+      have he : List.ofFn seq' = List.ofFn seq := hs'.symm.trans hseq
+      have hlen : steps' = steps := by
+        have := congrArg List.length he
+        simp only [List.length_ofFn] at this
+        omega
+      subst hlen
+      have : seq' = seq := List.ofFn_injective he
+      subst this
+      obtain ⟨_, _, _, _, _, _, _, hpl, _⟩ := hall r hr
+      rw [hq, ht] at hpl
+      rw [← hpl, hp]
+
 end Kernel
 end FoldBounds
