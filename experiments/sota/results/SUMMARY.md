@@ -1,6 +1,6 @@
 # External SOTA comparison (FoldBounds)
 
-Generated: 2026-11-19T02:33:08Z · mode=`full+minwalk-path-certs`
+Generated: 2026-11-19T03:31:36Z · mode=`full+minwalk-path-certs+20merB`
 
 ## Sources
 
@@ -12,6 +12,9 @@ Generated: 2026-11-19T02:33:08Z · mode=`full+minwalk-path-certs`
 - **Giaquinta-Pozzi-2013**: MINWALK exact GS algorithm; published optima to n~80 https://doi.org/10.1089/cmb.2012.0266
 - **minwalk-impl**: open-source MINWALK implementation (vendored) https://github.com/tsucres/HPFoldingProblem
 - **AIP-Fibonacci-2015**: exact enumeration of Fibonacci HP sequences S13/S21/S34 https://doi.org/10.1063/1.4938021
+- **Istrail-HP2D**: Istrail Lab / Tortilla 2D HP benchmark lineage (includes 20mer-B) 
+- **Beaton-Guttmann-Jensen-2020**: exact ISAW contact counts c_n,m through n=59 https://arxiv.org/abs/1911.05852
+- **Lee-2016-ISAW-TM**: transfer-matrix exact Omega(K) / Z for ISAW to N~42 https://arxiv.org/abs/1612.01275
 
 ## Findings
 
@@ -32,6 +35,7 @@ Generated: 2026-11-19T02:33:08Z · mode=`full+minwalk-path-certs`
 - OEIS n=15: foldkernel exact count 593611 matches A001411/4
 - OEIS n=16: foldkernel exact count 1604149 matches A001411/4
 - S1-1: MINWALK contacts=9 matches published E*=-9 in 0.0023s
+- 20merB: MINWALK contacts=10 matches published E*=-10 in 0.0032s
 - S1-2: MINWALK contacts=9 matches published E*=-9 in 0.0047s
 - S1-3: MINWALK contacts=8 matches published E*=-8 in 0.0016s
 - S1-4: MINWALK contacts=14 matches published E*=-14 in 0.0029s
@@ -54,6 +58,7 @@ Generated: 2026-11-19T02:33:08Z · mode=`full+minwalk-path-certs`
 
 ### Unique certified capability
 - S1-1: FoldBounds accepted certificate for event k≥9 (certified thermodynamics path)
+- 20merB: FoldBounds accepted certificate for event k≥10 (certified thermodynamics path)
 - S1-2: FoldBounds accepted certificate for event k≥9 (certified thermodynamics path)
 - S1-3: FoldBounds accepted certificate for event k≥8 (certified thermodynamics path)
 - S1-4: FoldBounds accepted certificate for event k≥14 (certified thermodynamics path)
@@ -62,8 +67,8 @@ Generated: 2026-11-19T02:33:08Z · mode=`full+minwalk-path-certs`
 - FoldBounds is the only compared system with a Lean-kernel soundness theorem about string-level acceptance
 
 ### Gaps
-- S1-6: MINWALK long-budget run in progress
-- S1-7: MINWALK long-budget run in progress
+- S1-6: minwalk failed (running-long-budget)
+- S1-7: minwalk failed (running-long-budget)
 
 ## OEIS A001411 (anchored)
 
@@ -90,12 +95,13 @@ Generated: 2026-11-19T02:33:08Z · mode=`full+minwalk-path-certs`
 | id | n | E* | minwalk | match | wall_s | foldbounds cert | witness |
 |---|---|---|---|---|---|---|---|
 | S1-1 | 20 | -9 | 9 | OK | 0.0023 | accepted | minwalk-path |
+| 20merB | 20 | -10 | 10 | OK | 0.0032 | accepted | minwalk-path |
 | S1-2 | 24 | -9 | 9 | OK | 0.0047 | accepted | minwalk-path |
 | S1-3 | 25 | -8 | 8 | OK | 0.0016 | accepted | minwalk-path |
 | S1-4 | 36 | -14 | 14 | OK | 0.0029 | accepted | minwalk-path |
 | S1-5 | 48 | -23 | 23 | OK | 0.2699 | accepted | minwalk-path |
-| S1-6 | 50 | -21 | None | NO | 120.0000 | no-positive-eLo |  |
-| S1-7 | 60 | -36 | None | NO | 120.0000 | no-positive-eLo |  |
+| S1-6 | 50 | -21 | None | running-long-budget |  | awaiting-minwalk-path |  |
+| S1-7 | 60 | -36 | None | running-long-budget |  | awaiting-minwalk-path |  |
 | S1-8 | 64 | -42 | 42 | OK | 0.4970 | accepted | minwalk-path |
 
 ## Fibonacci HP exact histograms
@@ -119,6 +125,10 @@ Source: Thachuk-Shmygelska-Hoos-2007 https://doi.org/10.1186/1471-2105-8-342
 | S1-6 | 50 | -21 | 69 | 580 | open |
 | S1-7 | 60 | -36 | 21 | 1490 | open |
 | S1-8 | 64 | -42 | 77 | 420 | certified eLo>0 |
+
+## Related internal bench
+
+Matched-budget foldkernel vs foldcheck2: `experiments/kernel/bench/results/SUMMARY.md` (0 disagreements; median ~60× wall vs foldcheck2).
 
 ## How to reproduce
 

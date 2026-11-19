@@ -8,7 +8,10 @@
     {"id": "Thachuk-Shmygelska-Hoos-2007", "url": "https://doi.org/10.1186/1471-2105-8-342", "what": "REMC SOTA comparison protocol on S1-*"},
     {"id": "Giaquinta-Pozzi-2013", "url": "https://doi.org/10.1089/cmb.2012.0266", "what": "MINWALK exact GS algorithm; published optima to n~80"},
     {"id": "minwalk-impl", "url": "https://github.com/tsucres/HPFoldingProblem", "what": "open-source MINWALK implementation (vendored)"},
-    {"id": "AIP-Fibonacci-2015", "url": "https://doi.org/10.1063/1.4938021", "what": "exact enumeration of Fibonacci HP sequences S13/S21/S34"}
+    {"id": "AIP-Fibonacci-2015", "url": "https://doi.org/10.1063/1.4938021", "what": "exact enumeration of Fibonacci HP sequences S13/S21/S34"},
+    {"id": "Istrail-HP2D", "what": "Istrail Lab / Tortilla 2D HP benchmark lineage (includes 20mer-B)"},
+    {"id": "Beaton-Guttmann-Jensen-2020", "url": "https://arxiv.org/abs/1911.05852", "what": "exact ISAW contact counts c_n,m through n=59"},
+    {"id": "Lee-2016-ISAW-TM", "url": "https://arxiv.org/abs/1612.01275", "what": "transfer-matrix exact Omega(K) / Z for ISAW to N~42"}
   ],
   "saw_oeis_a001411": {
     "description": "c_k = number of k-step SAWs on Z^2. FoldBounds n-mer conformations = c_{n-1}/4 (first step fixed to +x; reflections kept).",
@@ -16,6 +19,7 @@
   },
   "ground_state_2d": [
     {"id": "S1-1", "n": 20, "E_star": -9, "contacts": 9, "sequence": "HPHPPHHPHPPHPHHPPHPH", "source": "Shmygelska-Hoos-2005 / Unger-Moult"},
+    {"id": "20merB", "n": 20, "E_star": -10, "contacts": 10, "sequence": "HHHPPHPHPHPPHPHPHPPH", "source": "Istrail-HP2D / Tortilla (20mer-B)"},
     {"id": "S1-2", "n": 24, "E_star": -9, "contacts": 9, "sequence": "HHPPHPPHPPHPPHPPHPPHPPHH", "source": "Shmygelska-Hoos-2005"},
     {"id": "S1-3", "n": 25, "E_star": -8, "contacts": 8, "sequence": "PPHPPHHPPPPHHPPPPHHPPPPHH", "source": "Shmygelska-Hoos-2005"},
     {"id": "S1-4", "n": 36, "E_star": -14, "contacts": 14, "sequence": "PPPHHPPHHPPPPPHHHHHHHPPHHPPPPHHPPHPP", "source": "Shmygelska-Hoos-2005"},

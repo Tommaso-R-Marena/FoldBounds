@@ -44,9 +44,10 @@ Canvas: FoldBounds vs external SOTA
 
 * OEIS A001411 (anchored): exact match n=2…16; foldkernel ~33 ns/conf vs Python ~330 (~10×).
 * Fibonacci S21: 224,424,291 confs; foldkernel histogram matches exhaustive in 6.5s vs 46s (~7×).
-* S1-* / Unger–Moult GS: MINWALK matches published E* on S1-1..5,S1-8; PATH dump → FoldBounds **eLo>0 certs on S1-1..5 and S1-8** (6/8).
+* S1-* / Unger–Moult / Istrail GS: MINWALK matches published E* on S1-1..5,S1-8,20merB; PATH dump → FoldBounds **eLo>0 certs on 7 instances** (S1-1..5, S1-8, 20merB).
 * Literature REMC (Thachuk 2007) table included for heuristic SOTA context.
-* Gaps: S1-6/S1-7 long-budget MINWALK still running; Jensen TM ahead for extreme-n SAW counts.
+* Internal matched-budget bench committed: 0 disagreements; ~60× median vs foldcheck2.
+* Gaps: S1-6/S1-7 long-budget MINWALK still running; Lee/Beaton ISAW Ω(K) oracle next; Jensen TM ahead for extreme-n SAW counts.
 
 ## Next (if continuing)
 
