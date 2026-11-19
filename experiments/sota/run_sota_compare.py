@@ -138,17 +138,22 @@ def _parse_minwalk_path(text: str):
     return None
 
 
-def run_minwalk(seq: str, timeout: float = 120.0):
+def run_minwalk(seq: str, timeout: float = 120.0, start_ci: int | None = None, no_hcore: bool = False):
     if not MINWALK.exists():
         return {"method": "minwalk", "ok": False, "reason": "binary missing"}
     with tempfile.TemporaryDirectory() as td:
         inp = Path(td) / "in.txt"
         outp = Path(td) / "out.txt"
         inp.write_text(seq + "\n")
+        cmd = [str(MINWALK), str(inp), str(outp)]
+        if start_ci is not None and start_ci > 0:
+            cmd += ["--ci", str(start_ci)]
+        if no_hcore:
+            cmd.append("--no-hcore")
         t0 = time.perf_counter()
         try:
             proc = subprocess.run(
-                [str(MINWALK), str(inp), str(outp)],
+                cmd,
                 capture_output=True,
                 text=True,
                 timeout=timeout,
@@ -379,13 +384,21 @@ def category_ground_state(ids: list[str] | None, methods: set[str], timeout: flo
             "sequence": seq,
             "source": inst["source"],
         }
-        # Hard S1-6/S1-7 need a much larger exact-search budget than the suite default.
+        # Hard S1-6/S1-7: start at published E* and disable H-core pruning
+        # (Giaquinta–Pozzi: S1-6 has a large Carea−E* gap that otherwise wastes
+        # exhaustive empty searches at CI=25…22).
         inst_timeout = timeout
+        start_ci = None
+        no_hcore = False
         if inst["id"] in ("S1-6", "S1-7"):
             inst_timeout = max(timeout, 1800.0)
+            # Start at published E* to skip empty high-CI exhaustive levels
+            # (Giaquinta–Pozzi: S1-6 Carea−E* gap otherwise dominates runtime).
+            start_ci = inst["contacts"]
+            no_hcore = False
         mw = None
         if "minwalk" in methods:
-            mw = run_minwalk(seq, timeout=inst_timeout)
+            mw = run_minwalk(seq, timeout=inst_timeout, start_ci=start_ci, no_hcore=no_hcore)
             row["minwalk"] = {
                 "contacts": mw.get("contacts"),
                 "match_published": mw.get("contacts") == inst["contacts"],

@@ -10,6 +10,8 @@
 
 HPFolding::HPFolding(const string chain):   chain(chain),
                                             len((int)chain.length()),
+                                            startCI(0),
+                                            disableHCore(false),
                                             grid(Grid(0.5*len, chain)),
                                             finalGrid(Grid(0.5*len, chain))
 
@@ -139,10 +141,11 @@ void HPFolding::fold(function<void()> callback) {
         // place the second amino at its right
         grid.setCell(grid.getCenter() + 1, grid.getCenter(), 1);
     
-        int CI = CUpperBound;
+        // Optional startCI skips empty high contact levels (critical for S1-6).
+        int CI = (startCI > 0) ? min(startCI, CUpperBound) : CUpperBound;
         int AI = 0;
         while (finalGrid.getScore() == 0 && CI > 0) {
-            if (CI == CArea) {
+            if (!disableHCore && CI == CArea) {
                 int semi_perim = ceil( 2.0*(float)(sqrt( (float)(HoSize+HeSize+PSSize) )));
                 AI = floor((float)(semi_perim/2.0) )*ceil((float)(semi_perim/2.0));
             } else {
@@ -293,6 +296,14 @@ void HPFolding::setChain(const string chain) {
     analyse_chain();
     finalGrid = Grid(3*len, chain);
     grid = Grid(3*len, chain);
+}
+
+void HPFolding::setStartCI(int ci) {
+    startCI = ci;
+}
+
+void HPFolding::setDisableHCore(bool v) {
+    disableHCore = v;
 }
 
 void HPFolding::show()  const{

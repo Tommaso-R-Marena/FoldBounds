@@ -37,7 +37,8 @@ private:
     int CUpperBound; // # of expected contacts (upper-bound in MINWALK)
     int CParity;
     int CArea;
-    
+    int startCI; // if >0, begin search at this CI (skip empty high levels)
+    bool disableHCore; // Giaquinta–Pozzi: disable H-core pruning on hard instances
     
     void add(const int i, const int x, const int y, const int CI, const int AI);
     int calc_min_contacts();
@@ -58,6 +59,8 @@ public:
     int getLength() const;
     string getChain() const;
     void setChain(const string chain);
+    void setStartCI(int ci);
+    void setDisableHCore(bool v);
     void show() const;
     
 };

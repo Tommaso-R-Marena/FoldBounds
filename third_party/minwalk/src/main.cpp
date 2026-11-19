@@ -21,6 +21,7 @@ bool graphic = false;
 #include <string>
 #include <fstream>
 #include <functional>
+#include <cstdlib>
 
 #include "HPFolding.hpp"
 
@@ -30,12 +31,29 @@ using namespace std;
 int main(int argc, char * argv[]) {
     ifstream infile;
     ofstream outfile;
-    
-    if (argc > 1) {
-        infile.open(argv[1]); // First arg is the input file
+    int startCI = 0;
+    bool noHCore = false;
+    string inPath;
+    string outPath;
+
+    for (int i = 1; i < argc; ++i) {
+        string a = argv[i];
+        if (a == "--ci" && i + 1 < argc) {
+            startCI = atoi(argv[++i]);
+        } else if (a == "--no-hcore") {
+            noHCore = true;
+        } else if (inPath.empty()) {
+            inPath = a;
+        } else if (outPath.empty()) {
+            outPath = a;
+        }
     }
-    if (argc > 2) {
-        outfile.open(argv[2]); // Second arg is the output file
+
+    if (!inPath.empty()) {
+        infile.open(inPath);
+    }
+    if (!outPath.empty()) {
+        outfile.open(outPath);
     }
     ostream & output = (outfile.is_open() ? outfile : cout);
     
@@ -43,6 +61,10 @@ int main(int argc, char * argv[]) {
     
     if (infile.is_open()) {
         HPFolding hp;
+        if (startCI > 0) {
+            hp.setStartCI(startCI);
+        }
+        hp.setDisableHCore(noHCore);
         
         function<void()> callback = NULL;
         if (graphic)
@@ -50,6 +72,10 @@ int main(int argc, char * argv[]) {
         
         while (getline(infile, chain)) {
             hp.setChain(chain);
+            if (startCI > 0) {
+                hp.setStartCI(startCI);
+            }
+            hp.setDisableHCore(noHCore);
             hp.fold(callback);
             output << chain << "\t" << hp.getScore() << endl;
             // Machine-readable FoldBounds witness (anchored coordinates).
@@ -62,6 +88,10 @@ int main(int argc, char * argv[]) {
         cin >> chain;
         
         HPFolding hp(chain);
+        if (startCI > 0) {
+            hp.setStartCI(startCI);
+        }
+        hp.setDisableHCore(noHCore);
         run(hp);
         
         output << chain << "\t" << hp.getScore() << endl;
