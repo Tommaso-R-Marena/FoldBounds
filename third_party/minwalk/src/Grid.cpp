@@ -52,6 +52,46 @@ void BasicGrid::draw_conformation(ostream& out)  const {
     out<<endl;
 }
 
+void BasicGrid::dump_path(ostream& out)  const {
+    const int n = (int)protein.size();
+    vector<Point> pos(n, Point(-1, -1));
+    for (int y = 0; y < size; ++y) {
+        for (int x = 0; x < size; ++x) {
+            int idx = getCell(x, y);
+            if (idx >= 0 && idx < n) {
+                pos[idx] = Point(x, y);
+            }
+        }
+    }
+    if (n == 0 || pos[0].x < 0) {
+        return;
+    }
+    // Anchor-translate so residue 0 is at (0,0) and residue 1 at (1,0) when possible.
+    int x0 = pos[0].x;
+    int y0 = pos[0].y;
+    int dx = 1, dy = 0;
+    if (n >= 2 && pos[1].x >= 0) {
+        dx = pos[1].x - x0;
+        dy = pos[1].y - y0;
+    }
+    // Rotate so the first bond maps to +x.
+    auto rot = [&](int x, int y) -> Point {
+        int rx = x - x0;
+        int ry = y - y0;
+        if (dx == 1 && dy == 0) return Point(rx, ry);
+        if (dx == -1 && dy == 0) return Point(-rx, -ry);
+        if (dx == 0 && dy == 1) return Point(ry, -rx);
+        if (dx == 0 && dy == -1) return Point(-ry, rx);
+        return Point(rx, ry);
+    };
+    out << "PATH " << n;
+    for (int i = 0; i < n; ++i) {
+        Point p = rot(pos[i].x, pos[i].y);
+        out << " " << p.x << "," << p.y;
+    }
+    out << endl;
+}
+
 
 bool BasicGrid::setCell(int x, int y, int amino_ind)
 {

@@ -60,6 +60,8 @@ public:
     int getCenter()  const;
     char getAmino(int x, int y)  const;
     void draw_conformation(ostream& out=cout)  const;
+    /** Emit ``PATH i x y`` lines for each amino (FoldBounds witness import). */
+    void dump_path(ostream& out=cout)  const;
 };
 
 class Grid : public BasicGrid {

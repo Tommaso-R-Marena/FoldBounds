@@ -1,6 +1,6 @@
 # External SOTA comparison (FoldBounds)
 
-Generated: 2026-11-19T02:27:37Z · mode=`full`
+Generated: 2026-11-19T02:33:08Z · mode=`full+minwalk-path-certs`
 
 ## Sources
 
@@ -31,12 +31,12 @@ Generated: 2026-11-19T02:27:37Z · mode=`full`
 - OEIS n=14: foldkernel exact count 220375 matches A001411/4
 - OEIS n=15: foldkernel exact count 593611 matches A001411/4
 - OEIS n=16: foldkernel exact count 1604149 matches A001411/4
-- S1-1: MINWALK contacts=9 matches published E*=-9 in 0.0027s
-- S1-2: MINWALK contacts=9 matches published E*=-9 in 0.0052s
-- S1-3: MINWALK contacts=8 matches published E*=-8 in 0.0021s
-- S1-4: MINWALK contacts=14 matches published E*=-14 in 0.0032s
-- S1-5: MINWALK contacts=23 matches published E*=-23 in 0.2851s
-- S1-8: MINWALK contacts=42 matches published E*=-42 in 0.5443s
+- S1-1: MINWALK contacts=9 matches published E*=-9 in 0.0023s
+- S1-2: MINWALK contacts=9 matches published E*=-9 in 0.0047s
+- S1-3: MINWALK contacts=8 matches published E*=-8 in 0.0016s
+- S1-4: MINWALK contacts=14 matches published E*=-14 in 0.0029s
+- S1-5: MINWALK contacts=23 matches published E*=-23 in 0.2699s
+- S1-8: MINWALK contacts=42 matches published E*=-42 in 0.4970s
 - S13: foldkernel histogram identical to exhaustive oracle (81233 confs)
 - S21: foldkernel histogram identical to exhaustive oracle (224424291 confs)
 
@@ -55,12 +55,15 @@ Generated: 2026-11-19T02:27:37Z · mode=`full`
 ### Unique certified capability
 - S1-1: FoldBounds accepted certificate for event k≥9 (certified thermodynamics path)
 - S1-2: FoldBounds accepted certificate for event k≥9 (certified thermodynamics path)
+- S1-3: FoldBounds accepted certificate for event k≥8 (certified thermodynamics path)
 - S1-4: FoldBounds accepted certificate for event k≥14 (certified thermodynamics path)
+- S1-5: FoldBounds accepted certificate for event k≥23 (certified thermodynamics path)
+- S1-8: FoldBounds accepted certificate for event k≥42 (certified thermodynamics path)
 - FoldBounds is the only compared system with a Lean-kernel soundness theorem about string-level acceptance
 
 ### Gaps
-- S1-6: minwalk failed (None)
-- S1-7: minwalk failed (None)
+- S1-6: MINWALK long-budget run in progress
+- S1-7: MINWALK long-budget run in progress
 
 ## OEIS A001411 (anchored)
 
@@ -84,16 +87,16 @@ Generated: 2026-11-19T02:27:37Z · mode=`full`
 
 ## 2D HP ground-state (published E*)
 
-| id | n | E* | minwalk | match | wall_s | foldbounds cert (eLo>0) |
-|---|---|---|---|---|---|---|
-| S1-1 | 20 | -9 | 9 | OK | 0.0027 | eLo=512/1 |
-| S1-2 | 24 | -9 | 9 | OK | 0.0052 | eLo=512/1 |
-| S1-3 | 25 | -8 | 8 | OK | 0.0021 | no-positive-eLo |
-| S1-4 | 36 | -14 | 14 | OK | 0.0032 | eLo=32768/1 |
-| S1-5 | 48 | -23 | 23 | OK | 0.2851 | no-positive-eLo |
-| S1-6 | 50 | -21 | None | NO | 120.0000 | no-positive-eLo |
-| S1-7 | 60 | -36 | None | NO | 120.0000 | no-positive-eLo |
-| S1-8 | 64 | -42 | 42 | OK | 0.5443 | no-positive-eLo |
+| id | n | E* | minwalk | match | wall_s | foldbounds cert | witness |
+|---|---|---|---|---|---|---|---|
+| S1-1 | 20 | -9 | 9 | OK | 0.0023 | accepted | minwalk-path |
+| S1-2 | 24 | -9 | 9 | OK | 0.0047 | accepted | minwalk-path |
+| S1-3 | 25 | -8 | 8 | OK | 0.0016 | accepted | minwalk-path |
+| S1-4 | 36 | -14 | 14 | OK | 0.0029 | accepted | minwalk-path |
+| S1-5 | 48 | -23 | 23 | OK | 0.2699 | accepted | minwalk-path |
+| S1-6 | 50 | -21 | None | NO | 120.0000 | no-positive-eLo |  |
+| S1-7 | 60 | -36 | None | NO | 120.0000 | no-positive-eLo |  |
+| S1-8 | 64 | -42 | 42 | OK | 0.4970 | accepted | minwalk-path |
 
 ## Fibonacci HP exact histograms
 
@@ -102,16 +105,26 @@ Generated: 2026-11-19T02:27:37Z · mode=`full`
 | S13 | 13 | 81233 | 4 | 0.0170 | OK | 0.0072 |
 | S21 | 21 | 224424291 | 7 | 46.1346 | OK | 6.5309 |
 
-## How this relates to SOTA
+## Literature heuristic SOTA (REMC, cited)
 
-- **Ground-state optimization SOTA (exact):** Giaquinta–Pozzi MINWALK (vendored).
-  FoldBounds matches published optima on S1-1..S1-5 and S1-8, and emits *certified* witness
-  certificates with eLo>0 for the event k≥E* on those instances.
-- **Ground-state optimization SOTA (heuristic):** REMC / PERM / ACO sample energies; they do
-  not produce machine-checked enclosures of Z or P(k≥t). FoldBounds does.
-- **SAW enumeration SOTA:** Jensen transfer-matrix reaches length 79. FoldBounds matches OEIS
-  A001411 (anchored) through n=16 and is ~10× faster per conformation than the Python baseline
-  at n≥12 (~33 ns/conf vs ~330 ns/conf).
-- **Exact HP thermodynamics:** Fibonacci S21 (224,424,291 conformations) — foldkernel matches
-  the exhaustive histogram in 6.5s vs 46s for plain Python enumeration (~7×).
+Source: Thachuk-Shmygelska-Hoos-2007 https://doi.org/10.1186/1471-2105-8-342
+
+| id | n | E* | REMC success % | REMC mean s | FoldBounds note |
+|---|---|---|---|---|---|
+| S1-1 | 20 | -9 | 100 | 0.06 | certified eLo>0 |
+| S1-2 | 24 | -9 | 100 | 0.35 | certified eLo>0 |
+| S1-3 | 25 | -8 | 100 | 0.33 | certified eLo>0 |
+| S1-4 | 36 | -14 | 100 | 3.97 | certified eLo>0 |
+| S1-5 | 48 | -23 | 89 | 340 | certified eLo>0 |
+| S1-6 | 50 | -21 | 69 | 580 | open |
+| S1-7 | 60 | -36 | 21 | 1490 | open |
+| S1-8 | 64 | -42 | 77 | 420 | certified eLo>0 |
+
+## How to reproduce
+
+```bash
+cd third_party/minwalk && make
+lake build foldkernel
+python experiments/sota/run_sota_compare.py --full
+```
 

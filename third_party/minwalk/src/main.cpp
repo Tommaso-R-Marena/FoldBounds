@@ -52,6 +52,8 @@ int main(int argc, char * argv[]) {
             hp.setChain(chain);
             hp.fold(callback);
             output << chain << "\t" << hp.getScore() << endl;
+            // Machine-readable FoldBounds witness (anchored coordinates).
+            hp.finalGrid.dump_path(output);
         }
         infile.close();
     } else {

@@ -25,16 +25,17 @@ FoldBounds compares to published state of the art. Machine-readable inputs:
 ## Competitive claims (honest)
 
 1. **Match published ground-state optima** on the community S1/Unger–Moult suite
-   using the exact SOTA solver (MINWALK), with FoldBounds certificates accepted
-   on the same instances.
-2. **Exact match to OEIS A001411** (anchored) for all tested n; foldkernel’s
-   in-process enumeration is competitive with / faster than the Python baseline
-   at moderate n.
-3. **Exact contact histograms** on Fibonacci S13 agreeing between foldkernel and
-   exhaustive oracle.
-4. **Unique vs heuristic SOTA (REMC/PERM/ACO):** FoldBounds returns
-   machine-checked rational enclosures of Z and P(k≥t), not sampled energies.
+   using the exact SOTA solver (MINWALK). Vendored MINWALK now dumps an anchored
+   `PATH` so FoldBounds can certify the same conformation.
+2. **Certified eLo>0** on S1-1…S1-5 and S1-8 (event `k ≥ E*` nonempty) via
+   MINWALK-path witness spines checked by the Lean kernel — the heuristic REMC
+   SOTA (Thachuk 2007) reports energies without certificates.
+3. **Exact match to OEIS A001411** (anchored) for all tested n; foldkernel
+   ~10× vs Python hpenum at n≈16.
+4. **Exact contact histograms** on Fibonacci S13/S21; S21 ~7× vs exhaustive
+   Python.
 
 Transfer-matrix SAW enumeration (Jensen to length 79) remains ahead for pure
-counting at extreme n; FoldBounds’ differentiator is the verified checker and
-HP thermodynamics certificates on the same lattice model.
+counting at extreme n. S1-6/S1-7 exact MINWALK is still open at short harness
+budgets (long runs in progress). REMC stays faster when no certificate is
+required; FoldBounds’ differentiator is machine-checked rational enclosures.

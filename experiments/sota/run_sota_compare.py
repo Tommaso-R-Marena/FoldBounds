@@ -114,6 +114,30 @@ def run_foldkernel_root_x(seq: str, q: str = "2", t: int = 1, timeout: float = 1
     }
 
 
+def _parse_minwalk_path(text: str):
+    """Parse ``PATH n x,y ...`` dumped by vendored minwalk into an anchored walk."""
+    for line in text.splitlines():
+        line = line.strip()
+        if not line.startswith("PATH "):
+            continue
+        parts = line.split()
+        if len(parts) < 3:
+            continue
+        try:
+            n = int(parts[1])
+        except ValueError:
+            continue
+        coords = []
+        for tok in parts[2:]:
+            if "," not in tok:
+                continue
+            xs, ys = tok.split(",", 1)
+            coords.append((int(xs), int(ys)))
+        if len(coords) == n and n >= 2 and coords[0] == (0, 0) and coords[1] == (1, 0):
+            return tuple(coords)
+    return None
+
+
 def run_minwalk(seq: str, timeout: float = 120.0):
     if not MINWALK.exists():
         return {"method": "minwalk", "ok": False, "reason": "binary missing"}
@@ -133,23 +157,27 @@ def run_minwalk(seq: str, timeout: float = 120.0):
             wall = time.perf_counter() - t0
         except subprocess.TimeoutExpired:
             return {"method": "minwalk", "ok": False, "reason": "timeout", "wall_s": timeout}
-        contacts = None
+        blob = ""
         if outp.exists():
-            for line in outp.read_text().splitlines():
-                parts = line.strip().replace("\t", " ").split()
-                if len(parts) >= 2 and parts[-1].lstrip("-").isdigit():
-                    contacts = int(parts[-1])
-        if contacts is None:
-            for line in (proc.stdout or "").splitlines():
-                parts = line.strip().replace("\t", " ").split()
-                if parts and parts[-1].isdigit():
-                    contacts = int(parts[-1])
+            blob = outp.read_text()
+        blob += "\n" + (proc.stdout or "")
+        contacts = None
+        for line in blob.splitlines():
+            parts = line.strip().replace("\t", " ").split()
+            if (
+                len(parts) >= 2
+                and not parts[0].startswith("PATH")
+                and parts[-1].lstrip("-").isdigit()
+            ):
+                contacts = abs(int(parts[-1]))
+        walk = _parse_minwalk_path(blob)
         return {
             "method": "minwalk",
             "ok": contacts is not None,
             "contacts": contacts,
+            "walk": walk,
             "wall_s": wall,
-            "stdout": (proc.stdout or "")[-200:],
+            "stdout": blob[-400:],
         }
 
 
@@ -207,21 +235,35 @@ def _greedy_witness(seq: str, t: int, node_limit: int = 5_000_000):
     return found, nodes
 
 
-def certify_gs_lower_bound(seq: str, contacts: int, timeout: float = 60.0):
+def certify_gs_lower_bound(
+    seq: str,
+    contacts: int,
+    timeout: float = 60.0,
+    preferred_walk=None,
+):
     """Witness certificate proving event ``k ≥ contacts`` is nonempty.
 
-    Builds an ``E``-spine to a concrete conformation with enough contacts so
-    acceptance with ``eLo > 0`` is a real lower bound on the event mass.
+    Prefers an external SOTA walk (e.g. MINWALK PATH dump), then greedy DFS,
+    then the stock producer. Acceptance with ``eLo > 0`` is a real lower bound.
     """
     from producer import spine_tree  # local import to keep module load light
 
     t0p = time.perf_counter()
-    walk, nodes = _greedy_witness(seq, contacts)
+    walk = None
+    nodes = 0
+    source = None
+    if preferred_walk is not None and len(preferred_walk) == len(seq):
+        walk = tuple(preferred_walk)
+        source = "minwalk-path"
+    if walk is None:
+        walk, nodes = _greedy_witness(seq, contacts)
+        if walk is not None:
+            source = "greedy"
     producer_s = time.perf_counter() - t0p
     if walk is None:
-        # Fall back to stock producer with a large node budget.
         try:
             tree = witness_paths(seq, Fraction(2), contacts, max_witnesses=1, node_limit=5_000_000)
+            source = "producer-fallback"
         except Exception as exc:  # noqa: BLE001
             return {
                 "method": "foldbounds_cert_lb",
@@ -231,7 +273,17 @@ def certify_gs_lower_bound(seq: str, contacts: int, timeout: float = 60.0):
                 "nodes": nodes,
             }
     else:
-        tree = spine_tree(seq, [walk])
+        try:
+            tree = spine_tree(seq, [walk])
+        except Exception as exc:  # noqa: BLE001
+            return {
+                "method": "foldbounds_cert_lb",
+                "ok": False,
+                "reason": f"bad-walk:{exc}",
+                "producer_s": producer_s,
+                "nodes": nodes,
+                "witness_source": source,
+            }
     text = to_text(seq, [(Fraction(2), contacts)], tree).decode("ascii")
     with tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False) as f:
         f.write(text)
@@ -276,6 +328,7 @@ def certify_gs_lower_bound(seq: str, contacts: int, timeout: float = 60.0):
         "producer_s": producer_s,
         "nodes": nodes,
         "cert_bytes": rep.get("cert_bytes"),
+        "witness_source": source,
         "reason": None if proved else "no-positive-eLo",
     }
 
@@ -326,13 +379,20 @@ def category_ground_state(ids: list[str] | None, methods: set[str], timeout: flo
             "sequence": seq,
             "source": inst["source"],
         }
+        # Hard S1-6/S1-7 need a much larger exact-search budget than the suite default.
+        inst_timeout = timeout
+        if inst["id"] in ("S1-6", "S1-7"):
+            inst_timeout = max(timeout, 1800.0)
+        mw = None
         if "minwalk" in methods:
-            mw = run_minwalk(seq, timeout=timeout)
+            mw = run_minwalk(seq, timeout=inst_timeout)
             row["minwalk"] = {
                 "contacts": mw.get("contacts"),
                 "match_published": mw.get("contacts") == inst["contacts"],
                 "wall_s": mw.get("wall_s"),
                 "ok": mw.get("ok"),
+                "has_path": mw.get("walk") is not None,
+                "reason": mw.get("reason"),
             }
         if "hpenum" in methods and inst["n"] <= 16:
             h = run_hpenum(seq)
@@ -352,9 +412,12 @@ def category_ground_state(ids: list[str] | None, methods: set[str], timeout: flo
                 "match_published": max_k == inst["contacts"],
                 "wall_s": fk.get("wall_s"),
             }
-        if "foldbounds_cert" in methods and FOLDKERNEL.exists() and "minwalk" in row:
-            contacts = row["minwalk"].get("contacts") or inst["contacts"]
-            row["foldbounds_cert_lb"] = certify_gs_lower_bound(seq, contacts, timeout=timeout)
+        if "foldbounds_cert" in methods and FOLDKERNEL.exists():
+            contacts = (mw or {}).get("contacts") or inst["contacts"]
+            preferred = (mw or {}).get("walk")
+            row["foldbounds_cert_lb"] = certify_gs_lower_bound(
+                seq, contacts, timeout=timeout, preferred_walk=preferred
+            )
         rows.append(row)
     return rows
 
@@ -436,9 +499,15 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--quick", action="store_true")
     ap.add_argument("--full", action="store_true")
+    ap.add_argument("--gs-only", action="store_true", help="Only S1-* ground-state + certs")
     ap.add_argument("--timeout", type=float, default=60.0)
+    ap.add_argument(
+        "--merge-prior",
+        action="store_true",
+        help="Keep non-GS rows from existing sota_compare.json when using --gs-only",
+    )
     args = ap.parse_args()
-    quick = args.quick or not args.full
+    quick = args.quick or not (args.full or args.gs_only)
 
     RESULTS.mkdir(parents=True, exist_ok=True)
     methods = {"hpenum", "foldkernel", "minwalk", "foldbounds_cert"}
@@ -450,17 +519,30 @@ def main():
         print("WARN: minwalk missing", file=sys.stderr)
         methods.discard("minwalk")
 
-    rows = []
-    oeis_n = 12 if quick else 16
-    rows += category_oeis(oeis_n, methods)
+    prior_rows = []
+    prior_path = RESULTS / "sota_compare.json"
+    if args.merge_prior and prior_path.exists():
+        try:
+            prior_rows = json.loads(prior_path.read_text()).get("rows") or []
+        except Exception:  # noqa: BLE001
+            prior_rows = []
 
-    gs_ids = ["S1-1", "S1-2", "S1-3", "S1-4"] if quick else [
+    rows = []
+    if not args.gs_only:
+        oeis_n = 12 if quick else 16
+        rows += category_oeis(oeis_n, methods)
+
+    gs_ids = ["S1-1", "S1-2", "S1-3", "S1-4"] if quick and not args.gs_only else [
         "S1-1", "S1-2", "S1-3", "S1-4", "S1-5", "S1-6", "S1-7", "S1-8"
     ]
     rows += category_ground_state(gs_ids, methods, timeout=args.timeout)
 
-    fib_n = 13 if quick else 21
-    rows += category_fibonacci(methods, max_n=fib_n)
+    if not args.gs_only:
+        fib_n = 13 if quick else 21
+        rows += category_fibonacci(methods, max_n=fib_n)
+    elif args.merge_prior:
+        keep = [r for r in prior_rows if r.get("category") != "2D-HP-ground-state"]
+        rows = keep + rows
 
     findings = summarize(rows)
     out = {
@@ -546,6 +628,45 @@ def main():
             f"{'OK' if fk.get('match_hpenum') else fk.get('ok')} | "
             f"{fmt_s(fk.get('wall_s'))} |"
         )
+
+    lit = BENCH.get("literature_heuristic_sota") or {}
+    lit_rows = lit.get("rows") or []
+    if lit_rows:
+        lines += [
+            "",
+            "## Literature heuristic SOTA (REMC, cited)",
+            "",
+            f"Source: {lit.get('source')} {lit.get('url','')}",
+            "",
+            "| id | n | E* | REMC success % | REMC mean s | FoldBounds note |",
+            "|---|---|---|---|---|---|",
+        ]
+        cert_by_id = {
+            r["id"]: r.get("foldbounds_cert_lb") or {}
+            for r in rows
+            if r.get("category") == "2D-HP-ground-state"
+        }
+        mw_by_id = {
+            r["id"]: r.get("minwalk") or {}
+            for r in rows
+            if r.get("category") == "2D-HP-ground-state"
+        }
+        for lr in lit_rows:
+            cert = cert_by_id.get(lr["id"], {})
+            mw = mw_by_id.get(lr["id"], {})
+            note = (
+                "certified eLo>0"
+                if cert.get("ok")
+                else (
+                    "MINWALK match"
+                    if mw.get("match_published")
+                    else "open"
+                )
+            )
+            lines.append(
+                f"| {lr['id']} | {lr['n']} | {lr['E_star']} | "
+                f"{lr.get('remc_success_pct')} | {lr.get('remc_mean_s')} | {note} |"
+            )
 
     lines += [
         "",

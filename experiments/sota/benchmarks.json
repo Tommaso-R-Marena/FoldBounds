@@ -34,10 +34,26 @@
     {"id": "S34", "n": 34, "sequence": "HPPHPPHPHPPHPPHPHPPHPHPPHPPHPHPPHP", "source": "AIP-Fibonacci-2015 (Λ8)"}
   ],
   "allH_isaw_exact_max_n": 14,
+  "literature_heuristic_sota": {
+    "note": "Published REMC success rates / mean runtimes from Thachuk–Shmygelska–Hoos 2007 (BMC Bioinformatics 8:342), Table 2 — not re-executed here; cited for head-to-head context against FoldBounds certificates.",
+    "source": "Thachuk-Shmygelska-Hoos-2007",
+    "url": "https://doi.org/10.1186/1471-2105-8-342",
+    "rows": [
+      {"id": "S1-1", "n": 20, "E_star": -9, "remc_success_pct": 100, "remc_mean_s": 0.06},
+      {"id": "S1-2", "n": 24, "E_star": -9, "remc_success_pct": 100, "remc_mean_s": 0.35},
+      {"id": "S1-3", "n": 25, "E_star": -8, "remc_success_pct": 100, "remc_mean_s": 0.33},
+      {"id": "S1-4", "n": 36, "E_star": -14, "remc_success_pct": 100, "remc_mean_s": 3.97},
+      {"id": "S1-5", "n": 48, "E_star": -23, "remc_success_pct": 89, "remc_mean_s": 340},
+      {"id": "S1-6", "n": 50, "E_star": -21, "remc_success_pct": 69, "remc_mean_s": 580},
+      {"id": "S1-7", "n": 60, "E_star": -36, "remc_success_pct": 21, "remc_mean_s": 1490},
+      {"id": "S1-8", "n": 64, "E_star": -42, "remc_success_pct": 77, "remc_mean_s": 420}
+    ]
+  },
   "methods": {
     "foldkernel": "Mathlib-free certified FOLDBOUNDS-KERNEL 1 checker (Lean)",
     "hpenum": "plain exhaustive grid enumerator (Python baseline)",
     "minwalk": "vendored Giaquinta-Pozzi MINWALK exact ground-state solver",
-    "foldbounds_producer": "untrusted certificate producer + foldkernel verify"
+    "foldbounds_producer": "untrusted certificate producer + foldkernel verify",
+    "remc_literature": "published REMC numbers (Thachuk 2007); heuristic SOTA baseline"
   }
 }
