@@ -1,15 +1,15 @@
 {
- "mode": "quick",
+ "mode": "full",
  "machine": {
   "hostname": "cursor",
   "kernel": "6.12.113+",
   "cpus": 4,
   "loadavg_start": [
-   5.45,
-   5.51,
-   3.02
+   2.68,
+   5.69,
+   4.58
   ],
-  "started_utc": "2026-11-19T00:58:44+00:00",
+  "started_utc": "2026-11-19T01:12:01+00:00",
   "binaries": {
    "kernel": {
     "path": "/workspace/.lake/build/bin/foldkernel",
@@ -28,14 +28,15 @@
    }
   }
  },
- "rows_written": 5,
+ "rows_written": 1190,
  "skipped": [],
  "critical": [],
- "finished_utc": "2026-11-19T00:59:06+00:00",
- "wall_s": 21.263266111998746,
+ "finished_utc": "2026-11-19T02:11:08+00:00",
+ "wall_s": 3545.7,
  "loadavg_end": [
-  4.3,
-  5.23,
-  2.99
- ]
+  1.69,
+  1.87,
+  2.13
+ ],
+ "notes": "Full matched-budget run via run_bench.py --full; SUMMARY regenerated with --summarize-only after harness text tweaks."
 }

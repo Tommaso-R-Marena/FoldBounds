@@ -1123,8 +1123,9 @@ def summarize() -> str:
     lines.append("## S1 — Exactness (just as much accuracy)")
     lines.append("")
     lines.append("Protocol: root-`X` certificates; kernel must match the frozen exact "
-                 "reference on every endpoint; foldcheck2 root-`X` compared when it finishes "
-                 f"within {RUN_CAP_S:.0f}s. Repeats: median/min wall.")
+                 "reference on every endpoint; foldcheck2 root-`X` compared once per "
+                 "instance (q=2, mid threshold, n≤14) with a 60s hard cap. "
+                 "Repeats: median/min wall.")
     lines.append("")
     k_rows = [r for r in s1 if (r.get("method") or {}).get("checker") == "kernel"]
     v_rows = [r for r in s1 if (r.get("method") or {}).get("checker") == "v2"]
