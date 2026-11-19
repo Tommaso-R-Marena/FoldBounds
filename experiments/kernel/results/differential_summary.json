@@ -1,0 +1,342 @@
+{
+ "all_exact_evaluations": 6960,
+ "binary": {
+  "path": "/workspace/.lake/build/bin/foldkernel",
+  "sha256_at_end": "2f792a1b173166d3a63b0d936b36bc8deecf320141ddcd78939bc3cda2599b39",
+  "sha256_at_start": "2f792a1b173166d3a63b0d936b36bc8deecf320141ddcd78939bc3cda2599b39"
+ },
+ "corpus": {
+  "by_mode": {
+   "adaptive": 152,
+   "full": 9,
+   "hybrid": 76,
+   "isolate": 64,
+   "random": 152,
+   "root": 76,
+   "uniform": 152,
+   "witness": 76
+  },
+  "certificates": 757,
+  "reference_vs_oracle_evaluations": 22710
+ },
+ "differential": {
+  "accepted_by_both": 757,
+  "certificates": 757,
+  "disagreements": 0,
+  "endpoints_compared": 12112,
+  "queries_compared": 1514
+ },
+ "differential_single_entry": {
+  "certificates": 176,
+  "disagreements": 0
+ },
+ "findings": [],
+ "fixtures": {
+  "accept": 30,
+  "categories": 50,
+  "files": 212,
+  "reject": 182
+ },
+ "incremental_vs_literal_bound_leaves": 42836,
+ "large_inputs": {
+  "files": 18,
+  "problems": 0
+ },
+ "lemma_exhaustive_n_le_8": {
+  "fam_positive": 243700,
+  "k_tight": 229983,
+  "nonempty": 264180,
+  "prefixes": 264180,
+  "sequences": 508
+ },
+ "lemma_sample_n_9_to_13": {
+  "fam_positive": 736985,
+  "k_tight": 706245,
+  "nonempty": 875319,
+  "prefixes": 876903,
+  "sequences": 44
+ },
+ "mutations": {
+  "by_category": {
+   "blank-line": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 43
+   },
+   "crlf": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 56
+   },
+   "deep-chain-valid": {
+    "accept": 3,
+    "expect": "accept",
+    "reject": 0
+   },
+   "deep-nesting": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 6
+   },
+   "empty-file": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 14
+   },
+   "end-variant": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 80
+   },
+   "invalid-utf8": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 94
+   },
+   "keyword-variant": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 136
+   },
+   "leading-space": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 43
+   },
+   "line-duplicated": {
+    "accept": 11,
+    "expect": "either",
+    "reject": 32
+   },
+   "line-missing": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 40
+   },
+   "line-unknown": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 51
+   },
+   "lines-out-of-order": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 62
+   },
+   "machine-word-numbers": {
+    "accept": 72,
+    "expect": "accept",
+    "reject": 0
+   },
+   "magic-variant": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 112
+   },
+   "missing-final-newline": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 16
+   },
+   "non-ascii-utf8": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 72
+   },
+   "nul-byte": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 72
+   },
+   "q-5000-digits": {
+    "accept": 16,
+    "expect": "accept",
+    "reject": 0
+   },
+   "q-below-one": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 40
+   },
+   "q-noncanonical": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 280
+   },
+   "query-added": {
+    "accept": 16,
+    "expect": "accept",
+    "reject": 0
+   },
+   "query-field-count": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 48
+   },
+   "query-reordered": {
+    "accept": 3,
+    "expect": "accept",
+    "reject": 0
+   },
+   "separator-whitespace": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 85
+   },
+   "sequence-invalid": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 112
+   },
+   "sequence-length-change": {
+    "accept": 16,
+    "expect": "either",
+    "reject": 13
+   },
+   "sequence-residue-flip": {
+    "accept": 58,
+    "expect": "accept",
+    "reject": 0
+   },
+   "threshold-5000-digits": {
+    "accept": 16,
+    "expect": "accept",
+    "reject": 0
+   },
+   "threshold-noncanonical": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 120
+   },
+   "trailing-blank-line": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 16
+   },
+   "trailing-space": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 67
+   },
+   "tree-blocked-to-B": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 58
+   },
+   "tree-blocked-to-E": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 58
+   },
+   "tree-blocked-to-N": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 58
+   },
+   "tree-blocked-to-X": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 58
+   },
+   "tree-child-to-blocked": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 70
+   },
+   "tree-coarsen": {
+    "accept": 66,
+    "expect": "accept",
+    "reject": 0
+   },
+   "tree-delete-byte": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 66
+   },
+   "tree-duplicate-byte": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 63
+   },
+   "tree-empty": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 14
+   },
+   "tree-exact-at-nonterminal": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 45
+   },
+   "tree-leaf-kind": {
+    "accept": 71,
+    "expect": "accept",
+    "reject": 0
+   },
+   "tree-root-blocked": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 24
+   },
+   "tree-split-at-terminal": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 30
+   },
+   "tree-split-to-exact": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 58
+   },
+   "tree-swap-children": {
+    "accept": 2,
+    "expect": "either",
+    "reject": 68
+   },
+   "tree-trailing-bytes": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 62
+   },
+   "tree-truncated": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 69
+   },
+   "tree-unknown-byte": {
+    "accept": 0,
+    "expect": "reject",
+    "reject": 208
+   }
+  },
+  "categories": 50,
+  "mutants": 3069
+ },
+ "mutations_binary": {
+  "binary_reject_reasons": {
+   "bad-magic": 448,
+   "bad-query": 488,
+   "bad-sequence": 132,
+   "bad-trailer": 397,
+   "bad-tree-line": 120,
+   "exact-not-terminal": 117,
+   "expected-blocked-marker": 401,
+   "no-query": 114,
+   "q-below-one": 40,
+   "short-sequence": 24,
+   "split-at-terminal": 44,
+   "tree-bad-byte": 394
+  },
+  "both_accept": 350,
+  "both_reject": 2719,
+  "disagreements_or_crashes": 0,
+  "mutants": 3069
+ },
+ "oracle_self_check": {
+  "conformations_scored": 169484,
+  "max_n": 8,
+  "prefixes_compared": 8436,
+  "sequences": 508
+ },
+ "wall_seconds": 40.4
+}

@@ -1,0 +1,63 @@
+{
+  "note": "External published benchmarks only. Model: 2D square-lattice HP, H-H topological contacts score +1 (energy -1). FoldBounds uses anchored walks (first bond fixed); SAW counts use OEIS A001411(n-1)/4. Ground-state optima are published community targets (Unger-Moult / Shmygelska-Hoos S1-* / Giaquinta-Pozzi MINWALK).",
+  "sources": [
+    {"id": "OEIS-A001411", "url": "https://oeis.org/A001411", "what": "n-step SAW counts on Z^2"},
+    {"id": "Jensen-2013", "url": "https://arxiv.org/abs/1309.6709", "what": "transfer-matrix SAW enumeration to length 79"},
+    {"id": "Unger-Moult-1993", "what": "classic 2D HP GA benchmarks"},
+    {"id": "Shmygelska-Hoos-2005", "url": "https://doi.org/10.1186/1471-2105-6-30", "what": "standard 2D S1-* suite with published E*"},
+    {"id": "Thachuk-Shmygelska-Hoos-2007", "url": "https://doi.org/10.1186/1471-2105-8-342", "what": "REMC SOTA comparison protocol on S1-*"},
+    {"id": "Giaquinta-Pozzi-2013", "url": "https://doi.org/10.1089/cmb.2012.0266", "what": "MINWALK exact GS algorithm; published optima to n~80"},
+    {"id": "minwalk-impl", "url": "https://github.com/tsucres/HPFoldingProblem", "what": "open-source MINWALK implementation (vendored)"},
+    {"id": "AIP-Fibonacci-2015", "url": "https://doi.org/10.1063/1.4938021", "what": "exact enumeration of Fibonacci HP sequences S13/S21/S34"},
+    {"id": "Istrail-HP2D", "what": "Istrail Lab / Tortilla 2D HP benchmark lineage (includes 20mer-B)"},
+    {"id": "Beaton-Guttmann-Jensen-2020", "url": "https://arxiv.org/abs/1911.05852", "what": "exact ISAW contact counts c_n,m through n=59"},
+    {"id": "Lee-2016-ISAW-TM", "url": "https://arxiv.org/abs/1612.01275", "what": "transfer-matrix exact Omega(K) / Z for ISAW to N~42"}
+  ],
+  "saw_oeis_a001411": {
+    "description": "c_k = number of k-step SAWs on Z^2. FoldBounds n-mer conformations = c_{n-1}/4 (first step fixed to +x; reflections kept).",
+    "c": [1, 4, 12, 36, 100, 284, 780, 2172, 5916, 16268, 44100, 120292, 324932, 881500, 2374444, 6416596, 17245332, 46466676, 124658732, 335116620, 897697164]
+  },
+  "ground_state_2d": [
+    {"id": "S1-1", "n": 20, "E_star": -9, "contacts": 9, "sequence": "HPHPPHHPHPPHPHHPPHPH", "source": "Shmygelska-Hoos-2005 / Unger-Moult"},
+    {"id": "20merB", "n": 20, "E_star": -10, "contacts": 10, "sequence": "HHHPPHPHPHPPHPHPHPPH", "source": "Istrail-HP2D / Tortilla (20mer-B)"},
+    {"id": "S1-2", "n": 24, "E_star": -9, "contacts": 9, "sequence": "HHPPHPPHPPHPPHPPHPPHPPHH", "source": "Shmygelska-Hoos-2005"},
+    {"id": "S1-3", "n": 25, "E_star": -8, "contacts": 8, "sequence": "PPHPPHHPPPPHHPPPPHHPPPPHH", "source": "Shmygelska-Hoos-2005"},
+    {"id": "S1-4", "n": 36, "E_star": -14, "contacts": 14, "sequence": "PPPHHPPHHPPPPPHHHHHHHPPHHPPPPHHPPHPP", "source": "Shmygelska-Hoos-2005"},
+    {"id": "S1-5", "n": 48, "E_star": -23, "contacts": 23, "sequence": "PPHPPHHPPHHPPPPPHHHHHHHHHHPPPPPPHHPPHHPPHPPHHHHH", "source": "Shmygelska-Hoos-2005"},
+    {"id": "S1-6", "n": 50, "E_star": -21, "contacts": 21, "sequence": "HHPHPHPHPHHHHPHPPPHPPPHPPPPHPPPHPPPHPHHHHPHPHPHPHH", "source": "Shmygelska-Hoos-2005"},
+    {"id": "S1-7", "n": 60, "E_star": -36, "contacts": 36, "sequence": "PPHHHPHHHHHHHHPPPHHHHHHHHHHPHPPPHHHHHHHHHHHHPPPPHHHHHHPHHPHP", "source": "Shmygelska-Hoos-2005"},
+    {"id": "S1-8", "n": 64, "E_star": -42, "contacts": 42, "sequence": "HHHHHHHHHHHHPHPHPPHHPPHHPPHPPHHPPHHPPHPPHHPPHHPPHPHPHHHHHHHHHHHH", "source": "Shmygelska-Hoos-2005"},
+    {"id": "UM-20", "n": 20, "E_star": -9, "contacts": 9, "sequence": "HPHPPHHPHPPHPHHPPHPH", "source": "Unger-Moult-1993"},
+    {"id": "UM-24", "n": 24, "E_star": -9, "contacts": 9, "sequence": "HHPPHPPHPPHPPHPPHPPHPPHH", "source": "Unger-Moult-1993"},
+    {"id": "UM-25", "n": 25, "E_star": -8, "contacts": 8, "sequence": "PPHPPHHPPPPHHPPPPHHPPPPHH", "source": "Unger-Moult-1993"},
+    {"id": "UM-36", "n": 36, "E_star": -14, "contacts": 14, "sequence": "PPPHHPPHHPPPPPHHHHHHHPPHHPPPPHHPPHPP", "source": "Unger-Moult-1993"}
+  ],
+  "fibonacci_hp": [
+    {"id": "S13", "n": 13, "sequence": "HPPHPPHPHPPHP", "source": "AIP-Fibonacci-2015 (Λ6)", "note": "exact DoS published under tuned εHH:εHP:εPP=-7:-1:0; standard HP uses HH-only contacts"},
+    {"id": "S21", "n": 21, "sequence": "PHPHPPHPHPPHPPHPHPPHP", "source": "AIP-Fibonacci-2015 (Λ7)"},
+    {"id": "S34", "n": 34, "sequence": "HPPHPPHPHPPHPPHPHPPHPHPPHPPHPHPPHP", "source": "AIP-Fibonacci-2015 (Λ8)"}
+  ],
+  "allH_isaw_exact_max_n": 14,
+  "literature_heuristic_sota": {
+    "note": "Published REMC success rates / mean runtimes from Thachuk–Shmygelska–Hoos 2007 (BMC Bioinformatics 8:342), Table 2 — not re-executed here; cited for head-to-head context against FoldBounds certificates.",
+    "source": "Thachuk-Shmygelska-Hoos-2007",
+    "url": "https://doi.org/10.1186/1471-2105-8-342",
+    "rows": [
+      {"id": "S1-1", "n": 20, "E_star": -9, "remc_success_pct": 100, "remc_mean_s": 0.06},
+      {"id": "S1-2", "n": 24, "E_star": -9, "remc_success_pct": 100, "remc_mean_s": 0.35},
+      {"id": "S1-3", "n": 25, "E_star": -8, "remc_success_pct": 100, "remc_mean_s": 0.33},
+      {"id": "S1-4", "n": 36, "E_star": -14, "remc_success_pct": 100, "remc_mean_s": 3.97},
+      {"id": "S1-5", "n": 48, "E_star": -23, "remc_success_pct": 89, "remc_mean_s": 340},
+      {"id": "S1-6", "n": 50, "E_star": -21, "remc_success_pct": 69, "remc_mean_s": 580},
+      {"id": "S1-7", "n": 60, "E_star": -36, "remc_success_pct": 21, "remc_mean_s": 1490},
+      {"id": "S1-8", "n": 64, "E_star": -42, "remc_success_pct": 77, "remc_mean_s": 420}
+    ]
+  },
+  "methods": {
+    "foldkernel": "Mathlib-free certified FOLDBOUNDS-KERNEL 1 checker (Lean)",
+    "hpenum": "plain exhaustive grid enumerator (Python baseline)",
+    "minwalk": "vendored Giaquinta-Pozzi MINWALK exact ground-state solver",
+    "foldbounds_producer": "untrusted certificate producer + foldkernel verify",
+    "remc_literature": "published REMC numbers (Thachuk 2007); heuristic SOTA baseline"
+  }
+}

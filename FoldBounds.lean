@@ -29,3 +29,5 @@ public import FoldBounds.FrontierNext
 public import FoldBounds.CertifiedRefinement
 public import FoldBounds.FrontierNextFlat
 public import FoldBounds.FrontierNextCLI
+public import FoldBounds.FrontierKernel
+public import FoldBounds.FrontierKernelSound

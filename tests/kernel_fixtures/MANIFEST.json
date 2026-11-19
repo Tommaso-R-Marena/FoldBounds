@@ -1,0 +1,1279 @@
+{
+ "format": "FOLDBOUNDS-KERNEL 1",
+ "generator": "python experiments/kernel/mutations.py --write-fixtures",
+ "note": "expect = verdict required from every FOLDBOUNDS-KERNEL 1 checker; category 'base' marks unmutated certificates; accept entries with another category are mutants that are valid certificates again",
+ "files": [
+  {
+   "file": "accept/base--example-hhhh.txt",
+   "expect": "accept",
+   "category": "base",
+   "variant": "example-hhhh"
+  },
+  {
+   "file": "accept/base--n5-full.txt",
+   "expect": "accept",
+   "category": "base",
+   "variant": "n5-full"
+  },
+  {
+   "file": "accept/base--n6-bound-depth4.txt",
+   "expect": "accept",
+   "category": "base",
+   "variant": "n6-bound-depth4"
+  },
+  {
+   "file": "accept/base--n8-hybrid.txt",
+   "expect": "accept",
+   "category": "base",
+   "variant": "n8-hybrid"
+  },
+  {
+   "file": "accept/base--n7-random.txt",
+   "expect": "accept",
+   "category": "base",
+   "variant": "n7-random"
+  },
+  {
+   "file": "accept/base--n11-adaptive.txt",
+   "expect": "accept",
+   "category": "base",
+   "variant": "n11-adaptive"
+  },
+  {
+   "file": "accept/base--n10-uniform-enum.txt",
+   "expect": "accept",
+   "category": "base",
+   "variant": "n10-uniform-enum"
+  },
+  {
+   "file": "accept/base--n2-terminal.txt",
+   "expect": "accept",
+   "category": "base",
+   "variant": "n2-terminal"
+  },
+  {
+   "file": "reject/tree-delete-byte.txt",
+   "expect": "reject",
+   "category": "tree-delete-byte",
+   "variant": "example-hhhh:pos1"
+  },
+  {
+   "file": "reject/tree-duplicate-byte.txt",
+   "expect": "reject",
+   "category": "tree-duplicate-byte",
+   "variant": "example-hhhh:pos7"
+  },
+  {
+   "file": "reject/tree-child-to-blocked.txt",
+   "expect": "reject",
+   "category": "tree-child-to-blocked",
+   "variant": "example-hhhh:N-pos1"
+  },
+  {
+   "file": "reject/tree-blocked-to-B.txt",
+   "expect": "reject",
+   "category": "tree-blocked-to-B",
+   "variant": "example-hhhh:pos3"
+  },
+  {
+   "file": "reject/tree-blocked-to-X.txt",
+   "expect": "reject",
+   "category": "tree-blocked-to-X",
+   "variant": "example-hhhh:pos3"
+  },
+  {
+   "file": "reject/tree-blocked-to-E.txt",
+   "expect": "reject",
+   "category": "tree-blocked-to-E",
+   "variant": "example-hhhh:pos3"
+  },
+  {
+   "file": "reject/tree-blocked-to-N.txt",
+   "expect": "reject",
+   "category": "tree-blocked-to-N",
+   "variant": "example-hhhh:pos3"
+  },
+  {
+   "file": "reject/tree-split-to-exact.txt",
+   "expect": "reject",
+   "category": "tree-split-to-exact",
+   "variant": "example-hhhh:pos0"
+  },
+  {
+   "file": "reject/tree-exact-at-nonterminal.txt",
+   "expect": "reject",
+   "category": "tree-exact-at-nonterminal",
+   "variant": "n6-bound-depth4:B-pos2"
+  },
+  {
+   "file": "reject/tree-split-at-terminal.txt",
+   "expect": "reject",
+   "category": "tree-split-at-terminal",
+   "variant": "example-hhhh:N-----pos2"
+  },
+  {
+   "file": "reject/tree-truncated.txt",
+   "expect": "reject",
+   "category": "tree-truncated",
+   "variant": "example-hhhh:drop1"
+  },
+  {
+   "file": "reject/tree-trailing-bytes.txt",
+   "expect": "reject",
+   "category": "tree-trailing-bytes",
+   "variant": "example-hhhh:append-E"
+  },
+  {
+   "file": "reject/tree-unknown-byte.txt",
+   "expect": "reject",
+   "category": "tree-unknown-byte",
+   "variant": "example-hhhh:replace-6e-pos0"
+  },
+  {
+   "file": "reject/tree-root-blocked.txt",
+   "expect": "reject",
+   "category": "tree-root-blocked",
+   "variant": "example-hhhh:dash"
+  },
+  {
+   "file": "reject/tree-empty--keyword-and-space-only.txt",
+   "expect": "reject",
+   "category": "tree-empty",
+   "variant": "example-hhhh:keyword-and-space-only"
+  },
+  {
+   "file": "reject/tree-empty--keyword-only.txt",
+   "expect": "reject",
+   "category": "tree-empty",
+   "variant": "example-hhhh:keyword-only"
+  },
+  {
+   "file": "reject/tree-swap-children.txt",
+   "expect": "reject",
+   "category": "tree-swap-children",
+   "variant": "example-hhhh:pos0-children02"
+  },
+  {
+   "file": "accept/tree-swap-children.txt",
+   "expect": "accept",
+   "category": "tree-swap-children",
+   "variant": "n7-random:pos26-children12"
+  },
+  {
+   "file": "accept/tree-leaf-kind.txt",
+   "expect": "accept",
+   "category": "tree-leaf-kind",
+   "variant": "example-hhhh:E-to-B-pos4"
+  },
+  {
+   "file": "accept/tree-coarsen.txt",
+   "expect": "accept",
+   "category": "tree-coarsen",
+   "variant": "example-hhhh:N-to-B-pos0"
+  },
+  {
+   "file": "accept/sequence-residue-flip.txt",
+   "expect": "accept",
+   "category": "sequence-residue-flip",
+   "variant": "example-hhhh:flip0"
+  },
+  {
+   "file": "reject/sequence-length-change.txt",
+   "expect": "reject",
+   "category": "sequence-length-change",
+   "variant": "example-hhhh:append-H"
+  },
+  {
+   "file": "accept/sequence-length-change.txt",
+   "expect": "accept",
+   "category": "sequence-length-change",
+   "variant": "n6-bound-depth4:append-H"
+  },
+  {
+   "file": "reject/sequence-invalid--lowercase-h.txt",
+   "expect": "reject",
+   "category": "sequence-invalid",
+   "variant": "example-hhhh:lowercase-h"
+  },
+  {
+   "file": "reject/sequence-invalid--all-lowercase.txt",
+   "expect": "reject",
+   "category": "sequence-invalid",
+   "variant": "example-hhhh:all-lowercase"
+  },
+  {
+   "file": "reject/sequence-invalid--letter-x.txt",
+   "expect": "reject",
+   "category": "sequence-invalid",
+   "variant": "example-hhhh:letter-X"
+  },
+  {
+   "file": "reject/sequence-invalid--digit.txt",
+   "expect": "reject",
+   "category": "sequence-invalid",
+   "variant": "example-hhhh:digit"
+  },
+  {
+   "file": "reject/sequence-invalid--inner-space.txt",
+   "expect": "reject",
+   "category": "sequence-invalid",
+   "variant": "example-hhhh:inner-space"
+  },
+  {
+   "file": "reject/sequence-invalid--empty.txt",
+   "expect": "reject",
+   "category": "sequence-invalid",
+   "variant": "example-hhhh:empty"
+  },
+  {
+   "file": "reject/sequence-invalid--keyword-only.txt",
+   "expect": "reject",
+   "category": "sequence-invalid",
+   "variant": "example-hhhh:keyword-only"
+  },
+  {
+   "file": "reject/sequence-invalid--single-h.txt",
+   "expect": "reject",
+   "category": "sequence-invalid",
+   "variant": "example-hhhh:single-H"
+  },
+  {
+   "file": "reject/sequence-invalid--single-p.txt",
+   "expect": "reject",
+   "category": "sequence-invalid",
+   "variant": "example-hhhh:single-P"
+  },
+  {
+   "file": "reject/sequence-invalid--double-space.txt",
+   "expect": "reject",
+   "category": "sequence-invalid",
+   "variant": "example-hhhh:double-space"
+  },
+  {
+   "file": "reject/sequence-invalid--tab-separator.txt",
+   "expect": "reject",
+   "category": "sequence-invalid",
+   "variant": "example-hhhh:tab-separator"
+  },
+  {
+   "file": "reject/sequence-invalid--comma.txt",
+   "expect": "reject",
+   "category": "sequence-invalid",
+   "variant": "example-hhhh:comma"
+  },
+  {
+   "file": "reject/sequence-invalid--quoted.txt",
+   "expect": "reject",
+   "category": "sequence-invalid",
+   "variant": "example-hhhh:quoted"
+  },
+  {
+   "file": "reject/sequence-invalid--second-token.txt",
+   "expect": "reject",
+   "category": "sequence-invalid",
+   "variant": "example-hhhh:second-token"
+  },
+  {
+   "file": "reject/q-below-one--1-over-2.txt",
+   "expect": "reject",
+   "category": "q-below-one",
+   "variant": "example-hhhh:1/2"
+  },
+  {
+   "file": "reject/q-below-one--0.txt",
+   "expect": "reject",
+   "category": "q-below-one",
+   "variant": "example-hhhh:0"
+  },
+  {
+   "file": "reject/q-below-one--2-over-3.txt",
+   "expect": "reject",
+   "category": "q-below-one",
+   "variant": "example-hhhh:2/3"
+  },
+  {
+   "file": "reject/q-below-one--999999-over-1000000.txt",
+   "expect": "reject",
+   "category": "q-below-one",
+   "variant": "example-hhhh:999999/1000000"
+  },
+  {
+   "file": "reject/q-below-one--1-over-3.txt",
+   "expect": "reject",
+   "category": "q-below-one",
+   "variant": "example-hhhh:1/3"
+  },
+  {
+   "file": "reject/q-noncanonical--4-over-2.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:4/2"
+  },
+  {
+   "file": "reject/q-noncanonical--02.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:02"
+  },
+  {
+   "file": "reject/q-noncanonical--3-over-1.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:3/1"
+  },
+  {
+   "file": "reject/q-noncanonical--1-over-0.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:1/0"
+  },
+  {
+   "file": "reject/q-noncanonical--plus2.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:+2"
+  },
+  {
+   "file": "reject/q-noncanonical--2dot0.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:2.0"
+  },
+  {
+   "file": "reject/q-noncanonical--minus2.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:-2"
+  },
+  {
+   "file": "reject/q-noncanonical--minus3-over-2.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:-3/2"
+  },
+  {
+   "file": "reject/q-noncanonical--1-over-1.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:1/1"
+  },
+  {
+   "file": "reject/q-noncanonical--2-over.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:2/"
+  },
+  {
+   "file": "reject/q-noncanonical--over-2.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:/2"
+  },
+  {
+   "file": "reject/q-noncanonical--2-over-over-3.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:2//3"
+  },
+  {
+   "file": "reject/q-noncanonical--1-over-2-over-3.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:1/2/3"
+  },
+  {
+   "file": "reject/q-noncanonical--0x2.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:0x2"
+  },
+  {
+   "file": "reject/q-noncanonical--2e0.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:2e0"
+  },
+  {
+   "file": "reject/q-noncanonical--2underscore0.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:2_0"
+  },
+  {
+   "file": "reject/q-noncanonical--03-over-2.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:03/2"
+  },
+  {
+   "file": "reject/q-noncanonical--3-over-02.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:3/02"
+  },
+  {
+   "file": "reject/q-noncanonical--6-over-4.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:6/4"
+  },
+  {
+   "file": "reject/q-noncanonical--0-over-1.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:0/1"
+  },
+  {
+   "file": "reject/q-noncanonical--00.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:00"
+  },
+  {
+   "file": "reject/q-noncanonical--2-over-minus3.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:2/-3"
+  },
+  {
+   "file": "reject/q-noncanonical--3-over-plus2.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:3/+2"
+  },
+  {
+   "file": "reject/q-noncanonical--1dot5.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:1.5"
+  },
+  {
+   "file": "reject/q-noncanonical--3-over-2-over.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:3/2/"
+  },
+  {
+   "file": "reject/q-noncanonical--two.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:two"
+  },
+  {
+   "file": "reject/q-noncanonical--1-over-00.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:1/00"
+  },
+  {
+   "file": "reject/q-noncanonical--0-over-0.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:0/0"
+  },
+  {
+   "file": "reject/q-noncanonical--1-over-01.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:1/01"
+  },
+  {
+   "file": "reject/q-noncanonical--2comma0.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:2,0"
+  },
+  {
+   "file": "reject/q-noncanonical--0b10.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:0b10"
+  },
+  {
+   "file": "reject/q-noncanonical--u0662.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:\u0662"
+  },
+  {
+   "file": "reject/q-noncanonical--uff12.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:\uff12"
+  },
+  {
+   "file": "reject/q-noncanonical--u00b2.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:\u00b2"
+  },
+  {
+   "file": "reject/q-noncanonical--3-over-u0662.txt",
+   "expect": "reject",
+   "category": "q-noncanonical",
+   "variant": "example-hhhh:3/\u0662"
+  },
+  {
+   "file": "reject/threshold-noncanonical--01.txt",
+   "expect": "reject",
+   "category": "threshold-noncanonical",
+   "variant": "example-hhhh:01"
+  },
+  {
+   "file": "reject/threshold-noncanonical--minus1.txt",
+   "expect": "reject",
+   "category": "threshold-noncanonical",
+   "variant": "example-hhhh:-1"
+  },
+  {
+   "file": "reject/threshold-noncanonical--empty.txt",
+   "expect": "reject",
+   "category": "threshold-noncanonical",
+   "variant": "example-hhhh:empty"
+  },
+  {
+   "file": "reject/threshold-noncanonical--plus1.txt",
+   "expect": "reject",
+   "category": "threshold-noncanonical",
+   "variant": "example-hhhh:+1"
+  },
+  {
+   "file": "reject/threshold-noncanonical--1dot0.txt",
+   "expect": "reject",
+   "category": "threshold-noncanonical",
+   "variant": "example-hhhh:1.0"
+  },
+  {
+   "file": "reject/threshold-noncanonical--1e2.txt",
+   "expect": "reject",
+   "category": "threshold-noncanonical",
+   "variant": "example-hhhh:1e2"
+  },
+  {
+   "file": "reject/threshold-noncanonical--0x1.txt",
+   "expect": "reject",
+   "category": "threshold-noncanonical",
+   "variant": "example-hhhh:0x1"
+  },
+  {
+   "file": "reject/threshold-noncanonical--00.txt",
+   "expect": "reject",
+   "category": "threshold-noncanonical",
+   "variant": "example-hhhh:00"
+  },
+  {
+   "file": "reject/threshold-noncanonical--1underscore0.txt",
+   "expect": "reject",
+   "category": "threshold-noncanonical",
+   "variant": "example-hhhh:1_0"
+  },
+  {
+   "file": "reject/threshold-noncanonical--minus0.txt",
+   "expect": "reject",
+   "category": "threshold-noncanonical",
+   "variant": "example-hhhh:-0"
+  },
+  {
+   "file": "reject/threshold-noncanonical--1-over-1.txt",
+   "expect": "reject",
+   "category": "threshold-noncanonical",
+   "variant": "example-hhhh:1/1"
+  },
+  {
+   "file": "reject/threshold-noncanonical--one.txt",
+   "expect": "reject",
+   "category": "threshold-noncanonical",
+   "variant": "example-hhhh:one"
+  },
+  {
+   "file": "reject/threshold-noncanonical--u0661.txt",
+   "expect": "reject",
+   "category": "threshold-noncanonical",
+   "variant": "example-hhhh:\u0661"
+  },
+  {
+   "file": "reject/threshold-noncanonical--uff11.txt",
+   "expect": "reject",
+   "category": "threshold-noncanonical",
+   "variant": "example-hhhh:\uff11"
+  },
+  {
+   "file": "reject/threshold-noncanonical--1comma0.txt",
+   "expect": "reject",
+   "category": "threshold-noncanonical",
+   "variant": "example-hhhh:1,0"
+  },
+  {
+   "file": "accept/threshold-5000-digits--one-then-zeros.txt",
+   "expect": "accept",
+   "category": "threshold-5000-digits",
+   "variant": "example-hhhh:one-then-zeros"
+  },
+  {
+   "file": "accept/threshold-5000-digits--all-nines.txt",
+   "expect": "accept",
+   "category": "threshold-5000-digits",
+   "variant": "example-hhhh:all-nines"
+  },
+  {
+   "file": "accept/q-5000-digits--integer.txt",
+   "expect": "accept",
+   "category": "q-5000-digits",
+   "variant": "example-hhhh:integer"
+  },
+  {
+   "file": "accept/q-5000-digits--ratio.txt",
+   "expect": "accept",
+   "category": "q-5000-digits",
+   "variant": "example-hhhh:ratio"
+  },
+  {
+   "file": "accept/machine-word-numbers--threshold-2p31.txt",
+   "expect": "accept",
+   "category": "machine-word-numbers",
+   "variant": "example-hhhh:threshold-2p31"
+  },
+  {
+   "file": "accept/machine-word-numbers--threshold-2p32.txt",
+   "expect": "accept",
+   "category": "machine-word-numbers",
+   "variant": "example-hhhh:threshold-2p32"
+  },
+  {
+   "file": "accept/machine-word-numbers--threshold-2p63.txt",
+   "expect": "accept",
+   "category": "machine-word-numbers",
+   "variant": "example-hhhh:threshold-2p63"
+  },
+  {
+   "file": "accept/machine-word-numbers--threshold-2p64.txt",
+   "expect": "accept",
+   "category": "machine-word-numbers",
+   "variant": "example-hhhh:threshold-2p64"
+  },
+  {
+   "file": "accept/machine-word-numbers--threshold-2p64plus1.txt",
+   "expect": "accept",
+   "category": "machine-word-numbers",
+   "variant": "example-hhhh:threshold-2p64+1"
+  },
+  {
+   "file": "accept/machine-word-numbers--threshold-2p128.txt",
+   "expect": "accept",
+   "category": "machine-word-numbers",
+   "variant": "example-hhhh:threshold-2p128"
+  },
+  {
+   "file": "accept/machine-word-numbers--q-2p64.txt",
+   "expect": "accept",
+   "category": "machine-word-numbers",
+   "variant": "example-hhhh:q-2p64"
+  },
+  {
+   "file": "accept/machine-word-numbers--q-2p64plus1-over-2p64.txt",
+   "expect": "accept",
+   "category": "machine-word-numbers",
+   "variant": "example-hhhh:q-2p64+1-over-2p64"
+  },
+  {
+   "file": "accept/machine-word-numbers--q-2p32plus1-over-2p32.txt",
+   "expect": "accept",
+   "category": "machine-word-numbers",
+   "variant": "example-hhhh:q-2p32+1-over-2p32"
+  },
+  {
+   "file": "reject/query-field-count--keyword-only.txt",
+   "expect": "reject",
+   "category": "query-field-count",
+   "variant": "example-hhhh:keyword-only"
+  },
+  {
+   "file": "reject/query-field-count--keyword-and-space.txt",
+   "expect": "reject",
+   "category": "query-field-count",
+   "variant": "example-hhhh:keyword-and-space"
+  },
+  {
+   "file": "reject/query-field-count--no-threshold.txt",
+   "expect": "reject",
+   "category": "query-field-count",
+   "variant": "example-hhhh:no-threshold"
+  },
+  {
+   "file": "reject/query-field-count--three-fields.txt",
+   "expect": "reject",
+   "category": "query-field-count",
+   "variant": "example-hhhh:three-fields"
+  },
+  {
+   "file": "reject/query-field-count--q-t-swapped-slash.txt",
+   "expect": "reject",
+   "category": "query-field-count",
+   "variant": "example-hhhh:q-t-swapped-slash"
+  },
+  {
+   "file": "reject/query-field-count--comma-separated.txt",
+   "expect": "reject",
+   "category": "query-field-count",
+   "variant": "example-hhhh:comma-separated"
+  },
+  {
+   "file": "accept/query-reordered.txt",
+   "expect": "accept",
+   "category": "query-reordered",
+   "variant": "n5-full:swap-first-two"
+  },
+  {
+   "file": "accept/query-added.txt",
+   "expect": "accept",
+   "category": "query-added",
+   "variant": "example-hhhh:extra-query"
+  },
+  {
+   "file": "reject/line-missing--no-magic.txt",
+   "expect": "reject",
+   "category": "line-missing",
+   "variant": "example-hhhh:no-magic"
+  },
+  {
+   "file": "reject/line-missing--no-sequence.txt",
+   "expect": "reject",
+   "category": "line-missing",
+   "variant": "example-hhhh:no-sequence"
+  },
+  {
+   "file": "reject/line-missing--no-query.txt",
+   "expect": "reject",
+   "category": "line-missing",
+   "variant": "example-hhhh:no-query"
+  },
+  {
+   "file": "reject/line-missing--no-tree.txt",
+   "expect": "reject",
+   "category": "line-missing",
+   "variant": "example-hhhh:no-tree"
+  },
+  {
+   "file": "reject/line-missing--no-end.txt",
+   "expect": "reject",
+   "category": "line-missing",
+   "variant": "example-hhhh:no-end"
+  },
+  {
+   "file": "reject/line-duplicated--twice-magic-line0.txt",
+   "expect": "reject",
+   "category": "line-duplicated",
+   "variant": "example-hhhh:twice-magic-line0"
+  },
+  {
+   "file": "reject/line-duplicated--twice-sequence-line1.txt",
+   "expect": "reject",
+   "category": "line-duplicated",
+   "variant": "example-hhhh:twice-sequence-line1"
+  },
+  {
+   "file": "accept/line-duplicated--twice-query-line2.txt",
+   "expect": "accept",
+   "category": "line-duplicated",
+   "variant": "example-hhhh:twice-query-line2"
+  },
+  {
+   "file": "reject/line-duplicated--twice-tree-line3.txt",
+   "expect": "reject",
+   "category": "line-duplicated",
+   "variant": "example-hhhh:twice-tree-line3"
+  },
+  {
+   "file": "reject/line-duplicated--twice-end-line4.txt",
+   "expect": "reject",
+   "category": "line-duplicated",
+   "variant": "example-hhhh:twice-end-line4"
+  },
+  {
+   "file": "reject/line-unknown.txt",
+   "expect": "reject",
+   "category": "line-unknown",
+   "variant": "example-hhhh:line0-comment"
+  },
+  {
+   "file": "reject/lines-out-of-order--swap-magic-sequence.txt",
+   "expect": "reject",
+   "category": "lines-out-of-order",
+   "variant": "example-hhhh:swap-magic-sequence"
+  },
+  {
+   "file": "reject/lines-out-of-order--swap-sequence-query.txt",
+   "expect": "reject",
+   "category": "lines-out-of-order",
+   "variant": "example-hhhh:swap-sequence-query"
+  },
+  {
+   "file": "reject/lines-out-of-order--swap-query-tree.txt",
+   "expect": "reject",
+   "category": "lines-out-of-order",
+   "variant": "example-hhhh:swap-query-tree"
+  },
+  {
+   "file": "reject/lines-out-of-order--swap-tree-end.txt",
+   "expect": "reject",
+   "category": "lines-out-of-order",
+   "variant": "example-hhhh:swap-tree-end"
+  },
+  {
+   "file": "reject/lines-out-of-order--reversed.txt",
+   "expect": "reject",
+   "category": "lines-out-of-order",
+   "variant": "example-hhhh:reversed"
+  },
+  {
+   "file": "reject/lines-out-of-order--end-first.txt",
+   "expect": "reject",
+   "category": "lines-out-of-order",
+   "variant": "example-hhhh:end-first"
+  },
+  {
+   "file": "reject/lines-out-of-order--magic-last.txt",
+   "expect": "reject",
+   "category": "lines-out-of-order",
+   "variant": "example-hhhh:magic-last"
+  },
+  {
+   "file": "reject/crlf--all-lines.txt",
+   "expect": "reject",
+   "category": "crlf",
+   "variant": "example-hhhh:all-lines"
+  },
+  {
+   "file": "reject/crlf--first-line-only.txt",
+   "expect": "reject",
+   "category": "crlf",
+   "variant": "example-hhhh:first-line-only"
+  },
+  {
+   "file": "reject/crlf--last-line-only.txt",
+   "expect": "reject",
+   "category": "crlf",
+   "variant": "example-hhhh:last-line-only"
+  },
+  {
+   "file": "reject/crlf--tree-line-only.txt",
+   "expect": "reject",
+   "category": "crlf",
+   "variant": "example-hhhh:tree-line-only"
+  },
+  {
+   "file": "reject/crlf--cr-only.txt",
+   "expect": "reject",
+   "category": "crlf",
+   "variant": "example-hhhh:cr-only"
+  },
+  {
+   "file": "reject/crlf--lf-cr.txt",
+   "expect": "reject",
+   "category": "crlf",
+   "variant": "example-hhhh:lf-cr"
+  },
+  {
+   "file": "reject/crlf--cr-appended.txt",
+   "expect": "reject",
+   "category": "crlf",
+   "variant": "example-hhhh:cr-appended"
+  },
+  {
+   "file": "reject/trailing-blank-line--one.txt",
+   "expect": "reject",
+   "category": "trailing-blank-line",
+   "variant": "example-hhhh:one"
+  },
+  {
+   "file": "reject/trailing-blank-line--two.txt",
+   "expect": "reject",
+   "category": "trailing-blank-line",
+   "variant": "example-hhhh:two"
+  },
+  {
+   "file": "reject/blank-line.txt",
+   "expect": "reject",
+   "category": "blank-line",
+   "variant": "example-hhhh:before-line0"
+  },
+  {
+   "file": "reject/missing-final-newline--no-newline.txt",
+   "expect": "reject",
+   "category": "missing-final-newline",
+   "variant": "example-hhhh:no-newline"
+  },
+  {
+   "file": "reject/missing-final-newline--half-end.txt",
+   "expect": "reject",
+   "category": "missing-final-newline",
+   "variant": "example-hhhh:half-end"
+  },
+  {
+   "file": "reject/trailing-space.txt",
+   "expect": "reject",
+   "category": "trailing-space",
+   "variant": "example-hhhh:space-after-magic-line0"
+  },
+  {
+   "file": "reject/leading-space.txt",
+   "expect": "reject",
+   "category": "leading-space",
+   "variant": "example-hhhh:space-before-magic-line0"
+  },
+  {
+   "file": "reject/separator-whitespace.txt",
+   "expect": "reject",
+   "category": "separator-whitespace",
+   "variant": "example-hhhh:double-space-magic-line0"
+  },
+  {
+   "file": "reject/invalid-utf8.txt",
+   "expect": "reject",
+   "category": "invalid-utf8",
+   "variant": "example-hhhh:insert-ff-at0"
+  },
+  {
+   "file": "reject/non-ascii-utf8--bom.txt",
+   "expect": "reject",
+   "category": "non-ascii-utf8",
+   "variant": "example-hhhh:bom"
+  },
+  {
+   "file": "reject/non-ascii-utf8--fullwidth-h.txt",
+   "expect": "reject",
+   "category": "non-ascii-utf8",
+   "variant": "example-hhhh:fullwidth-H"
+  },
+  {
+   "file": "reject/non-ascii-utf8--cyrillic-en.txt",
+   "expect": "reject",
+   "category": "non-ascii-utf8",
+   "variant": "example-hhhh:cyrillic-en"
+  },
+  {
+   "file": "reject/non-ascii-utf8--u2028-line-separators.txt",
+   "expect": "reject",
+   "category": "non-ascii-utf8",
+   "variant": "example-hhhh:u2028-line-separators"
+  },
+  {
+   "file": "reject/non-ascii-utf8--nel-line-separators.txt",
+   "expect": "reject",
+   "category": "non-ascii-utf8",
+   "variant": "example-hhhh:nel-line-separators"
+  },
+  {
+   "file": "reject/non-ascii-utf8--nbsp-separator.txt",
+   "expect": "reject",
+   "category": "non-ascii-utf8",
+   "variant": "example-hhhh:nbsp-separator"
+  },
+  {
+   "file": "reject/non-ascii-utf8--zero-width-space-at-end.txt",
+   "expect": "reject",
+   "category": "non-ascii-utf8",
+   "variant": "example-hhhh:zero-width-space-at-end"
+  },
+  {
+   "file": "reject/non-ascii-utf8--en-dash-in-magic.txt",
+   "expect": "reject",
+   "category": "non-ascii-utf8",
+   "variant": "example-hhhh:en-dash-in-magic"
+  },
+  {
+   "file": "reject/non-ascii-utf8--minus-sign-u2212-in-tree.txt",
+   "expect": "reject",
+   "category": "non-ascii-utf8",
+   "variant": "example-hhhh:minus-sign-u2212-in-tree"
+  },
+  {
+   "file": "reject/nul-byte--at-start.txt",
+   "expect": "reject",
+   "category": "nul-byte",
+   "variant": "example-hhhh:at-start"
+  },
+  {
+   "file": "reject/nul-byte--after-magic.txt",
+   "expect": "reject",
+   "category": "nul-byte",
+   "variant": "example-hhhh:after-magic"
+  },
+  {
+   "file": "reject/nul-byte--inside-sequence.txt",
+   "expect": "reject",
+   "category": "nul-byte",
+   "variant": "example-hhhh:inside-sequence"
+  },
+  {
+   "file": "reject/nul-byte--end-of-sequence.txt",
+   "expect": "reject",
+   "category": "nul-byte",
+   "variant": "example-hhhh:end-of-sequence"
+  },
+  {
+   "file": "reject/nul-byte--end-of-tree.txt",
+   "expect": "reject",
+   "category": "nul-byte",
+   "variant": "example-hhhh:end-of-tree"
+  },
+  {
+   "file": "reject/nul-byte--tree-then-nul-then-garbage.txt",
+   "expect": "reject",
+   "category": "nul-byte",
+   "variant": "example-hhhh:tree-then-nul-then-garbage"
+  },
+  {
+   "file": "reject/nul-byte--before-final-newline.txt",
+   "expect": "reject",
+   "category": "nul-byte",
+   "variant": "example-hhhh:before-final-newline"
+  },
+  {
+   "file": "reject/nul-byte--after-final-newline.txt",
+   "expect": "reject",
+   "category": "nul-byte",
+   "variant": "example-hhhh:after-final-newline"
+  },
+  {
+   "file": "reject/nul-byte--end-nul-rest.txt",
+   "expect": "reject",
+   "category": "nul-byte",
+   "variant": "example-hhhh:end-nul-rest"
+  },
+  {
+   "file": "reject/empty-file--zero-bytes.txt",
+   "expect": "reject",
+   "category": "empty-file",
+   "variant": "example-hhhh:zero-bytes"
+  },
+  {
+   "file": "reject/empty-file--newline-only.txt",
+   "expect": "reject",
+   "category": "empty-file",
+   "variant": "example-hhhh:newline-only"
+  },
+  {
+   "file": "reject/empty-file--space-only.txt",
+   "expect": "reject",
+   "category": "empty-file",
+   "variant": "example-hhhh:space-only"
+  },
+  {
+   "file": "reject/empty-file--magic-only.txt",
+   "expect": "reject",
+   "category": "empty-file",
+   "variant": "example-hhhh:magic-only"
+  },
+  {
+   "file": "reject/empty-file--magic-no-newline.txt",
+   "expect": "reject",
+   "category": "empty-file",
+   "variant": "example-hhhh:magic-no-newline"
+  },
+  {
+   "file": "reject/empty-file--magic-and-sequence.txt",
+   "expect": "reject",
+   "category": "empty-file",
+   "variant": "example-hhhh:magic-and-sequence"
+  },
+  {
+   "file": "reject/empty-file--end-only.txt",
+   "expect": "reject",
+   "category": "empty-file",
+   "variant": "example-hhhh:end-only"
+  },
+  {
+   "file": "reject/magic-variant--version-2.txt",
+   "expect": "reject",
+   "category": "magic-variant",
+   "variant": "example-hhhh:version-2"
+  },
+  {
+   "file": "reject/magic-variant--version-0.txt",
+   "expect": "reject",
+   "category": "magic-variant",
+   "variant": "example-hhhh:version-0"
+  },
+  {
+   "file": "reject/magic-variant--version-1dot0.txt",
+   "expect": "reject",
+   "category": "magic-variant",
+   "variant": "example-hhhh:version-1dot0"
+  },
+  {
+   "file": "reject/magic-variant--lowercase.txt",
+   "expect": "reject",
+   "category": "magic-variant",
+   "variant": "example-hhhh:lowercase"
+  },
+  {
+   "file": "reject/magic-variant--version-01.txt",
+   "expect": "reject",
+   "category": "magic-variant",
+   "variant": "example-hhhh:version-01"
+  },
+  {
+   "file": "reject/magic-variant--no-version.txt",
+   "expect": "reject",
+   "category": "magic-variant",
+   "variant": "example-hhhh:no-version"
+  },
+  {
+   "file": "reject/magic-variant--version-10.txt",
+   "expect": "reject",
+   "category": "magic-variant",
+   "variant": "example-hhhh:version-10"
+  },
+  {
+   "file": "reject/magic-variant--version-11.txt",
+   "expect": "reject",
+   "category": "magic-variant",
+   "variant": "example-hhhh:version-11"
+  },
+  {
+   "file": "reject/magic-variant--underscore.txt",
+   "expect": "reject",
+   "category": "magic-variant",
+   "variant": "example-hhhh:underscore"
+  },
+  {
+   "file": "reject/magic-variant--hash-prefix.txt",
+   "expect": "reject",
+   "category": "magic-variant",
+   "variant": "example-hhhh:hash-prefix"
+  },
+  {
+   "file": "reject/magic-variant--extra-token.txt",
+   "expect": "reject",
+   "category": "magic-variant",
+   "variant": "example-hhhh:extra-token"
+  },
+  {
+   "file": "reject/magic-variant--version-v1.txt",
+   "expect": "reject",
+   "category": "magic-variant",
+   "variant": "example-hhhh:version-v1"
+  },
+  {
+   "file": "reject/magic-variant--other-name.txt",
+   "expect": "reject",
+   "category": "magic-variant",
+   "variant": "example-hhhh:other-name"
+  },
+  {
+   "file": "reject/magic-variant--version-plus1.txt",
+   "expect": "reject",
+   "category": "magic-variant",
+   "variant": "example-hhhh:version-plus1"
+  },
+  {
+   "file": "reject/end-variant--uppercase.txt",
+   "expect": "reject",
+   "category": "end-variant",
+   "variant": "example-hhhh:uppercase"
+  },
+  {
+   "file": "reject/end-variant--capitalised.txt",
+   "expect": "reject",
+   "category": "end-variant",
+   "variant": "example-hhhh:capitalised"
+  },
+  {
+   "file": "reject/end-variant--en.txt",
+   "expect": "reject",
+   "category": "end-variant",
+   "variant": "example-hhhh:en"
+  },
+  {
+   "file": "reject/end-variant--endend.txt",
+   "expect": "reject",
+   "category": "end-variant",
+   "variant": "example-hhhh:endend"
+  },
+  {
+   "file": "reject/end-variant--end-dot.txt",
+   "expect": "reject",
+   "category": "end-variant",
+   "variant": "example-hhhh:end-dot"
+  },
+  {
+   "file": "reject/end-variant--end-1.txt",
+   "expect": "reject",
+   "category": "end-variant",
+   "variant": "example-hhhh:end-1"
+  },
+  {
+   "file": "reject/end-variant--eof.txt",
+   "expect": "reject",
+   "category": "end-variant",
+   "variant": "example-hhhh:eof"
+  },
+  {
+   "file": "reject/end-variant--end-semicolon.txt",
+   "expect": "reject",
+   "category": "end-variant",
+   "variant": "example-hhhh:end-semicolon"
+  },
+  {
+   "file": "reject/end-variant--e.txt",
+   "expect": "reject",
+   "category": "end-variant",
+   "variant": "example-hhhh:e"
+  },
+  {
+   "file": "reject/end-variant--ending.txt",
+   "expect": "reject",
+   "category": "end-variant",
+   "variant": "example-hhhh:ending"
+  },
+  {
+   "file": "reject/keyword-variant.txt",
+   "expect": "reject",
+   "category": "keyword-variant",
+   "variant": "example-hhhh:Sequence"
+  },
+  {
+   "file": "reject/deep-nesting--n4096-short-sequence.txt",
+   "expect": "reject",
+   "category": "deep-nesting",
+   "variant": "N4096-short-sequence"
+  },
+  {
+   "file": "reject/deep-nesting--n4096-then-leaves-short-sequence.txt",
+   "expect": "reject",
+   "category": "deep-nesting",
+   "variant": "N4096-then-leaves-short-sequence"
+  },
+  {
+   "file": "reject/deep-nesting--n300-sequence302.txt",
+   "expect": "reject",
+   "category": "deep-nesting",
+   "variant": "N300-sequence302"
+  },
+  {
+   "file": "reject/deep-nesting--chain120-split-at-terminal.txt",
+   "expect": "reject",
+   "category": "deep-nesting",
+   "variant": "chain120-split-at-terminal"
+  },
+  {
+   "file": "reject/deep-nesting--chain120-missing-last-child.txt",
+   "expect": "reject",
+   "category": "deep-nesting",
+   "variant": "chain120-missing-last-child"
+  },
+  {
+   "file": "reject/deep-nesting--chain120-blocked-instead-of-bound.txt",
+   "expect": "reject",
+   "category": "deep-nesting",
+   "variant": "chain120-blocked-instead-of-bound"
+  },
+  {
+   "file": "accept/deep-chain-valid.txt",
+   "expect": "accept",
+   "category": "deep-chain-valid",
+   "variant": "chain120"
+  }
+ ]
+}

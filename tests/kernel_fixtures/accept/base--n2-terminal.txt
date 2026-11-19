@@ -1,0 +1,5 @@
+FOLDBOUNDS-KERNEL 1
+sequence HH
+query 1 0
+tree E
+end

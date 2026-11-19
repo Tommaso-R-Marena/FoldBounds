@@ -1,0 +1,42 @@
+{
+ "mode": "full",
+ "machine": {
+  "hostname": "cursor",
+  "kernel": "6.12.113+",
+  "cpus": 4,
+  "loadavg_start": [
+   2.68,
+   5.69,
+   4.58
+  ],
+  "started_utc": "2026-11-19T01:12:01+00:00",
+  "binaries": {
+   "kernel": {
+    "path": "/workspace/.lake/build/bin/foldkernel",
+    "sha256": "b8ba2338921c795efe4cc61f338a040cb126c4ce413e26ac5008685c98a6c5e4",
+    "bytes": 5209296
+   },
+   "v1": {
+    "path": "/workspace/.lake/build/bin/foldcheck",
+    "sha256": "6d5a4c490cf063979dc74cabe333c50810f353f8d6aca3bc74f14a8cc9d7acb1",
+    "bytes": 222524568
+   },
+   "v2": {
+    "path": "/workspace/.lake/build/bin/foldcheck2",
+    "sha256": "b2da8e25f1530d1e6036acbac3a23d39d9b0fb701b5d23a9384a0070f765051f",
+    "bytes": 222652512
+   }
+  }
+ },
+ "rows_written": 1190,
+ "skipped": [],
+ "critical": [],
+ "finished_utc": "2026-11-19T02:11:08+00:00",
+ "wall_s": 3545.7,
+ "loadavg_end": [
+  1.69,
+  1.87,
+  2.13
+ ],
+ "notes": "Full matched-budget run via run_bench.py --full; SUMMARY regenerated with --summarize-only after harness text tweaks."
+}

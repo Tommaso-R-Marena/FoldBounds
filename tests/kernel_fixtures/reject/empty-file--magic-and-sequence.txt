@@ -1,0 +1,2 @@
+FOLDBOUNDS-KERNEL 1
+sequence HHHH

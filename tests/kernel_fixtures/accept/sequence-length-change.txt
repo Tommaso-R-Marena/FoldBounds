@@ -1,0 +1,5 @@
+FOLDBOUNDS-KERNEL 1
+sequence HPHHPHH
+query 3/2 1
+tree NNB-BB-NBBB-NBB-B
+end

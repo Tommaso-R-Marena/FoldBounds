@@ -1,6 +1,7 @@
 import FoldBounds
 import FoldBounds.FrontierTests
 import FoldBounds.FrontierNextTests
+import FoldBounds.FrontierKernelTests
 
 /-! Axiom audit: every headline theorem depends only on the standard axioms
 `propext`, `Classical.choice`, `Quot.sound`. -/
@@ -173,3 +174,31 @@ import FoldBounds.FrontierNextTests
 #print axioms FoldBounds.FrontierNextTests.accept_root_mem3_witness
 #print axioms FoldBounds.FrontierNextTests.legacy_agrees_with_v1
 #print axioms FoldBounds.FrontierNextTests.reject_flat_missing_branch
+#print axioms FoldBounds.Kernel.scan_none_iff
+#print axioms FoldBounds.Kernel.scan_some
+#print axioms FoldBounds.Kernel.scanCount_revOf
+#print axioms FoldBounds.Kernel.knownContacts_snoc
+#print axioms FoldBounds.Kernel.stepState_none
+#print axioms FoldBounds.Kernel.stepState_some
+#print axioms FoldBounds.Kernel.hist_bump
+#print axioms FoldBounds.Kernel.encEntry_sound
+#print axioms FoldBounds.Kernel.futureCap_eq
+#print axioms FoldBounds.Kernel.famCount_le
+#print axioms FoldBounds.Kernel.contacts_le_geom
+#print axioms FoldBounds.Kernel.boundEntry_ok
+#print axioms FoldBounds.Kernel.enumGo_sound
+#print axioms FoldBounds.Kernel.runTree_sound
+#print axioms FoldBounds.Kernel.runRoot_sound
+#print axioms FoldBounds.Kernel.evalQuery_sound
+#print axioms FoldBounds.Kernel.checkDoc_sound
+#print axioms FoldBounds.Kernel.verifyBytes_sound
+#print axioms FoldBounds.Kernel.verify_sound
+#print axioms FoldBounds.Kernel.verifyBytes_exact
+#print axioms FoldBounds.Kernel.encEntry_le_basic
+#print axioms FoldBounds.Kernel.certifiesInterval_sound
+#print axioms FoldBounds.Kernel.certifiesExact_sound
+#print axioms FoldBounds.FrontierKernelTests.hhhh_probability_exact
+#print axioms FoldBounds.FrontierKernelTests.h8_probability_exact
+#print axioms FoldBounds.FrontierKernelTests.h8_probability_interval
+#print axioms FoldBounds.FrontierKernelTests.accept_hybrid_h8
+#print axioms FoldBounds.FrontierKernelTests.reject_omitted_child

@@ -65,24 +65,29 @@ structure State where
   placed : Nat
   known : Nat
 
-/-- Scan the placed sites (most recent first) for the candidate new site `s`.
-`gap` is the chain distance from the new residue to the head entry.  Returns
-`none` when `s` is occupied, and otherwise the accumulated number of H–H
-contacts the new residue makes. -/
-def scan (s : Site) (hNew : Bool) : Nat → List (Site × Bool) → Nat → Option Nat
-  | _, [], acc => some acc
-  | gap, e :: rest, acc =>
-      if e.1 = s then none
+/-- Scan the placed sites (most recent first) for the candidate new site
+`(sx, sy)`.  `gap` is the chain distance from the new residue to the head
+entry.  Returns `none` when the site is occupied, and otherwise the
+accumulated number of H–H contacts the new residue makes.  The list and the
+coordinates are only borrowed, so the loop performs no reference counting
+and no allocation. -/
+def scan (sx sy : @& Int) (hNew : Bool) (gap : Nat) (R : @& List (Site × Bool)) (acc : Nat) :
+    Option Nat :=
+  match R with
+  | [] => some acc
+  | e :: rest =>
+      if e.1.1 = sx ∧ e.1.2 = sy then none
       else
-        scan s hNew (gap + 1) rest
-          (if hNew && e.2 && decide (3 ≤ gap) && decide (gap % 2 = 1) && manhattan1 e.1 s
+        scan sx sy hNew (gap + 1) rest
+          (if hNew && e.2 && decide (3 ≤ gap) && decide (gap % 2 = 1) &&
+              decide ((e.1.1 - sx).natAbs + (e.1.2 - sy).natAbs = 1)
            then acc + 1 else acc)
 
 /-- Extend the walk by direction `d`; `none` when the target site is occupied. -/
 def stepState (seq : Array Bool) (st : State) (d : Fin 4) : Option State :=
   let s := step st.cur d
   let hNew := seq.getD st.placed false
-  match scan s hNew 1 st.rev 0 with
+  match scan s.1 s.2 hNew 1 st.rev 0 with
   | none => none
   | some c =>
       some { cur := s, rev := (s, hNew) :: st.rev, placed := st.placed + 1, known := st.known + c }
@@ -123,6 +128,70 @@ def enumGo (seq : Array Bool) : Nat → State → Array Nat → Option (Array Na
           match childWith seq st 2 ex (enumGo seq r) with
           | none => none
           | some ex => childWith seq st 3 ex (enumGo seq r)
+
+/-! ### Grid-based enumeration (same result as `enumGo`, constant-time steps)
+
+The list enumerator `enumGo` rescans the placed sites for every candidate
+direction.  The grid enumerator keeps the placed sites in one array: cell
+`codeOf n s` holds `cellVal i h` for the residue `i` placed at site `s`
+(and `0` when the site is free), and the cells after the `base = W * W` grid
+cells hold the contact histogram.  The array is threaded linearly (each cell
+is restored after the recursive call), so the compiled code updates it in
+place.  `FrontierKernelSound.enumFast_eq` proves that `enumFast` returns
+exactly what `enumGo` returns. -/
+
+/-- Cell code of a site on the `(2n+1) × (2n+1)` grid centred at the anchor. -/
+def codeOf (n : Nat) (s : Site) : Nat := (s.1 + n).toNat * (2 * n + 1) + (s.2 + n).toNat
+
+/-- Content of an occupied cell: nonzero, carrying the residue index and its
+hydrophobicity. -/
+def cellVal (i : Nat) (h : Bool) : Nat := (i + 1) * 2 + (if h then 1 else 0)
+
+/-- Contact contributed to a new residue `j` by a neighbouring cell with
+content `v` (`0` for an empty cell). -/
+@[inline] def cellContact (hNew : Bool) (j v : Nat) : Nat :=
+  if hNew && decide (v % 2 = 1) && decide (v / 2 + 2 ≤ j) && decide ((j + 1 - v / 2) % 2 = 1)
+  then 1 else 0
+
+/-- Try to place residue `j` on the free cell `t` and continue with `k`;
+an occupied cell contributes nothing.  The cell is cleared afterwards. -/
+@[inline] def gridChild (seq : @& Array Bool) (W : Nat) (t j known : Nat) (g : Array Nat)
+    (k : Nat → Nat → Nat → Array Nat → Array Nat) : Array Nat :=
+  if g.getD t 1 = 0 then
+    let hNew := seq.getD j false
+    let c := cellContact hNew j (g.getD (t + W) 0) + cellContact hNew j (g.getD (t - W) 0) +
+      cellContact hNew j (g.getD (t + 1) 0) + cellContact hNew j (g.getD (t - 1) 0)
+    (k t (j + 1) (known + c) (g.setIfInBounds t (cellVal j hNew))).setIfInBounds t 0
+  else g
+
+/-- Exhaustive enumeration on the grid: `r` residues remain, the end of the
+walk is at cell `code`, the next residue is `j`, and `known` contacts are
+already formed.  Each complete walk adds one to cell `base + known`. -/
+def enumGrid (seq : @& Array Bool) (W base : Nat) : Nat → Nat → Nat → Nat → Array Nat → Array Nat
+  | 0, _, _, known, g => g.modify (base + known) (· + 1)
+  | r + 1, code, j, known, g =>
+      let g := gridChild seq W (code + W) j known g (enumGrid seq W base r)
+      let g := gridChild seq W (code - W) j known g (enumGrid seq W base r)
+      let g := gridChild seq W (code + 1) j known g (enumGrid seq W base r)
+      gridChild seq W (code - 1) j known g (enumGrid seq W base r)
+
+/-- Write the cells of the placed sites (most recent first). -/
+def loadCells (n : Nat) : List (Site × Bool) → Array Nat → Array Nat
+  | [], g => g
+  | e :: rest, g => (loadCells n rest g).setIfInBounds (codeOf n e.1) (cellVal rest.length e.2)
+
+/-- Exhaustive enumeration of all completions, by the grid enumerator when
+the histogram is certainly large enough (always, for the histogram size used
+by `runRoot`), and by `enumGo` otherwise. -/
+def enumFast (seq : Array Bool) (r : Nat) (st : State) (ex : Array Nat) : Option (Array Nat) :=
+  let n := seq.size
+  let W := 2 * n + 1
+  let base := W * W
+  if st.known + 4 * r < ex.size then
+    let g := loadCells n st.rev (Array.replicate base 0) ++ ex
+    some ((enumGrid seq W base r (codeOf n st.cur) st.placed st.known g).extract base
+      (base + ex.size))
+  else enumGo seq r st ex
 
 /-! ### Bound entries -/
 
@@ -277,7 +346,7 @@ split, which is supplied as `onSplit`). -/
     else if b = 88 then
       match acc with
       | ⟨ex, entries, splits, boundLeaves, enumLeaves, exactLeaves⟩ =>
-        match enumGo seq r st ex with
+        match enumFast seq r st ex with
         | some ex' => .ok (⟨ex', entries, splits, boundLeaves, enumLeaves + 1, exactLeaves⟩, pos + 1)
         | none => .error (.histogramOverflow pos)
     else if b = 66 then
@@ -324,7 +393,7 @@ def runTree (seq : Array Bool) (capTab : Array Nat) (cert : ByteArray) :
             | .ok (acc, pos) => runChild seq cert st 3 pos acc (runTree seq capTab cert r))
 
 /-- Number of histogram slots for a chain of `n` residues. -/
-def histSize (n : Nat) : Nat := 2 * n + 2
+def histSize (n : Nat) : Nat := 4 * n + 4
 
 def emptyAcc (n : Nat) : Acc :=
   { ex := Array.replicate (histSize n) 0

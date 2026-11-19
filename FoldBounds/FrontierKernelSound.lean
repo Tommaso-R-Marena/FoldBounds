@@ -113,26 +113,32 @@ def scanCount (s : Site) (hNew : Bool) : ℕ → List (Site × Bool) → ℕ
       (if hNew && e.2 && decide (3 ≤ g) && decide (g % 2 = 1) && Kernel.manhattan1 e.1 s
         then 1 else 0) + scanCount s hNew (g + 1) rest
 
-theorem scan_none_iff (s : Site) (hNew : Bool) (g : ℕ) (R : List (Site × Bool)) (acc : ℕ) :
-    scan s hNew g R acc = none ↔ ∃ e ∈ R, e.1 = s := by
+theorem scan_none_iff (sx sy : ℤ) (hNew : Bool) (g : ℕ) (R : List (Site × Bool)) (acc : ℕ) :
+    scan sx sy hNew g R acc = none ↔ ∃ e ∈ R, e.1 = (sx, sy) := by
   induction R generalizing g acc with
   | nil => simp [scan]
   | cons e rest ih =>
-      by_cases he : e.1 = s
-      · simp [scan, he]
-      · simp only [scan, he, if_false, List.mem_cons, exists_eq_or_imp, false_or]
+      by_cases he : e.1.1 = sx ∧ e.1.2 = sy
+      · have he' : e.1 = (sx, sy) := Prod.ext he.1 he.2
+        simp [scan, he']
+      · have he' : ¬ e.1 = (sx, sy) := fun h => he ⟨congrArg Prod.fst h, congrArg Prod.snd h⟩
+        rw [scan, if_neg he]
+        simp only [List.mem_cons, exists_eq_or_imp, he', false_or]
         exact ih _ _
 
-theorem scan_some (s : Site) (hNew : Bool) (g : ℕ) (R : List (Site × Bool)) (acc c : ℕ)
-    (h : scan s hNew g R acc = some c) : c = acc + scanCount s hNew g R := by
+theorem scan_some (sx sy : ℤ) (hNew : Bool) (g : ℕ) (R : List (Site × Bool)) (acc c : ℕ)
+    (h : scan sx sy hNew g R acc = some c) : c = acc + scanCount (sx, sy) hNew g R := by
   induction R generalizing g acc with
   | nil => simp [scan] at h; simp [scanCount, h]
   | cons e rest ih =>
-      by_cases he : e.1 = s
+      by_cases he : e.1.1 = sx ∧ e.1.2 = sy
       · simp [scan, he] at h
-      · simp only [scan, he, if_false] at h
+      · rw [scan, if_neg he] at h
         have := ih _ _ h
         rw [this, scanCount]
+        have hm : Kernel.manhattan1 e.1 (sx, sy) =
+            decide ((e.1.1 - sx).natAbs + (e.1.2 - sy).natAbs = 1) := rfl
+        rw [hm]
         split_ifs <;> omega
 
 /-- Appending a site to the placed walk adds its own cross term. -/
@@ -261,8 +267,12 @@ theorem stepState_none {S : List Bool} {p : List (Fin 4)} {st : State} (hrep : R
   unfold stepState
   simp only
   rw [← mem_revOf S (walkFrom p), ← hrep.rev, ← hrep.cur, ← step_eq_advance,
-    ← scan_none_iff (step st.cur d) (S.toArray.getD st.placed false) 1 st.rev 0]
-  cases scan (step st.cur d) (S.toArray.getD st.placed false) 1 st.rev 0 <;> simp
+    show (∃ e ∈ st.rev, e.1 = step st.cur d) ↔
+      (∃ e ∈ st.rev, e.1 = ((step st.cur d).1, (step st.cur d).2)) from Iff.rfl,
+    ← scan_none_iff (step st.cur d).1 (step st.cur d).2 (S.toArray.getD st.placed false) 1
+      st.rev 0]
+  cases scan (step st.cur d).1 (step st.cur d).2 (S.toArray.getD st.placed false) 1 st.rev 0 <;>
+    simp
 
 /-- An accepted step yields the state of the extended prefix. -/
 theorem stepState_some {S : List Bool} {p : List (Fin 4)} {st st' : State} (hrep : Rep S p st)
@@ -275,15 +285,18 @@ theorem stepState_some {S : List Bool} {p : List (Fin 4)} {st st' : State} (hrep
   refine ⟨?_, hnot⟩
   unfold stepState at h
   simp only at h
-  cases hs : scan (step st.cur d) (S.toArray.getD st.placed false) 1 st.rev 0 with
+  cases hs : scan (step st.cur d).1 (step st.cur d).2 (S.toArray.getD st.placed false) 1
+      st.rev 0 with
   | none => rw [hs] at h; exact absurd h (by simp)
   | some c =>
       rw [hs] at h
       simp only [Option.some.injEq] at h
       subst h
-      have hc := scan_some _ _ _ _ _ _ hs
+      have hc := scan_some _ _ _ _ _ _ _ hs
       have hlen : (walkFrom p).length = p.length + 2 := walkFrom_length p
-      rw [zero_add, hrep.rev, hrep.placed, getD_toArray, hrep.cur, step_eq_advance] at hc
+      rw [zero_add, hrep.rev, hrep.placed, getD_toArray, hrep.cur, step_eq_advance,
+        show ((advance (endFrom first p) d).1, (advance (endFrom first p) d).2) =
+          advance (endFrom first p) d from rfl] at hc
       have hcount := scanCount_revOf S (advance (endFrom first p) d) (p.length + 2) (walkFrom p)
         (by omega) (by omega)
       rw [hlen] at hcount
@@ -830,6 +843,669 @@ theorem enumGo_sound {steps : ℕ} {S : List Bool} (hS : S.length = steps + 2) {
             rw [ha3, ha2, ha1, ha0]
             simp only [enc_add_assoc]
 
+/-! ### The grid enumerator returns what the list enumerator returns -/
+
+theorem getD_setIfInBounds (g : Array ℕ) (i j v d : ℕ) :
+    (g.setIfInBounds i v).getD j d = if i = j ∧ j < g.size then v else g.getD j d := by
+  simp only [Array.getD_eq_getD_getElem?, Array.getElem?_setIfInBounds]
+  by_cases h : i = j
+  · subst h
+    by_cases h2 : i < g.size <;> simp [h2]
+  · simp [h]
+
+theorem getD_modify (g : Array ℕ) (i j d : ℕ) (f : ℕ → ℕ) :
+    (g.modify i f).getD j d = if i = j ∧ j < g.size then f (g.getD j d) else g.getD j d := by
+  simp only [Array.getD_eq_getD_getElem?, Array.getElem?_modify]
+  by_cases h : i = j
+  · subst h
+    by_cases h2 : i < g.size <;> simp [h2]
+  · simp [h]
+
+theorem getD_default (g : Array ℕ) {j : ℕ} (h : j < g.size) (d d' : ℕ) :
+    g.getD j d = g.getD j d' := by
+  simp [Array.getD_eq_getD_getElem?, h]
+
+theorem getD_eq_getElem (g : Array ℕ) {j : ℕ} (h : j < g.size) : g.getD j 0 = g[j] := by
+  simp [Array.getD_eq_getD_getElem?, h]
+
+/-- Sites within distance `n` of the anchor in each coordinate. -/
+def InBox (n : ℕ) (s : Site) : Prop :=
+  -(n : ℤ) ≤ s.1 ∧ s.1 ≤ n ∧ -(n : ℤ) ≤ s.2 ∧ s.2 ≤ n
+
+theorem InBox.mono {m n : ℕ} {s : Site} (h : InBox m s) (hmn : m ≤ n) : InBox n s := by
+  unfold InBox at *
+  omega
+
+theorem InBox.advance {m : ℕ} {s : Site} (h : InBox m s) (d : Fin 4) :
+    InBox (m + 1) (advance s d) := by
+  obtain ⟨x, y⟩ := s
+  unfold InBox at h ⊢
+  have hx := h.1; have hx2 := h.2.1; have hy := h.2.2.1; have hy2 := h.2.2.2
+  -- `simp [advance]` does not fire under the theorem name `InBox.advance`, so case
+  -- on the concrete Fin value and expand the coordinates by hand.
+  match d with
+  | ⟨0, _⟩ =>
+      change (_ : ℤ) ≤ x + 1 ∧ x + 1 ≤ _ ∧ _ ≤ y ∧ y ≤ _
+      exact ⟨by omega, by omega, by omega, by omega⟩
+  | ⟨1, _⟩ =>
+      change (_ : ℤ) ≤ x - 1 ∧ x - 1 ≤ _ ∧ _ ≤ y ∧ y ≤ _
+      exact ⟨by omega, by omega, by omega, by omega⟩
+  | ⟨2, _⟩ =>
+      change (_ : ℤ) ≤ x ∧ x ≤ _ ∧ _ ≤ y + 1 ∧ y + 1 ≤ _
+      exact ⟨by omega, by omega, by omega, by omega⟩
+  | ⟨3, _⟩ =>
+      change (_ : ℤ) ≤ x ∧ x ≤ _ ∧ _ ≤ y - 1 ∧ y - 1 ≤ _
+      exact ⟨by omega, by omega, by omega, by omega⟩
+  | ⟨n + 4, hn⟩ => omega
+
+/-- Every site of a decoded walk lies in the box of radius `|p| + 1`. -/
+theorem walk_box (p : List (Fin 4)) : ∀ a ∈ walkFrom p, InBox (p.length + 1) a := by
+  induction p using List.reverseRecOn with
+  | nil =>
+      intro a ha
+      simp only [walkFrom, trace, List.append_nil, List.mem_cons, List.not_mem_nil, or_false] at ha
+      rcases ha with rfl | rfl <;> simp [InBox, origin, first]
+  | append_singleton p d ih =>
+      intro a ha
+      rw [walkFrom_append_single, List.mem_append, List.mem_singleton] at ha
+      rw [List.length_append, List.length_singleton]
+      rcases ha with ha | rfl
+      · exact (ih a ha).mono (by omega)
+      · exact (ih _ (endFrom_mem_walkFrom p)).advance d
+
+theorem tagFrom_map_fst (S : List Bool) (i : ℕ) (W : List Site) :
+    (tagFrom S i W).map Prod.fst = W := by
+  induction W generalizing i with
+  | nil => rfl
+  | cons a W ih => simp [tagFrom, ih]
+
+theorem revOf_map_fst (S : List Bool) (W : List Site) :
+    (revOf S W).map Prod.fst = W.reverse := by
+  simp [revOf, List.map_reverse, tagFrom_map_fst]
+
+theorem revOf_length (S : List Bool) (W : List Site) : (revOf S W).length = W.length := by
+  have := congrArg List.length (revOf_map_fst S W)
+  simpa using this
+
+theorem radix_inj {W a b c d : ℕ} (hb : b < W) (hd : d < W) (h : a * W + b = c * W + d) :
+    a = c ∧ b = d := by
+  have hW : 0 < W := by omega
+  have h1 : (a * W + b) / W = a := by
+    rw [Nat.add_comm, Nat.add_mul_div_right _ _ hW, Nat.div_eq_of_lt hb, Nat.zero_add]
+  have h2 : (c * W + d) / W = c := by
+    rw [Nat.add_comm, Nat.add_mul_div_right _ _ hW, Nat.div_eq_of_lt hd, Nat.zero_add]
+  have hac : a = c := by rw [← h1, ← h2, h]
+  subst hac
+  exact ⟨rfl, Nat.add_left_cancel h⟩
+
+theorem codeOf_lt {n : ℕ} {s : Site} (hs : InBox n s) :
+    codeOf n s < (2 * n + 1) * (2 * n + 1) := by
+  unfold InBox at hs
+  unfold codeOf
+  have ha : (s.1 + n).toNat ≤ 2 * n := by omega
+  have hb : (s.2 + n).toNat < 2 * n + 1 := by omega
+  have h1 : (s.1 + n).toNat * (2 * n + 1) ≤ 2 * n * (2 * n + 1) := Nat.mul_le_mul_right _ ha
+  have h2 : (2 * n + 1) * (2 * n + 1) = 2 * n * (2 * n + 1) + (2 * n + 1) := by ring
+  omega
+
+theorem codeOf_inj {n : ℕ} {a b : Site} (ha : InBox n a) (hb : InBox n b)
+    (h : codeOf n a = codeOf n b) : a = b := by
+  unfold InBox at ha hb
+  unfold codeOf at h
+  obtain ⟨h1, h2⟩ := radix_inj (by omega) (by omega) h
+  obtain ⟨a1, a2⟩ := a
+  obtain ⟨b1, b2⟩ := b
+  simp only at h1 h2 ha hb
+  have e1 : a1 = b1 := by omega
+  have e2 : a2 = b2 := by omega
+  rw [e1, e2]
+
+/-- Cell codes of the four neighbours of an interior site. -/
+theorem codeOf_advance {n : ℕ} {s : Site} (hx1 : -(n : ℤ) < s.1) (hx2 : s.1 < n)
+    (hy1 : -(n : ℤ) < s.2) (hy2 : s.2 < n) :
+    codeOf n (advance s 0) = codeOf n s + (2 * n + 1) ∧
+    codeOf n (advance s 1) + (2 * n + 1) = codeOf n s ∧
+    codeOf n (advance s 2) = codeOf n s + 1 ∧
+    codeOf n (advance s 3) + 1 = codeOf n s := by
+  obtain ⟨x, y⟩ := s
+  simp only at hx1 hx2 hy1 hy2
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · show codeOf n (x + 1, y) = _
+    unfold codeOf
+    have e : (x + 1 + (n : ℤ)).toNat = (x + n).toNat + 1 := by omega
+    simp only [e]
+    ring
+  · show codeOf n (x - 1, y) + _ = _
+    unfold codeOf
+    have e : (x + (n : ℤ)).toNat = (x - 1 + n).toNat + 1 := by omega
+    simp only [e]
+    ring
+  · show codeOf n (x, y + 1) = _
+    unfold codeOf
+    have e : (y + 1 + (n : ℤ)).toNat = (y + n).toNat + 1 := by omega
+    simp only [e]
+    ring
+  · show codeOf n (x, y - 1) + 1 = _
+    unfold codeOf
+    have e : (y + (n : ℤ)).toNat = (y - 1 + n).toNat + 1 := by omega
+    simp only [e]
+    ring
+
+/-- Grid contents determined by the reversed tagged walk (specification). -/
+def cellOf (n : ℕ) : List (Site × Bool) → ℕ → ℕ
+  | [], _ => 0
+  | e :: rest, t => if codeOf n e.1 = t then cellVal rest.length e.2 else cellOf n rest t
+
+theorem cellVal_ne_zero (i : ℕ) (h : Bool) : cellVal i h ≠ 0 := by
+  unfold cellVal
+  omega
+
+theorem size_loadCells (n : ℕ) (rev : List (Site × Bool)) (g : Array ℕ) :
+    (loadCells n rev g).size = g.size := by
+  induction rev with
+  | nil => rfl
+  | cons e rest ih => simp [loadCells, ih]
+
+theorem getD_loadCells (n N : ℕ) :
+    ∀ (rev : List (Site × Bool)) (t : ℕ), t < N →
+      (loadCells n rev (Array.replicate N 0)).getD t 0 = cellOf n rev t := by
+  intro rev
+  induction rev with
+  | nil =>
+      intro t ht
+      simp [loadCells, cellOf, Array.getD_eq_getD_getElem?, ht]
+  | cons e rest ih =>
+      intro t ht
+      rw [loadCells, getD_setIfInBounds, size_loadCells, Array.size_replicate, cellOf, ih t ht]
+      by_cases hc : codeOf n e.1 = t
+      · simp [hc, ht]
+      · simp [hc]
+
+theorem cellOf_eq_zero_iff {n : ℕ} {s : Site} (hs : InBox n s) :
+    ∀ (rev : List (Site × Bool)), (∀ e ∈ rev, InBox n e.1) →
+      (cellOf n rev (codeOf n s) = 0 ↔ ∀ e ∈ rev, e.1 ≠ s) := by
+  intro rev
+  induction rev with
+  | nil => intro _; simp [cellOf]
+  | cons e rest ih =>
+      intro hbox
+      have hrest : ∀ e' ∈ rest, InBox n e'.1 := fun e' he' => hbox e' (List.mem_cons_of_mem _ he')
+      rw [cellOf]
+      by_cases hc : codeOf n e.1 = codeOf n s
+      · have he : e.1 = s := codeOf_inj (hbox e (by simp)) hs hc
+        simp [cellVal_ne_zero, he]
+      · have he : e.1 ≠ s := fun h => hc (by rw [h])
+        simp [hc, he, ih hrest]
+
+theorem cellContact_zero (hNew : Bool) (j : ℕ) : cellContact hNew j 0 = 0 := by
+  simp [cellContact]
+
+theorem cellContact_le_one (hNew : Bool) (j v : ℕ) : cellContact hNew j v ≤ 1 := by
+  unfold cellContact
+  split_ifs <;> omega
+
+theorem cellContact_cellVal (hNew h : Bool) (j i : ℕ) :
+    cellContact hNew j (cellVal i h) =
+      if (hNew && h && decide (i + 3 ≤ j) && decide ((j - i) % 2 = 1)) = true then 1 else 0 := by
+  unfold cellContact cellVal
+  have e1 : ((i + 1) * 2 + (if h = true then 1 else 0)) % 2 = if h = true then 1 else 0 := by
+    split_ifs <;> omega
+  have e2 : ((i + 1) * 2 + (if h = true then 1 else 0)) / 2 = i + 1 := by
+    split_ifs <;> omega
+  have e3 : j + 1 - (i + 1) = j - i := by omega
+  have e4 : decide (i + 1 + 2 ≤ j) = decide (i + 3 ≤ j) := by
+    apply Bool.decide_congr
+    omega
+  rw [e1, e2, e3, e4]
+  cases hNew <;> cases h <;> simp
+
+/-- Exactly one direction leads from `s` to a lattice neighbour `a`. -/
+theorem sum_dir_eq (s a : Site) (C : ℕ) :
+    (∑ d : Fin 4, if a = advance s d then C else 0) =
+      if LatticeModel.manhattan1 a s = true then C else 0 := by
+  by_cases hm : LatticeModel.manhattan1 a s = true
+  · have hadj : adjacent s a = true := by
+      rw [adjacent_eq_manhattan1]
+      exact Geometry.manhattan1_symm hm
+    have ha : advance s (stepDir s a) = a := advance_stepDir hadj
+    rw [if_pos hm, Finset.sum_eq_single (stepDir s a)]
+    · rw [if_pos ha.symm]
+    · intro d _ hd
+      rw [if_neg]
+      intro h
+      exact hd (advance_injective s (h.symm.trans ha.symm))
+    · intro h
+      exact absurd (Finset.mem_univ _) h
+  · rw [if_neg hm]
+    refine Finset.sum_eq_zero (fun d _ => ?_)
+    rw [if_neg]
+    intro h
+    apply hm
+    rw [h]
+    have := advance_adjacent s d
+    rw [adjacent_eq_manhattan1] at this
+    exact Geometry.manhattan1_symm this
+
+/-- **The four neighbouring cells see exactly the contacts found by the
+list scan.** -/
+theorem grid_contacts {n : ℕ} (hNew : Bool) (j : ℕ) {s : Site}
+    (hs : ∀ d : Fin 4, InBox n (advance s d)) :
+    ∀ (rev : List (Site × Bool)), (∀ e ∈ rev, InBox n e.1) → (rev.map Prod.fst).Nodup →
+      rev.length ≤ j →
+      (∑ d : Fin 4, cellContact hNew j (cellOf n rev (codeOf n (advance s d)))) =
+        scanCount s hNew (j + 1 - rev.length) rev := by
+  intro rev
+  induction rev with
+  | nil => intro _ _ _; simp [cellOf, cellContact_zero, scanCount]
+  | cons e rest ih =>
+      intro hbox hnd hlen
+      obtain ⟨a, h⟩ := e
+      have hrest : ∀ e' ∈ rest, InBox n e'.1 := fun e' he' => hbox e' (List.mem_cons_of_mem _ he')
+      simp only [List.map_cons, List.nodup_cons, List.mem_map, not_exists, not_and] at hnd
+      obtain ⟨hnot, hnd'⟩ := hnd
+      simp only [List.length_cons] at hlen
+      have hterm : ∀ d : Fin 4,
+          cellContact hNew j (cellOf n ((a, h) :: rest) (codeOf n (advance s d))) =
+            (if a = advance s d then cellContact hNew j (cellVal rest.length h) else 0) +
+              cellContact hNew j (cellOf n rest (codeOf n (advance s d))) := by
+        intro d
+        by_cases had : a = advance s d
+        · have hz : cellOf n rest (codeOf n (advance s d)) = 0 :=
+            (cellOf_eq_zero_iff (hs d) rest hrest).2 (fun e' he' h' => hnot e' he' (h'.trans had.symm))
+          rw [if_pos had, hz, cellContact_zero, add_zero, cellOf, if_pos (by rw [had])]
+        · have hc : codeOf n a ≠ codeOf n (advance s d) :=
+            fun hc => had (codeOf_inj (hbox (a, h) (by simp)) (hs d) hc)
+          rw [if_neg had, zero_add, cellOf, if_neg hc]
+      rw [Finset.sum_congr rfl (fun d _ => hterm d), Finset.sum_add_distrib, sum_dir_eq,
+        ih hrest hnd' (by omega), scanCount, List.length_cons, cellContact_cellVal]
+      have hg : j + 1 - (rest.length + 1) + 1 = j + 1 - rest.length := by omega
+      rw [hg]
+      congr 1
+      have e1 : j + 1 - (rest.length + 1) = j - rest.length := by omega
+      have e2 : decide (3 ≤ j - rest.length) = decide (rest.length + 3 ≤ j) := by
+        apply Bool.decide_congr
+        omega
+      rw [e1, e2, manhattan1_eq]
+      cases hNew <;> cases h <;> cases decide (rest.length + 3 ≤ j) <;>
+        cases decide ((j - rest.length) % 2 = 1) <;> cases LatticeModel.manhattan1 a s <;> simp
+
+/-- The grid part and the size of an array are unchanged. -/
+def Frame (base : ℕ) (g g' : Array ℕ) : Prop :=
+  g'.size = g.size ∧ ∀ u, u < base → g'.getD u 0 = g.getD u 0
+
+theorem Frame.refl (base : ℕ) (g : Array ℕ) : Frame base g g := ⟨rfl, fun _ _ => rfl⟩
+
+theorem Frame.trans {base : ℕ} {g g' g'' : Array ℕ} (h1 : Frame base g g')
+    (h2 : Frame base g' g'') : Frame base g g'' :=
+  ⟨h2.1.trans h1.1, fun u hu => (h2.2 u hu).trans (h1.2 u hu)⟩
+
+theorem gridChild_frame (seq : Array Bool) (W base t j known : ℕ) (g : Array ℕ)
+    (k : ℕ → ℕ → ℕ → Array ℕ → Array ℕ)
+    (hk : ∀ t' j' kn' g', Frame base g' (k t' j' kn' g')) :
+    Frame base g (gridChild seq W t j known g k) := by
+  unfold gridChild
+  by_cases h0 : g.getD t 1 = 0
+  · rw [if_pos h0]
+    simp only
+    refine ⟨by rw [Array.size_setIfInBounds, (hk _ _ _ _).1, Array.size_setIfInBounds],
+      fun u hu => ?_⟩
+    rw [getD_setIfInBounds, (hk _ _ _ _).1, Array.size_setIfInBounds]
+    by_cases hut : t = u
+    · subst hut
+      by_cases hts : t < g.size
+      · have hz : g.getD t 0 = 0 := by rw [getD_default g hts 0 1]; exact h0
+        rw [if_pos ⟨rfl, hts⟩, hz]
+      · exfalso
+        simp [Array.getD_eq_getD_getElem?, hts] at h0
+    · rw [if_neg (fun h => hut h.1), (hk _ _ _ _).2 u hu, getD_setIfInBounds,
+        if_neg (fun h => hut h.1)]
+  · rw [if_neg h0]
+    exact Frame.refl base g
+
+theorem enumGrid_frame (seq : Array Bool) (W base : ℕ) :
+    ∀ (r code j known : ℕ) (g : Array ℕ),
+      Frame base g (enumGrid seq W base r code j known g) := by
+  intro r
+  induction r with
+  | zero =>
+      intro code j known g
+      rw [enumGrid]
+      refine ⟨Array.size_modify, fun u hu => ?_⟩
+      rw [getD_modify, if_neg]
+      intro h
+      omega
+  | succ r ih =>
+      intro code j known g
+      rw [enumGrid]
+      exact (((gridChild_frame seq W base _ j known g _ ih).trans
+        (gridChild_frame seq W base _ j known _ _ ih)).trans
+        (gridChild_frame seq W base _ j known _ _ ih)).trans
+        (gridChild_frame seq W base _ j known _ _ ih)
+
+/-- The array's grid part holds the cells of the placed walk. -/
+def GridRep (n : ℕ) (g : Array ℕ) (rev : List (Site × Bool)) : Prop :=
+  ∀ u, u < (2 * n + 1) * (2 * n + 1) → g.getD u 0 = cellOf n rev u
+
+/-- The array's histogram part holds the histogram `ex`. -/
+def HistRep (base : ℕ) (g ex : Array ℕ) : Prop :=
+  g.size = base + ex.size ∧ ∀ k, k < ex.size → g.getD (base + k) 0 = ex.getD k 0
+
+theorem gridChild_refines {steps : ℕ} {S : List Bool} (hS : S.length = steps + 2) {r : ℕ}
+    (ih : ∀ (p : List (Fin 4)) (st : State) (g ex : Array ℕ), Rep S p st →
+      (walkFrom p).Nodup → p.length + r = steps → GridRep S.length g st.rev →
+      HistRep ((2 * S.length + 1) * (2 * S.length + 1)) g ex → st.known + 4 * r < ex.size →
+      ∃ ex', enumGo S.toArray r st ex = some ex' ∧
+        HistRep ((2 * S.length + 1) * (2 * S.length + 1))
+          (enumGrid S.toArray (2 * S.length + 1) ((2 * S.length + 1) * (2 * S.length + 1)) r
+            (codeOf S.length st.cur) st.placed st.known g) ex')
+    {p : List (Fin 4)} {st : State} (hrep : Rep S p st) (hn : (walkFrom p).Nodup)
+    (hlen : p.length + (r + 1) = steps) {g ex : Array ℕ} (hg : GridRep S.length g st.rev)
+    (hh : HistRep ((2 * S.length + 1) * (2 * S.length + 1)) g ex)
+    (hk : st.known + 4 * (r + 1) < ex.size) (d : Fin 4) :
+    ∃ ex', childWith S.toArray st d ex (enumGo S.toArray r) = some ex' ∧
+      ex'.size = ex.size ∧
+      HistRep ((2 * S.length + 1) * (2 * S.length + 1))
+        (gridChild S.toArray (2 * S.length + 1) (codeOf S.length (advance st.cur d)) st.placed
+          st.known g (enumGrid S.toArray (2 * S.length + 1)
+            ((2 * S.length + 1) * (2 * S.length + 1)) r)) ex' ∧
+      GridRep S.length
+        (gridChild S.toArray (2 * S.length + 1) (codeOf S.length (advance st.cur d)) st.placed
+          st.known g (enumGrid S.toArray (2 * S.length + 1)
+            ((2 * S.length + 1) * (2 * S.length + 1)) r)) st.rev := by
+  have hwlen : (walkFrom p).length = p.length + 2 := walkFrom_length p
+  have hrevlen : st.rev.length = st.placed := by
+    rw [hrep.rev, revOf_length, hwlen, hrep.placed]
+  have hcurbox : InBox (p.length + 1) st.cur := by
+    rw [hrep.cur]
+    exact walk_box p _ (endFrom_mem_walkFrom p)
+  have hsbox : InBox (p.length + 2) (advance st.cur d) := hcurbox.advance d
+  have hnbr : ∀ d' : Fin 4, InBox S.length (advance (advance st.cur d) d') :=
+    fun d' => (hsbox.advance d').mono (by omega)
+  have hsbox' : InBox S.length (advance st.cur d) := hsbox.mono (by omega)
+  have hrevbox : ∀ e ∈ st.rev, InBox S.length e.1 := by
+    intro e he
+    rw [hrep.rev] at he
+    exact (walk_box p _ ((mem_revOf S (walkFrom p) e.1).1 ⟨e, he, rfl⟩)).mono (by omega)
+  have hrevnd : (st.rev.map Prod.fst).Nodup := by
+    rw [hrep.rev, revOf_map_fst]
+    exact List.nodup_reverse.2 hn
+  have hcode_lt := codeOf_lt hsbox'
+  have hsz : (2 * S.length + 1) * (2 * S.length + 1) ≤ g.size := by rw [hh.1]; omega
+  unfold childWith gridChild
+  cases hs : stepState S.toArray st d with
+  | none =>
+      have hocc : advance (endFrom first p) d ∈ walkFrom p := (stepState_none hrep d).1 hs
+      have hne : cellOf S.length st.rev (codeOf S.length (advance st.cur d)) ≠ 0 := by
+        intro hz
+        have := (cellOf_eq_zero_iff hsbox' st.rev hrevbox).1 hz
+        rw [hrep.rev, hrep.cur] at this
+        obtain ⟨e, he, hes⟩ := (mem_revOf S (walkFrom p) _).2 hocc
+        exact this e he hes
+      have hg1 : ¬ g.getD (codeOf S.length (advance st.cur d)) 1 = 0 := by
+        rw [getD_default g (by omega) 1 0, hg _ hcode_lt]
+        exact hne
+      rw [if_neg hg1]
+      exact ⟨ex, rfl, rfl, hh, hg⟩
+  | some st' =>
+      obtain ⟨hrep', hfree⟩ := stepState_some hrep (by omega) hs
+      have hz : cellOf S.length st.rev (codeOf S.length (advance st.cur d)) = 0 := by
+        refine (cellOf_eq_zero_iff hsbox' st.rev hrevbox).2 (fun e he hes => hfree ?_)
+        rw [hrep.rev] at he
+        rw [hrep.cur] at hes
+        exact (mem_revOf S (walkFrom p) _).1 ⟨e, he, hes⟩
+      have hg0 : g.getD (codeOf S.length (advance st.cur d)) 1 = 0 := by
+        rw [getD_default g (by omega) 1 0, hg _ hcode_lt]
+        exact hz
+      rw [if_pos hg0]
+      simp only
+      -- the four neighbouring cells
+      have hint : -(S.length : ℤ) < (advance st.cur d).1 ∧ (advance st.cur d).1 < S.length ∧
+          -(S.length : ℤ) < (advance st.cur d).2 ∧ (advance st.cur d).2 < S.length := by
+        unfold InBox at hsbox
+        omega
+      obtain ⟨c0, c1, c2, c3⟩ := codeOf_advance hint.1 hint.2.1 hint.2.2.1 hint.2.2.2
+      have hc1 : codeOf S.length (advance st.cur d) - (2 * S.length + 1) =
+          codeOf S.length (advance (advance st.cur d) 1) := by omega
+      have hc3 : codeOf S.length (advance st.cur d) - 1 =
+          codeOf S.length (advance (advance st.cur d) 3) := by omega
+      have hcell : ∀ d' : Fin 4, g.getD (codeOf S.length (advance (advance st.cur d) d')) 0 =
+          cellOf S.length st.rev (codeOf S.length (advance (advance st.cur d) d')) :=
+        fun d' => hg _ (codeOf_lt (hnbr d'))
+      have hsum : cellContact (S.toArray.getD st.placed false) st.placed
+            (g.getD (codeOf S.length (advance st.cur d) + (2 * S.length + 1)) 0) +
+          cellContact (S.toArray.getD st.placed false) st.placed
+            (g.getD (codeOf S.length (advance st.cur d) - (2 * S.length + 1)) 0) +
+          cellContact (S.toArray.getD st.placed false) st.placed
+            (g.getD (codeOf S.length (advance st.cur d) + 1) 0) +
+          cellContact (S.toArray.getD st.placed false) st.placed
+            (g.getD (codeOf S.length (advance st.cur d) - 1) 0) =
+          scanCount (advance st.cur d) (S.toArray.getD st.placed false) 1 st.rev := by
+        rw [← c0, hc1, ← c2, hc3, hcell 0, hcell 1, hcell 2, hcell 3]
+        have := grid_contacts (S.toArray.getD st.placed false) st.placed hnbr st.rev hrevbox
+          hrevnd (by omega)
+        rw [Fin.sum_univ_four, hrevlen] at this
+        rw [this]
+        congr 1
+        omega
+      -- the list step computes the same state
+      -- Parenthesize the structure literal: bare `{ field := ... }` inside
+      -- `have h : _ = {..} :=` is parsed as ending the `have` at the first `:=`.
+      have hst' : st' = ({
+          cur := advance st.cur d
+          rev := (advance st.cur d, S.toArray.getD st.placed false) :: st.rev
+          placed := st.placed + 1
+          known := st.known +
+            scanCount (advance st.cur d) (S.toArray.getD st.placed false) 1 st.rev }) := by
+        unfold stepState at hs
+        simp only at hs
+        cases hsc : scan (step st.cur d).1 (step st.cur d).2 (S.toArray.getD st.placed false) 1
+            st.rev 0 with
+        | none => rw [hsc] at hs; exact absurd hs (by simp)
+        | some c =>
+            rw [hsc] at hs
+            simp only [Option.some.injEq] at hs
+            have hc := scan_some _ _ _ _ _ _ _ hsc
+            rw [zero_add] at hc
+            rw [← hs, hc]
+            rfl
+      rw [hsum]
+      have hle4 : scanCount (advance st.cur d) (S.toArray.getD st.placed false) 1 st.rev ≤ 4 := by
+        rw [← hsum]
+        have h1 := cellContact_le_one (S.toArray.getD st.placed false) st.placed
+          (g.getD (codeOf S.length (advance st.cur d) + (2 * S.length + 1)) 0)
+        have h2 := cellContact_le_one (S.toArray.getD st.placed false) st.placed
+          (g.getD (codeOf S.length (advance st.cur d) - (2 * S.length + 1)) 0)
+        have h3 := cellContact_le_one (S.toArray.getD st.placed false) st.placed
+          (g.getD (codeOf S.length (advance st.cur d) + 1) 0)
+        have h4 := cellContact_le_one (S.toArray.getD st.placed false) st.placed
+          (g.getD (codeOf S.length (advance st.cur d) - 1) 0)
+        omega
+      -- the array after writing the new cell represents the extended walk
+      have hg1 : GridRep S.length
+          (g.setIfInBounds (codeOf S.length (advance st.cur d))
+            (cellVal st.placed (S.toArray.getD st.placed false))) st'.rev := by
+        intro u hu
+        rw [getD_setIfInBounds, hst', cellOf, hrevlen]
+        by_cases hcu : codeOf S.length (advance st.cur d) = u
+        · rw [if_pos ⟨hcu, by omega⟩, if_pos hcu]
+        · rw [if_neg (fun h => hcu h.1), if_neg hcu]
+          exact hg u hu
+      have hh1 : HistRep ((2 * S.length + 1) * (2 * S.length + 1))
+          (g.setIfInBounds (codeOf S.length (advance st.cur d))
+            (cellVal st.placed (S.toArray.getD st.placed false))) ex := by
+        refine ⟨by rw [Array.size_setIfInBounds]; exact hh.1, fun k hk' => ?_⟩
+        rw [getD_setIfInBounds, if_neg (fun h => by omega)]
+        exact hh.2 k hk'
+      have hkn : st'.known + 4 * r < ex.size := by
+        rw [hst']
+        simp only
+        omega
+      obtain ⟨ex', he, hhe⟩ := ih (p ++ [d]) st' _ ex hrep' ((nodup_snoc_iff p d).2 ⟨hn, hfree⟩)
+        (by simp; omega) hg1 hh1 hkn
+      have hfr := enumGrid_frame S.toArray (2 * S.length + 1)
+        ((2 * S.length + 1) * (2 * S.length + 1)) r (codeOf S.length st'.cur) st'.placed st'.known
+        (g.setIfInBounds (codeOf S.length (advance st.cur d))
+          (cellVal st.placed (S.toArray.getD st.placed false)))
+      have hcur' : st'.cur = advance st.cur d := by rw [hst']
+      have hplaced' : st'.placed = st.placed + 1 := by rw [hst']
+      have hknown' : st'.known = st.known +
+          scanCount (advance st.cur d) (S.toArray.getD st.placed false) 1 st.rev := by rw [hst']
+      rw [hcur', hplaced', hknown'] at hhe hfr
+      have hexsz : ex'.size = ex.size := by
+        have h1 := hhe.1
+        have h2 := hfr.1
+        rw [Array.size_setIfInBounds] at h2
+        have h3 := hh.1
+        omega
+      refine ⟨ex', he, hexsz, ⟨?_, fun k hk' => ?_⟩, fun u hu => ?_⟩
+      · rw [Array.size_setIfInBounds]
+        exact hhe.1
+      · rw [getD_setIfInBounds, if_neg (fun h => by omega)]
+        exact hhe.2 k hk'
+      · rw [getD_setIfInBounds]
+        by_cases hcu : codeOf S.length (advance st.cur d) = u
+        · rw [if_pos ⟨hcu, by rw [hfr.1, Array.size_setIfInBounds]; omega⟩, ← hcu, hz]
+        · rw [if_neg (fun h => hcu h.1), hfr.2 u hu, getD_setIfInBounds,
+            if_neg (fun h => hcu h.1)]
+          exact hg u hu
+
+/-- **Refinement.** Started on an array that represents the walk and the
+histogram, the grid enumerator leaves in the histogram part exactly the
+histogram returned by the list enumerator. -/
+theorem enumGrid_refines {steps : ℕ} {S : List Bool} (hS : S.length = steps + 2) :
+    ∀ (r : ℕ) (p : List (Fin 4)) (st : State) (g ex : Array ℕ), Rep S p st →
+      (walkFrom p).Nodup → p.length + r = steps → GridRep S.length g st.rev →
+      HistRep ((2 * S.length + 1) * (2 * S.length + 1)) g ex → st.known + 4 * r < ex.size →
+      ∃ ex', enumGo S.toArray r st ex = some ex' ∧
+        HistRep ((2 * S.length + 1) * (2 * S.length + 1))
+          (enumGrid S.toArray (2 * S.length + 1) ((2 * S.length + 1) * (2 * S.length + 1)) r
+            (codeOf S.length st.cur) st.placed st.known g) ex' := by
+  intro r
+  induction r with
+  | zero =>
+      intro p st g ex hrep hn hlen hg hh hk
+      have hkn : st.known < ex.size := by omega
+      rw [enumGo, enumGrid]
+      refine ⟨ex.set st.known (ex[st.known] + 1), by simp [bump, hkn], ?_, fun k hk' => ?_⟩
+      · rw [Array.size_modify, Array.size_set]
+        exact hh.1
+      · rw [Array.size_set] at hk'
+        rw [getD_modify]
+        by_cases hkk : st.known = k
+        · subst hkk
+          rw [if_pos ⟨rfl, by rw [hh.1]; omega⟩, hh.2 _ hk', getD_eq_getElem ex hkn]
+          simp [Array.getD_eq_getD_getElem?, hkn]
+        · rw [if_neg (fun h => hkk (by omega)), hh.2 k hk']
+          simp [Array.getD_eq_getD_getElem?, hkk]
+  | succ r ih =>
+      intro p st g ex hrep hn hlen hg hh hk
+      have hcurbox : InBox (p.length + 1) st.cur := by
+        rw [hrep.cur]
+        exact walk_box p _ (endFrom_mem_walkFrom p)
+      have hint : -(S.length : ℤ) < st.cur.1 ∧ st.cur.1 < S.length ∧
+          -(S.length : ℤ) < st.cur.2 ∧ st.cur.2 < S.length := by
+        unfold InBox at hcurbox
+        omega
+      obtain ⟨c0, c1, c2, c3⟩ := codeOf_advance hint.1 hint.2.1 hint.2.2.1 hint.2.2.2
+      have hc1 : codeOf S.length st.cur - (2 * S.length + 1) =
+          codeOf S.length (advance st.cur 1) := by omega
+      have hc3 : codeOf S.length st.cur - 1 = codeOf S.length (advance st.cur 3) := by omega
+      -- Unfold the succ clauses by definitional equality, then rewrite neighbour
+      -- codes into `advance` form so they match `gridChild_refines`.
+      rw [show enumGo S.toArray (r + 1) st ex =
+          (match childWith S.toArray st 0 ex (enumGo S.toArray r) with
+            | none => none
+            | some ex =>
+              match childWith S.toArray st 1 ex (enumGo S.toArray r) with
+              | none => none
+              | some ex =>
+                match childWith S.toArray st 2 ex (enumGo S.toArray r) with
+                | none => none
+                | some ex => childWith S.toArray st 3 ex (enumGo S.toArray r)) from rfl]
+      rw [show enumGrid S.toArray (2 * S.length + 1)
+            ((2 * S.length + 1) * (2 * S.length + 1)) (r + 1)
+            (codeOf S.length st.cur) st.placed st.known g =
+          (let g := gridChild S.toArray (2 * S.length + 1)
+              (codeOf S.length st.cur + (2 * S.length + 1)) st.placed st.known g
+              (enumGrid S.toArray (2 * S.length + 1)
+                ((2 * S.length + 1) * (2 * S.length + 1)) r)
+            let g := gridChild S.toArray (2 * S.length + 1)
+              (codeOf S.length st.cur - (2 * S.length + 1)) st.placed st.known g
+              (enumGrid S.toArray (2 * S.length + 1)
+                ((2 * S.length + 1) * (2 * S.length + 1)) r)
+            let g := gridChild S.toArray (2 * S.length + 1)
+              (codeOf S.length st.cur + 1) st.placed st.known g
+              (enumGrid S.toArray (2 * S.length + 1)
+                ((2 * S.length + 1) * (2 * S.length + 1)) r)
+            gridChild S.toArray (2 * S.length + 1)
+              (codeOf S.length st.cur - 1) st.placed st.known g
+              (enumGrid S.toArray (2 * S.length + 1)
+                ((2 * S.length + 1) * (2 * S.length + 1)) r)) from rfl]
+      rw [← c0, hc1, ← c2, hc3]
+      obtain ⟨e0, h0, s0, hh0, hg0⟩ := gridChild_refines hS ih hrep hn hlen hg hh hk 0
+      obtain ⟨e1, h1, s1, hh1, hg1⟩ := gridChild_refines hS ih hrep hn hlen hg0 hh0
+        (by rw [s0]; exact hk) 1
+      obtain ⟨e2, h2, s2, hh2, hg2⟩ := gridChild_refines hS ih hrep hn hlen hg1 hh1
+        (by rw [s1, s0]; exact hk) 2
+      obtain ⟨e3, h3, _s3, hh3, _hg3⟩ := gridChild_refines hS ih hrep hn hlen hg2 hh2
+        (by rw [s2, s1, s0]; exact hk) 3
+      -- Reduce the nested `match some _` after each successful child.
+      simp only [h0, h1, h2, h3]
+      exact ⟨e3, rfl, hh3⟩
+
+/-- **The fast enumerator is the list enumerator.** For every state that
+represents a self-avoiding prefix, `enumFast` returns exactly the result of
+`enumGo`. -/
+theorem enumFast_eq {steps : ℕ} {S : List Bool} (hS : S.length = steps + 2)
+    {p : List (Fin 4)} {st : State} (hrep : Rep S p st) (hn : (walkFrom p).Nodup) {r : ℕ}
+    (hlen : p.length + r = steps) (ex : Array ℕ) :
+    enumFast S.toArray r st ex = enumGo S.toArray r st ex := by
+  unfold enumFast
+  simp only [List.size_toArray]
+  by_cases hk : st.known + 4 * r < ex.size
+  · rw [if_pos hk]
+    have hgrid : GridRep S.length
+        (loadCells S.length st.rev
+          (Array.replicate ((2 * S.length + 1) * (2 * S.length + 1)) 0) ++ ex) st.rev := by
+      intro u hu
+      have hlt : u < (loadCells S.length st.rev
+          (Array.replicate ((2 * S.length + 1) * (2 * S.length + 1)) 0)).size := by
+        rw [size_loadCells, Array.size_replicate]
+        exact hu
+      rw [← getD_loadCells S.length _ st.rev u hu]
+      simp [Array.getD_eq_getD_getElem?, Array.getElem?_append_left hlt]
+    have hhist : HistRep ((2 * S.length + 1) * (2 * S.length + 1))
+        (loadCells S.length st.rev
+          (Array.replicate ((2 * S.length + 1) * (2 * S.length + 1)) 0) ++ ex) ex := by
+      refine ⟨by rw [Array.size_append, size_loadCells, Array.size_replicate], fun k hk' => ?_⟩
+      set baseArr := loadCells S.length st.rev
+          (Array.replicate ((2 * S.length + 1) * (2 * S.length + 1)) 0) with hbaseArr
+      have hsz : baseArr.size = (2 * S.length + 1) * (2 * S.length + 1) := by
+        rw [hbaseArr, size_loadCells, Array.size_replicate]
+      -- Rewrite only the index `(2n+1)^2` to `baseArr.size`, not the array itself.
+      conv => lhs; arg 2; rw [← hsz]
+      have hle : baseArr.size ≤ baseArr.size + k := Nat.le_add_right _ _
+      simp only [Array.getD_eq_getD_getElem?, Array.getElem?_append_right hle]
+      rw [Nat.add_sub_cancel_left]
+    obtain ⟨ex', he, hsz, hh⟩ := enumGrid_refines hS r p st _ ex hrep hn hlen hgrid hhist hk
+    have hfr := enumGrid_frame S.toArray (2 * S.length + 1)
+      ((2 * S.length + 1) * (2 * S.length + 1)) r (codeOf S.length st.cur) st.placed st.known
+      (loadCells S.length st.rev
+        (Array.replicate ((2 * S.length + 1) * (2 * S.length + 1)) 0) ++ ex)
+    have hexsz : ex'.size = ex.size := by
+      have h2 := hfr.1
+      rw [Array.size_append, size_loadCells, Array.size_replicate] at h2
+      omega
+    rw [he]
+    congr 1
+    apply Array.ext
+    · rw [Array.size_extract, hsz, hexsz]
+      omega
+    · intro i h1 h2
+      rw [Array.getElem_extract, ← getD_eq_getElem ex' h2, ← hh i h2]
+      rw [getD_eq_getElem]
+  · rw [if_neg hk]
+
 /-! ### The certificate interpreter -/
 
 /-- The enclosure accumulated so far, for `(q, t)`. -/
@@ -870,12 +1546,13 @@ theorem runNodeBody_sound {steps : ℕ} {S : List Bool} (hS : S.length = steps +
       · rw [if_pos hX] at h
         obtain ⟨ex, entries, s1, s2, s3, s4⟩ := acc
         simp only at h
-        cases hb : enumGo S.toArray r st ex with
+        cases hb : enumFast S.toArray r st ex with
         | none => rw [hb] at h; exact absurd h (by simp)
         | some ex' =>
             rw [hb] at h
             simp only [Except.ok.injEq, Prod.mk.injEq] at h
             obtain ⟨rfl, rfl⟩ := h
+            rw [enumFast_eq hS hrep hn hlen] at hb
             exact enumGo_sound hS hq t entries r p st ex ex' hrep hn hlen hb
       · rw [if_neg hX] at h
         by_cases hB : cert[pos] = 66
@@ -1286,6 +1963,86 @@ theorem encEntry_le_basic {steps : ℕ} {S : List Bool} (hS : S.length = steps +
       · split_ifs
         · exact mul_nonneg (Nat.cast_nonneg _) (hpos _)
         · exact le_refl _
+
+/-! ### Boolean entry points: one decidable check yields a theorem about the model -/
+
+/-- A sound report, specialised to a known sequence function. -/
+theorem ReportSound.of_seq {rep : Report} (h : ReportSound rep) {steps : ℕ}
+    (seq : Fin (steps + 2) → Bool) (hseq : rep.seq = List.ofFn seq) :
+    ∀ r ∈ rep.results, ResultSound steps seq r := by
+  obtain ⟨steps', seq', hs', hall⟩ := h
+  have he : List.ofFn seq' = List.ofFn seq := hs'.symm.trans hseq
+  have hlen : steps' = steps := by
+    have := congrArg List.length he
+    simp only [List.length_ofFn] at this
+    omega
+  subst hlen
+  have : seq' = seq := List.ofFn_injective he
+  subst this
+  exact hall
+
+/-- Boolean test: the bytes are accepted for the sequence `S` and some
+reported result for `(q, t)` has its probability interval inside `[lo, hi]`. -/
+def certifiesInterval (b : ByteArray) (S : List Bool) (q : ℚ) (t : ℕ) (lo hi : ℚ) : Bool :=
+  match verifyBytes b with
+  | .ok rep =>
+      rep.seq == S &&
+        rep.results.any (fun r => r.q == q && r.t == t && decide (lo ≤ r.pLo) && decide (r.pHi ≤ hi))
+  | .error _ => false
+
+/-- **One Boolean check gives a probability enclosure for the Lean model.**
+If `certifiesInterval` evaluates to `true` (for instance by `decide +kernel`
+on a small certificate, or by running the compiled checker), then the exact
+equilibrium probability `P(k ≥ t)` of the HP model of `seq` at Boltzmann
+factor `q` lies in `[lo, hi]`. -/
+theorem certifiesInterval_sound {steps : ℕ} (seq : Fin (steps + 2) → Bool) (b : ByteArray)
+    (q : ℚ) (t : ℕ) (lo hi : ℚ) (h : certifiesInterval b (List.ofFn seq) q t lo hi = true) :
+    Executable.massQ (weightQ steps q seq) (contactEvent steps seq t) /
+      Executable.massQ (weightQ steps q seq) univ ∈ Set.Icc lo hi := by
+  unfold certifiesInterval at h
+  cases hv : verifyBytes b with
+  | error e => rw [hv] at h; exact absurd h (by simp)
+  | ok rep =>
+      rw [hv] at h
+      simp only [Bool.and_eq_true, beq_iff_eq, List.any_eq_true, decide_eq_true_eq] at h
+      obtain ⟨hseq, r, hr, ⟨⟨⟨hq, ht⟩, hlo⟩, hhi⟩⟩ := h
+      obtain ⟨_, _, _, _, hp⟩ := (verifyBytes_sound b rep hv).of_seq seq hseq r hr
+      rw [hq, ht] at hp
+      exact ⟨hlo.trans hp.1, hp.2.trans hhi⟩
+
+/-- Boolean test: the bytes are accepted for the sequence `S` without any
+bound entry and some reported result for `(q, t)` has probability `p`. -/
+def certifiesExact (b : ByteArray) (S : List Bool) (q : ℚ) (t : ℕ) (p : ℚ) : Bool :=
+  match verifyBytes b with
+  | .ok rep =>
+      rep.entries == 0 && rep.seq == S &&
+        rep.results.any (fun r => r.q == q && r.t == t && r.pLo == p)
+  | .error _ => false
+
+/-- **One Boolean check gives the exact probability of the Lean model.** -/
+theorem certifiesExact_sound {steps : ℕ} (seq : Fin (steps + 2) → Bool) (b : ByteArray)
+    (q : ℚ) (t : ℕ) (p : ℚ) (h : certifiesExact b (List.ofFn seq) q t p = true) :
+    Executable.massQ (weightQ steps q seq) (contactEvent steps seq t) /
+      Executable.massQ (weightQ steps q seq) univ = p := by
+  unfold certifiesExact at h
+  cases hv : verifyBytes b with
+  | error e => rw [hv] at h; exact absurd h (by simp)
+  | ok rep =>
+      rw [hv] at h
+      simp only [Bool.and_eq_true, beq_iff_eq, List.any_eq_true] at h
+      obtain ⟨⟨h0, hseq⟩, r, hr, ⟨⟨hq, ht⟩, hp⟩⟩ := h
+      obtain ⟨steps', seq', hs', hall⟩ := verifyBytes_exact b rep hv h0
+      have he : List.ofFn seq' = List.ofFn seq := hs'.symm.trans hseq
+      have hlen : steps' = steps := by
+        have := congrArg List.length he
+        simp only [List.length_ofFn] at this
+        omega
+      subst hlen
+      have : seq' = seq := List.ofFn_injective he
+      subst this
+      obtain ⟨_, _, _, _, _, _, _, hpl, _⟩ := hall r hr
+      rw [hq, ht] at hpl
+      rw [← hpl, hp]
 
 end Kernel
 end FoldBounds

@@ -119,7 +119,7 @@ The tree check does not depend on `q` or `t`: one accepted tree yields sound
 enclosures for **every** rational `q >= 1` and **every** threshold. All
 arithmetic is exact (`Nat`, `Int`, `Rat`); no floating point is involved.
 
-The exact histogram has `2n + 2` slots; a contact count outside it makes the
+The exact histogram has `4n + 4` slots; a contact count outside it makes the
 checker reject (this cannot happen for valid input, it is a fail-closed guard).
 
 ## 6. Runner output (unverified printer)
@@ -142,12 +142,23 @@ Rationals are printed as `num/den` in lowest terms with `den >= 1`. Exit
 status: `0` if every file was accepted, `1` if some file was rejected, `2` on
 usage or I/O errors.
 
-## 7. Trust boundary
+## 7. Enumeration implementation
+
+`X` leaves (and any exhaustive residual) are counted by `enumFast`, which
+is proved equal to the list enumerator `enumGo` on every self-avoiding
+prefix (`FrontierKernelSound.enumFast_eq`). Operationally `enumFast` packs
+the placed sites into a `(2n+1)²` grid, threads the array linearly, and
+stores the contact histogram in the cells after the grid. Contact and
+occupancy tests are then constant time per candidate direction. The
+histogram length is `4n + 4`.
+
+## 8. Trust boundary
 
 Proved in Lean (`FoldBounds/FrontierKernelSound.lean`): for every input string,
 if `verify` accepts and returns a report, then for the echoed sequence and
 each echoed `(q, t)` the eight reported rationals enclose the exact `Z`,
-`Z_A`, `Z_notA` and `P(A_t)` of the Lean HP model.
+`Z_A`, `Z_notA` and `P(A_t)` of the Lean HP model. The proof goes through
+the actual acceptance path (`verify` → `runTree` → `enumFast` = `enumGo`).
 
 Not proved: file reading, the JSON printer, the Lean compiler and runtime,
 and that the echoed parameters are the ones the user intended (compare the

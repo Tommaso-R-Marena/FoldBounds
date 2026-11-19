@@ -6,3 +6,7 @@ dist/
 build/
 .venv/
 .lake/
+third_party/minwalk/build/
+third_party/minwalk/dist/
+third_party/minwalk/HPFolding.xcodeproj/
+**/__pycache__/
