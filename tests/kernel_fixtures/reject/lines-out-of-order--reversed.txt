@@ -1,0 +1,5 @@
+end
+tree NNE-EE-NEEE-NEE-E
+query 2 1
+sequence HHHH
+FOLDBOUNDS-KERNEL 1

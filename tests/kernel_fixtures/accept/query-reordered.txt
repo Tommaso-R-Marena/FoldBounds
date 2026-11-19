@@ -1,0 +1,6 @@
+FOLDBOUNDS-KERNEL 1
+sequence HHPHH
+query 3/2 0
+query 2 1
+tree NNNE-EE-NEEE-NEE-E-NNE-EEN-EE-NEEE--NNE-EEN-E-E-NEE-E
+end

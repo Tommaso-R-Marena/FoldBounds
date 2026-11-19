@@ -1,5 +1,7 @@
 import Lean
 import FoldBounds.FrontierKernelTests
+import FoldBounds.FrontierKernelModelTestsHHHH
+import FoldBounds.FrontierKernelModelTestsH8Interval
 
 /-!
 # Strict audit of the frontier-kernel development
@@ -72,7 +74,8 @@ end FoldBounds.FrontierKernelAudit
 open FoldBounds.FrontierKernelAudit
 
 #assert_modules_standard_axioms FoldBounds.FrontierKernel FoldBounds.FrontierKernelSound
-  FoldBounds.FrontierKernelTests
+  FoldBounds.FrontierKernelTests FoldBounds.FrontierKernelModelTestsHHHH
+  FoldBounds.FrontierKernelModelTestsH8Interval
 
 #assert_standard_axioms
   FoldBounds.Kernel.verify_sound
@@ -83,8 +86,8 @@ open FoldBounds.FrontierKernelAudit
   FoldBounds.Kernel.encEntry_le_basic
   FoldBounds.Kernel.runTree_sound
   FoldBounds.Kernel.enumGo_sound
+  FoldBounds.Kernel.enumFast_eq
   FoldBounds.Kernel.encEntry_sound
   FoldBounds.Kernel.boundEntry_ok
-  FoldBounds.FrontierKernelTests.hhhh_probability_exact
-  FoldBounds.FrontierKernelTests.h8_probability_exact
-  FoldBounds.FrontierKernelTests.h8_probability_interval
+  FoldBounds.FrontierKernelModelTests.hhhh_probability_exact
+  FoldBounds.FrontierKernelModelTests.h8_probability_interval

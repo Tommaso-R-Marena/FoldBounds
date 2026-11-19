@@ -1,0 +1,5 @@
+FOLDBOUNDS-KERNEL 1
+sequence HHHH
+query 2 4294967296
+tree NNE-EE-NEEE-NEE-E
+end

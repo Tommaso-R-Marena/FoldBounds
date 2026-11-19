@@ -1,4 +1,4 @@
-import FoldBounds.FrontierKernelSound
+import FoldBounds.FrontierKernel
 
 /-!
 # Kernel-checked tests of the executable frontier kernel
@@ -13,11 +13,12 @@ value.  No `native_decide`, no compiler trust, no extra axioms.  The
 expected values were proposed by running the compiled binary, so these
 tests also check that the compiled code and the kernel agree.
 
-The last section turns Boolean checks into theorems about the Lean HP model
-through `certifiesExact_sound` and `certifiesInterval_sound`.
+This module imports only the Mathlib-free executable kernel so the
+`decide +kernel` suite stays memory-bounded.  Semantic bridge theorems that
+need `FrontierKernelSound` live in `FrontierKernelModelTests.lean`.
 -/
 
-open FoldBounds FoldBounds.Kernel FoldBounds.LatticeModel
+open FoldBounds FoldBounds.Kernel
 
 namespace FoldBounds.FrontierKernelTests
 
@@ -290,49 +291,5 @@ theorem reject_empty_input :
 theorem reject_invalid_utf8 :
     rejectionBytes ⟨#[70, 79, 76, 68, 66, 79, 85, 78, 68, 83, 45, 75, 69, 82, 78, 69, 76, 32, 49, 10, 115, 101, 113, 117, 101, 110, 99, 101, 32, 72, 72, 255, 72, 10, 113, 117, 101, 114, 121, 32, 50, 32, 49, 10, 116, 114, 101, 101, 32, 88, 10, 101, 110, 100, 10]⟩
       = some (.badSequence) := by decide +kernel
-
-/-! ### From one Boolean check to a theorem about the Lean HP model -/
-
-/-- All-hydrophobic sequence of four residues. -/
-def allH4 : Fin 4 → Bool := fun _ => true
-
-/-- All-hydrophobic sequence of eight residues. -/
-def allH8 : Fin 8 → Bool := fun _ => true
-
-/-- **Exact probability from the string-level checker.** The kernel
-evaluates `verify` on a one-leaf certificate; `certifiesExact_sound` turns
-the accepted report into the exact equilibrium probability `P(k ≥ 1) = 4/11`
-of the Lean HP model for `HHHH` at `q = 2`. -/
-theorem hhhh_probability_exact :
-    Executable.massQ (weightQ 2 2 allH4) (contactEvent 2 allH4 1) /
-      Executable.massQ (weightQ 2 2 allH4) Finset.univ = 4 / 11 :=
-  certifiesExact_sound allH4
-    ("FOLDBOUNDS-KERNEL 1\nsequence HHHH\nquery 2 1\ntree X\nend\n").toUTF8
-    2 1 (4 / 11) (by decide +kernel)
-
-/-- **Exact probability for eight residues** (543 conformations enumerated by
-the checker inside the kernel). -/
-theorem h8_probability_exact :
-    Executable.massQ (weightQ 6 2 allH8) (contactEvent 6 allH8 2) /
-      Executable.massQ (weightQ 6 2 allH8) Finset.univ = 72/139 :=
-  certifiesExact_sound allH8
-    ("FOLDBOUNDS-KERNEL 1\nsequence HHHHHHHH\nquery 2 2\ntree X\nend\n").toUTF8
-    2 2 (72/139) (by decide +kernel)
-
-/-- **A certified enclosure from a partially bounded certificate.** The
-tree below enumerates 152 of the 543 conformations and bounds 17 subtrees
-without enumerating them; `certifiesInterval_sound` gives a kernel-checked
-enclosure of the same probability. -/
-theorem h8_probability_interval :
-    Executable.massQ (weightQ 6 2 allH8) (contactEvent 6 allH8 2) /
-      Executable.massQ (weightQ 6 2 allH8) Finset.univ ∈
-        Set.Icc (196/733 : ℚ) (989/1028) :=
-  certifiesInterval_sound allH8
-    ("FOLDBOUNDS-KERNEL 1\nsequence HHHHHHHH\nquery 2 2\nquery 3/2 1\ntree NNNB-BB-NBXB-NBX-B-NNB-BXN-XX-NBBB--NNB-XBN-X-X-NBB-B\nend\n").toUTF8
-    2 2 (196/733) (989/1028) (by decide +kernel)
-
-/-- The exact value indeed lies in the certified enclosure. -/
-example : (196/733 : ℚ) ≤ 72/139 ∧
-    (72/139 : ℚ) ≤ 989/1028 := by norm_num
 
 end FoldBounds.FrontierKernelTests
