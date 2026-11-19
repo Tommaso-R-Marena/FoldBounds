@@ -36,8 +36,17 @@ Last updated: 2026-11-18 20:20 America/New_York (kernel grid + soundness + bench
   Sound is loaded exceeds the memory cgroup; exact `n=8` is covered by the
   compiled binary, the Mathlib-free hybrid test, and the enclosure bridge).
 
+## External SOTA comparison (EXECUTED)
+
+Harness: `python experiments/sota/run_sota_compare.py --full`
+Results: `experiments/sota/results/SUMMARY.md` · doc: `CERTIFIED_FRONTIER_SOTA_COMPARE.md`
+
+* OEIS A001411 (anchored): exact match n=2…16; foldkernel ~33 ns/conf vs Python ~330 (~10×).
+* Fibonacci S21: 224,424,291 confs; foldkernel histogram matches exhaustive in 6.5s vs 46s (~7×).
+* S1-* / Unger–Moult GS: MINWALK (vendored Giaquinta–Pozzi) matches published E* on S1-1..5,S1-8; FoldBounds witness certs with eLo>0 on S1-1,S1-2,S1-4.
+* Gaps: S1-6/S1-7 MINWALK timeout at harness budget; Jensen TM still ahead for pure SAW counts at extreme n.
+
 ## Next (if continuing)
 
-1. Keep the full `--full` bench warm; refresh SUMMARY if a longer run finishes.
-2. Draft PR against `feature/fable52-certified-frontier-v1-9cd6` (or stack on #32).
-3. Optional: further histogram / parser micro-opts; do not weaken soundness.
+1. Raise MINWALK budget / port stronger pruning for S1-6/S1-7; more witness finds for S1-3/5/8.
+2. Optional: further histogram / parser micro-opts; do not weaken soundness.

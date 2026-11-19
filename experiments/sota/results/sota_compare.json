@@ -1,0 +1,670 @@
+{
+  "generated": "2026-11-19T02:27:37Z",
+  "mode": "full",
+  "host": "cursor",
+  "foldkernel": "/workspace/.lake/build/bin/foldkernel",
+  "minwalk": "/workspace/third_party/minwalk/dist/hpfold",
+  "rows": [
+    {
+      "category": "OEIS-A001411",
+      "n": 2,
+      "sequence": "HH",
+      "published_conformations": 1,
+      "hpenum": {
+        "conformations": 1,
+        "match": true,
+        "wall_s": 4.638000973500311e-06,
+        "ns_per_conf": 4638.000973500311
+      },
+      "foldkernel": {
+        "exact_count": 1,
+        "match": true,
+        "wall_s": 0.0037171469994063955,
+        "verify_us": 25,
+        "ok": true,
+        "ns_per_conf": 25000.0
+      }
+    },
+    {
+      "category": "OEIS-A001411",
+      "n": 3,
+      "sequence": "HHH",
+      "published_conformations": 3,
+      "hpenum": {
+        "conformations": 3,
+        "match": true,
+        "wall_s": 1.3647000741912052e-05,
+        "ns_per_conf": 4549.000247304018
+      },
+      "foldkernel": {
+        "exact_count": 3,
+        "match": true,
+        "wall_s": 0.003751514999748906,
+        "verify_us": 27,
+        "ok": true,
+        "ns_per_conf": 9000.0
+      }
+    },
+    {
+      "category": "OEIS-A001411",
+      "n": 4,
+      "sequence": "HHHH",
+      "published_conformations": 9,
+      "hpenum": {
+        "conformations": 9,
+        "match": true,
+        "wall_s": 1.4335000741994008e-05,
+        "ns_per_conf": 1592.7778602215565
+      },
+      "foldkernel": {
+        "exact_count": 9,
+        "match": true,
+        "wall_s": 0.0022713079997629393,
+        "verify_us": 28,
+        "ok": true,
+        "ns_per_conf": 3111.1111111111113
+      }
+    },
+    {
+      "category": "OEIS-A001411",
+      "n": 5,
+      "sequence": "HHHHH",
+      "published_conformations": 25,
+      "hpenum": {
+        "conformations": 25,
+        "match": true,
+        "wall_s": 1.9885999790858477e-05,
+        "ns_per_conf": 795.4399916343391
+      },
+      "foldkernel": {
+        "exact_count": 25,
+        "match": true,
+        "wall_s": 0.002250006000394933,
+        "verify_us": 32,
+        "ok": true,
+        "ns_per_conf": 1280.0
+      }
+    },
+    {
+      "category": "OEIS-A001411",
+      "n": 6,
+      "sequence": "HHHHHH",
+      "published_conformations": 71,
+      "hpenum": {
+        "conformations": 71,
+        "match": true,
+        "wall_s": 2.9392998840194196e-05,
+        "ns_per_conf": 413.98589915766473
+      },
+      "foldkernel": {
+        "exact_count": 71,
+        "match": true,
+        "wall_s": 0.004284755003027385,
+        "verify_us": 39,
+        "ok": true,
+        "ns_per_conf": 549.2957746478874
+      }
+    },
+    {
+      "category": "OEIS-A001411",
+      "n": 7,
+      "sequence": "HHHHHHH",
+      "published_conformations": 195,
+      "hpenum": {
+        "conformations": 195,
+        "match": true,
+        "wall_s": 6.405699969036505e-05,
+        "ns_per_conf": 328.4974343095643
+      },
+      "foldkernel": {
+        "exact_count": 195,
+        "match": true,
+        "wall_s": 0.003304063000541646,
+        "verify_us": 49,
+        "ok": true,
+        "ns_per_conf": 251.28205128205127
+      }
+    },
+    {
+      "category": "OEIS-A001411",
+      "n": 8,
+      "sequence": "HHHHHHHH",
+      "published_conformations": 543,
+      "hpenum": {
+        "conformations": 543,
+        "match": true,
+        "wall_s": 0.00016050900012487546,
+        "ns_per_conf": 295.59668531284615
+      },
+      "foldkernel": {
+        "exact_count": 543,
+        "match": true,
+        "wall_s": 0.0045811329982825555,
+        "verify_us": 68,
+        "ok": true,
+        "ns_per_conf": 125.23020257826887
+      }
+    },
+    {
+      "category": "OEIS-A001411",
+      "n": 9,
+      "sequence": "HHHHHHHHH",
+      "published_conformations": 1479,
+      "hpenum": {
+        "conformations": 1479,
+        "match": true,
+        "wall_s": 0.0004625569999916479,
+        "ns_per_conf": 312.74983096122236
+      },
+      "foldkernel": {
+        "exact_count": 1479,
+        "match": true,
+        "wall_s": 0.00238800000079209,
+        "verify_us": 104,
+        "ok": true,
+        "ns_per_conf": 70.31778228532792
+      }
+    },
+    {
+      "category": "OEIS-A001411",
+      "n": 10,
+      "sequence": "HHHHHHHHHH",
+      "published_conformations": 4067,
+      "hpenum": {
+        "conformations": 4067,
+        "match": true,
+        "wall_s": 0.001276545001019258,
+        "ns_per_conf": 313.8787806784505
+      },
+      "foldkernel": {
+        "exact_count": 4067,
+        "match": true,
+        "wall_s": 0.002490761999069946,
+        "verify_us": 193,
+        "ok": true,
+        "ns_per_conf": 47.45512662896484
+      }
+    },
+    {
+      "category": "OEIS-A001411",
+      "n": 11,
+      "sequence": "HHHHHHHHHHH",
+      "published_conformations": 11025,
+      "hpenum": {
+        "conformations": 11025,
+        "match": true,
+        "wall_s": 0.0034889650014520157,
+        "ns_per_conf": 316.4594105625411
+      },
+      "foldkernel": {
+        "exact_count": 11025,
+        "match": true,
+        "wall_s": 0.00455773700014106,
+        "verify_us": 424,
+        "ok": true,
+        "ns_per_conf": 38.45804988662132
+      }
+    },
+    {
+      "category": "OEIS-A001411",
+      "n": 12,
+      "sequence": "HHHHHHHHHHHH",
+      "published_conformations": 30073,
+      "hpenum": {
+        "conformations": 30073,
+        "match": true,
+        "wall_s": 0.009789284002181375,
+        "ns_per_conf": 325.5173744615228
+      },
+      "foldkernel": {
+        "exact_count": 30073,
+        "match": true,
+        "wall_s": 0.0066711680010485,
+        "verify_us": 1121,
+        "ok": true,
+        "ns_per_conf": 37.275961826222854
+      }
+    },
+    {
+      "category": "OEIS-A001411",
+      "n": 13,
+      "sequence": "HHHHHHHHHHHHH",
+      "published_conformations": 81233,
+      "hpenum": {
+        "conformations": 81233,
+        "match": true,
+        "wall_s": 0.026357916001870763,
+        "ns_per_conf": 324.4730097604516
+      },
+      "foldkernel": {
+        "exact_count": 81233,
+        "match": true,
+        "wall_s": 0.005456997001601849,
+        "verify_us": 2734,
+        "ok": true,
+        "ns_per_conf": 33.656272697056615
+      }
+    },
+    {
+      "category": "OEIS-A001411",
+      "n": 14,
+      "sequence": "HHHHHHHHHHHHHH",
+      "published_conformations": 220375,
+      "hpenum": {
+        "conformations": 220375,
+        "match": true,
+        "wall_s": 0.0724452239992388,
+        "ns_per_conf": 328.73612705270017
+      },
+      "foldkernel": {
+        "exact_count": 220375,
+        "match": true,
+        "wall_s": 0.010004000003391411,
+        "verify_us": 7213,
+        "ok": true,
+        "ns_per_conf": 32.73057288712422
+      }
+    },
+    {
+      "category": "OEIS-A001411",
+      "n": 15,
+      "sequence": "HHHHHHHHHHHHHHH",
+      "published_conformations": 593611,
+      "hpenum": {
+        "conformations": 593611,
+        "match": true,
+        "wall_s": 0.19657109399850015,
+        "ns_per_conf": 331.14462838205515
+      },
+      "foldkernel": {
+        "exact_count": 593611,
+        "match": true,
+        "wall_s": 0.02249196400225628,
+        "verify_us": 19390,
+        "ok": true,
+        "ns_per_conf": 32.664489034064395
+      }
+    },
+    {
+      "category": "OEIS-A001411",
+      "n": 16,
+      "sequence": "HHHHHHHHHHHHHHHH",
+      "published_conformations": 1604149,
+      "hpenum": {
+        "conformations": 1604149,
+        "match": true,
+        "wall_s": 0.5308888910003589,
+        "ns_per_conf": 330.9473689790405
+      },
+      "foldkernel": {
+        "exact_count": 1604149,
+        "match": true,
+        "wall_s": 0.05520552899906761,
+        "verify_us": 52616,
+        "ok": true,
+        "ns_per_conf": 32.799945640959784
+      }
+    },
+    {
+      "category": "2D-HP-ground-state",
+      "id": "S1-1",
+      "n": 20,
+      "published_E_star": -9,
+      "published_contacts": 9,
+      "sequence": "HPHPPHHPHPPHPHHPPHPH",
+      "source": "Shmygelska-Hoos-2005 / Unger-Moult",
+      "minwalk": {
+        "contacts": 9,
+        "match_published": true,
+        "wall_s": 0.0027247479993093293,
+        "ok": true
+      },
+      "foldbounds_cert_lb": {
+        "method": "foldbounds_cert_lb",
+        "ok": true,
+        "accepted": true,
+        "eLo": "512/1",
+        "eHi": "1572997362176/1",
+        "bound_leaves": 27,
+        "enum_leaves": 0,
+        "exact_leaves": 1,
+        "wall_s": 0.003482435997284483,
+        "producer_s": 3.477297322002414,
+        "nodes": 5000000,
+        "cert_bytes": 73,
+        "reason": null
+      }
+    },
+    {
+      "category": "2D-HP-ground-state",
+      "id": "S1-2",
+      "n": 24,
+      "published_E_star": -9,
+      "published_contacts": 9,
+      "sequence": "HHPPHPPHPPHPPHPPHPPHPPHH",
+      "source": "Shmygelska-Hoos-2005",
+      "minwalk": {
+        "contacts": 9,
+        "match_published": true,
+        "wall_s": 0.00515747000099509,
+        "ok": true
+      },
+      "foldbounds_cert_lb": {
+        "method": "foldbounds_cert_lb",
+        "ok": true,
+        "accepted": true,
+        "eLo": "512/1",
+        "eHi": "1020596370168320/1",
+        "bound_leaves": 34,
+        "enum_leaves": 0,
+        "exact_leaves": 1,
+        "wall_s": 0.00442887900135247,
+        "producer_s": 3.595752221001021,
+        "nodes": 5000000,
+        "cert_bytes": 89,
+        "reason": null
+      }
+    },
+    {
+      "category": "2D-HP-ground-state",
+      "id": "S1-3",
+      "n": 25,
+      "published_E_star": -8,
+      "published_contacts": 8,
+      "sequence": "PPHPPHHPPPPHHPPPPHHPPPPHH",
+      "source": "Shmygelska-Hoos-2005",
+      "minwalk": {
+        "contacts": 8,
+        "match_published": true,
+        "wall_s": 0.002059159000054933,
+        "ok": true
+      },
+      "foldbounds_cert_lb": {
+        "method": "foldbounds_cert_lb",
+        "ok": false,
+        "accepted": true,
+        "eLo": "0/1",
+        "eHi": "756922351617792/1",
+        "bound_leaves": 36,
+        "enum_leaves": 0,
+        "exact_leaves": 1,
+        "wall_s": 0.0035614189982879907,
+        "producer_s": 3.583574583997688,
+        "nodes": 5000000,
+        "cert_bytes": 93,
+        "reason": "no-positive-eLo"
+      }
+    },
+    {
+      "category": "2D-HP-ground-state",
+      "id": "S1-4",
+      "n": 36,
+      "published_E_star": -14,
+      "published_contacts": 14,
+      "sequence": "PPPHHPPHHPPPPPHHHHHHHPPHHPPPPHHPPHPP",
+      "source": "Shmygelska-Hoos-2005",
+      "minwalk": {
+        "contacts": 14,
+        "match_published": true,
+        "wall_s": 0.0032430020000902005,
+        "ok": true
+      },
+      "foldbounds_cert_lb": {
+        "method": "foldbounds_cert_lb",
+        "ok": true,
+        "accepted": true,
+        "eLo": "32768/1",
+        "eHi": "558821720188625237540864/1",
+        "bound_leaves": 47,
+        "enum_leaves": 0,
+        "exact_leaves": 1,
+        "wall_s": 0.0038642770014121197,
+        "producer_s": 2.4285650579986395,
+        "nodes": 5000000,
+        "cert_bytes": 137,
+        "reason": null
+      }
+    },
+    {
+      "category": "2D-HP-ground-state",
+      "id": "S1-5",
+      "n": 48,
+      "published_E_star": -23,
+      "published_contacts": 23,
+      "sequence": "PPHPPHHPPHHPPPPPHHHHHHHHHHPPPPPPHHPPHHPPHPPHHHHH",
+      "source": "Shmygelska-Hoos-2005",
+      "minwalk": {
+        "contacts": 23,
+        "match_published": true,
+        "wall_s": 0.2850515459977032,
+        "ok": true
+      },
+      "foldbounds_cert_lb": {
+        "method": "foldbounds_cert_lb",
+        "ok": false,
+        "accepted": true,
+        "eLo": "0/1",
+        "eHi": "304454487621591352182617111789568/1",
+        "bound_leaves": 92,
+        "enum_leaves": 0,
+        "exact_leaves": 1,
+        "wall_s": 0.004519042999163503,
+        "producer_s": 3.816337629999907,
+        "nodes": 5000000,
+        "cert_bytes": 185,
+        "reason": "no-positive-eLo"
+      }
+    },
+    {
+      "category": "2D-HP-ground-state",
+      "id": "S1-6",
+      "n": 50,
+      "published_E_star": -21,
+      "published_contacts": 21,
+      "sequence": "HHPHPHPHPHHHHPHPPPHPPPHPPPPHPPPHPPPHPHHHHPHPHPHPHH",
+      "source": "Shmygelska-Hoos-2005",
+      "minwalk": {
+        "contacts": null,
+        "match_published": false,
+        "wall_s": 120.0,
+        "ok": false
+      },
+      "foldbounds_cert_lb": {
+        "method": "foldbounds_cert_lb",
+        "ok": false,
+        "accepted": true,
+        "eLo": "0/1",
+        "eHi": "5480837871555677724966447023652864/1",
+        "bound_leaves": 96,
+        "enum_leaves": 0,
+        "exact_leaves": 1,
+        "wall_s": 0.005738239997299388,
+        "producer_s": 3.6809054959994683,
+        "nodes": 5000000,
+        "cert_bytes": 193,
+        "reason": "no-positive-eLo"
+      }
+    },
+    {
+      "category": "2D-HP-ground-state",
+      "id": "S1-7",
+      "n": 60,
+      "published_E_star": -36,
+      "published_contacts": 36,
+      "sequence": "PPHHHPHHHHHHHHPPPHHHHHHHHHHPHPPPHHHHHHHHHHHHPPPPHHHHHHPHHPHP",
+      "source": "Shmygelska-Hoos-2005",
+      "minwalk": {
+        "contacts": null,
+        "match_published": false,
+        "wall_s": 120.0,
+        "ok": false
+      },
+      "foldbounds_cert_lb": {
+        "method": "foldbounds_cert_lb",
+        "ok": false,
+        "accepted": true,
+        "eLo": "0/1",
+        "eHi": "165718435417262184243860689103751242317824/1",
+        "bound_leaves": 116,
+        "enum_leaves": 0,
+        "exact_leaves": 1,
+        "wall_s": 0.008710262998647522,
+        "producer_s": 9.533678756000882,
+        "nodes": 5000000,
+        "cert_bytes": 233,
+        "reason": "no-positive-eLo"
+      }
+    },
+    {
+      "category": "2D-HP-ground-state",
+      "id": "S1-8",
+      "n": 64,
+      "published_E_star": -42,
+      "published_contacts": 42,
+      "sequence": "HHHHHHHHHHHHPHPHPPHHPPHHPPHPPHHPPHHPPHPPHHPPHHPPHPHPHHHHHHHHHHHH",
+      "source": "Shmygelska-Hoos-2005",
+      "minwalk": {
+        "contacts": 42,
+        "match_published": true,
+        "wall_s": 0.5443262050030171,
+        "ok": true
+      },
+      "foldbounds_cert_lb": {
+        "method": "foldbounds_cert_lb",
+        "ok": false,
+        "accepted": true,
+        "eLo": "0/1",
+        "eHi": "214726833284317354518062247774031411471712256/1",
+        "bound_leaves": 124,
+        "enum_leaves": 0,
+        "exact_leaves": 1,
+        "wall_s": 0.013489355002093362,
+        "producer_s": 4.159095814997272,
+        "nodes": 5000000,
+        "cert_bytes": 249,
+        "reason": "no-positive-eLo"
+      }
+    },
+    {
+      "category": "Fibonacci-HP",
+      "id": "S13",
+      "n": 13,
+      "sequence": "HPPHPPHPHPPHP",
+      "source": "AIP-Fibonacci-2015 (\u039b6)",
+      "hpenum": {
+        "conformations": 81233,
+        "histogram": [
+          49763,
+          26188,
+          4898,
+          374,
+          10
+        ],
+        "max_contacts": 4,
+        "wall_s": 0.016952195001067594,
+        "match_oeis_total": true
+      },
+      "foldkernel": {
+        "ok": true,
+        "exact_count": 81233,
+        "exact_histogram": [
+          49763,
+          26188,
+          4898,
+          374,
+          10
+        ],
+        "match_hpenum": true,
+        "wall_s": 0.007248787998832995
+      }
+    },
+    {
+      "category": "Fibonacci-HP",
+      "id": "S21",
+      "n": 21,
+      "sequence": "PHPHPPHPHPPHPPHPHPPHP",
+      "source": "AIP-Fibonacci-2015 (\u039b7)",
+      "hpenum": {
+        "conformations": 224424291,
+        "histogram": [
+          120302321,
+          77293386,
+          22503712,
+          3869038,
+          425862,
+          29078,
+          892,
+          2
+        ],
+        "max_contacts": 7,
+        "wall_s": 46.13457196300078,
+        "match_oeis_total": true
+      },
+      "foldkernel": {
+        "ok": true,
+        "exact_count": 224424291,
+        "exact_histogram": [
+          120302321,
+          77293386,
+          22503712,
+          3869038,
+          425862,
+          29078,
+          892,
+          2
+        ],
+        "match_hpenum": true,
+        "wall_s": 6.530944938000175
+      }
+    }
+  ],
+  "findings": {
+    "beat_or_match_published": [
+      "OEIS n=2: foldkernel exact count 1 matches A001411/4",
+      "OEIS n=3: foldkernel exact count 3 matches A001411/4",
+      "OEIS n=4: foldkernel exact count 9 matches A001411/4",
+      "OEIS n=5: foldkernel exact count 25 matches A001411/4",
+      "OEIS n=6: foldkernel exact count 71 matches A001411/4",
+      "OEIS n=7: foldkernel exact count 195 matches A001411/4",
+      "OEIS n=8: foldkernel exact count 543 matches A001411/4",
+      "OEIS n=9: foldkernel exact count 1479 matches A001411/4",
+      "OEIS n=10: foldkernel exact count 4067 matches A001411/4",
+      "OEIS n=11: foldkernel exact count 11025 matches A001411/4",
+      "OEIS n=12: foldkernel exact count 30073 matches A001411/4",
+      "OEIS n=13: foldkernel exact count 81233 matches A001411/4",
+      "OEIS n=14: foldkernel exact count 220375 matches A001411/4",
+      "OEIS n=15: foldkernel exact count 593611 matches A001411/4",
+      "OEIS n=16: foldkernel exact count 1604149 matches A001411/4",
+      "S1-1: MINWALK contacts=9 matches published E*=-9 in 0.0027s",
+      "S1-2: MINWALK contacts=9 matches published E*=-9 in 0.0052s",
+      "S1-3: MINWALK contacts=8 matches published E*=-8 in 0.0021s",
+      "S1-4: MINWALK contacts=14 matches published E*=-14 in 0.0032s",
+      "S1-5: MINWALK contacts=23 matches published E*=-23 in 0.2851s",
+      "S1-8: MINWALK contacts=42 matches published E*=-42 in 0.5443s",
+      "S13: foldkernel histogram identical to exhaustive oracle (81233 confs)",
+      "S21: foldkernel histogram identical to exhaustive oracle (224424291 confs)"
+    ],
+    "speed": [
+      "OEIS n=7: foldkernel 251.3 ns/conf vs hpenum 328.5",
+      "OEIS n=8: foldkernel 125.2 ns/conf vs hpenum 295.6",
+      "OEIS n=9: foldkernel 70.3 ns/conf vs hpenum 312.7",
+      "OEIS n=10: foldkernel 47.5 ns/conf vs hpenum 313.9",
+      "OEIS n=11: foldkernel 38.5 ns/conf vs hpenum 316.5",
+      "OEIS n=12: foldkernel 37.3 ns/conf vs hpenum 325.5",
+      "OEIS n=13: foldkernel 33.7 ns/conf vs hpenum 324.5",
+      "OEIS n=14: foldkernel 32.7 ns/conf vs hpenum 328.7",
+      "OEIS n=15: foldkernel 32.7 ns/conf vs hpenum 331.1",
+      "OEIS n=16: foldkernel 32.8 ns/conf vs hpenum 330.9"
+    ],
+    "unique_certified": [
+      "S1-1: FoldBounds accepted certificate for event k\u22659 (certified thermodynamics path)",
+      "S1-2: FoldBounds accepted certificate for event k\u22659 (certified thermodynamics path)",
+      "S1-4: FoldBounds accepted certificate for event k\u226514 (certified thermodynamics path)",
+      "FoldBounds is the only compared system with a Lean-kernel soundness theorem about string-level acceptance"
+    ],
+    "gaps": [
+      "S1-6: minwalk failed (None)",
+      "S1-7: minwalk failed (None)"
+    ]
+  }
+}
